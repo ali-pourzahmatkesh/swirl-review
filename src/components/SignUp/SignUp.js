@@ -34,13 +34,9 @@ export default class SignUp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			name: "",
-			// email: '',
+			username: "",
 			password: "",
 			reEnterPassword: "",
-			// age: 0,
-			// sex: '',
-			// birthdate: '',
 
 			//for country code modal
 			cellphoneCountryCode: "",
@@ -213,14 +209,10 @@ export default class SignUp extends Component {
 		});
 		this.props.sendUser({
 			user: {
-				name: this.state.name,
-				// birthdate: this.state.birthdate,
-				// email: this.state.email,
+				username: this.state.username,
 				cellphone: this.state.cellphone,
 				cellphoneCountryCode: this.state.cellphoneCountryCode,
 				password: this.state.password
-				// age: this.state.age,
-				// sex: this.state.sex.toLowerCase()
 			},
 			navigation: this.props.navigation,
 			resetAction: resetAction
@@ -229,12 +221,9 @@ export default class SignUp extends Component {
 
 	render() {
 		let {
-			name,
-			// email,
+			username,
 			password,
 			reEnterPassword,
-			age,
-			sex,
 
 			//for modal
 			cellphoneCountryCode,
@@ -247,12 +236,9 @@ export default class SignUp extends Component {
 		let signUpDisabled = false;
 
 		if (
-			// age === '' ||
-			name === "" ||
-			// email === '' ||
+			username === "" ||
 			password.length < 7 ||
 			reEnterPassword !== password ||
-			// sex === '' ||
 			isLoadingFetch ||
 			cellphoneCountryCode.length === 0 ||
 			cellphone.length !== 10
@@ -371,10 +357,10 @@ export default class SignUp extends Component {
 							/>
 							<TextInput
 								style={[styles.textInput, { paddingLeft: 13, paddingTop: 10 }]}
-								placeholder="First Name"
+								placeholder="User Name"
 								placeholderTextColor={colors.tapeWhite}
 								autoCorrect={false}
-								onChangeText={name => this.setState({ name })}
+								onChangeText={username => this.setState({ username })}
 							/>
 						</View>
 
