@@ -22,7 +22,8 @@ import {
 	deleteChatFailed,
 	SET_TAB_OF_PAGE
 } from "./";
-// import { callGetProfile } from "../profile";
+
+import { callGetProfile } from "../member";
 import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
@@ -118,9 +119,8 @@ const chat = (state = initialState, action) => {
 					chatCount: action.payload.data.chatCount,
 					friendshipRequestCount: action.payload.data.friendshipRequestCount,
 					hasFriendshipRequest: action.payload.data.hasFriendshipRequest
-				}
-				// TODO: commented temporary
-				//Cmd.action(callGetProfile(action.payload.id))
+				},
+				Cmd.action(callGetProfile(action.payload.id))
 			);
 		}
 

@@ -1,19 +1,19 @@
 import {
 	ADD_CHAT_COUNT,
 	CALL_GET_STATUS,
-	fetchGetListData,
-	fetchGetListDataFailed,
-	fetchGetListDataSuccess,
+	fetchChatGetListData,
+	fetchChatGetListDataFailed,
+	fetchChatGetListDataSuccess,
 	fetchGetStatus,
 	fetchGetStatusFailed,
 	fetchGetStatusSuccess,
-	GET_LIST_DATA,
-	GET_LIST_DATA_FAILED,
-	GET_LIST_DATA_SUCCESS,
+	CHAT_GET_LIST_DATA,
+	CHAT_GET_LIST_DATA_FAILED,
+	CHAT_GET_LIST_DATA_SUCCESS,
 	GET_STATUS_FAILED,
 	GET_STATUS_SUCCESS,
 	HAS_FRIEND_SHIP_REQUEST,
-	INITIAL_STATE,
+	CHAT_INITIAL_STATE,
 	CALL_DELETE_CHAT,
 	DELETE_CHAT_SUCCESS,
 	DELETE_CHAT_FAILED,
@@ -79,10 +79,75 @@ import {
 	COUNTRIES_FAILED,
 	fetchCountries,
 	fetchCountriesSuccess,
-	fetchCountriesFailed
+	fetchCountriesFailed,
+	// ------
+	CALL_GET_PROFILE,
+	GET_PROFILE_SUCCESS,
+	GET_PROFILE_FAILED,
+	fetchProfileUser,
+	fetchProfileUserSuccess,
+	fetchProfileUserFailed,
+	GET_LIST_DATA,
+	GET_LIST_DATA_SUCCESS,
+	GET_LIST_DATA_FAILED,
+	INITIAL_STATE,
+	fetchGetListData,
+	fetchGetListDataSuccess,
+	fetchGetListDataFailed,
+	GET_LIST_ADD_FRIEND_DATA,
+	GET_LIST_ADD_FRIEND_DATA_SUCCESS,
+	GET_LIST_ADD_FRIEND_DATA_FAILED,
+	INITIAL_ADD_FRIEND_STATE,
+	fetchGetAddFriendListData,
+	fetchGetAddFriendListDataSuccess,
+	fetchGetAddFriendListDataFailed,
+	SEARCH_TEXT,
+	SAVE_NAVIGATION_FOR_NAVIGATE,
+	CHANGE_PAGE_WITH_NAVIGATION,
+	LOAD_LIST_AFTER_NAVIGATE,
+	CLOSE_MODAL,
+	CALL_PROFILE_VISIT,
+	postProfileVisit,
+	POST_PROFILE_VISIT_SUCCESS,
+	POST_PROFILE_VISIT_FAILED,
+	postProfileVisitSuccess,
+	postProfileVisitFailed,
+	VISIT_COUNT,
+	VISIT_COUNT_SUCCESS,
+	VISIT_COUNT_FAILED,
+	getVisitCount,
+	getVisitCountSuccess,
+	getVisitCountFailed,
+	SOCKET_VISIT_COUNT,
+	UPDATE_INSTAGRAM_TOKEN,
+	UPDATE_INSTAGRAM_TOKEN_SUCCESS,
+	UPDATE_INSTAGRAM_TOKEN_FAILED,
+	serverUpdateInstagramToken,
+	serverUpdateInstagramTokenSuccess,
+	serverUpdateInstagramTokenFailed,
+	GET_INSTAGRAM_FEED,
+	GET_INSTAGRAM_FEED_SUCCESS,
+	GET_INSTAGRAM_FEED_FAILED,
+	serverGetInstagramFeed,
+	serverGetInstagramFeedSuccess,
+	serverGetInstagramFeedFailed,
+	RESET_INSTAGRAM_FEED,
+	UPDATE_BIO,
+	UPDATE_BIO_SUCCESS,
+	UPDATE_BIO_FAILED,
+	serverUpdateBio,
+	serverUpdateBioSuccess,
+	serverUpdateBioFailed,
+	UPDATE_GHOST_MODE,
+	UPDATE_GHOST_MODE_SUCCESS,
+	UPDATE_GHOST_MODE_FAILED,
+	serverUpdateGhostMode,
+	serverUpdateGhostModeSuccess,
+	serverUpdateGhostModeFailed,
+	UPDATE_GHOST_MODE_NOTIFICATION
 } from "./";
 
-// import { callGetProfile } from "../profile";
+import { callLogin, callGetStatus, callGetProfile } from "../member";
 import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
@@ -112,7 +177,15 @@ let initialState = {
 	verifyCode: "",
 	// --------
 	ipData: {},
-	countries: []
+	countries: [],
+	// ------
+	navigationData: {},
+	closeModal: false,
+	navigateInviteContact: false,
+	closeModalFromOther: false,
+	visitCount: 0,
+	instagramFeed: [],
+	ghostNotif: false
 };
 
 const chat = (state = initialState, action) => {
@@ -179,23 +252,28 @@ const chat = (state = initialState, action) => {
 		}
 
 		case GET_STATUS_SUCCESS: {
-			return loop(
-				{
-					...state,
-					chatCount: action.payload.data.chatCount,
-					friendshipRequestCount: action.payload.data.friendshipRequestCount,
-					hasFriendshipRequest: action.payload.data.hasFriendshipRequest
-				}
-				// TODO: commented temporary
-				//Cmd.action(callGetProfile(action.payload.id))
-			);
+			return {
+				...state,
+				chatCount: action.payload.data.chatCount,
+				friendshipRequestCount: action.payload.data.friendshipRequestCount,
+				hasFriendshipRequest: action.payload.data.hasFriendshipRequest
+			};
+			// return loop(
+			// 	{
+			// 		...state,
+			// 		chatCount: action.payload.data.chatCount,
+			// 		friendshipRequestCount: action.payload.data.friendshipRequestCount,
+			// 		hasFriendshipRequest: action.payload.data.hasFriendshipRequest
+			// 	},
+			// 	Cmd.action(callGetProfile(action.payload.id))
+			// );
 		}
 
 		case GET_STATUS_FAILED: {
 			return { ...state };
 		}
 
-		case GET_LIST_DATA: {
+		case CHAT_GET_LIST_DATA: {
 			// console.log(action.payload)
 			return loop(
 				{
@@ -213,7 +291,7 @@ const chat = (state = initialState, action) => {
 				})
 			);
 		}
-		case GET_LIST_DATA_SUCCESS: {
+		case CHAT_GET_LIST_DATA_SUCCESS: {
 			// let list = state.list;
 			// if (action.payload.refreshing) list = [];
 			// let updateList = [...list, ...action.payload.data];
@@ -267,7 +345,7 @@ const chat = (state = initialState, action) => {
 				// count: action.payload.metadata.count
 			};
 		}
-		case GET_LIST_DATA_FAILED: {
+		case CHAT_GET_LIST_DATA_FAILED: {
 			return loop(
 				{
 					...state,
@@ -278,7 +356,7 @@ const chat = (state = initialState, action) => {
 				Cmd.action(showToast(true, action.payload.message))
 			);
 		}
-		case INITIAL_STATE: {
+		case CHAT_INITIAL_STATE: {
 			return {
 				...state,
 				isLoadingFetch: false,
@@ -605,6 +683,372 @@ const chat = (state = initialState, action) => {
 				},
 				Cmd.action(showToast(true, "error in get countries."))
 			);
+		}
+
+		// --------
+		case UPDATE_GHOST_MODE_NOTIFICATION: {
+			return {
+				...state,
+				ghostNotif: action.payload
+			};
+		}
+
+		case UPDATE_GHOST_MODE: {
+			return loop(
+				{ ...state, ghostNotif: false },
+				Cmd.run(serverUpdateGhostMode, {
+					successActionCreator: serverUpdateGhostModeSuccess,
+					failActionCreator: serverUpdateGhostModeFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case UPDATE_GHOST_MODE_SUCCESS: {
+			state.userData.isInGhostMode = !state.userData.isInGhostMode;
+			return {
+				...state,
+				ghostNotif: true
+			};
+		}
+
+		case UPDATE_GHOST_MODE_FAILED: {
+			return {
+				...state
+			};
+		}
+
+		case UPDATE_BIO: {
+			return loop(
+				{ ...state },
+				Cmd.run(serverUpdateBio, {
+					successActionCreator: serverUpdateBioSuccess,
+					failActionCreator: serverUpdateBioFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case UPDATE_BIO_SUCCESS: {
+			return {
+				...state
+			};
+		}
+
+		case UPDATE_BIO_FAILED: {
+			return {
+				...state
+			};
+		}
+
+		case RESET_INSTAGRAM_FEED: {
+			return {
+				...state,
+				instagramFeed: []
+			};
+		}
+
+		case GET_INSTAGRAM_FEED: {
+			return loop(
+				{ ...state, loading: true },
+				Cmd.run(serverGetInstagramFeed, {
+					successActionCreator: serverGetInstagramFeedSuccess,
+					failActionCreator: serverGetInstagramFeedFailed,
+					args: [{ instagramToken: action.payload }]
+				})
+			);
+		}
+
+		case GET_INSTAGRAM_FEED_SUCCESS: {
+			return {
+				...state,
+				loading: false,
+				instagramFeed: action.payload
+			};
+		}
+
+		case GET_INSTAGRAM_FEED_FAILED: {
+			return {
+				...state,
+				loading: false
+			};
+		}
+
+		case UPDATE_INSTAGRAM_TOKEN: {
+			return loop(
+				{ ...state, loading: true },
+				Cmd.run(serverUpdateInstagramToken, {
+					successActionCreator: serverUpdateInstagramTokenSuccess,
+					failActionCreator: serverUpdateInstagramTokenFailed,
+					args: [
+						{ id: action.payload.id, instagramToken: action.payload.token }
+					]
+				})
+			);
+		}
+
+		case UPDATE_INSTAGRAM_TOKEN_SUCCESS: {
+			console.log(
+				"----------------- check reset insta feed after remove token",
+				action.payload.instagramToken && action.payload.instagramToken != ""
+					? state.instagramFeed
+					: []
+			);
+			return {
+				...state,
+				userData: action.payload,
+				errorMessage: null,
+				hasError: false,
+				loading: false,
+				instagramFeed:
+					action.payload.instagramToken && action.payload.instagramToken != ""
+						? state.instagramFeed
+						: []
+			};
+		}
+
+		case UPDATE_INSTAGRAM_TOKEN_FAILED: {
+			return {
+				...state,
+				errorMessage: action.payload.message,
+				hasError: true,
+				loading: false
+			};
+		}
+
+		case SOCKET_VISIT_COUNT: {
+			return { ...state, visitCount: action.payload };
+		}
+
+		case VISIT_COUNT: {
+			return loop(
+				{ ...state },
+				Cmd.run(getVisitCount, {
+					successActionCreator: getVisitCountSuccess,
+					failActionCreator: getVisitCountFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case VISIT_COUNT_SUCCESS: {
+			let count = action.payload;
+			if (typeof count !== "number") {
+				count = 0;
+			}
+			return { ...state, visitCount: count };
+		}
+
+		case VISIT_COUNT_FAILED: {
+			return { ...state };
+		}
+
+		case CALL_PROFILE_VISIT: {
+			return loop(
+				{ ...state },
+				Cmd.run(postProfileVisit, {
+					successActionCreator: postProfileVisitSuccess,
+					failActionCreator: postProfileVisitFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case POST_PROFILE_VISIT_SUCCESS: {
+			return { ...state };
+		}
+		case POST_PROFILE_VISIT_FAILED: {
+			return { ...state };
+		}
+
+		case CALL_GET_PROFILE: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: true,
+					errorMessage: "",
+					hasError: false,
+					navigateInviteContact: false
+				},
+				Cmd.run(fetchProfileUser, {
+					successActionCreator: fetchProfileUserSuccess,
+					failActionCreator: fetchProfileUserFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case GET_PROFILE_SUCCESS: {
+			return {
+				...state,
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false,
+				userData: action.payload.data,
+				navigateInviteContact: false
+			};
+		}
+		case GET_PROFILE_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true,
+					navigateInviteContact: false
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		case GET_LIST_DATA: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: true,
+					errorMessage: "",
+					hasError: false,
+					refreshing: action.payload.refreshing,
+					loading: action.payload.loading,
+					closeModal: false,
+					navigateInviteContact: false
+				},
+				Cmd.run(fetchGetListData, {
+					successActionCreator: fetchGetListDataSuccess,
+					failActionCreator: fetchGetListDataFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case GET_LIST_DATA_SUCCESS: {
+			let list = state.list;
+			if (action.payload.refreshing) list = [];
+			return {
+				...state,
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false,
+				list: [...list, ...action.payload.data],
+				refreshing: false,
+				closeModal: false,
+				loading: false,
+				count: action.payload.metadata.count,
+				navigateInviteContact: false,
+				test: true
+			};
+		}
+		case GET_LIST_DATA_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true,
+					closeModal: false,
+					navigateInviteContact: false
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+		case INITIAL_STATE: {
+			return {
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false,
+				list: [],
+				refreshing: false,
+				loading: false,
+				count: 0,
+				closeModal: false,
+				navigationData: state.navigationData,
+				navigateInviteContact: false
+			};
+		}
+
+		case GET_LIST_ADD_FRIEND_DATA: {
+			return loop(
+				{
+					isLoadingFetch: true,
+					errorMessage: "",
+					hasError: false,
+					refreshingAddFriend: action.payload.refreshingAddFriend,
+					loadingAddFriend: action.payload.loadingAddFriend,
+					closeModal: false,
+					navigateInviteContact: false
+				},
+				Cmd.run(fetchGetAddFriendListData, {
+					successActionCreator: fetchGetAddFriendListDataSuccess,
+					failActionCreator: fetchGetAddFriendListDataFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case GET_LIST_ADD_FRIEND_DATA_SUCCESS: {
+			let list = state.listAddFriend;
+			if (action.payload.refreshingAddFriend) list = [];
+			// console.log([...list, ...action.payload.data] ,"GET_LIST_ADD_FRIEND_DATA_SUCCESS",action.payload.metadata.count)
+			return {
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false,
+				listAddFriend: [...list, ...action.payload.data],
+				refreshingAddFriend: false,
+				loadingAddFriend: false,
+				countAddFriend: action.payload.metadata.count,
+				closeModal: false,
+				navigateInviteContact: false
+			};
+		}
+		case GET_LIST_ADD_FRIEND_DATA_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true,
+					navigateInviteContact: false
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+		case INITIAL_ADD_FRIEND_STATE: {
+			return {
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false,
+				listAddFriend: [],
+				refreshingAddFriend: false,
+				loadingAddFriend: false,
+				countAddFriend: 0,
+				closeModal: false,
+				navigateInviteContact: false
+			};
+		}
+		case SEARCH_TEXT: {
+			return {
+				...state,
+				searchText: action.payload,
+				closeModal: false,
+				navigateInviteContact: false
+			};
+		}
+		case SAVE_NAVIGATION_FOR_NAVIGATE: {
+			// console.log("&&&&&action.payload::", action.payload);
+			return { ...state, navigationData: action.payload };
+		}
+		case CHANGE_PAGE_WITH_NAVIGATION: {
+			state.navigationData.navigate(action.payload);
+			return { ...state, closeModal: true, navigateInviteContact: false };
+		}
+		case LOAD_LIST_AFTER_NAVIGATE: {
+			return { ...state, navigateInviteContact: true, closeModal: false };
+		}
+		case CLOSE_MODAL: {
+			return {
+				...state,
+				closeModalFromOther: action.payload,
+				navigateInviteContact: true,
+				closeModal: false
+			};
 		}
 
 		default: {

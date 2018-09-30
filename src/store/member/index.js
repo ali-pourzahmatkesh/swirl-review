@@ -1,7 +1,7 @@
-export const GET_LIST_DATA = "CHAT_GET_LIST_DATA",
-	GET_LIST_DATA_SUCCESS = "CHAT_GET_LIST_DATA_SUCCESS",
-	GET_LIST_DATA_FAILED = "CHAT_GET_LIST_DATA_FAILED",
-	INITIAL_STATE = "CHAT_INITIAL_STATE",
+export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
+	CHAT_GET_LIST_DATA_SUCCESS = "CHAT_CHAT_GET_LIST_DATA_SUCCESS",
+	CHAT_GET_LIST_DATA_FAILED = "CHAT_CHAT_GET_LIST_DATA_FAILED",
+	CHAT_INITIAL_STATE = "CHAT_CHAT_INITIAL_STATE",
 	CALL_GET_STATUS = "CHAT_CALL_GET_STATUS",
 	GET_STATUS_SUCCESS = "CHAT_GET_STATUS_SUCCESS",
 	GET_STATUS_FAILED = "CHAT_GET_STATUS_FAILED",
@@ -42,7 +42,45 @@ export const GET_LIST_DATA = "CHAT_GET_LIST_DATA",
 	IP_DATA_FAILED = "SIGN_UP_IP_DATA_FAILED",
 	GET_COUNTRIES = "SIGN_UP_COUNTRIES",
 	COUNTRIES_SUCCESS = "SIGN_UP_COUNTRIES_SUCCESS",
-	COUNTRIES_FAILED = "SIGN_UP_COUNTRIES_FAILED";
+	COUNTRIES_FAILED = "SIGN_UP_COUNTRIES_FAILED",
+	// -------
+	CALL_GET_PROFILE = "APP_CALL_GET_PROFILE",
+	GET_PROFILE_SUCCESS = "APP_GET_PROFILE_SUCCESS",
+	GET_PROFILE_FAILED = "APP_GET_PROFILE_FAILED",
+	GET_LIST_DATA = "PROFILE_GET_LIST_DATA",
+	GET_LIST_DATA_SUCCESS = "PROFILE_GET_LIST_DATA_SUCCESS",
+	GET_LIST_DATA_FAILED = "PROFILE_GET_LIST_DATA_FAILED",
+	INITIAL_STATE = "PROFILE_INITIAL_STATE",
+	GET_LIST_ADD_FRIEND_DATA = "PROFILE_GET_LIST_ADD_FRIEND_DATA",
+	GET_LIST_ADD_FRIEND_DATA_SUCCESS = "PROFILE_GET_LIST_ADD_FRIEND_DATA_SUCCESS",
+	GET_LIST_ADD_FRIEND_DATA_FAILED = "PROFILE_GET_LIST_ADD_FRIEND_DATA_FAILED",
+	INITIAL_ADD_FRIEND_STATE = "PROFILE_ADD_FRIEND_INITIAL_STATE",
+	SAVE_NAVIGATION_FOR_NAVIGATE = "PROFILE_SAVE_NAVIGATION_FOR_NAVIGATE",
+	CHANGE_PAGE_WITH_NAVIGATION = "ADD_FRIENDS_CHANGE_PAGE_WITH_NAVIGATION",
+	SEARCH_TEXT = "PROFILE_SEARCH_TEXT",
+	CLOSE_MODAL = "PROFILE_SET_CLOSE_MODAL",
+	LOAD_LIST_AFTER_NAVIGATE = "PROFILE_LOAD_LIST_AFTER_NAVIGATE",
+	CALL_PROFILE_VISIT = "PROFILE_CALL_PROFILE_VISIT",
+	POST_PROFILE_VISIT_SUCCESS = "PROFILE_POST_PROFILE_VISIT_SUCCESS",
+	POST_PROFILE_VISIT_FAILED = "PROFILE_POST_PROFILE_VISIT_FAILED",
+	VISIT_COUNT = "PROFILE_VISIT_COUNT",
+	VISIT_COUNT_SUCCESS = "PROFILE_VISIT_COUNT_SUCCESS",
+	VISIT_COUNT_FAILED = "PROFILE_VISIT_COUNT_FAILED",
+	SOCKET_VISIT_COUNT = "PROFILE_SOCKET_VISIT_COUNT",
+	UPDATE_INSTAGRAM_TOKEN = "PROFILE_UPDATE_INSTAGRAM_TOKEN",
+	UPDATE_INSTAGRAM_TOKEN_SUCCESS = "PROFILE_UPDATE_INSTAGRAM_TOKEN_SUCCESS",
+	UPDATE_INSTAGRAM_TOKEN_FAILED = "PROFILE_UPDATE_INSTAGRAM_TOKEN_FAILED",
+	GET_INSTAGRAM_FEED = "PROFILE_GET_INSTAGRAM_FEED",
+	GET_INSTAGRAM_FEED_SUCCESS = "PROFILE_GET_INSTAGRAM_FEED_SUCCESS",
+	GET_INSTAGRAM_FEED_FAILED = "PROFILE_GET_INSTAGRAM_FEED_FAILED",
+	RESET_INSTAGRAM_FEED = "PROFILE_RESET_INSTAGRAM_FEED",
+	UPDATE_BIO = "PROFILE_UPDATE_BIO",
+	UPDATE_BIO_SUCCESS = "PROFILE_UPDATE_BIO_SUCCESS",
+	UPDATE_BIO_FAILED = "PROFILE_UPDATE_BIO_FAILED",
+	UPDATE_GHOST_MODE = "PROFILE_UPDATE_GHOST_MODE",
+	UPDATE_GHOST_MODE_SUCCESS = "PROFILE_UPDATE_GHOST_MODE_SUCCESS",
+	UPDATE_GHOST_MODE_FAILED = "PROFILE_UPDATE_GHOST_MODE_FAILED",
+	UPDATE_GHOST_MODE_NOTIFICATION = "PROFILE_UPDATE_GHOST_MODE_NOTIFICATION";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -127,19 +165,19 @@ export const fetchGetStatusFailed = err => ({
 	payload: err
 });
 
-export const getListData = (data, tab) => ({
-	type: GET_LIST_DATA,
+export const getChatListData = (data, tab) => ({
+	type: CHAT_GET_LIST_DATA,
 	payload: data,
 	tab
 });
 
 export const initialStateChat = data => ({
-	type: INITIAL_STATE
+	type: CHAT_INITIAL_STATE
 });
 
-export const fetchGetListData = (data, tab) => {
+export const fetchChatGetListData = (data, tab) => {
 	console.log(
-		"------------------------------------- fetchGetListData -----------"
+		"------------------------------------- fetchChatGetListData -----------"
 	);
 	return new Promise((resolve, reject) => {
 		let isInRequestMode = tab === "Chats" ? "false" : "true";
@@ -149,7 +187,7 @@ export const fetchGetListData = (data, tab) => {
 			randomNmber: Math.random()
 		})
 			.then(resp => {
-				console.log("resprespresprespresp fetchGetListData", resp);
+				console.log("resprespresprespresp fetchChatGetListData", resp);
 				resolve(resp.data);
 				// resolve({
 				// 	...resp,
@@ -164,16 +202,16 @@ export const fetchGetListData = (data, tab) => {
 	});
 };
 
-export const fetchGetListDataSuccess = data => {
+export const fetchChatGetListDataSuccess = data => {
 	return {
-		type: GET_LIST_DATA_SUCCESS,
+		type: CHAT_GET_LIST_DATA_SUCCESS,
 		payload: data
 	};
 };
 
-export const fetchGetListDataFailed = err => {
+export const fetchChatGetListDataFailed = err => {
 	return {
-		type: GET_LIST_DATA_FAILED,
+		type: CHAT_GET_LIST_DATA_FAILED,
 		payload: err
 	};
 };
@@ -507,5 +545,305 @@ export const fetchSendUserFailed = err => {
 	return {
 		type: USER_FAILED,
 		payload: err
+	};
+};
+
+export const updateGhostModeNotification = status => ({
+	type: UPDATE_GHOST_MODE_NOTIFICATION,
+	payload: status
+});
+
+export const updateGhostMode = data => ({
+	type: UPDATE_GHOST_MODE,
+	payload: data
+});
+
+export const serverUpdateGhostMode = data => {
+	return new Promise((resolve, reject) => {
+		put(`/api/v1/members/${data.id}`, { isInGhostMode: data.isInGhostMode })
+			.then(resp => {
+				resolve(true);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverUpdateGhostModeSuccess = data => ({
+	type: UPDATE_GHOST_MODE_SUCCESS,
+	payload: data
+});
+
+export const serverUpdateGhostModeFailed = error => ({
+	type: UPDATE_GHOST_MODE_FAILED,
+	payload: error
+});
+
+export const updateBio = data => ({
+	type: UPDATE_BIO,
+	payload: data
+});
+
+export const serverUpdateBio = data => {
+	return new Promise((resolve, reject) => {
+		put(`/api/v1/members/${data.id}`, { bio: data.bio })
+			.then(resp => {
+				resolve(true);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverUpdateBioSuccess = data => ({
+	type: UPDATE_BIO_SUCCESS,
+	payload: data
+});
+
+export const serverUpdateBioFailed = error => ({
+	type: UPDATE_BIO_FAILED,
+	payload: error
+});
+
+export const resetInstagramFeed = () => ({
+	type: RESET_INSTAGRAM_FEED
+});
+
+export const getInstagramFeed = instagramToken => ({
+	type: GET_INSTAGRAM_FEED,
+	payload: instagramToken
+});
+
+export const serverGetInstagramFeed = data => {
+	return new Promise((resolve, reject) => {
+		getUri(
+			`https://api.instagram.com/v1/users/self/media/recent/?access_token=${
+				data.instagramToken
+			}`
+		)
+			.then(resp => {
+				if (resp.meta && resp.meta.code == 200) {
+					resolve(resp.data);
+				} else {
+					reject(resp.meta);
+				}
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverGetInstagramFeedSuccess = feed => ({
+	type: GET_INSTAGRAM_FEED_SUCCESS,
+	payload: feed
+});
+
+export const serverGetInstagramFeedFailed = error => ({
+	type: GET_INSTAGRAM_FEED_FAILED,
+	payload: error
+});
+
+export const serverUpdateInstagramToken = data => {
+	return new Promise((resolve, reject) => {
+		put("/api/v1/members/action/instagram-token", data)
+			.then(resp => {
+				resolve(resp.data);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverUpdateInstagramTokenSuccess = memberRecord => ({
+	type: UPDATE_INSTAGRAM_TOKEN_SUCCESS,
+	payload: memberRecord
+});
+
+export const serverUpdateInstagramTokenFailed = error => ({
+	type: UPDATE_INSTAGRAM_TOKEN_FAILED,
+	payload: error
+});
+
+export const updateInstagramToken = data => ({
+	type: UPDATE_INSTAGRAM_TOKEN,
+	payload: data
+});
+
+export const socketVisitCount = data => ({
+	type: SOCKET_VISIT_COUNT,
+	payload: data
+});
+
+export const callVisitCount = id => ({
+	type: VISIT_COUNT,
+	payload: id
+});
+
+export const getVisitCount = id => {
+	return new Promise((resolve, reject) => {
+		get(`/api/v1/members/action/profile-count/${id}`)
+			.then(resp => {
+				resolve(resp.data);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const getVisitCountSuccess = data => ({
+	type: VISIT_COUNT_SUCCESS,
+	payload: data
+});
+
+export const getVisitCountFailed = data => ({
+	type: VISIT_COUNT_FAILED,
+	payload: data
+});
+
+export const callProfileVisit = data => ({
+	type: CALL_PROFILE_VISIT,
+	payload: data
+});
+
+export const postProfileVisit = data => {
+	return new Promise((resolve, reject) => {
+		post("/api/v1/members/action/profile-visit", data)
+			.then(resp => {
+				resolve(resp);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const postProfileVisitSuccess = data => ({
+	type: POST_PROFILE_VISIT_SUCCESS,
+	payload: data
+});
+
+export const postProfileVisitFailed = data => ({
+	type: POST_PROFILE_VISIT_FAILED,
+	payload: data
+});
+
+export const callGetProfile = id => ({
+	type: CALL_GET_PROFILE,
+	payload: id
+});
+
+export const fetchProfileUser = id => {
+	return new Promise((resolve, reject) => {
+		get(`/api/v1/members/${id}`)
+			.then(resp => {
+				resolve(resp);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const fetchProfileUserSuccess = data => ({
+	type: GET_PROFILE_SUCCESS,
+	payload: data
+});
+
+export const fetchProfileUserFailed = err => ({
+	type: GET_PROFILE_FAILED,
+	payload: err
+});
+
+export const getListData = data => ({
+	type: GET_LIST_DATA,
+	payload: data
+});
+
+export const initialState = data => ({
+	type: INITIAL_STATE
+});
+
+export const fetchGetListData = data => {
+	return new Promise((resolve, reject) => {
+		post(`/api/v1/members/action/friends`, data)
+			.then(resp => {
+				resolve({ ...resp, refreshing: data.refreshing });
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const fetchGetListDataSuccess = data => {
+	return {
+		type: GET_LIST_DATA_SUCCESS,
+		payload: data
+	};
+};
+
+export const fetchGetListDataFailed = err => {
+	return {
+		type: GET_LIST_DATA_FAILED,
+		payload: err
+	};
+};
+
+export const fetchGetAddFriendListData = data => {
+	return new Promise((resolve, reject) => {
+		post(`/api/v1/members/action/friends`, data)
+			.then(resp => {
+				resolve({ ...resp, refreshingAddFriend: data.refreshingAddFriend });
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const fetchGetAddFriendListDataSuccess = data => {
+	return {
+		type: GET_LIST_ADD_FRIEND_DATA_SUCCESS,
+		payload: data
+	};
+};
+
+export const fetchGetAddFriendListDataFailed = err => {
+	return {
+		type: GET_LIST_ADD_FRIEND_DATA_FAILED,
+		payload: err
+	};
+};
+
+export const searchText = text => ({
+	type: SEARCH_TEXT,
+	payload: text
+});
+
+export const saveNavigationForNavigate = navigate => ({
+	type: SAVE_NAVIGATION_FOR_NAVIGATE,
+	payload: navigate
+});
+
+export const changePageWithNavigation = data => {
+	return {
+		type: CHANGE_PAGE_WITH_NAVIGATION,
+		payload: data
+	};
+};
+
+export const loadListAfterNavigate = () => ({
+	type: LOAD_LIST_AFTER_NAVIGATE
+});
+
+export const profileSetCloseModal = data => {
+	return {
+		type: CLOSE_MODAL,
+		payload: data
 	};
 };
