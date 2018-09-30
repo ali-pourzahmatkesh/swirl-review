@@ -1,49 +1,46 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { Component, Fragment } from "react";
+import RootStack from "./src/stacks/RootStack";
+import { Provider } from "react-redux";
+import store from "./src/store/store";
+import NoConnection from "./src/components/NoConnection";
+import Toast from "./src/components/Toast";
+import SocketWatcher from "./src/components/SocketWatcher";
+import { AppState } from "react-native";
+import { updateAppStatus } from "./src/store/app";
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+export default class App extends Component {
+	state = {
+		appState: AppState.currentState
+	};
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+	componentDidMount() {
+		AppState.addEventListener("change", this._handleAppStateChange);
+	}
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
+	_handleAppStateChange = nextAppState => {
+		if (
+			this.state.appState.match(/inactive|background/) &&
+			nextAppState === "active"
+		) {
+			console.log("App has come to the foreground!");
+			store.dispatch(updateAppStatus("active"));
+		} else {
+			console.log("App has come to the background!");
+			store.dispatch(updateAppStatus("inactive"));
+		}
+		this.setState({ appState: nextAppState });
+	};
+
+	render() {
+		return (
+			<Provider store={store}>
+				<Fragment>
+					<SocketWatcher />
+					<RootStack />
+					<NoConnection />
+					<Toast />
+				</Fragment>
+			</Provider>
+		);
+	}
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});

@@ -8,7 +8,23 @@
 	},
 	"dependencies": {
 		"react": "16.3.1",
-		"react-native": "0.55.4"
+		"react-native": "0.55.4",
+		"lodash": "^4.17.10",
+		"moment": "^2.22.2",
+		"moment-timezone": "*",
+		"react-native-onesignal": "^3.2.4",
+		"react-native-root-toast": "*",
+		"react-navigation": "^1.0.3",
+		"react-redux": "5.0.7",
+		"redux": "3.7.2",
+		"redux-loop": "4.2.4",
+		"sails.io.js": "*",
+		"socket.io-client": "*",
+		"react-native-confirmation-code-input": "^1.0.4",
+		"react-native-keyboard-aware-scroll-view": "^0.7.2",
+		"react-native-svg-image": "*",
+		"react-native-vector-icons": "*",
+		"react-native-status-bar-height": "^2.0.0"
 	},
 	"devDependencies": {
 		"jest": "23.6.0",
@@ -19,5 +35,10 @@
 	},
 	"jest": {
 		"preset": "react-native"
+	},
+	"rnpm": {
+		"assets": [
+			"src/assets/fonts"
+		]
 	}
 }
