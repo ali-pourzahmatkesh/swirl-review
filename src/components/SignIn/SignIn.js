@@ -20,9 +20,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import EmptyList from "../EmptyList";
 
 import logo from "../../assets/images/logo_bigger.png";
-import passwordIcon from "../../assets/images/passwordIcon.png";
+import passwordIcon from "../../assets/images/icons/Lock.png";
+import phoneIcon from "../../assets/images/icons/phone.png";
 // import mailIcon from "../../assets/images/mailIcon.png";
-import phoneIcon from "../../assets/images/phoneIcon.png";
+// import phoneIcon from "../../assets/images/phoneIcon.png";
 import SVGImage from "react-native-svg-image";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "react-native-vector-icons/Feather";
@@ -53,16 +54,16 @@ export default class SignIn extends Component {
 		this.connectFontSize = new Animated.Value(35);
 		this.connectOpacity = new Animated.Value(1);
 		this.forgotPassMargin = new Animated.Value(100);
-		this.forgotPassMarginInterpolate = this.forgotPassMargin.interpolate({
-			inputRange: [0, 100],
-			outputRange: ["14%", "27%"]
-		});
+        this.forgotPassMarginInterpolate = this.forgotPassMargin.interpolate({
+            inputRange: [0, 100],
+            outputRange: ["2%", "27%"]
+        });
 
 		this.logoHeight = new Animated.Value(100);
-		this.logoHeightInterpolate = this.logoHeight.interpolate({
-			inputRange: [0, 100],
-			outputRange: ["16%", "28%"]
-		});
+		// this.logoHeightInterpolate = this.logoHeight.interpolate({
+		// 	inputRange: [0, 100],
+		// 	outputRange: ["16%", "28%"]
+		// });
 
 		this.loginButtonBottom = new Animated.Value(-100);
 	}
@@ -160,7 +161,7 @@ export default class SignIn extends Component {
 				<ActivityIndicator
 					size={1}
 					style={styles.countryCodeBox}
-					color="#fef200"
+					color={colors.combinatorialColor}
 				/>
 			);
 		} else {
@@ -261,10 +262,10 @@ export default class SignIn extends Component {
 				duration: event.duration,
 				toValue: 35
 			}),
-			Animated.timing(this.connectOpacity, {
-				duration: event.duration,
-				toValue: 1
-			}),
+			// Animated.timing(this.connectOpacity, {
+			// 	duration: event.duration,
+			// 	toValue: 1
+			// }),
 			Animated.timing(this.forgotPassMargin, {
 				duration: event.duration,
 				toValue: 100
@@ -394,23 +395,22 @@ export default class SignIn extends Component {
 				</Modal>
 
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<Animated.View
-						style={[
-							styles.imageContainer,
-							{ height: this.logoHeightInterpolate }
-						]}
+					<View
+						style={
+							styles.imageContainer
+						}
 					>
 						<View style={styles.imagesContent}>
 							<Image style={styles.imageItem} source={logo} />
 						</View>
-					</Animated.View>
-					<Animated.View style={{ opacity: this.connectOpacity }}>
-						<Animated.Text
-							style={[styles.connectText, { fontSize: this.connectFontSize }]}
-						>
-							Let's Connect!
-						</Animated.Text>
-					</Animated.View>
+					</View>
+					{/*<Animated.View style={{ opacity: this.connectOpacity }}>*/}
+						{/*<Animated.Text*/}
+							{/*style={[styles.connectText, { fontSize: this.connectFontSize }]}*/}
+						{/*>*/}
+							{/*Let's Connect!*/}
+						{/*</Animated.Text>*/}
+					{/*</Animated.View>*/}
 					<View style={styles.formInputContainer}>
 						<View
 							style={[
@@ -436,7 +436,7 @@ export default class SignIn extends Component {
 									{ marginBottom: 12, marginTop: 10 }
 								]}
 								placeholder="Phone Number"
-								placeholderTextColor="#fff"
+								placeholderTextColor={colors.combinatorialColor}
 								keyboardType="number-pad"
 								onChangeText={cellphone => this.setState({ cellphone })}
 								onFocus={this.handlePhoneFieldFocus}
@@ -450,7 +450,7 @@ export default class SignIn extends Component {
 							<TextInput
 								style={styles.textInput}
 								placeholder="Password"
-								placeholderTextColor={colors.tapeWhite}
+								placeholderTextColor={colors.combinatorialColor}
 								secureTextEntry={true}
 								onFocus={() =>
 									this.props.navigation.setParams({

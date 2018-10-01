@@ -17,15 +17,17 @@ const styles = StyleSheet.create({
 			marginTop: "5%"
 		}
 	]),
-	iconFormInput: {
-		flexDirection: "row",
-		marginTop: 15,
-		paddingTop: 10,
-		paddingLeft: 10,
-		paddingBottom: 12,
-		borderBottomWidth: 1.5,
-		borderBottomColor: colors.formInputUnderline
-	},
+    iconFormInput: {
+        flexDirection: 'row',
+        marginTop: 15,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 12,
+        borderBottomWidth: 1.5,
+        borderBottomColor: colors.formInputUnderline,
+        backgroundColor:colors.bodyColor,
+        borderRadius:20
+    },
 	forgotPassword: StyleSheet.flatten([
 		appCss.defaultFontApp,
 		{
@@ -40,14 +42,15 @@ const styles = StyleSheet.create({
 		width: "10%",
 		resizeMode: "contain"
 	},
-	imageContainer: {
-		height: "28%"
-	},
-	imagesContent: {
-		flex: 1,
-		justifyContent: "space-between",
-		alignItems: "center"
-	},
+    imageContainer: {
+        flex:2,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    imagesContent: {
+        height: '35%',
+
+    },
 	imageItem: {
 		flex: 1,
 		aspectRatio: 1,
@@ -56,15 +59,16 @@ const styles = StyleSheet.create({
 	formInputContainer: {
 		alignItems: "flex-start",
 		width: 300,
+        flex:3,
 		alignSelf: "center"
 	},
-	loginButton: {
-		backgroundColor: colors.highlightColorTwo,
-		height: "10%",
-		width: "100%",
-		justifyContent: "center",
-		position: "absolute"
-	},
+    loginButton: {
+        backgroundColor: colors.highlightColorTwo,
+        height: '10%',
+        width: '100%',
+        justifyContent: 'center',
+        position: 'absolute',
+    },
 	loginText: StyleSheet.flatten([
 		appCss.defaultFontApp,
 		{
@@ -86,8 +90,8 @@ const styles = StyleSheet.create({
 		appCss.defaultFontApp,
 		{
 			flex: 1,
-			fontWeight: "bold",
-			fontSize: 18,
+			// fontWeight: "bold",
+			fontSize: 12,
 			width: "100%",
 			paddingRight: 20,
 			paddingLeft: 18,
@@ -104,11 +108,12 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-around",
 		alignItems: "center",
-		// marginTop: 10,
+		marginTop: 3,
+		marginLeft:3,
 		paddingRight: 3,
 		borderRadius: 20,
 		borderWidth: 2,
-		borderColor: "#dc030e"
+		borderColor: colors.appColor
 	},
 	countryCodeImageBox: {
 		height: 24,
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
 		resizeMode: "cover"
 	},
 	countryCode: {
-		color: "#fff",
+		color: colors.combinatorialColor,
 		fontWeight: "bold",
 		fontSize: 12
 	},
