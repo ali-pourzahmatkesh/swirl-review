@@ -155,7 +155,14 @@ import {
 	// ------
 	callLogin,
 	callGetStatus,
-	callGetProfile
+	callGetProfile,
+	// ------
+	CONFIRM_CHANGE_PASSWORD,
+	CONFIRM_PASSWORD_SUCCESS,
+	CONFIRM_PASSWORD_FAILED,
+	fetchChangePassword,
+	fetchChangePasswordSuccess,
+	fetchChangePasswordFailed
 } from "./";
 
 import { showToast } from "../toast";
@@ -532,7 +539,8 @@ const chat = (state = initialState, action) => {
 		case SEND_VERIFY_CODE_SUCCESS: {
 			action.payload.navigation.navigate("ForgotPasswordVerifyScreen", {
 				verifyCode: action.payload.data,
-				cellphone: action.payload.cellphone
+				cellphone: action.payload.cellphone,
+				cellphoneCountryCode: action.payload.cellphoneCountryCode
 			});
 			return {
 				...state,
@@ -570,6 +578,7 @@ const chat = (state = initialState, action) => {
 		case UPDATE_CODE_GET_USER_SUCCESS: {
 			console.log(action.payload);
 			action.payload.navigation.navigate("ChangePasswordScreen", {
+				cellphoneCountryCode: action.payload.cellphoneCountryCode,
 				cellphone: action.payload.cellphone,
 				token: action.payload.data.token
 			});
@@ -1087,6 +1096,42 @@ const chat = (state = initialState, action) => {
 			);
 		}
 		case PASSWORD_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ---------
+
+		case CONFIRM_CHANGE_PASSWORD: {
+			console.log("action change_passowrd");
+			return loop(
+				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				Cmd.run(fetchChangePassword, {
+					successActionCreator: fetchChangePasswordSuccess,
+					failActionCreator: fetchChangePasswordFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case CONFIRM_PASSWORD_SUCCESS: {
+			// action.payload.navigation.navigate('ConfirmPasswordScreen');
+			console.log(action.payload, "in pass success **************");
+			action.payload.navigation.dispatch(action.payload.resetAction);
+			return {
+				...state,
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false
+			};
+		}
+		case CONFIRM_PASSWORD_FAILED: {
 			return loop(
 				{
 					...state,

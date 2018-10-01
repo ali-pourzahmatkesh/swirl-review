@@ -84,7 +84,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	// ------------
 	SEND_PASSWORD = "SIGN_IN_SEND_PASSWORD",
 	PASSWORD_SUCCESS = "SIGN_IN_PASSWORD_SUCCESS",
-	PASSWORD_FAILED = "SIGN_IN_PASSWORD_FAILED";
+	PASSWORD_FAILED = "SIGN_IN_PASSWORD_FAILED",
+	// ------
+	CONFIRM_CHANGE_PASSWORD = "CONFIRM_CHANGE_PASSWORD",
+	CONFIRM_PASSWORD_SUCCESS = "CONFIRM_PASSWORD_SUCCESS",
+	CONFIRM_PASSWORD_FAILED = " CONFIRM_PASSWORD_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -376,11 +380,13 @@ export const sendVerifyCode = data => {
 export const fetchSendVerifyCode = data => {
 	return new Promise((resolve, reject) => {
 		put("/api/v2/members/action/signup/resend-verify-code", {
+			cellphoneCountryCode: data.cellphoneCountryCode,
 			cellphone: data.cellphone
 		})
 			.then(resp => {
 				resolve({
 					...resp,
+					cellphoneCountryCode: data.cellphoneCountryCode,
 					navigation: data.navigation,
 					cellphone: data.cellphone
 				});
@@ -417,6 +423,7 @@ export const updateCodeGetUser = data => {
 export const fetchUpdateCodeGetUser = data => {
 	return new Promise((resolve, reject) => {
 		put("/api/v1/members/action/forgot-password/verify-code", {
+			cellphoneCountryCode: data.cellphoneCountryCode,
 			cellphone: data.cellphone,
 			verifyCode: data.verifyCode
 		})
@@ -424,6 +431,7 @@ export const fetchUpdateCodeGetUser = data => {
 				resolve({
 					...resp,
 					navigation: data.navigation,
+					cellphoneCountryCode: data.cellphoneCountryCode,
 					cellphone: data.cellphone
 				});
 			})
@@ -899,6 +907,54 @@ export const fetchSendPasswordSuccess = data => {
 export const fetchSendPasswordFailed = err => {
 	return {
 		type: PASSWORD_FAILED,
+		payload: err
+	};
+};
+
+// ---------
+
+export const changePassword = data => {
+	return {
+		type: CONFIRM_CHANGE_PASSWORD,
+		payload: data
+	};
+};
+
+export const fetchChangePassword = data => {
+	console.log(data);
+	return new Promise((resolve, reject) => {
+		put("/api/v1/members/action/forgot-password/reset-password", {
+			cellphoneCountryCode: data.cellphoneCountryCode,
+			cellphone: data.cellphone,
+			token: data.token,
+			password: data.password
+		})
+			.then(resp => {
+				console.log("asdfasdf");
+				resolve({
+					...resp,
+					navigation: data.navigation,
+					resetAction: data.resetAction
+				});
+			})
+			.catch(err => {
+				console.log("er");
+				reject(err);
+			});
+	});
+};
+
+export const fetchChangePasswordSuccess = data => {
+	console.log("fetchchgpassgood");
+	return {
+		type: CONFIRM_PASSWORD_SUCCESS,
+		payload: data
+	};
+};
+
+export const fetchChangePasswordFailed = err => {
+	return {
+		type: CONFIRM_PASSWORD_FAILED,
 		payload: err
 	};
 };

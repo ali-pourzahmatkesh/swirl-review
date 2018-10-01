@@ -295,7 +295,6 @@ export default class SignIn extends Component {
 
 	render() {
 		let {
-			username,
 			password,
 
 			//for modal

@@ -142,6 +142,8 @@ export default class ChangePassword extends Component {
 		});
 		this.props.changePassword({
 			cellphone: this.props.navigation.state.params.cellphone,
+			cellphoneCountryCode: this.props.navigation.state.params
+				.cellphoneCountryCode,
 			token: this.props.navigation.state.params.token,
 			password: this.state.password,
 			navigation: this.props.navigation,

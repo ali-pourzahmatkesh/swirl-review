@@ -117,6 +117,8 @@ export default class ForgotPasswordVerify extends Component {
 
 	handleSubmit = () => {
 		this.props.updateCodeGetUser({
+			cellphoneCountryCode: this.props.navigation.state.params
+				.cellphoneCountryCode,
 			cellphone: this.props.navigation.state.params.cellphone,
 			navigation: this.props.navigation,
 			verifyCode: parseInt(this.state.code)
