@@ -144,10 +144,20 @@ import {
 	serverUpdateGhostMode,
 	serverUpdateGhostModeSuccess,
 	serverUpdateGhostModeFailed,
-	UPDATE_GHOST_MODE_NOTIFICATION
+	UPDATE_GHOST_MODE_NOTIFICATION,
+	// --------
+	SEND_PASSWORD,
+	PASSWORD_SUCCESS,
+	PASSWORD_FAILED,
+	fetchSendPassword,
+	fetchSendPasswordSuccess,
+	fetchSendPasswordFailed,
+	// ------
+	callLogin,
+	callGetStatus,
+	callGetProfile
 } from "./";
 
-import { callLogin, callGetStatus, callGetProfile } from "../member";
 import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
@@ -629,6 +639,7 @@ const chat = (state = initialState, action) => {
 		}
 
 		case GET_IP_DATA: {
+			console.log("in action GET_IP_DATA");
 			return loop(
 				{ ...state },
 				Cmd.run(fetchIpData, {
@@ -1049,6 +1060,42 @@ const chat = (state = initialState, action) => {
 				navigateInviteContact: true,
 				closeModal: false
 			};
+		}
+
+		// --------
+
+		case SEND_PASSWORD: {
+			return loop(
+				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				Cmd.run(fetchSendPassword, {
+					successActionCreator: fetchSendPasswordSuccess,
+					failActionCreator: fetchSendPasswordFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case PASSWORD_SUCCESS: {
+			return loop(
+				{ ...state, isLoadingFetch: false, errorMessage: "", hasError: false },
+				Cmd.action(
+					callLogin(
+						action.payload.navigation,
+						action.payload.resetAction,
+						action.payload.data
+					)
+				)
+			);
+		}
+		case PASSWORD_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
 		}
 
 		default: {

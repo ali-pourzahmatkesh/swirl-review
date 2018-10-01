@@ -8,7 +8,8 @@ import {
 	Keyboard,
 	Modal,
 	SectionList,
-	ScrollView
+	ScrollView,
+	ActivityIndicator
 } from "react-native";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -26,7 +27,7 @@ import appCss from "../../../app.css";
 import styles from "./style";
 import { CONFIG } from "../../../config";
 
-import moment from "moment";
+// import moment from "moment";
 
 const colors = CONFIG.colors;
 

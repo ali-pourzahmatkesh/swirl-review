@@ -1,134 +1,49 @@
 import React, { Component } from "react";
 import {
-	Dimensions,
-	Image,
-	KeyboardAvoidingView,
-	Modal,
-	ScrollView,
+	View,
 	Text,
-	TextInput,
 	TouchableOpacity,
-	View
+	Image,
+	Dimensions,
+	ImageBackground,
+	SectionList
 } from "react-native";
-import appCss from "../../../app.css";
+import { NavigationActions } from "react-navigation";
+import Avatar from '../Avatar';
+import Popup from '../Popup';
+import appCss from '../../../app.css';
+import styles from './style';
+import ghostFill from '../../assets/images/ghost.png';
+import ghostEmpty from '../../assets/images/ghostEmpty.png';
+import logo from '../../assets/images/tape-logo.png';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Avatar from "../Avatar";
-import GestureRecognizer from "react-native-swipe-gestures";
-import styles from "./style";
-import ProfileImageList from "../ProfileImageList";
-import InstagramLogin from "react-native-instagram-login";
-import instageram from "../../assets/images/instageram.png";
-// import lightening from "../../assets/images/lightening.png";
-import Popup from "../Popup";
-import setting from "../../assets/images/setting.png";
-import ghostFill from "../../assets/images/ghost.png";
-import edit from "../../assets/images/edit.png";
-import defaultChat from "../../assets/images/defaultChat.png";
-import save from "../../assets/images/save.png";
-import saveProfile from "../../assets/images/saveProfile.png";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import background from '../../assets/images/background.png';
+import changeName from '../../assets/images/changeName.png';
+import changePassword from '../../assets/images/changePassword.png';
+import termsOfUse from '../../assets/images/termsOfUse.png';
+import privacyPolicy from '../../assets/images/privacyPolicy.png';
+import feedback from '../../assets/images/feedback.png';
+import logout from '../../assets/images/logout.png';
 
-import ghostEmpty from "../../assets/images/ghostEmpty.png";
-import logo from "../../assets/images/tape-logo.png";
-import Cookie from "react-native-cookie";
-import { CONFIG } from "../../../config";
+import { CONFIG } from '../../../config';
+const COLORS = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
-const colors = CONFIG.colors;
-
-const gestureRecognizerConfig = {
-	velocityThreshold: 0.3,
-	directionalOffsetThreshold: 80
-};
 
 export default class Profile extends Component {
-	state = {
-		// name: "",
-		// index: 0,
-		bioText: "",
-		maxBioText: 350,
-		bioTextProfile: "",
-		showBio: false,
-		ghost: false,
-		ghostNotif: false,
-		modalVisibleFriendRequest: false,
-		loading: false,
-		profileButtonStatus: "connect",
-		instagramToken: null,
-		profileUserId: this.props.id,
-		listSavedProfile: [],
-
-		editMode: false
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			ghost: false,
+			ghostNotif: false
+		};
+	}
 
 	componentDidMount() {
-		let { navigation } = this.props;
-		const profileUserId =
-			(navigation &&
-				navigation.state &&
-				navigation.state.params &&
-				navigation.state.params.userId) ||
-			this.props.id;
-		this.setState({ profileUserId: profileUserId });
-		// console.log(
-		// 	"SET profileUserId",
-		// 	profileUserId,
-		// 	" - ",
-		// 	this.state.profileUserId
-		// );
-
-		this.props.callGetProfile(profileUserId || this.props.id);
-		this.props.getListSavedProfile(this.props.id);
-
-		// console.log("profileUserId vs id", profileUserId, " - ", this.props.id);
-		if (profileUserId && this.props.id != this.state.profileUserId) {
-			// console.log(">> getFriendshipStatus", {
-			// 	receiverMemberId: profileUserId,
-			// 	senderMemberId: this.props.id
-			// });
-			this.props.getFriendshipStatus({
-				receiverMemberId: profileUserId,
-				senderMemberId: this.props.id
-			});
-			this.setState({
-				profileButtonStatus: this.state.friendshipRequestStatus
-			});
-
-			this.props.callProfileVisit({
-				viewerMemberOwner: this.props.id,
-				memberOwner: profileUserId
-			});
-		} else {
-			this.props.callVisitCount(this.props.id);
-		}
-
-		// read friend list
-		//this.getListRequest();
-
-		setTimeout(() => {
-			this.props.setCurrentPage("Profile");
-		}, 1);
+		this.props.callGetProfile(this.props.id);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// if instagram token change, it should reload page with instagram data
-		if (
-			nextProps.userProfile &&
-			nextProps.userProfile.instagramToken &&
-			this.state.instagramToken != nextProps.userProfile.instagramToken
-		) {
-			this.setState({ instagramToken: nextProps.userProfile.instagramToken });
-		}
-
-		// read updated bio and update profile page
-		if (
-			nextProps.userProfile &&
-			//nextProps.userProfile.bio &&
-			//nextProps.userProfile.bio.length > 0 &&
-			this.state.bioTextProfile !== nextProps.userProfile.bio
-		) {
-			this.setState({ bioTextProfile: nextProps.userProfile.bio });
-		}
-
-		// read updated ghostmode and update profile page
 		if (
 			nextProps.userProfile &&
 			nextProps.userProfile.isInGhostMode !== undefined &&
@@ -148,330 +63,54 @@ export default class Profile extends Component {
 				});
 			}
 		}
-
-		if (
-			nextProps.listSavedProfile &&
-			nextProps.listSavedProfile.length != this.state.listSavedProfile.length
-		) {
-			this.setState({
-				listSavedProfile: nextProps.listSavedProfile
-			});
-		}
 	}
 
-	openModal = () => {
-		this.setState({ modalVisibleFriendRequest: true }, () => {
-			this.props.initialState();
-		});
+	goTo(screenName) {
+		this.props.navigation.navigate(screenName);
+	}
+
+	renderOptionTitle = ({ section: { title } }) => {
+		return <Text style={styles.sectionHeaderText}>{title}</Text>;
 	};
 
-	closeModal = () => {
-		this.setState({ modalVisibleFriendRequest: false, page: 1 }, () => {
-			this.props.profileSetCloseModal(false);
-			this.props.navigation.setParams({ modalVisibleFriendRequest: false });
-			this.props.initialStateFriendRequest();
-			this.props.callGetProfile(this.state.profileUserId || this.props.id);
-		});
-	};
-
-	onSwipeRight = () => {
-		if (!this.state.modalVisibleFriendRequest) {
-			this.props.navigation.goBack();
-		}
-	};
-
-	disconnectInstagram = () => {
-		this.setState({ instagramToken: null });
-		this.props.updateInstagramToken({
-			id: this.props.id,
-			token: null
-		});
-		Cookie.clear();
-	};
-
-	getBioEdit = () => {
-		if (this.props.id === this.state.profileUserId) {
-			return (
-				<TouchableOpacity
-					style={{
-						height: 26,
-						width: 26,
-						position: "absolute",
-						bottom: 0,
-						right: 0
-					}}
-					// onPress={() => this.loadBioForm()}
-					onPress={() => {
-						this.setState({
-							editMode: true
-						});
-					}}
-				>
-					{this.state.instagramToken &&
-						<Image
-							style={appCss.headerIcon}
-							resizeMode={"contain"}
-							source={edit}
-						/>
-					}
-				</TouchableOpacity>
-			);
-		} else {
-			return null;
-		}
-	};
-
-	goToChatPage = () => {
-		this.props.navigation.navigate("DiscussionScreen", {
-			friendMemberOwner: this.props.userProfile.id,
-			name: this.props.userProfile.name
-		});
-	};
-
-	addToSavedProfile = () => {
-		this.props.createNewSavedProfile({
-			myId: this.props.id,
-			saveProfileId: this.props.userProfile.id
-		});
-		setTimeout(() => {
-			this.props.getListSavedProfile(this.props.id);
-		}, 500);
-	};
-
-	removeFromSavedProfile = id => {
-		this.props.callDeleteSavedProfile(id);
-		setTimeout(() => {
-			this.props.getListSavedProfile(this.props.id);
-		}, 500);
-	};
-
-	getSavedProfileView = () => {
-		let isInList = false;
-		var currentItemId;
-		for (item of this.state.listSavedProfile) {
-			if (item.saveProfileId.id == this.props.userProfile.id) {
-				isInList = true;
-				currentItemId = item.id;
-				break;
-			}
-		}
-
-		let allowAddToSavedProfile = (
-			<TouchableOpacity
-				style={styles.profileActionItem}
-				onPress={() => this.addToSavedProfile()}
-			>
-				<Image style={appCss.headerIcon} resizeMode={"contain"} source={save} />
-			</TouchableOpacity>
-		);
-
-		let itIsCurrentlyInSavedProfile = (
-			<TouchableOpacity
-				style={styles.profileActionItem}
-				onPress={() => this.removeFromSavedProfile(currentItemId)}
-			>
-				<Image
-					style={appCss.headerIcon}
-					resizeMode={"contain"}
-					source={saveProfile}
-				/>
-			</TouchableOpacity>
-		);
-
-		if (isInList) {
-			return itIsCurrentlyInSavedProfile;
-		} else {
-			return allowAddToSavedProfile;
-		}
-	};
-
-	profileActions = () => {
-		if (this.props.id !== this.state.profileUserId) {
-			return (
-				<View>
-					{this.bioFunc()}
-					<View style={styles.profileActions}>
-						{/* Show Bio if it has a value */}
-
-						{/* Show Chat button */}
-						<TouchableOpacity
-							style={styles.profileActionItem}
-							onPress={() => this.goToChatPage()}
-						>
-							<Image
-								style={appCss.headerIcon}
-								resizeMode={"contain"}
-								source={defaultChat}
-							/>
-						</TouchableOpacity>
-
-						{/* Show Saved to Profile button */}
-						{this.getSavedProfileView()}
-					</View>
-				</View>
-			);
-		} else {
-			return this.bioFunc();
-		}
-	};
-
-	bioFunc = () => {
-		let { bioTextProfile } = this.state;
-		if (!bioTextProfile) {
-			if (this.props.id === this.state.profileUserId) {
-				return (
-					<TouchableOpacity onPress={() => this.loadBioForm()}>
-						<Text style={styles.bioText}>Tap edit to add bio</Text>
-					</TouchableOpacity>
-				);
-			} else {
-				return null;
-			}
-		} else {
-			return (
-				<TouchableOpacity onPress={() => this.loadBioForm()}>
-					<Text style={[styles.bioText, { color: colors.appColor }]}>
-						{bioTextProfile}
-					</Text>
-				</TouchableOpacity>
-			);
-		}
-	};
-
-	loadBioForm = status => {
-		let { showBio, bioTextProfile } = this.state;
-		this.setState({ showBio: !showBio, bioText: bioTextProfile });
-	};
-
-	saveBioForm = () => {
-		let { showBio, bioText, bioTextProfile } = this.state;
-		// call update profile with new bio entry
-		this.props.updateBio({ id: this.props.id, bio: bioText });
-		this.setState({ showBio: !showBio, bioText: "", bioTextProfile: bioText });
-	};
-
-	closeBioForm = status => {
-		let { showBio, bioText } = this.state;
-		this.setState({ showBio: !showBio, bioText: "" });
-	};
-
-	instageramList = userProfile => {
+	renderOption = ({ item, index }) => {
 		return (
-			<ProfileImageList user={userProfile} editMode={this.state.editMode} />
-		);
-	};
-	instageramConnection = userProfile => {
-		if (
-			userProfile &&
-			!userProfile["instagramToken"] &&
-			this.props.id === this.state.profileUserId
-		) {
-			let connectInstagramView = (
-				<View style={styles.instagramBox}>
-					<View style={styles.instageramLogoBox}>
-						<Image
-							style={styles.logoIcon}
-							resizeMode={"contain"}
-							source={logo}
-						/>
-						<Text style={styles.logoIconPlus}>+</Text>
-						<Image
-							style={styles.logoIcon}
-							resizeMode={"contain"}
-							source={instageram}
-						/>
-					</View>
-					<Text style={styles.instageramDesc}>
-						Connect with Instagram to add pictures to your profile.
-					</Text>
-					<TouchableOpacity
-						style={[styles.profileButton]}
-						onPress={() => this.refs.instagramLogin.show()}
-					>
-						<Text style={styles.profileButtonText}>Connect</Text>
-					</TouchableOpacity>
-
-					<InstagramLogin
-						ref="instagramLogin"
-						clientId={CONFIG.instagram.clientId}
-						scopes={CONFIG.instagram.scopes}
-						redirectUrl={CONFIG.instagram.redirectUrl}
-						onLoginSuccess={token => {
-							console.log("instagram token", token);
-							this.props.updateInstagramToken({
-								id: this.props.id,
-								token: token
-							});
-							this.setState({ instagramToken: token });
-						}}
-						onLoginFailure={data =>
-							console.log("instagram onLoginFailure error", data)
-						}
+			<View style={styles.optionContainer}>
+				<View style={styles.optionIconContainer}>
+					<Image
+						source={item.icon}
+						style={styles.optionIcon}
+						resizeMode="contain"
 					/>
 				</View>
-			);
+				<TouchableOpacity
+					style={styles.optionButton}
+					onPress={item.clickHandler}
+				>
+					<Text style={styles.optionText}>{item.name}</Text>
+					<Ionicons
+						size={25}
+						style={styles.optionArrow}
+						color={COLORS.borderColor}
+						name="ios-arrow-forward"
+					/>
+				</TouchableOpacity>
+			</View>
+		);
+	};
 
-			let disconnectInstagramView = (
-				<View>
-					<TouchableOpacity
-						// idk what this color is supposed to be and I'm not seeing it anywhere else
-						style={[styles.profileButton, { backgroundColor: "#edb91b" }]}
-						onPress={() => this.disconnectInstagram()}
-					>
-						<Text style={styles.profileButtonText}>Disconnect Instagram</Text>
-					</TouchableOpacity>
-				</View>
-			);
-
-			if (this.state.instagramToken) {
-				return disconnectInstagramView;
-			} else {
-				return connectInstagramView;
-			}
-		} else if (
-			userProfile &&
-			!userProfile["instagramToken"] &&
-			this.props.id !== this.state.profileUserId
-		) {
-			let colorsList = [
-				"#f4f6f9",
-				"#e7ebf2",
-				"#f4f6f9",
-				"#e7ebf2",
-				"#e0e3eb",
-				"#dedede",
-				"#e0e3eb",
-				"#e7ebf2",
-				"#f4f6f9",
-				"#f4f6f9",
-				"#e0e3eb",
-				"#e7ebf2",
-				"#e0e3eb",
-				"#e7ebf2",
-				"#f4f6f9"
-			];
-			return (
-				<ScrollView showsVerticalScrollIndicator={false}>
-					<View style={styles.imageList}>
-						{colorsList.map((i, index) => {
-							return (
-								<View
-									key={index}
-									style={[
-										styles.imageBox,
-										index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }
-									]}
-								>
-									<View style={[styles.imageBox, { backgroundColor: i }]} />
-								</View>
-							);
-						})}
-					</View>
-				</ScrollView>
-			);
-		} else {
-			return null;
-		}
+	handleSignOut = flag => {
+		// Cookie.clear();
+		const resetAction = NavigationActions.reset({
+			index: 0,
+			actions: [NavigationActions.navigate({ routeName: "WelcomeStack" })],
+			key: null
+		});
+		this.props.callLogout({
+			navigation: this.props.navigation,
+			resetAction,
+			id: this.props.id
+		});
 	};
 
 	changeGhostMode = () => {
@@ -509,185 +148,115 @@ export default class Profile extends Component {
 		}
 	};
 
-	//todo: hook up to api to save the excluded pictures
-	handleSaveFeed = () => {
-		this.setState({ editMode: false });
-	};
-
-	loadHeader = () => {
-		if (this.props.id !== this.state.profileUserId) {
-			return <View style={styles.withoutHeader} />;
-		} else {
-			let { ghost } = this.state;
-			if (this.state.editMode) {
-				return (
-					<View style={appCss.header}>
-						<View style={{ flex: 1 }} />
-						<View style={styles.promptContainer}>
-							<Text style={styles.promptText}>Pictures shown!</Text>
-						</View>
-						<TouchableOpacity
-							onPress={this.handleSaveFeed}
-							style={styles.saveFeedButton}
-						>
-							<Text style={styles.saveFeedText}>Save</Text>
-						</TouchableOpacity>
-					</View>
-				);
-			} else {
-				return (
-					<View style={appCss.header}>
-						<TouchableOpacity
-							onPress={() => {
-								this.changeGhostMode();
-							}}
-							style={appCss.headerIconBox}
-						>
-							<Image
-								style={appCss.headerIcon}
-								resizeMode={"contain"}
-								source={ghost ? ghostFill : ghostEmpty}
-							/>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={appCss.headerIconBox}
-							onPress={() => {
-								this.props.navigation.navigate("SettingScreen");
-							}}
-						>
-							<Image
-								style={appCss.headerIcon}
-								resizeMode={"contain"}
-								source={setting}
-							/>
-						</TouchableOpacity>
-					</View>
-				);
-			}
-		}
-	};
-
-	closePage = userProfile => {
-		if (
-			this.props.id == this.state.profileUserId &&
-			userProfile &&
-			!userProfile["instagramToken"]
-		) {
-			return null;
-		} else {
-			return (
-				<View style={appCss.closeButtonBox}>
-					<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-						<View style={appCss.closeButton}>
-							<Image style={appCss.closeButtonIcon} source={logo} />
-						</View>
-					</TouchableOpacity>
-				</View>
-			);
-		}
-	};
 	render() {
 		let { userProfile } = this.props;
-		let { bioText, maxBioText } = this.state;
-		console.log(this.state);
+		console.log(userProfile);
+		let options = [
+			{
+				title: "Account info",
+				data: [
+					{
+						icon: changeName,
+						name: "Change Name",
+						clickHandler: () => {} // todo make name change
+					},
+					{
+						icon: changePassword,
+						name: "Change Password",
+						clickHandler: () => this.goTo("ChangePasswordLevel1Screen")
+					}
+				]
+			},
+			{
+				title: "Legal stuff",
+				data: [
+					{
+						icon: termsOfUse,
+						name: "Terms of Use",
+						clickHandler: () => this.goTo("TermsAndConditionsScreen")
+					},
+					{
+						icon: privacyPolicy,
+						name: "Privacy Policy",
+						clickHandler: () => {}
+					}
+				]
+			},
+			{
+				title: "Things you would never do",
+				data: [
+					{
+						icon: feedback,
+						name: "Feedback",
+						clickHandler: () => this.goTo("FeedbackScreen")
+					},
+					{
+						icon: logout,
+						name: "Logout",
+						clickHandler: () => this.handleSignOut()
+					}
+				]
+			}
+		];
+
 		return (
-			<View style={styles.container}>
-				<Modal
-					visible={this.state.showBio}
-					animationType={"fade"}
-					transparent={true}
-				>
-					<KeyboardAvoidingView
-						behavior="padding"
-						style={[styles.profileInfoBox, styles.modalBio]}
-					>
-						<View style={styles.modalClose}>
-							<TouchableOpacity onPress={() => this.closeBioForm()}>
-								<FontAwesome size={25} color={colors.appColor} name="close" />
-							</TouchableOpacity>
-						</View>
-						<View style={{ alignItems: "center", width: width }}>
-							<Avatar
-								userId={this.state.profileUserId || this.props.id}
-								size={width / 4}
-								position="profile"
-							/>
-							<View style={{ alignItems: "center" }}>
-								<Text style={styles.profileTitle}>
-									{(userProfile && userProfile.name) || "-"}
-								</Text>
-							</View>
-							<Text style={styles.bioText}>
-								Share something about yourself!
-							</Text>
-							<View style={styles.textInputBox}>
-								<TextInput
-									style={styles.textInput}
-									autoCorrect={false}
-									value={bioText}
-									blurOnSubmit={true}
-									multiline={true}
-									autoFocus={true}
-									returnKeyType="send"
-									onChangeText={bioText => {
-										this.setState({ bioText: bioText.slice(0, maxBioText) });
-									}}
-								/>
-							</View>
-						</View>
-
-						<View>
-							<View
-								style={{
-									alignItems: "flex-end",
-									marginLeft: 16,
-									marginRight: 16,
-									marginBottom: 16
-								}}
-							>
-								<Text style={{ color: colors.borderColor }}>
-									{bioText ? bioText.length : 0}/{maxBioText}
-								</Text>
-							</View>
-							<TouchableOpacity
-								style={styles.saveBioButton}
-								onPress={() => this.saveBioForm()}
-							>
-								<Text style={styles.saveBioText}>Save</Text>
-							</TouchableOpacity>
-						</View>
-					</KeyboardAvoidingView>
-				</Modal>
-
+			<View style={{ flex: 1 }}>
 				{this.showGhostModePopup()}
-				{this.loadHeader()}
-				<View style={{ flex: 2, marginTop: 20 }}>
-					<GestureRecognizer
-						onSwipeRight={this.onSwipeRight}
-						config={gestureRecognizerConfig}
-						style={styles.profileInfoBox}
-					>
-						<View>
+				<View style={{ flex: 1 }}>
+					<ImageBackground style={{ width: "100%" }} source={background}>
+						<View style={[appCss.header, { marginBottom: 0 }]}>
+							<TouchableOpacity
+								style={appCss.headerIconBox}
+								onPress={() => this.props.navigation.goBack()}
+							>
+								<Image
+									style={appCss.headerIcon}
+									resizeMode={"contain"}
+									source={logo}
+								/>
+							</TouchableOpacity>
+							<TouchableOpacity
+								onPress={() => this.changeGhostMode()}
+								style={appCss.headerIconBox}
+							>
+								<Image
+									style={appCss.headerIcon}
+									resizeMode={"contain"}
+									source={this.state.ghost ? ghostFill : ghostEmpty}
+								/>
+							</TouchableOpacity>
+						</View>
+						<View
+							style={{
+								borderWidth: 0,
+								height: height * 0.15,
+								alignSelf: "center"
+							}}
+						>
 							<Avatar
-								userId={this.state.profileUserId || this.props.id}
-								size={width / 4}
+								userId={this.props.id}
+								size={height * 0.15}
 								position="profile"
 							/>
-							{this.getBioEdit()}
 						</View>
-
-						<View style={{ alignItems: "center" }}>
-							<Text style={styles.profileTitle}>
-								{(userProfile && userProfile.name) || "-"}
-							</Text>
-
-							{this.profileActions()}
-						</View>
-					</GestureRecognizer>
-					<View style={{ flex: 1 }}>
-						{this.instageramList(userProfile)}
-						{this.instageramConnection(userProfile)}
-						{this.closePage(userProfile)}
+						<Text style={styles.nameText}>{userProfile.name}</Text>
+					</ImageBackground>
+					<View
+						style={{
+							borderWidth: 0,
+							borderColor: "blue"
+						}}
+					>
+						<SectionList
+							renderItem={this.renderOption}
+							renderSectionHeader={this.renderOptionTitle}
+							keyExtractor={(item, index) => item + index}
+							sections={options}
+							contentContainerStyle={{
+								height: "100%"
+							}}
+							scrollEnabled={false}
+						/>
 					</View>
 				</View>
 			</View>

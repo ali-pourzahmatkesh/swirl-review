@@ -24,7 +24,8 @@
 		"react-native-keyboard-aware-scroll-view": "^0.7.2",
 		"react-native-svg-image": "*",
 		"react-native-vector-icons": "*",
-		"react-native-status-bar-height": "^2.0.0"
+		"react-native-status-bar-height": "^2.0.0",
+		"react-native-swipe-gestures": "*"
 	},
 	"devDependencies": {
 		"jest": "23.6.0",

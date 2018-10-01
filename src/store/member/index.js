@@ -80,7 +80,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	UPDATE_GHOST_MODE = "PROFILE_UPDATE_GHOST_MODE",
 	UPDATE_GHOST_MODE_SUCCESS = "PROFILE_UPDATE_GHOST_MODE_SUCCESS",
 	UPDATE_GHOST_MODE_FAILED = "PROFILE_UPDATE_GHOST_MODE_FAILED",
-	UPDATE_GHOST_MODE_NOTIFICATION = "PROFILE_UPDATE_GHOST_MODE_NOTIFICATION";
+	UPDATE_GHOST_MODE_NOTIFICATION = "PROFILE_UPDATE_GHOST_MODE_NOTIFICATION",
+	// ------------
+	SEND_PASSWORD = "SIGN_IN_SEND_PASSWORD",
+	PASSWORD_SUCCESS = "SIGN_IN_PASSWORD_SUCCESS",
+	PASSWORD_FAILED = "SIGN_IN_PASSWORD_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -476,12 +480,14 @@ export const fetchCountriesFailed = err => {
 };
 
 export const getIpData = () => {
+	console.log("getIpData index got ot action");
 	return {
 		type: GET_IP_DATA
 	};
 };
 
 export const fetchIpData = () => {
+	console.log("in fetchIpData");
 	return new Promise((resolve, reject) => {
 		fetch(
 			"https://api.ipdata.co?api-key=8ea163e43c9ea60ccbfdcb756c76374c0f19b659031fdbc54d4d3f9f",
@@ -491,11 +497,16 @@ export const fetchIpData = () => {
 		)
 			.then(res => res.json())
 			.catch(error => reject(error))
-			.then(response => resolve(response));
+			.then(response => {
+				console.log("response", response);
+				return resolve(response);
+			});
 	});
 };
 
 export const fetchIpDataSuccess = data => {
+	console.log("fetchIpDataSuccess", data);
+
 	return {
 		type: IP_DATA_SUCCESS,
 		payload: data
@@ -503,6 +514,8 @@ export const fetchIpDataSuccess = data => {
 };
 
 export const fetchIpDataFailed = err => {
+	console.log("fetchIpDataFailed", err);
+
 	return {
 		type: IP_DATA_FAILED,
 		payload: err
@@ -845,5 +858,47 @@ export const profileSetCloseModal = data => {
 	return {
 		type: CLOSE_MODAL,
 		payload: data
+	};
+};
+
+// ------------
+
+export const sendPassword = data => ({
+	type: SEND_PASSWORD,
+	payload: data
+});
+
+export const fetchSendPassword = data => {
+	return new Promise((resolve, reject) => {
+		// post('/api/v1/members/action/login', {username: data.username, password: data.password}).then(resp => {
+		post("/api/v1/members/action/login", {
+			cellphone: data.cellphone,
+			cellphoneCountryCode: data.cellphoneCountryCode,
+			password: data.password
+		})
+			.then(resp => {
+				resolve({
+					...resp,
+					navigation: data.navigation,
+					resetAction: data.resetAction
+				});
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const fetchSendPasswordSuccess = data => {
+	return {
+		type: PASSWORD_SUCCESS,
+		payload: data
+	};
+};
+
+export const fetchSendPasswordFailed = err => {
+	return {
+		type: PASSWORD_FAILED,
+		payload: err
 	};
 };

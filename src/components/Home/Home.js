@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 // import Discussion from "../Discussion";
 
 class Home extends Component {
@@ -8,30 +8,20 @@ class Home extends Component {
 		this.state = {};
 	}
 
+	handleSubmit = () => {
+		this.props.navigation.push("ProfileScreen", {
+			userId: 1, //item.memberId,
+			x: 1
+		});
+	};
+
 	render() {
 		return (
 			<View style={{ flex: 1, justifyContent: "flex-end" }}>
-				<View>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content</Text>
-					<Text>content***</Text>
+				<View style={{ height: "20%" }}>
+					<TouchableOpacity onPress={this.handleSubmit}>
+						<Text>Profile</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
