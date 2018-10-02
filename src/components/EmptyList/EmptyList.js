@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import exportPic from '../../assets/images/export.png';
+import logo from '../../assets/images/logo_bigger.png';
 import { StyleSheet, Image, View} from "react-native";
 
 const styles = StyleSheet.create({
@@ -22,7 +22,7 @@ export default class EmptyList extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image style={styles.exportPic} source={exportPic}/>
+                <Image style={[styles.exportPic, {opacity:0.5}]} source={logo}/>
             </View>
         )
     }

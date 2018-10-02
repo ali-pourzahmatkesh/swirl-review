@@ -1,6 +1,6 @@
-import { StyleSheet, Dimensions } from "react-native";
-const {height, width} = Dimensions.get('window');
+import {Dimensions, StyleSheet} from "react-native";
 import {CONFIG} from "./config";
+const { height, width } = Dimensions.get('window');
 const colors = CONFIG.colors;
 const widthFilter = width/5;
 const defaultFontApp = {
@@ -223,6 +223,167 @@ const appCss = StyleSheet.create({
         width: (widthFilter/2)-21,
         height: (widthFilter/2)-21,
     },
+
+    countryFlagSvg: {
+        height: 27,
+        width: 35,
+        position: 'absolute',
+        top: -5,
+        left: -6
+    },
+
+    iconFormInput: {
+        flexDirection: 'row',
+        marginTop: 15,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 12,
+        borderBottomWidth: 1.5,
+        borderBottomColor: colors.formInputUnderline,
+        backgroundColor: colors.bodyColor,
+        borderRadius: 20
+    },
+
+    formInputIcon: {
+        height: "110%",
+        width: "10%",
+        resizeMode: "contain"
+    },
+
+    textInput: {
+        ...defaultFontApp,
+        flex: 1,
+        // fontWeight: "bold",
+        fontSize: 12,
+        width: "100%",
+        paddingRight: 20,
+        paddingLeft: 18,
+        color: colors.combinatorialColor
+    },
+
+    countryCodeBox: {
+        width: 64,
+        height: 35,
+        backgroundColor: "transparent",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        marginTop: 3,
+        marginLeft: 3,
+        paddingRight: 3,
+        borderRadius: 20,
+        borderWidth: 2,
+        borderColor: colors.appColor
+    },
+    countryCodeImageBox: {
+        height: 24,
+        width: 24,
+        display: "flex",
+        borderWidth: 1,
+        overflow: "hidden",
+        borderColor: "#ddd",
+        borderRadius: 50
+    },
+    countryCodeFlag: {
+        height: 24,
+        width: 24,
+        resizeMode: "cover"
+    },
+    countryCode: {
+        color: colors.combinatorialColor,
+        fontWeight: "bold",
+        fontSize: 12
+    },
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: "space-between",
+        backgroundColor: colors.appColor
+    },
+
+    modalHeader: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        paddingBottom: 10
+    },
+
+    sectionItems: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        backgroundColor: colors.appColor,
+        paddingLeft: 20,
+        paddingRight: 20,
+        height: 40,
+        borderBottomWidth: 1,
+        borderColor: colors.bodyColor
+    },
+
+    countryCodeSearch: {
+        color: colors.bodyColor,
+        flexBasis: "15%",
+        marginLeft: 10,
+        textAlign: "right"
+    },
+
+    countryNameSearch: {
+        color: colors.bodyColor,
+        marginLeft: 20
+    },
+    sectionHeader: {
+        flex: 1,
+        flexDirection: "row",
+        backgroundColor: colors.bodyColor,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        paddingLeft: 20,
+        paddingRight: 20,
+        height: 30
+    },
+    sectionHeaderTitle: {
+        color: colors.appColor,
+        fontWeight: "bold",
+        fontSize: 15
+    },
+    modalOptions: {
+        flex: 1
+    },
+
+    searchContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    SectionStyle: {
+        flexDirection: "row",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+
+    imageStyle: {
+        paddingTop: 2,
+        // margin: 5,
+        height: "100%",
+        width: 25,
+        alignItems: "center"
+    },
+    searchTextInput: {
+        ...defaultFontApp,
+        color: "#fff",
+        height: "100%",
+        width: "80%"
+    },
+    backButton:{
+        marginLeft:15
+    }
+
+
+
 
 
 });

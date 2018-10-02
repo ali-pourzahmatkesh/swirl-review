@@ -1,208 +1,30 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-	Image,
-	Keyboard,
-	LayoutAnimation,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	StyleSheet,
-	View,
-	Modal,
-	SectionList,
-	ScrollView,
-	ActivityIndicator
+    ActivityIndicator,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    LayoutAnimation,
+    Modal,
+    SectionList,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 
-import { SafeAreaView } from "react-navigation";
+import {SafeAreaView} from "react-navigation";
 import EmptyList from "../EmptyList";
 
 import logo from "../../assets/images/logo_bigger.png";
-import phoneIcon from "../../assets/images/phoneIcon.png";
+import phoneIcon from "../../assets/images/icons/phone.png";
 import SVGImage from "react-native-svg-image";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "react-native-vector-icons/Feather";
 import appCss from "../../../app.css";
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
+import styles from "./style";
 const colors = CONFIG.colors;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: colors.appColor
-		// flexDirection: 'column'
-	},
-	formInputIcon: {
-		height: "110%",
-		width: "10%",
-		resizeMode: "contain"
-	},
-	imagesContent: {
-		height: "15%",
-		alignItems: "center",
-		marginTop: "5%",
-		marginBottom: "10%"
-	},
-	imageItem: {
-		flex: 1,
-		resizeMode: "contain"
-	},
-	nextButton: {
-		backgroundColor: "#faec22",
-		height: "10%",
-		width: "100%",
-		justifyContent: "center",
-		position: "absolute"
-		// bottom: 100
-		// marginBottom: -30,
-
-		// borderWidth: 2,
-		// borderColor: 'green'
-	},
-	nextText: {
-		color: "#fc003e",
-		textAlign: "center",
-		fontSize: 20
-	},
-	textInput: {
-		fontSize: 16,
-		paddingLeft: "6%",
-		color: "#fff",
-		width: "100%"
-	},
-	textInputContainer: {
-		alignSelf: "center",
-		borderBottomWidth: 1.5,
-		borderBottomColor: "#fff",
-		flexDirection: "row",
-		marginBottom: 30,
-		paddingBottom: 12,
-		width: "85%"
-	},
-
-	// -------
-
-	//styles inside of render country codes
-	countryCodeBox: {
-		width: 64,
-		height: 35,
-		backgroundColor: "transparent",
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "space-around",
-		alignItems: "center",
-		// marginTop: 10,
-		paddingRight: 3,
-		borderRadius: 20,
-		borderWidth: 2,
-		borderColor: "#dc030e"
-	},
-	countryCodeImageBox: {
-		height: 24,
-		width: 24,
-		display: "flex",
-		borderWidth: 1,
-		overflow: "hidden",
-		borderColor: "#ddd",
-		borderRadius: 50
-	},
-	countryCodeFlag: {
-		height: 24,
-		width: 24,
-		resizeMode: "cover"
-	},
-	countryCode: {
-		color: "#fff",
-		fontWeight: "bold",
-		fontSize: 12
-	},
-
-	//styles inside of country code selection modal
-	modalContainer: {
-		flex: 1,
-		justifyContent: "space-between",
-		backgroundColor: "rgba(237,27,52,0.97)"
-	},
-
-	modalHeader: {
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "space-around",
-		alignItems: "center",
-		paddingBottom: 10
-	},
-
-	sectionItems: {
-		flex: 1,
-		flexDirection: "row",
-		justifyContent: "flex-start",
-		alignItems: "center",
-		backgroundColor: "#ed1b34",
-		paddingLeft: 20,
-		paddingRight: 20,
-		height: 40,
-		borderBottomWidth: 1,
-		borderColor: "#fff"
-	},
-
-	countryCodeSearch: {
-		color: "#fff",
-		flexBasis: "15%",
-		marginLeft: 10,
-		textAlign: "right"
-	},
-
-	countryNameSearch: {
-		color: "#fff",
-		marginLeft: 20
-	},
-	sectionHeader: {
-		flex: 1,
-		flexDirection: "row",
-		backgroundColor: "#fff",
-		justifyContent: "flex-start",
-		alignItems: "center",
-		paddingLeft: 20,
-		paddingRight: 20,
-		height: 30
-	},
-	sectionHeaderTitle: {
-		color: "#ed1b34",
-		fontWeight: "bold",
-		fontSize: 15
-	},
-	modalOptions: {
-		flex: 1
-	},
-
-	searchContainer: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	SectionStyle: {
-		flexDirection: "row",
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center"
-	},
-
-	imageStyle: {
-		paddingTop: 2,
-		// margin: 5,
-		height: "100%",
-		width: 25,
-		alignItems: "center"
-	},
-	searchTextInput: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			color: "#fff",
-			height: "100%",
-			width: "80%"
-		}
-	])
-});
 
 export default class ForgotPassword extends Component {
 	constructor(props) {
@@ -275,10 +97,10 @@ export default class ForgotPassword extends Component {
 	};
 
 	openModal() {
-		this.setState({ modalVisible: true }, () => {
-			if (this.state.countries.length) return;
-			this.props.getCountries();
-		});
+        this.setState({ modalVisible: true }, () => {
+            if( this.state.countries.length ) return;
+            this.props.getCountries();
+        });
 	}
 
 	closeModal = () => {
@@ -308,43 +130,45 @@ export default class ForgotPassword extends Component {
 		});
 	};
 
-	renderCountryCodes = () => {
-		let { cellphoneCountryCode, flagCountry, flag } = this.state;
-		if (cellphoneCountryCode.length === 0 || flagCountry.length === 0) {
-			return (
+    renderCountryCodes = () => {
+        let { cellphoneCountryCode, flagCountry, flag } = this.state;
+        if( cellphoneCountryCode.length === 0 || flagCountry.length === 0 ) {
+            return (
 				<ActivityIndicator
 					size={1}
-					style={styles.countryCodeBox}
-					color="#fef200"
+					style={appCss.countryCodeBox}
+					color={colors.combinatorialColor}
 				/>
-			);
-		} else {
-			return (
+            );
+        } else {
+            return (
 				<TouchableOpacity
-					style={styles.countryCodeBox}
+					style={appCss.countryCodeBox}
 					onPress={() => this.openModal()}
 				>
-					<View style={styles.countryCodeImageBox}>
-						{flag.length > 0 ? (
+					<View style={appCss.countryCodeImageBox}>
+
+
+                        {flag.length > 0? (
 							<SVGImage
-								style={{ height: 30 }}
+								style={appCss.countryFlagSvg}
 								source={{ uri: flag }}
 								originWhitelist={["*"]}
 							/>
-						) : (
+                        ): (
 							<Image
 								source={{ uri: flagCountry }}
-								style={styles.countryCodeFlag}
+								style={appCss.countryCodeFlag}
 							/>
-						)}
+                        )}
 					</View>
-					<Text style={[appCss.defaultFontApp, styles.countryCode]}>
+					<Text style={[ appCss.defaultFontApp, appCss.countryCode ]}>
 						+ {cellphoneCountryCode}
 					</Text>
 				</TouchableOpacity>
-			);
-		}
-	};
+            );
+        }
+    };
 
 	handlePressItemCountry = item => {
 		this.setState({
@@ -371,24 +195,28 @@ export default class ForgotPassword extends Component {
 	}
 
 	keyboardWillShow = event => {
-		LayoutAnimation.configureNext(
-			LayoutAnimation.create(
-				event.duration,
-				LayoutAnimation.Types[event.easing]
-			)
-		);
+        LayoutAnimation.configureNext({
+            duration: event.duration,
+            create: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: { type: LayoutAnimation.Types.easeInEaseOut },
+        });
 		this.setState({
 			bottom: event.endCoordinates.height
 		});
 	};
 
 	keyboardWillHide = event => {
-		LayoutAnimation.configureNext(
-			LayoutAnimation.create(
-				event.duration,
-				LayoutAnimation.Types[event.easing]
-			)
-		);
+        LayoutAnimation.configureNext({
+            duration: event.duration,
+            create: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: { type: LayoutAnimation.Types.easeInEaseOut },
+        });
 		this.setState({
 			bottom: 0
 		});
@@ -404,26 +232,22 @@ export default class ForgotPassword extends Component {
 
 	render() {
 		let {
-			//for modal
-			cellphoneCountryCode,
-			cellphone,
 			countryCodeGroup,
 			searchValue
 		} = this.state;
-		let { isLoadingFetch } = this.props;
 
 		return (
-			<SafeAreaView style={styles.container}>
+			<View style={styles.container}>
 				<Modal
 					visible={this.state.modalVisible}
 					animationType={"fade"}
 					transparent={true}
 					onRequestClose={() => this.closeModal()}
 				>
-					<SafeAreaView style={styles.modalContainer}>
-						<View style={styles.modalHeader}>
+					<SafeAreaView style={appCss.modalContainer}>
+						<View style={appCss.modalHeader}>
 							<TouchableOpacity
-								style={styles.modalOptions}
+								style={appCss.modalOptions}
 								onPress={() => this.closeModal("SignInPassword")}
 							>
 								<MaterialCommunityIcons
@@ -433,16 +257,16 @@ export default class ForgotPassword extends Component {
 									name="window-close"
 								/>
 							</TouchableOpacity>
-							<View style={styles.searchContainer}>
-								<View style={styles.SectionStyle}>
+							<View style={appCss.searchContainer}>
+								<View style={appCss.SectionStyle}>
 									<Feather
-										style={styles.imageStyle}
+										style={appCss.imageStyle}
 										size={15}
 										color="#fff"
 										name="search"
 									/>
 									<TextInput
-										style={styles.searchTextInput}
+										style={appCss.searchTextInput}
 										placeholderTextColor="#fff"
 										placeholder="Country Name"
 										value={searchValue}
@@ -452,7 +276,7 @@ export default class ForgotPassword extends Component {
 									/>
 								</View>
 							</View>
-							<View style={styles.modalOptions} />
+							<View style={appCss.modalOptions}/>
 						</View>
 						<View style={{ flex: 1 }}>
 							<SectionList
@@ -462,76 +286,92 @@ export default class ForgotPassword extends Component {
 								ListEmptyComponent={() => <EmptyList />}
 								renderItem={({ item }) => (
 									<TouchableOpacity
-										style={styles.sectionItems}
+										style={appCss.sectionItems}
 										onPress={() => this.handlePressItemCountry(item)}
 									>
-										<View style={styles.countryCodeImageBox}>
+										<View style={appCss.countryCodeImageBox}>
 											<SVGImage
-												style={{ height: 30 }}
+												style={appCss.countryFlagSvg}
 												source={{ uri: item.flag }}
 												originWhitelist={["*"]}
 											/>
 										</View>
 										<Text
-											style={[appCss.defaultFontApp, styles.countryCodeSearch]}
+											style={[ appCss.defaultFontApp, appCss.countryCodeSearch ]}
 										>
 											+ {item.callingCodes[0]}
 										</Text>
 										<Text
-											style={[appCss.defaultFontApp, styles.countryNameSearch]}
+											style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
 											numberOfLines={1}
 											ellipsizeMode="tail"
 										>
-											{item.name}
+                                            {item.name}
 										</Text>
 									</TouchableOpacity>
-								)}
+                                )}
 								renderSectionHeader={({ section }) => (
-									<View style={styles.sectionHeader}>
+									<View style={appCss.sectionHeader}>
 										<Text
-											style={[appCss.defaultFontApp, styles.sectionHeaderTitle]}
+											style={[ appCss.defaultFontApp, appCss.sectionHeaderTitle ]}
 										>
-											{section.title}
+                                            {section.title}
 										</Text>
 									</View>
-								)}
+                                )}
 							/>
 						</View>
 					</SafeAreaView>
 				</Modal>
 
-				<View style={styles.imagesContent}>
-					<Image style={styles.imageItem} source={logo} />
-				</View>
-				<View style={styles.textInputContainer}>
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+					<View
+						style={
+                            styles.imageContainer
+                        }
+					>
+						<View style={styles.imagesContent}>
+							<Image style={styles.imageItem} source={logo}/>
+						</View>
+					</View>
+					<View style={styles.formInputContainer}>
 					<View
 						style={[
-							styles.iconFormInput,
-							{ paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
-						]}
+                            appCss.iconFormInput,
+                            { paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
+                        ]}
 					>
-						{this.state.countryCodeVisible ? (
-							this.renderCountryCodes()
-						) : (
+                        {this.state.countryCodeVisible? (
+                            this.renderCountryCodes()
+                        ): (
 							<Image
 								style={[
-									styles.formInputIcon,
-									{ marginLeft: 10, marginTop: 8, height: "60%" }
-								]}
+                                    appCss.formInputIcon,
+                                    { marginLeft: 10, marginTop: 8, height: "60%" }
+                                ]}
 								source={phoneIcon}
 							/>
-						)}
+                        )}
 						<TextInput
 							style={[
-								appCss.defaultFontApp,
-								styles.textInput,
-								{ marginBottom: 12, marginTop: 10 }
-							]}
+                                appCss.defaultFontApp,
+                                appCss.textInput,
+                                { marginBottom: 12, marginTop: 10 }
+                            ]}
 							placeholder="Phone Number"
-							placeholderTextColor="#fff"
+							placeholderTextColor={colors.combinatorialColor}
 							keyboardType="number-pad"
 							onChangeText={cellphone => this.setState({ cellphone })}
-							onFocus={this.handlePhoneFieldFocus}
+							// onFocus={this.handlePhoneFieldFocus}
+							onFocus={() => {
+                                this.props.navigation.setParams({
+                                    curScreen: "Login",
+                                    nextScreen: "Signup",
+                                    rightNav: "SignUpScreen"
+                                });
+                                this.handlePhoneFieldFocus()
+                            }
+                            }
 							// onPress={this.handlePhoneFieldFocus}
 							onBlur={this.handlePhoneFieldBlur}
 						/>
@@ -543,7 +383,8 @@ export default class ForgotPassword extends Component {
 				>
 					<Text style={[appCss.defaultFontApp, styles.nextText]}>Next</Text>
 				</TouchableOpacity>
-			</SafeAreaView>
+				</KeyboardAvoidingView>
+			</View>
 		);
 	}
 }
