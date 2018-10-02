@@ -9,24 +9,24 @@ import {
 	SectionList
 } from "react-native";
 import { NavigationActions } from "react-navigation";
-import Avatar from '../Avatar';
-import Popup from '../Popup';
-import appCss from '../../../app.css';
-import styles from './style';
-import ghostFill from '../../assets/images/ghost.png';
-import ghostEmpty from '../../assets/images/ghostEmpty.png';
-import logo from '../../assets/images/tape-logo.png';
+import Avatar from "../Avatar";
+import Popup from "../Popup";
+import appCss from "../../../app.css";
+import styles from "./style";
+import ghostFill from "../../assets/images/ghost.png";
+import ghostEmpty from "../../assets/images/ghostEmpty.png";
+import logo from "../../assets/images/tape-logo.png";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import background from '../../assets/images/background.png';
-import changeName from '../../assets/images/changeName.png';
-import changePassword from '../../assets/images/changePassword.png';
-import termsOfUse from '../../assets/images/termsOfUse.png';
-import privacyPolicy from '../../assets/images/privacyPolicy.png';
-import feedback from '../../assets/images/feedback.png';
-import logout from '../../assets/images/logout.png';
+import background from "../../assets/images/background.png";
+import changeName from "../../assets/images/changeName.png";
+import changePassword from "../../assets/images/changePassword.png";
+import termsOfUse from "../../assets/images/termsOfUse.png";
+import privacyPolicy from "../../assets/images/privacyPolicy.png";
+import feedback from "../../assets/images/feedback.png";
+import logout from "../../assets/images/logout.png";
 
-import { CONFIG } from '../../../config';
+import { CONFIG } from "../../../config";
 const COLORS = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 
@@ -178,7 +178,7 @@ export default class Profile extends Component {
 					{
 						icon: privacyPolicy,
 						name: "Privacy Policy",
-						clickHandler: () => {}
+						clickHandler: () => this.goTo("PrivacyPolicyScreen")
 					}
 				]
 			},
