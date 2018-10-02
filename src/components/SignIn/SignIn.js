@@ -1,22 +1,20 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-	Animated,
-	Image,
-	Keyboard,
-	KeyboardAvoidingView,
-	LayoutAnimation,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-	Modal,
-	SectionList,
-	ScrollView,
-	ActivityIndicator
+    ActivityIndicator,
+    Animated,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    LayoutAnimation,
+    Modal,
+    SectionList,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 
-import { NavigationActions, SafeAreaView } from "react-navigation";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {NavigationActions, SafeAreaView} from "react-navigation";
 import EmptyList from "../EmptyList";
 
 import logo from "../../assets/images/logo_bigger.png";
@@ -29,7 +27,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Feather from "react-native-vector-icons/Feather";
 import appCss from "../../../app.css";
 import styles from "./style";
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
 
 const colors = CONFIG.colors;
 
@@ -121,10 +119,11 @@ export default class SignIn extends Component {
 	};
 
 	openModal() {
-		this.setState({ modalVisible: true }, () => {
-			if (this.state.countries.length) return;
-			this.props.getCountries();
-		});
+        this.setState({ modalVisible: true }, () => {
+            if( this.state.countries.length ) return;
+            this.props.getCountries();
+        });
+
 	}
 
 	closeModal = () => {
@@ -160,31 +159,33 @@ export default class SignIn extends Component {
 			return (
 				<ActivityIndicator
 					size={1}
-					style={styles.countryCodeBox}
+					style={appCss.countryCodeBox}
 					color={colors.combinatorialColor}
 				/>
 			);
 		} else {
 			return (
 				<TouchableOpacity
-					style={styles.countryCodeBox}
+					style={appCss.countryCodeBox}
 					onPress={() => this.openModal()}
 				>
-					<View style={styles.countryCodeImageBox}>
+					<View style={appCss.countryCodeImageBox}>
+
+
 						{flag.length > 0 ? (
 							<SVGImage
-								style={{ height: 30 }}
+								style={appCss.countryFlagSvg}
 								source={{ uri: flag }}
 								originWhitelist={["*"]}
 							/>
 						) : (
 							<Image
 								source={{ uri: flagCountry }}
-								style={styles.countryCodeFlag}
+								style={appCss.countryCodeFlag}
 							/>
 						)}
 					</View>
-					<Text style={[appCss.defaultFontApp, styles.countryCode]}>
+					<Text style={[ appCss.defaultFontApp, appCss.countryCode ]}>
 						+ {cellphoneCountryCode}
 					</Text>
 				</TouchableOpacity>
@@ -217,12 +218,14 @@ export default class SignIn extends Component {
 	}
 
 	keyboardWillShow = event => {
-		LayoutAnimation.configureNext(
-			LayoutAnimation.create(
-				event.duration,
-				LayoutAnimation.Types[event.easing]
-			)
-		);
+        LayoutAnimation.configureNext({
+            duration: event.duration,
+            create: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: { type: LayoutAnimation.Types.easeInEaseOut },
+        });
 		this.setState({
 			bottom: event.endCoordinates.height
 		});
@@ -248,12 +251,14 @@ export default class SignIn extends Component {
 	};
 
 	keyboardWillHide = event => {
-		LayoutAnimation.configureNext(
-			LayoutAnimation.create(
-				event.duration,
-				LayoutAnimation.Types[event.easing]
-			)
-		);
+        LayoutAnimation.configureNext({
+            duration: event.duration,
+            create: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: { type: LayoutAnimation.Types.easeInEaseOut },
+        });
 		this.setState({
 			bottom: -100
 		});
@@ -262,10 +267,10 @@ export default class SignIn extends Component {
 				duration: event.duration,
 				toValue: 35
 			}),
-			// Animated.timing(this.connectOpacity, {
-			// 	duration: event.duration,
-			// 	toValue: 1
-			// }),
+            Animated.timing(this.connectOpacity, {
+                duration: event.duration,
+                toValue: 1
+            }),
 			Animated.timing(this.forgotPassMargin, {
 				duration: event.duration,
 				toValue: 100
@@ -296,15 +301,9 @@ export default class SignIn extends Component {
 
 	render() {
 		let {
-			password,
-
-			//for modal
-			cellphoneCountryCode,
-			cellphone,
 			countryCodeGroup,
 			searchValue
 		} = this.state;
-		let { isLoadingFetch } = this.props;
 
 		return (
 			<SafeAreaView style={styles.container}>
@@ -314,10 +313,10 @@ export default class SignIn extends Component {
 					transparent={true}
 					onRequestClose={() => this.closeModal()}
 				>
-					<SafeAreaView style={styles.modalContainer}>
-						<View style={styles.modalHeader}>
+					<SafeAreaView style={appCss.modalContainer}>
+						<View style={appCss.modalHeader}>
 							<TouchableOpacity
-								style={styles.modalOptions}
+								style={appCss.modalOptions}
 								onPress={() => this.closeModal("SignInPassword")}
 							>
 								<MaterialCommunityIcons
@@ -327,16 +326,16 @@ export default class SignIn extends Component {
 									name="window-close"
 								/>
 							</TouchableOpacity>
-							<View style={styles.searchContainer}>
-								<View style={styles.SectionStyle}>
+							<View style={appCss.searchContainer}>
+								<View style={appCss.SectionStyle}>
 									<Feather
-										style={styles.imageStyle}
+										style={appCss.imageStyle}
 										size={15}
 										color="#fff"
 										name="search"
 									/>
 									<TextInput
-										style={styles.searchTextInput}
+										style={appCss.searchTextInput}
 										placeholderTextColor="#fff"
 										placeholder="Country Name"
 										value={searchValue}
@@ -346,7 +345,7 @@ export default class SignIn extends Component {
 									/>
 								</View>
 							</View>
-							<View style={styles.modalOptions} />
+							<View style={appCss.modalOptions}/>
 						</View>
 						<View style={{ flex: 1 }}>
 							<SectionList
@@ -356,23 +355,23 @@ export default class SignIn extends Component {
 								ListEmptyComponent={() => <EmptyList />}
 								renderItem={({ item }) => (
 									<TouchableOpacity
-										style={styles.sectionItems}
+										style={appCss.sectionItems}
 										onPress={() => this.handlePressItemCountry(item)}
 									>
-										<View style={styles.countryCodeImageBox}>
+										<View style={appCss.countryCodeImageBox}>
 											<SVGImage
-												style={{ height: 30 }}
+												style={appCss.countryFlagSvg}
 												source={{ uri: item.flag }}
 												originWhitelist={["*"]}
 											/>
 										</View>
 										<Text
-											style={[appCss.defaultFontApp, styles.countryCodeSearch]}
+											style={[ appCss.defaultFontApp, appCss.countryCodeSearch ]}
 										>
 											+ {item.callingCodes[0]}
 										</Text>
 										<Text
-											style={[appCss.defaultFontApp, styles.countryNameSearch]}
+											style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
 											numberOfLines={1}
 											ellipsizeMode="tail"
 										>
@@ -381,9 +380,9 @@ export default class SignIn extends Component {
 									</TouchableOpacity>
 								)}
 								renderSectionHeader={({ section }) => (
-									<View style={styles.sectionHeader}>
+									<View style={appCss.sectionHeader}>
 										<Text
-											style={[appCss.defaultFontApp, styles.sectionHeaderTitle]}
+											style={[ appCss.defaultFontApp, appCss.sectionHeaderTitle ]}
 										>
 											{section.title}
 										</Text>
@@ -404,17 +403,10 @@ export default class SignIn extends Component {
 							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
-					{/*<Animated.View style={{ opacity: this.connectOpacity }}>*/}
-						{/*<Animated.Text*/}
-							{/*style={[styles.connectText, { fontSize: this.connectFontSize }]}*/}
-						{/*>*/}
-							{/*Let's Connect!*/}
-						{/*</Animated.Text>*/}
-					{/*</Animated.View>*/}
 					<View style={styles.formInputContainer}>
 						<View
 							style={[
-								styles.iconFormInput,
+                                appCss.iconFormInput,
 								{ paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
 							]}
 						>
@@ -423,7 +415,7 @@ export default class SignIn extends Component {
 							) : (
 								<Image
 									style={[
-										styles.formInputIcon,
+                                        appCss.formInputIcon,
 										{ marginLeft: 10, marginTop: 8, height: "60%" }
 									]}
 									source={phoneIcon}
@@ -432,39 +424,59 @@ export default class SignIn extends Component {
 							<TextInput
 								style={[
 									appCss.defaultFontApp,
-									styles.textInput,
+                                    appCss.textInput,
 									{ marginBottom: 12, marginTop: 10 }
 								]}
 								placeholder="Phone Number"
 								placeholderTextColor={colors.combinatorialColor}
 								keyboardType="number-pad"
 								onChangeText={cellphone => this.setState({ cellphone })}
-								onFocus={this.handlePhoneFieldFocus}
+								// onFocus={this.handlePhoneFieldFocus}
+								onFocus={() => {
+
+                                    this.props.navigation.setParams({
+                                        curScreen: "Login",
+                                        nextScreen: "Signup",
+                                        rightNav: "SignUpScreen"
+                                    });
+
+                                    this.handlePhoneFieldFocus()
+                                }
+                                }
 								// onPress={this.handlePhoneFieldFocus}
-								onBlur={this.handlePhoneFieldBlur}
+								onBlur={
+                                    () => {
+                                        this.handlePhoneFieldBlur();
+                                    }
+                                }
 							/>
 						</View>
 
-						<View style={styles.iconFormInput}>
-							<Image style={styles.formInputIcon} source={passwordIcon} />
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={passwordIcon}/>
 							<TextInput
-								style={styles.textInput}
+								style={appCss.textInput}
 								placeholder="Password"
 								placeholderTextColor={colors.combinatorialColor}
 								secureTextEntry={true}
-								onFocus={() =>
-									this.props.navigation.setParams({
-										curScreen: "Login",
-										nextScreen: "Signup",
-										rightNav: "SignUpScreen"
-									})
-								}
-								onBlur={() =>
-									this.props.navigation.setParams({
-										curScreen: "",
-										nextScreen: ""
-									})
-								}
+								onFocus={
+                                    () => {
+                                        this.props.navigation.setParams({
+                                            curScreen: "Login",
+                                            nextScreen: "Signup",
+                                            rightNav: "SignUpScreen"
+                                        });
+
+                                    }
+                                }
+								onBlur={
+                                    () => {
+                                        this.props.navigation.setParams({
+                                            curScreen: "",
+                                            nextScreen: ""
+                                        })
+                                    }
+                                }
 								onChangeText={text => this.setState({ password: text })}
 							/>
 						</View>

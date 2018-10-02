@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
 import ForgotPassword from "../components/ForgotPassword";
-
+import { CONFIG } from "../../config";
+const colors = CONFIG.colors;
 import appCss from "../../app.css";
 
 export default class ForgotPasswordScreen extends Component {
@@ -9,13 +10,13 @@ export default class ForgotPasswordScreen extends Component {
 		return {
 			headerTitle: (
 				<Text
-					style={[appCss.defaultFontApp, { color: "#faec22", fontSize: 16 }]}
+					style={[appCss.defaultFontApp, { color: colors.combinatorialColor, fontSize: 16 }]}
 				>
 					Forgot Password
 				</Text>
 			),
 			headerStyle: {
-				backgroundColor: "#fc003e",
+				backgroundColor: colors.appColor,
 				paddingRight: 20,
 				paddingLeft: 20,
 				borderBottomWidth: 0

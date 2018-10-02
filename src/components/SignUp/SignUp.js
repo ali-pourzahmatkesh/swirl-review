@@ -1,23 +1,21 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-	Image,
-	Text,
-	TouchableOpacity,
-	View,
-	TextInput,
-	Keyboard,
-	Modal,
-	SectionList,
-	ScrollView,
-	ActivityIndicator
+    ActivityIndicator,
+    Image,
+    KeyboardAvoidingView,
+    Modal,
+    SectionList,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
-import { SafeAreaView, NavigationActions } from "react-navigation";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {NavigationActions, SafeAreaView} from "react-navigation";
 
 import logo from "../../assets/images/logo_bigger.png";
-import phoneIcon from "../../assets/images/phoneIcon.png";
-import passwordIcon from "../../assets/images/passwordIcon.png";
-import usernameIcon from "../../assets/images/usernameIcon.png";
+import passwordIcon from "../../assets/images/icons/Lock.png";
+import phoneIcon from "../../assets/images/icons/phone.png";
+import usernameIcon from "../../assets/images/icons/Mask.png";
 
 import EmptyList from "../EmptyList";
 import Feather from "react-native-vector-icons/Feather";
@@ -25,7 +23,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import SVGImage from "react-native-svg-image";
 import appCss from "../../../app.css";
 import styles from "./style";
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
 
 // import moment from "moment";
 
@@ -138,43 +136,45 @@ export default class SignUp extends Component {
 		});
 	};
 
-	renderCountryCodes = () => {
-		let { cellphoneCountryCode, flagCountry, flag } = this.state;
-		if (cellphoneCountryCode.length === 0 || flagCountry.length === 0) {
-			return (
+    renderCountryCodes = () => {
+        let { cellphoneCountryCode, flagCountry, flag } = this.state;
+        if( cellphoneCountryCode.length === 0 || flagCountry.length === 0 ) {
+            return (
 				<ActivityIndicator
 					size={1}
-					style={styles.countryCodeBox}
-					color="#fef200"
+					style={appCss.countryCodeBox}
+					color={colors.combinatorialColor}
 				/>
-			);
-		} else {
-			return (
+            );
+        } else {
+            return (
 				<TouchableOpacity
-					style={styles.countryCodeBox}
+					style={appCss.countryCodeBox}
 					onPress={() => this.openModal()}
 				>
-					<View style={styles.countryCodeImageBox}>
-						{flag.length > 0 ? (
+					<View style={appCss.countryCodeImageBox}>
+
+
+                        {flag.length > 0? (
 							<SVGImage
-								style={{ height: 30 }}
+								style={appCss.countryFlagSvg}
 								source={{ uri: flag }}
 								originWhitelist={["*"]}
 							/>
-						) : (
+                        ): (
 							<Image
 								source={{ uri: flagCountry }}
-								style={styles.countryCodeFlag}
+								style={appCss.countryCodeFlag}
 							/>
-						)}
+                        )}
 					</View>
-					<Text style={[appCss.defaultFontApp, styles.countryCode]}>
+					<Text style={[ appCss.defaultFontApp, appCss.countryCode ]}>
 						+ {cellphoneCountryCode}
 					</Text>
 				</TouchableOpacity>
-			);
-		}
-	};
+            );
+        }
+    };
 
 	/* ************************************************************************************************************************* */
 
@@ -251,13 +251,13 @@ export default class SignUp extends Component {
 				<Modal
 					visible={this.state.modalVisible}
 					animationType={"fade"}
-					transparent={true}
+					transparent={false}
 					onRequestClose={() => this.closeModal()}
 				>
-					<SafeAreaView style={styles.modalContainer}>
-						<View style={styles.modalHeader}>
+					<SafeAreaView style={appCss.modalContainer}>
+						<View style={appCss.modalHeader}>
 							<TouchableOpacity
-								style={styles.modalOptions}
+								style={appCss.modalOptions}
 								onPress={() => this.closeModal("SignInPassword")}
 							>
 								<MaterialCommunityIcons
@@ -267,16 +267,16 @@ export default class SignUp extends Component {
 									name="window-close"
 								/>
 							</TouchableOpacity>
-							<View style={styles.searchContainer}>
-								<View style={styles.SectionStyle}>
+							<View style={appCss.searchContainer}>
+								<View style={appCss.SectionStyle}>
 									<Feather
-										style={styles.imageStyle}
+										style={appCss.imageStyle}
 										size={15}
 										color="#fff"
 										name="search"
 									/>
 									<TextInput
-										style={styles.searchTextInput}
+										style={appCss.searchTextInput}
 										placeholderTextColor="#fff"
 										placeholder="Country Name"
 										value={searchValue}
@@ -286,7 +286,7 @@ export default class SignUp extends Component {
 									/>
 								</View>
 							</View>
-							<View style={styles.modalOptions} />
+							<View style={appCss.modalOptions}/>
 						</View>
 						<View style={{ flex: 1 }}>
 							<SectionList
@@ -296,70 +296,61 @@ export default class SignUp extends Component {
 								ListEmptyComponent={() => <EmptyList />}
 								renderItem={({ item }) => (
 									<TouchableOpacity
-										style={styles.sectionItems}
+										style={appCss.sectionItems}
 										onPress={() => this.handlePressItemCountry(item)}
 									>
-										<View style={styles.countryCodeImageBox}>
+										<View style={appCss.countryCodeImageBox}>
 											<SVGImage
-												style={{ height: 30 }}
+												style={appCss.countryFlagSvg}
 												source={{ uri: item.flag }}
 												originWhitelist={["*"]}
 											/>
 										</View>
 										<Text
-											style={[appCss.defaultFontApp, styles.countryCodeSearch]}
+											style={[ appCss.defaultFontApp, appCss.countryCodeSearch ]}
 										>
 											+ {item.callingCodes[0]}
 										</Text>
 										<Text
-											style={[appCss.defaultFontApp, styles.countryNameSearch]}
+											style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
 											numberOfLines={1}
 											ellipsizeMode="tail"
 										>
-											{item.name}
+                                            {item.name}
 										</Text>
 									</TouchableOpacity>
-								)}
+                                )}
 								renderSectionHeader={({ section }) => (
-									<View style={styles.sectionHeader}>
+									<View style={appCss.sectionHeader}>
 										<Text
-											style={[appCss.defaultFontApp, styles.sectionHeaderTitle]}
+											style={[ appCss.defaultFontApp, appCss.sectionHeaderTitle ]}
 										>
-											{section.title}
+                                            {section.title}
 										</Text>
 									</View>
-								)}
+                                )}
 							/>
 						</View>
 					</SafeAreaView>
 				</Modal>
 
-				<View style={styles.imagesContent}>
-					<Image style={styles.imageItem} source={logo} />
-				</View>
-				<ScrollView
-					contentContainerStyle={{ marginTop: "20%" }}
-					keyboardShouldPersistTaps="handled"
-					scrollEnabled={false}
-				>
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+					<View
+						style={
+                            styles.imageContainer
+                        }
+					>
+						<View style={styles.imagesContent}>
+							<Image style={styles.imageItem} source={logo}/>
+						</View>
+					</View>
 					<View style={[styles.formInputContainer]}>
-						<View style={[styles.iconFormInput, { paddingLeft: 2 }]}>
-							<Image
-								style={[
-									styles.formInputIcon,
-									{
-										height: "140%",
-										width: "13%",
-										resizeMode: "cover",
-										marginLeft: 3
-									}
-								]}
-								source={usernameIcon}
-							/>
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={usernameIcon}/>
 							<TextInput
-								style={[styles.textInput, { paddingLeft: 13, paddingTop: 10 }]}
+								style={[ appCss.textInput ]}
 								placeholder="User Name"
-								placeholderTextColor={colors.tapeWhite}
+								placeholderTextColor={colors.combinatorialColor}
 								autoCorrect={false}
 								onChangeText={username => this.setState({ username })}
 							/>
@@ -367,7 +358,7 @@ export default class SignUp extends Component {
 
 						<View
 							style={[
-								styles.iconFormInput,
+                                appCss.iconFormInput,
 								{ paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
 							]}
 						>
@@ -376,7 +367,7 @@ export default class SignUp extends Component {
 							) : (
 								<Image
 									style={[
-										styles.formInputIcon,
+                                        appCss.formInputIcon,
 										{ marginLeft: 10, marginTop: 8, height: "60%" }
 									]}
 									source={phoneIcon}
@@ -385,11 +376,11 @@ export default class SignUp extends Component {
 							<TextInput
 								style={[
 									appCss.defaultFontApp,
-									styles.textInput,
+                                    appCss.textInput,
 									{ marginBottom: 12, marginTop: 10 }
 								]}
 								placeholder="Phone Number"
-								placeholderTextColor="#fff"
+								placeholderTextColor={colors.combinatorialColor}
 								keyboardType="number-pad"
 								onChangeText={cellphone => this.setState({ cellphone })}
 								onFocus={this.handlePhoneFieldFocus}
@@ -398,45 +389,52 @@ export default class SignUp extends Component {
 							/>
 						</View>
 
-						<View style={styles.iconFormInput}>
-							<Image style={styles.formInputIcon} source={passwordIcon} />
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={passwordIcon}/>
 							<TextInput
-								style={[styles.textInput]}
+								style={[ appCss.textInput ]}
 								placeholder="Password"
-								placeholderTextColor={colors.tapeWhite}
+								placeholderTextColor={colors.combinatorialColor}
 								secureTextEntry={true}
 								onChangeText={password => this.setState({ password })}
 							/>
 						</View>
 						<Text style={styles.minLengthText}>min 7 characters</Text>
-						<View style={styles.iconFormInput}>
-							<Image style={styles.formInputIcon} source={passwordIcon} />
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={passwordIcon}/>
 							<TextInput
-								style={[styles.textInput]}
+								style={[ appCss.textInput ]}
 								placeholder="Re-enter Password"
-								placeholderTextColor={colors.tapeWhite}
+								placeholderTextColor={colors.combinatorialColor}
 								secureTextEntry={true}
 								onChangeText={reEnterPassword =>
 									this.setState({ reEnterPassword })
 								}
 							/>
 						</View>
+						<View style={{ width: '100%', alignItems:'center',paddingTop:30, paddingBottom:30}}>
+							<Text style={styles.textSignup}>By signing up you agree to the terms of use</Text>
+						</View>
+						<View style={{ width: '100%' }}>
+							<TouchableOpacity
+								style={[ styles.signUpButton ]}
+								onPress={this.handleSubmit}
+								disabled={signUpDisabled}
+							>
+								<Text
+									style={[ styles.signUpText, signUpDisabled && { opacity: 0.5 } ]}
+								>
+									Sign Up
+								</Text>
+							</TouchableOpacity>
+						</View>
+
 					</View>
-				</ScrollView>
+
+
+				</KeyboardAvoidingView>
 				{/* Sign up button */}
-				<View style={{ height: "20%" }}>
-					<TouchableOpacity
-						style={[styles.signUpButton]}
-						onPress={this.handleSubmit}
-						disabled={signUpDisabled}
-					>
-						<Text
-							style={[styles.signUpText, signUpDisabled && { opacity: 0.5 }]}
-						>
-							Sign Up
-						</Text>
-					</TouchableOpacity>
-				</View>
+
 			</SafeAreaView>
 		);
 	}
