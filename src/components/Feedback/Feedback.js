@@ -8,7 +8,7 @@ import {
 	KeyboardAvoidingView
 } from "react-native";
 import appCss from "../../../app.css";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
 
 const styles = StyleSheet.create({
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		paddingRight: 20,
 		paddingLeft: 20,
 		// borderColor: "rgba(255,255,255,0.1)",
-		borderColor: 'transparent',
+		borderColor: "transparent",
 		borderBottomWidth: 1
 	},
 	menuOptions: {
@@ -55,9 +55,12 @@ const styles = StyleSheet.create({
 		paddingRight: 25,
 		borderRadius: 15
 	},
-	buttonText: StyleSheet.flatten([appCss.defaultFontApp, {
-		color: colors.tapeWhite
-	}])
+	buttonText: StyleSheet.flatten([
+		appCss.defaultFontApp,
+		{
+			color: colors.tapeWhite
+		}
+	])
 });
 
 export default class Feedback extends Component {
@@ -104,9 +107,7 @@ export default class Feedback extends Component {
 							}
 							underlayColor={colors.tapeWhite}
 						>
-							<Text style={styles.buttonText}>
-								Submit
-							</Text>
+							<Text style={styles.buttonText}>Submit</Text>
 						</TouchableOpacity>
 					</View>
 				</KeyboardAvoidingView>
