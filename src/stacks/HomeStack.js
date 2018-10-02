@@ -7,6 +7,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 // import MemberSearchScreen from "./MemberSearchScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+import ChangePasswordFromProfileScreen from "../screens/ChangePasswordFromProfileScreen";
 import TermsAndConditionsScreen from "../screens/TermsAndConditionsScreen";
 import PrivacyPolicyScreen from "../screens/PrivacyPolicyScreen";
 
@@ -19,6 +20,9 @@ export default StackNavigator(
 		// // MemberSearchScreen: { screen: MemberSearchScreen },
 		FeedbackScreen: { screen: FeedbackScreen },
 		ChangePasswordScreen: { screen: ChangePasswordScreen },
+		ChangePasswordFromProfileScreen: {
+			screen: ChangePasswordFromProfileScreen
+		},
 		TermsAndConditionsScreen: { screen: TermsAndConditionsScreen },
 		PrivacyPolicyScreen: { screen: PrivacyPolicyScreen }
 	},

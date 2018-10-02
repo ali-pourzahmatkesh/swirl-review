@@ -88,7 +88,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	// ------
 	CONFIRM_CHANGE_PASSWORD = "CONFIRM_CHANGE_PASSWORD",
 	CONFIRM_PASSWORD_SUCCESS = "CONFIRM_PASSWORD_SUCCESS",
-	CONFIRM_PASSWORD_FAILED = " CONFIRM_PASSWORD_FAILED";
+	CONFIRM_PASSWORD_FAILED = " CONFIRM_PASSWORD_FAILED",
+	// ------
+	UPDATE_MEMBER_PASSWORD = "UPDATE_MEMBER_PASSWORD",
+	UPDATE_MEMBER_PASSWORD_SUCCESS = "UPDATE_MEMBER_PASSWORD_SUCCESS",
+	UPDATE_MEMBER_PASSWORD_FAILED = " UPDATE_MEMBER_PASSWORD_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -921,7 +925,6 @@ export const changePassword = data => {
 };
 
 export const fetchChangePassword = data => {
-	console.log(data);
 	return new Promise((resolve, reject) => {
 		put("/api/v1/members/action/forgot-password/reset-password", {
 			cellphoneCountryCode: data.cellphoneCountryCode,
@@ -930,7 +933,6 @@ export const fetchChangePassword = data => {
 			password: data.password
 		})
 			.then(resp => {
-				console.log("asdfasdf");
 				resolve({
 					...resp,
 					navigation: data.navigation,
@@ -938,14 +940,12 @@ export const fetchChangePassword = data => {
 				});
 			})
 			.catch(err => {
-				console.log("er");
 				reject(err);
 			});
 	});
 };
 
 export const fetchChangePasswordSuccess = data => {
-	console.log("fetchchgpassgood");
 	return {
 		type: CONFIRM_PASSWORD_SUCCESS,
 		payload: data
@@ -955,6 +955,49 @@ export const fetchChangePasswordSuccess = data => {
 export const fetchChangePasswordFailed = err => {
 	return {
 		type: CONFIRM_PASSWORD_FAILED,
+		payload: err
+	};
+};
+
+// ---------
+
+export const changePasswordFromProfile = data => {
+	return {
+		type: UPDATE_MEMBER_PASSWORD,
+		payload: data
+	};
+};
+
+export const serverChangePasswordFromProfile = data => {
+	console.log("id", data.id);
+	return new Promise((resolve, reject) => {
+		put("/api/v1/members/action/change-password", {
+			id: data.id,
+			newPassword: data.newPassword,
+			oldPassword: data.oldPassword
+		})
+			.then(resp => {
+				resolve({
+					...resp,
+					navigation: data.navigation
+				});
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverChangePasswordFromProfileSuccess = data => {
+	return {
+		type: UPDATE_MEMBER_PASSWORD_SUCCESS,
+		payload: data
+	};
+};
+
+export const serverChangePasswordFromProfileFailed = err => {
+	return {
+		type: UPDATE_MEMBER_PASSWORD_FAILED,
 		payload: err
 	};
 };

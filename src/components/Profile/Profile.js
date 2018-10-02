@@ -157,13 +157,13 @@ export default class Profile extends Component {
 				data: [
 					{
 						icon: changeName,
-						name: "Change Name",
+						name: "Change Username",
 						clickHandler: () => {} // todo make name change
 					},
 					{
 						icon: changePassword,
 						name: "Change Password",
-						clickHandler: () => this.goTo("ChangePasswordLevel1Screen")
+						clickHandler: () => this.goTo("ChangePasswordFromProfileScreen")
 					}
 				]
 			},

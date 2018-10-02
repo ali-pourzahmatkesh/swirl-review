@@ -162,7 +162,14 @@ import {
 	CONFIRM_PASSWORD_FAILED,
 	fetchChangePassword,
 	fetchChangePasswordSuccess,
-	fetchChangePasswordFailed
+	fetchChangePasswordFailed,
+	// ------
+	UPDATE_MEMBER_PASSWORD,
+	UPDATE_MEMBER_PASSWORD_SUCCESS,
+	UPDATE_MEMBER_PASSWORD_FAILED,
+	serverChangePasswordFromProfile,
+	serverChangePasswordFromProfileSuccess,
+	serverChangePasswordFromProfileFailed
 } from "./";
 
 import { showToast } from "../toast";
@@ -1132,6 +1139,40 @@ const chat = (state = initialState, action) => {
 			};
 		}
 		case CONFIRM_PASSWORD_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ---------
+
+		case UPDATE_MEMBER_PASSWORD: {
+			return loop(
+				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				Cmd.run(serverChangePasswordFromProfile, {
+					successActionCreator: serverChangePasswordFromProfileSuccess,
+					failActionCreator: serverChangePasswordFromProfileFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case UPDATE_MEMBER_PASSWORD_SUCCESS: {
+			// action.payload.navigation.navigate('ConfirmPasswordScreen');
+			action.payload.navigation.goBack();
+			return {
+				...state,
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false
+			};
+		}
+		case UPDATE_MEMBER_PASSWORD_FAILED: {
 			return loop(
 				{
 					...state,
