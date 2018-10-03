@@ -169,7 +169,14 @@ import {
 	UPDATE_MEMBER_PASSWORD_FAILED,
 	serverChangePasswordFromProfile,
 	serverChangePasswordFromProfileSuccess,
-	serverChangePasswordFromProfileFailed
+	serverChangePasswordFromProfileFailed,
+	// -------
+	UPDATE_MEMBER,
+	UPDATE_MEMBER_SUCCESS,
+	UPDATE_MEMBER_FAILED,
+	serverUpdateMember,
+	serverUpdateMemberSuccess,
+	serverUpdateMemberFailed
 } from "./";
 
 import { showToast } from "../toast";
@@ -889,6 +896,7 @@ const chat = (state = initialState, action) => {
 		}
 
 		case CALL_GET_PROFILE: {
+			console.log(">>>>> CALL_GET_PROFILE");
 			return loop(
 				{
 					...state,
@@ -1173,6 +1181,53 @@ const chat = (state = initialState, action) => {
 			};
 		}
 		case UPDATE_MEMBER_PASSWORD_FAILED: {
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ---------
+
+		case UPDATE_MEMBER: {
+			return loop(
+				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				Cmd.run(serverUpdateMember, {
+					successActionCreator: serverUpdateMemberSuccess,
+					failActionCreator: serverUpdateMemberFailed,
+					args: [action.payload]
+				})
+			);
+		}
+		case UPDATE_MEMBER_SUCCESS: {
+			// action.payload.navigation.navigate('ConfirmPasswordScreen');
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: "",
+					hasError: false
+				},
+				Cmd.list(
+					[
+						Cmd.action(callGetProfile(action.payload.id)),
+						Cmd.run(() => {
+							action.payload.navigation.goBack();
+						})
+					],
+					{
+						sequence: true
+					}
+				)
+			);
+		}
+
+		case UPDATE_MEMBER_FAILED: {
 			return loop(
 				{
 					...state,

@@ -34,8 +34,8 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			ghost: false,
-			ghostNotif: false
+			// ghost: false,
+			// ghostNotif: false
 		};
 	}
 
@@ -44,25 +44,25 @@ export default class Profile extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.userProfile &&
-			nextProps.userProfile.isInGhostMode !== undefined &&
-			nextProps.userProfile.isInGhostMode !== this.state.ghost
-		) {
-			this.setState({
-				ghost: nextProps.userProfile.isInGhostMode
-			});
-
-			// read updated ghostmode notification and update profile page
-			if (
-				nextProps.ghostNotif !== undefined &&
-				nextProps.ghostNotif !== this.state.ghostNotif
-			) {
-				this.setState({
-					ghostNotif: nextProps.ghostNotif
-				});
-			}
-		}
+		// if (
+		// 	nextProps.userProfile &&
+		// 	nextProps.userProfile.isInGhostMode !== undefined &&
+		// 	nextProps.userProfile.isInGhostMode !== this.state.ghost
+		// ) {
+		// 	this.setState({
+		// 		ghost: nextProps.userProfile.isInGhostMode
+		// 	});
+		//
+		// 	// read updated ghostmode notification and update profile page
+		// 	if (
+		// 		nextProps.ghostNotif !== undefined &&
+		// 		nextProps.ghostNotif !== this.state.ghostNotif
+		// 	) {
+		// 		this.setState({
+		// 			ghostNotif: nextProps.ghostNotif
+		// 		});
+		// 	}
+		// }
 	}
 
 	goTo(screenName) {
@@ -113,44 +113,43 @@ export default class Profile extends Component {
 		});
 	};
 
-	changeGhostMode = () => {
-		this.props.updateGhostMode({
-			id: this.props.id,
-			isInGhostMode: !this.state.ghost
-		});
-	};
+	// changeGhostMode = () => {
+	// 	this.props.updateGhostMode({
+	// 		id: this.props.id,
+	// 		isInGhostMode: !this.state.ghost
+	// 	});
+	// };
+	//
+	// closeGhostModePopup = () => {
+	// 	this.props.updateGhostModeNotification(false);
+	// 	this.setState({
+	// 		ghostNotif: false
+	// 	});
+	// };
 
-	closeGhostModePopup = () => {
-		this.props.updateGhostModeNotification(false);
-		this.setState({
-			ghostNotif: false
-		});
-	};
-
-	showGhostModePopup = () => {
-		let { ghost, ghostNotif } = this.state;
-		if (ghostNotif) {
-			return (
-				<Popup
-					popupIcon={ghost ? ghostFill : ghostEmpty}
-					popupText={
-						ghost ? "Nobody can see you!" : "People can see you again!"
-					}
-					popupCallback={() => this.closeGhostModePopup()}
-					//reducing height so ghost icon overlaps
-					containerStyle={{
-						height: 44
-					}}
-				/>
-			);
-		} else {
-			return null;
-		}
-	};
+	// showGhostModePopup = () => {
+	// 	let { ghost, ghostNotif } = this.state;
+	// 	if (ghostNotif) {
+	// 		return (
+	// 			<Popup
+	// 				popupIcon={ghost ? ghostFill : ghostEmpty}
+	// 				popupText={
+	// 					ghost ? "Nobody can see you!" : "People can see you again!"
+	// 				}
+	// 				popupCallback={() => this.closeGhostModePopup()}
+	// 				//reducing height so ghost icon overlaps
+	// 				containerStyle={{
+	// 					height: 44
+	// 				}}
+	// 			/>
+	// 		);
+	// 	} else {
+	// 		return null;
+	// 	}
+	// };
 
 	render() {
 		let { userProfile } = this.props;
-		console.log(userProfile);
 		let options = [
 			{
 				title: "Account info",
@@ -158,7 +157,7 @@ export default class Profile extends Component {
 					{
 						icon: changeName,
 						name: "Change Username",
-						clickHandler: () => {} // todo make name change
+						clickHandler: () => this.goTo("ChangeInfoScreen")
 					},
 					{
 						icon: changePassword,
@@ -201,7 +200,7 @@ export default class Profile extends Component {
 
 		return (
 			<View style={{ flex: 1 }}>
-				{this.showGhostModePopup()}
+				{/*this.showGhostModePopup()*/}
 				<View style={{ flex: 1 }}>
 					<ImageBackground style={{ width: "100%" }} source={background}>
 						<View style={[appCss.header, { marginBottom: 0 }]}>
@@ -209,20 +208,10 @@ export default class Profile extends Component {
 								style={appCss.headerIconBox}
 								onPress={() => this.props.navigation.goBack()}
 							>
-								<Image
-									style={appCss.headerIcon}
-									resizeMode={"contain"}
-									source={logo}
-								/>
-							</TouchableOpacity>
-							<TouchableOpacity
-								onPress={() => this.changeGhostMode()}
-								style={appCss.headerIconBox}
-							>
-								<Image
-									style={appCss.headerIcon}
-									resizeMode={"contain"}
-									source={this.state.ghost ? ghostFill : ghostEmpty}
+								<Ionicons
+									size={25}
+									color={COLORS.tapeDarkGrey}
+									name="ios-arrow-back"
 								/>
 							</TouchableOpacity>
 						</View>
@@ -239,7 +228,7 @@ export default class Profile extends Component {
 								position="profile"
 							/>
 						</View>
-						<Text style={styles.nameText}>{userProfile.name}</Text>
+						<Text style={styles.nameText}>{userProfile.username}</Text>
 					</ImageBackground>
 					<View
 						style={{

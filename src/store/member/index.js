@@ -92,7 +92,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	// ------
 	UPDATE_MEMBER_PASSWORD = "UPDATE_MEMBER_PASSWORD",
 	UPDATE_MEMBER_PASSWORD_SUCCESS = "UPDATE_MEMBER_PASSWORD_SUCCESS",
-	UPDATE_MEMBER_PASSWORD_FAILED = " UPDATE_MEMBER_PASSWORD_FAILED";
+	UPDATE_MEMBER_PASSWORD_FAILED = " UPDATE_MEMBER_PASSWORD_FAILED",
+	// -------
+	UPDATE_MEMBER = "UPDATE_MEMBER",
+	UPDATE_MEMBER_SUCCESS = "UPDATE_MEMBER_SUCCESS",
+	UPDATE_MEMBER_FAILED = "UPDATE_MEMBER_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -979,7 +983,8 @@ export const serverChangePasswordFromProfile = data => {
 			.then(resp => {
 				resolve({
 					...resp,
-					navigation: data.navigation
+					navigation: data.navigation,
+					id: data.id
 				});
 			})
 			.catch(err => {
@@ -1001,3 +1006,36 @@ export const serverChangePasswordFromProfileFailed = err => {
 		payload: err
 	};
 };
+
+// ----------
+
+export const updateMember = data => ({
+	type: UPDATE_MEMBER,
+	payload: data
+});
+
+export const serverUpdateMember = data => {
+	return new Promise((resolve, reject) => {
+		put(`/api/v1/members/${data.id}`, data)
+			.then(resp => {
+				resolve({
+					...resp,
+					id: data.id,
+					navigation: data.navigation
+				});
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverUpdateMemberSuccess = data => ({
+	type: UPDATE_MEMBER_SUCCESS,
+	payload: data
+});
+
+export const serverUpdateMemberFailed = err => ({
+	type: UPDATE_MEMBER_FAILED,
+	payload: err
+});
