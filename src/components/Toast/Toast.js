@@ -1,27 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {  Text, View } from "react-native";
 import appCss from "../../../app.css";
-const styles = StyleSheet.flatten({
-	container: {
-		position: "absolute",
-		marginTop: "8%",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-		height: 60,
-		width: "100%",
-		borderWidth: 2,
-		borderColor: "#fff",
-		backgroundColor: "#ed1b34",
-		borderRadius: 15
-	},
-
-	text: {
-		fontSize: 18,
-		color: "#fff",
-		textAlign: "center"
-	}
-});
+import styles from "./style";
 export default class ToastContainer extends Component {
 	state = {
 		hasError: false,
@@ -51,9 +31,12 @@ export default class ToastContainer extends Component {
 		} else {
 			return (
 				<View style={styles.container}>
-					<Text style={[appCss.defaultFontApp, styles.text]}>
-						{this.state.errorMessage}
-					</Text>
+					<View style={styles.toastBox}>
+						<Text style={[appCss.defaultFontApp, styles.text]}>
+                            {this.state.errorMessage}
+						</Text>
+					</View>
+
 				</View>
 			);
 		}

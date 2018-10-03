@@ -42,12 +42,7 @@ const styles = StyleSheet.create({
 		aspectRatio: 1,
 		resizeMode: "contain"
 	},
-	formInputContainer: {
-		alignItems: "flex-start",
-		width: 300,
-        flex:3,
-		alignSelf: "center"
-	},
+
     loginButton: {
         backgroundColor: colors.highlightColorTwo,
         height: '10%',

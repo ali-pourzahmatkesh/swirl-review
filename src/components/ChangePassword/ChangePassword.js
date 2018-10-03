@@ -1,88 +1,24 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-	Image,
-	Keyboard,
-	LayoutAnimation,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	StyleSheet,
-	View
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    LayoutAnimation,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 
-import { SafeAreaView, NavigationActions } from "react-navigation";
+import {NavigationActions, SafeAreaView} from "react-navigation";
 
+import passwordIcon from "../../assets/images/icons/Lock.png";
 import logo from "../../assets/images/logo_bigger.png";
-import passwordIcon from "../../assets/images/passwordIcon.png";
 import appCss from "../../../app.css";
+import styles from "./style";
+import {CONFIG} from "../../../config";
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fc003e"
-		// flexDirection: 'column'
-	},
-	imagesContent: {
-		height: "15%",
-		alignItems: "center",
-		marginTop: "5%",
-		marginBottom: "10%"
-	},
-	imageItem: {
-		flex: 1,
-		resizeMode: "contain"
-	},
-	formContainer: {
-		width: 300,
-		alignSelf: "center"
-		// borderWidth: 1
-	},
-	formInputIcon: {
-		height: "110%",
-		width: "10%",
-		resizeMode: "contain"
-
-		// borderWidth: 2
-	},
-	minLengthText: {
-		alignSelf: "flex-end",
-		color: "#fff",
-		fontFamily: "MuseoSansRounded-300",
-		fontSize: 10,
-		marginTop: 7,
-		marginBottom: 15
-	},
-	nextButton: {
-		backgroundColor: "#faec22",
-		height: "10%",
-		width: "100%",
-		justifyContent: "center",
-		position: "absolute"
-	},
-	nextText: {
-		color: "#fc003e",
-		textAlign: "center",
-		fontSize: 20
-	},
-	textInput: {
-		fontSize: 16,
-		paddingLeft: "6%",
-		color: "#fff",
-		width: "100%"
-
-		// borderWidth: 2
-	},
-	textInputContainer: {
-		alignSelf: "center",
-		borderBottomWidth: 1.5,
-		borderBottomColor: "#fff",
-		flexDirection: "row",
-		// marginBottom: 30,
-		paddingBottom: 12,
-		// width: '85%'
-		width: 300
-	}
-});
+const colors = CONFIG.colors;
 
 export default class ChangePassword extends Component {
 	constructor(props) {
@@ -111,24 +47,28 @@ export default class ChangePassword extends Component {
 	}
 
 	keyboardWillShow = event => {
-		LayoutAnimation.configureNext(
-			LayoutAnimation.create(
-				event.duration,
-				LayoutAnimation.Types[event.easing]
-			)
-		);
+        LayoutAnimation.configureNext({
+            duration: event.duration,
+            create: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: { type: LayoutAnimation.Types.easeInEaseOut },
+        });
 		this.setState({
 			bottom: event.endCoordinates.height
 		});
 	};
 
 	keyboardWillHide = event => {
-		LayoutAnimation.configureNext(
-			LayoutAnimation.create(
-				event.duration,
-				LayoutAnimation.Types[event.easing]
-			)
-		);
+        LayoutAnimation.configureNext({
+            duration: event.duration,
+            create: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: { type: LayoutAnimation.Types.easeInEaseOut },
+        });
 		this.setState({
 			bottom: 0
 		});
@@ -164,33 +104,41 @@ export default class ChangePassword extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<View style={styles.imagesContent}>
-					<Image style={styles.imageItem} source={logo} />
-				</View>
-				<View style={styles.formContainer}>
-					<View style={styles.textInputContainer}>
-						<Image style={styles.formInputIcon} source={passwordIcon} />
-						<TextInput
-							placeholder="New Password"
-							placeholderTextColor="#fff"
-							secureTextEntry={true}
-							style={[appCss.defaultFontApp, styles.textInput]}
-							onChangeText={text => this.setState({ password: text })}
-						/>
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+					<View
+						style={
+                            styles.imageContainer
+                        }
+					>
+						<View style={styles.imagesContent}>
+							<Image style={styles.imageItem} source={logo}/>
+						</View>
 					</View>
-					<Text style={styles.minLengthText}>min 7 characters</Text>
+					<View style={appCss.formInputContainer}>
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={passwordIcon}/>
+							<TextInput
+								placeholder="New Password"
+								placeholderTextColor={colors.combinatorialColor}
+								secureTextEntry={true}
+								style={appCss.textInput}
+								onChangeText={text => this.setState({ password: text })}
+							/>
+						</View>
+						{/*<Text style={styles.minLengthText}>min 7 characters</Text>*/}
 
-					<View style={styles.textInputContainer}>
-						<Image style={styles.formInputIcon} source={passwordIcon} />
-						<TextInput
-							placeholder="Re-enter Password"
-							placeholderTextColor="#fff"
-							secureTextEntry={true}
-							style={[appCss.defaultFontApp, styles.textInput]}
-							onChangeText={text => this.setState({ retypePassword: text })}
-						/>
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={passwordIcon}/>
+							<TextInput
+								placeholder="Re-enter Password"
+								placeholderTextColor={colors.combinatorialColor}
+								secureTextEntry={true}
+								style={appCss.textInput}
+								onChangeText={text => this.setState({ retypePassword: text })}
+							/>
+						</View>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 				<TouchableOpacity
 					style={[styles.nextButton, { bottom: this.state.bottom }]}
 					disabled={nextDisabled}

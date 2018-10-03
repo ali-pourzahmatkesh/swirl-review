@@ -250,6 +250,14 @@ const appCss = StyleSheet.create({
         resizeMode: "contain"
     },
 
+
+    formInputContainer: {
+        alignItems: "center",
+        width: 300,
+        flex:3,
+        alignSelf: "center"
+    },
+
     textInput: {
         ...defaultFontApp,
         flex: 1,
