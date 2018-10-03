@@ -403,7 +403,7 @@ export default class SignIn extends Component {
 							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
-					<View style={styles.formInputContainer}>
+					<View style={appCss.formInputContainer}>
 						<View
 							style={[
                                 appCss.iconFormInput,

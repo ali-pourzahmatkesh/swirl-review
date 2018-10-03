@@ -225,8 +225,6 @@ export default class SignUp extends Component {
 			username,
 			password,
 			reEnterPassword,
-
-			//for modal
 			cellphoneCountryCode,
 			cellphone,
 			countryCodeGroup,

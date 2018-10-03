@@ -6,6 +6,7 @@ import {
 	View,
 	StyleSheet,
 	TextInput,
+    KeyboardAvoidingView,
 	Animated,
 	Keyboard,
 	Easing,
@@ -18,49 +19,7 @@ import CodeInput from "react-native-confirmation-code-input";
 import logo from "../../assets/images/logo_bigger.png";
 
 import appCss from "../../../app.css";
-
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: "#fc003e",
-		flex: 1
-	},
-	contentContainer: {
-		flex: 1,
-		alignItems: "center"
-	},
-	imagesContent: {
-		height: "10%",
-		alignItems: "center",
-		marginBottom: "10%"
-	},
-	imageItem: {
-		flex: 1,
-		aspectRatio: 1,
-		resizeMode: "contain"
-	},
-	nextButtonContainer: {
-		backgroundColor: "#faec22",
-		height: "20%",
-		width: "100%",
-		position: "absolute"
-	},
-	nextButton: {
-		backgroundColor: "#faec22",
-		height: "50%",
-		justifyContent: "center"
-	},
-	nextText: {
-		color: "#fc003e",
-		textAlign: "center",
-		fontSize: 20
-	},
-	promptText: {
-		color: "#fff",
-		fontSize: 20,
-		textAlign: "center",
-		width: "80%"
-	}
-});
+import styles from "./style";
 
 export default class ForgotPasswordVerify extends Component {
 	constructor(props) {
@@ -138,18 +97,25 @@ export default class ForgotPasswordVerify extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<View style={[styles.contentContainer]}>
-					<View style={styles.imagesContent}>
-						<Image style={styles.imageItem} source={logo} />
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+					<View
+						style={
+                            styles.imageContainer
+                        }
+					>
+						<View style={styles.imagesContent}>
+							<Image style={styles.imageItem} source={logo}/>
+						</View>
 					</View>
-					<Text style={[appCss.defaultFontApp, styles.promptText]}>
-						Please enter the code we have texted you.
-					</Text>
-					<View>
+
+					<View style={styles.formInputContainer}>
+						<Text style={[appCss.defaultFontApp, styles.promptText]}>
+							Please enter the verification code
+						</Text>
 						<CodeInput
 							ref="vcode"
 							className="border-b"
-							codeInputStyle={[appCss.defaultFontApp]}
+							codeInputStyle={[appCss.defaultFontApp, styles.codeInput]}
 							codeLength={4}
 							keyboardType="numeric"
 							onFulfill={(isMatching, code) => {
@@ -167,7 +133,7 @@ export default class ForgotPasswordVerify extends Component {
 							}
 						/>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 
 				<Animated.View
 					style={[styles.nextButtonContainer, { bottom: this.buttonBottom }]}
