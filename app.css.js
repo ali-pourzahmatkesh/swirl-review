@@ -66,6 +66,11 @@ const appCss = StyleSheet.create({
 	    width: 27,
         height: 27
     },
+
+    headerLogoBox: {
+	    width: 43,
+        height: 43
+    },
     headerIconHorizontalBox: {
         width: 50,
         height: 27
