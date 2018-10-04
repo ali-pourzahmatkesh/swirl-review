@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, Text, TouchableOpacity, View, Modal} from "react-native";
+import {NavigationActions, SafeAreaView} from "react-navigation";
 import styles from "./style";
 import appCss from "../../../app.css";
 import logo from "../../assets/images/logo_bigger.png";
@@ -11,6 +12,7 @@ import {CONFIG} from "../../../config";
 import EmptyList from "../EmptyList";
 // import defaultMoment from "moment";
 import moment from "moment-timezone";
+import MessagePopup from "../MessagePopup/MessagePopup";
 const COLORS = CONFIG.colors;
 
 // import Discussion from "../Discussion";
@@ -20,7 +22,8 @@ class Home extends Component {
 		super(props);
         this.state = {
             refreshing: true,
-            list1: [],
+            messageVisible:false,
+            // list1: [],
             list: [
 
                 {
@@ -101,9 +104,7 @@ class Home extends Component {
         return (
 			<View style={appCss.header}>
 				<TouchableOpacity
-					onPress={() => {
-                        this.changeGhostMode();
-                    }}
+                    onPress={()=>this.setState({messageVisible : true})}
 					style={appCss.headerIconBox}
 				>
 					<Image
@@ -192,13 +193,19 @@ class Home extends Component {
 
     };
 
+
     render() {
         const { list, refreshing } = this.state;
         return (
 			<View style={styles.container}>
+                <Modal
+                    visible={this.state.messageVisible}
+                    animationType="slide"
+                    transparent={true}
+                >
+                        <MessagePopup closeMessageModal={()=>{this.setState({ messageVisible: false })}}/>
+                </Modal>
                 {this.loadHeader()}
-
-
 				<View style={styles.chatList}>
 					{
                         list.length &&
@@ -223,7 +230,7 @@ class Home extends Component {
                 {
                     list.length &&
 					<View style={styles.homeBottomBox}>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={()=>this.setState({messageVisible : true})}>
 							<View style={styles.iconBottomBox}>
 								<Image style={styles.iconBottom} source={addMessage}/>
 							</View>
