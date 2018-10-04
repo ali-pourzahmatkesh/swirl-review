@@ -27,7 +27,8 @@ const CONFIG = {
         //currently yellow
         highlightColorTwo: "#ff4674",
 		//currently white
-		formInputUnderline: "#fff"
+		formInputUnderline: "#fff",
+        selectedBoxBorder : "#ff345e"
 	}
 };
 
