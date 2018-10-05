@@ -1,140 +1,70 @@
-import React, { Component } from "react";
-import {
-	Image,
-	KeyboardAvoidingView,
-	StyleSheet,
-	TextInput,
-	TouchableOpacity,
-	View
-} from "react-native";
-import { SafeAreaView } from "react-navigation";
-import logoPic from "../../assets/images/tape-logo.png";
-import forward from "../../assets/images/forward.png";
-// import { Ionicons } from '@expo/vector-icons';
-import { get } from "lodash";
+import React, {Component} from "react";
+import {Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View, Dimensions} from "react-native";
+import logo from "../../assets/images/logo_bigger.png";
+import usernameIcon from "../../assets/images/icons/Mask.png";
 import appCss from "../../../app.css";
+import styles from "./style";
+import {CONFIG} from "../../../config";
+const { width, height } = Dimensions.get("window");
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: "#ed1b34",
-		flex: 1
-	},
-	imageContainer: {
-		flex: 2
-	},
-	header: {
-		display: "flex",
-		justifyContent: "flex-start"
-	},
-	backButton: {
-		marginLeft: 20
-	},
-	imagesContent: {
-		flex: 1,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		height: "50%"
-	},
-	imageItem: {
-		flex: 1,
-		aspectRatio: 1,
-		resizeMode: "contain"
-	},
-	flexContent: {
-		flex: 1
-	},
-	textInputContainer: {
-		flex: 1,
-		justifyContent: "flex-start",
-		alignItems: "center"
-	},
-	textInput: {
-		borderWidth: 0,
-		fontWeight: "bold",
-		fontSize: 20,
-		width: "100%",
-		paddingRight: 20,
-		paddingTop: 20,
-		paddingLeft: 20,
-		textAlign: "center",
-		color: "#fff"
-	},
-	forwardContainer: {
-		flex: 1,
-		padding: 20,
-		justifyContent: "flex-end",
-		alignItems: "flex-end"
-	},
-	forwardImageItem: {
-		width: 45,
-		height: 45
-	}
-});
+// import moment from "moment";
+
+const colors = CONFIG.colors;
 
 export default class ChangeInfo extends Component {
-	state = {
-		username: ""
-	};
-
-	// componentDidMount() {
-	// 	let params = get(this.props, "navigation.state.params", {});
-	// 	this.setState({
-	// 		username: params.username
-	// 	});
-	// }
-
-	onPressButton = () => {
-		this.props.updateMember({
-			id: this.props.id,
-			username: this.state.username,
-			navigation: this.props.navigation
-		});
-	};
+    state = {
+        username: ""
+    };
+    onPressButton = () => {
+        this.props.updateMember({
+            id: this.props.id,
+            username: this.state.username,
+            navigation: this.props.navigation
+        });
+    };
 
 	render() {
-		let { username } = this.state;
-		let disabledBtn = false;
-		if (!username || username.length === 0) disabledBtn = true;
+        let { username } = this.state;
+        let disabledBtn = false;
+        if( !username || username.length === 0 ) disabledBtn = true;
 
-		return (
-			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView
-					keyboardVerticalOffset={70}
-					behavior="padding"
-					style={{ flex: 1 }}
-				>
-					<View style={styles.imageContainer}>
+        return (
+			<View style={styles.container}>
+				<KeyboardAvoidingView keyboardVerticalOffset={height === 812 ? 85 : 65} style={{ flex: 1 }} behavior="padding">
+					<View
+						style={
+                            styles.imageContainer
+                        }
+					>
 						<View style={styles.imagesContent}>
-							<View style={styles.flexContent} />
-							<Image style={styles.imageItem} source={logoPic} />
-							<View style={styles.flexContent} />
+							<Image style={styles.imageItem} source={logo}/>
 						</View>
 					</View>
-					<View style={styles.textInputContainer}>
-						<TextInput
-							style={[appCss.defaultFontApp, styles.textInput]}
-							placeholder={this.props.username}
-							placeholderTextColor="#fff"
-							autoCorrect={false}
-							value={username}
-							blurOnSubmit={true}
-							autoFocus={true}
-							returnKeyType="send"
-							onChangeText={username => this.setState({ username })}
-						/>
+					<View style={[ appCss.formInputContainer ]}>
+						<View style={appCss.iconFormInput}>
+							<Image style={appCss.formInputIcon} source={usernameIcon}/>
+							<TextInput
+								style={[ appCss.textInput ]}
+								placeholder={this.props.username}
+								placeholderTextColor={colors.combinatorialColor}
+								autoCorrect={false}
+								value={username}
+								blurOnSubmit={true}
+								autoFocus={true}
+								onChangeText={username => this.setState({ username })}
+							/>
+						</View>
+
 					</View>
-					<View style={styles.forwardContainer}>
-						<TouchableOpacity
-							style={styles.smallButton}
-							disabled={disabledBtn}
-							onPress={this.onPressButton}
-						>
-							<Image style={styles.forwardImageItem} source={forward} />
-						</TouchableOpacity>
-					</View>
+					<TouchableOpacity
+						style={[ styles.nextButton ]}
+						onPress={this.onPressButton}
+						disabled={!this.props.username}
+					>
+						<Text style={[ styles.nextText, !this.props.username && { opacity: 0.5 } ]}>save</Text>
+					</TouchableOpacity>
 				</KeyboardAvoidingView>
-			</SafeAreaView>
+			</View>
 		);
 	}
 }

@@ -1,32 +1,20 @@
-import React, { Component } from "react";
-import {
-	View,
-	Text,
-	TouchableOpacity,
-	Image,
-	Dimensions,
-	ImageBackground,
-	SectionList
-} from "react-native";
-import { NavigationActions } from "react-navigation";
+import React, {Component} from "react";
+import {Dimensions, Image, SectionList, Text, TouchableOpacity, View} from "react-native";
+import {NavigationActions} from "react-navigation";
 import Avatar from "../Avatar";
-import Popup from "../Popup";
 import appCss from "../../../app.css";
 import styles from "./style";
-import ghostFill from "../../assets/images/ghost.png";
-import ghostEmpty from "../../assets/images/ghostEmpty.png";
-import logo from "../../assets/images/tape-logo.png";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import background from "../../assets/images/background.png";
-import changeName from "../../assets/images/changeName.png";
+import changeNameRed from "../../assets/images/icons/profileRed.png";
+import changeNameBlue from "../../assets/images/icons/profileBlue.png";
 import changePassword from "../../assets/images/changePassword.png";
-import termsOfUse from "../../assets/images/termsOfUse.png";
-import privacyPolicy from "../../assets/images/privacyPolicy.png";
-import feedback from "../../assets/images/feedback.png";
-import logout from "../../assets/images/logout.png";
+import termsOfUseSwirl from "../../assets/images/icons/termOfUse.png";
+import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy.png";
+import editIcon from "../../assets/images/icons/edit.png";
+import feedback from "../../assets/images/icons/feedBack.png";
+import logout from "../../assets/images/icons/logout.png";
 
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
 const COLORS = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 
@@ -155,7 +143,12 @@ export default class Profile extends Component {
 				title: "Account info",
 				data: [
 					{
-						icon: changeName,
+                        icon: changeNameBlue,
+                        name: "Change Name",
+                        clickHandler: () => this.goTo("ChangeInfoScreen")
+                    },
+                    {
+                        icon: changeNameRed,
 						name: "Change Username",
 						clickHandler: () => this.goTo("ChangeInfoScreen")
 					},
@@ -170,12 +163,12 @@ export default class Profile extends Component {
 				title: "Legal stuff",
 				data: [
 					{
-						icon: termsOfUse,
+                        icon: termsOfUseSwirl,
 						name: "Terms of Use",
 						clickHandler: () => this.goTo("TermsAndConditionsScreen")
 					},
 					{
-						icon: privacyPolicy,
+                        icon: privacyPolicySwirl,
 						name: "Privacy Policy",
 						clickHandler: () => this.goTo("PrivacyPolicyScreen")
 					}
@@ -202,15 +195,15 @@ export default class Profile extends Component {
 			<View style={{ flex: 1 }}>
 				{/*this.showGhostModePopup()*/}
 				<View style={{ flex: 1 }}>
-					<ImageBackground style={{ width: "100%" }} source={background}>
+					<View style={styles.imageContainer}>
 						<View style={[appCss.header, { marginBottom: 0 }]}>
 							<TouchableOpacity
 								style={appCss.headerIconBox}
 								onPress={() => this.props.navigation.goBack()}
 							>
 								<Ionicons
-									size={25}
-									color={COLORS.tapeDarkGrey}
+									size={30}
+									color={COLORS.bodyColor}
 									name="ios-arrow-back"
 								/>
 							</TouchableOpacity>
@@ -219,7 +212,8 @@ export default class Profile extends Component {
 							style={{
 								borderWidth: 0,
 								height: height * 0.15,
-								alignSelf: "center"
+                                alignSelf: "center",
+                                position: "relative"
 							}}
 						>
 							<Avatar
@@ -227,9 +221,12 @@ export default class Profile extends Component {
 								size={height * 0.15}
 								position="profile"
 							/>
+							<TouchableOpacity  style={styles.editButton}>
+								<Image style={styles.editIcon} resizeMode={"contain"} source={editIcon}/>
+							</TouchableOpacity>
 						</View>
 						<Text style={styles.nameText}>{userProfile.username}</Text>
-					</ImageBackground>
+					</View>
 					<View
 						style={{
 							borderWidth: 0,
