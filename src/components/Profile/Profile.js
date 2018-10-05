@@ -7,7 +7,7 @@ import styles from "./style";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import changeNameRed from "../../assets/images/icons/profileRed.png";
 import changeNameBlue from "../../assets/images/icons/profileBlue.png";
-import changePassword from "../../assets/images/changePassword.png";
+import changePassword from "../../assets/images/icons/LockOther.png";
 import termsOfUseSwirl from "../../assets/images/icons/termOfUse.png";
 import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy.png";
 import editIcon from "../../assets/images/icons/edit.png";
