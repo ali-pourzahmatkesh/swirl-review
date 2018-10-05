@@ -4,57 +4,97 @@ import appCss from "../../../app.css";
 const {height, width} = Dimensions.get('window');
 const colors = CONFIG.colors;
 const styles = StyleSheet.flatten({
-    container: {
-        position: "absolute",
-        zIndex: 10,
-        display: "flex",
-        alignItems: "center",
-        // height: height === 812? 88: 64,
-        height: height === 812 ? 115 : 91,
-        width: width,
-        borderBottomWidth: 1,
-        borderColor: colors.borderColor,
-        backgroundColor: colors.tapeWhite,
+    container:{
+        flex:1,
+        backgroundColor:colors.combinatorialColor,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    messageBox:{
+        width: width-30,
+        height:height-100,
+        backgroundColor:colors.bodyColor,
+
+        borderRadius:20,
+    },
+    messageBoxHeader:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        height:44,
+        marginLeft:15,
+        marginRight:15
+    },
+    closeIcon:{
+        width:15,
+        height:15
     },
 
-    header: {
-        justifyContent: 'space-between',
+    subjectBox:{
+      flexDirection:'row',
+        alignItems:'center',
+        justifyContent:"center"
+    },
+    headerSubject:{
+        color:colors.combinatorialColor,
+        fontSize:17
+    },
+
+    textInputBox:{
+        padding:15,
+        flex:1,
+        justifyContent:"space-between"
+
+    },
+
+
+
+    footer:{
+
+    },
+    footerCounter:{
+        alignItems:'flex-end',
+        marginBottom:20
+    },
+    footerCounterText:{
+        color:colors.combinatorialColor,
+        fontSize:12
+    },
+
+
+    footerActions:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+    },
+    actionBox:{
+        width: 40,
+        height: 30,
+        margin:5
+    },
+    actionBoxIcon:{
+        width:undefined,
+        height:undefined,
+        flex:1
+    },
+
+
+    nextButton: {
+        width: 50,
+        height: 50,
+        display: 'flex',
         alignItems: 'center',
-        // height: 44,
-        height: 71,
-        flexDirection: 'row',
-        width: width,
-        paddingRight: 16,
-        paddingLeft: 16
+        justifyContent: 'center',
+        backgroundColor:'transparent',
+        borderRadius: 50
+    },
+
+    iconButton: {
+        width: 25,
+        height: 25,
+        resizeMode: 'contain'
     },
 
 
-    hideMobileInfoBox: {
-        height: height === 812 ? 44 : 20,
-        width: width,
-        alignItems: 'center',
-        paddingLeft: height === 812 ? 22 : 5,
-        paddingRight: height === 812 ? 42 : 38,
-        paddingTop: height === 812 ? 17 : 4
-
-    },
-    hideMobileInfo: {
-        height: 12,
-        width: '100%',
-        backgroundColor: colors.tapeBlack,
-    },
-    text: StyleSheet.flatten([appCss.defaultFontApp, {
-        fontSize: 15,
-        textAlign: "center",
-        marginLeft: 16
-    }]),
-
-    headerIconBox: {
-        width: 10,
-        height: 10,
-        backgroundColor: colors.appColor,
-        borderRadius: 5
-    }
 });
 
 export default styles;

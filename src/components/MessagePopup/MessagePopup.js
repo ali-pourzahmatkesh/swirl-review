@@ -1,65 +1,90 @@
 import React, {Component} from "react";
-import {Text, TouchableOpacity, View, Animated} from "react-native";
+import {Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import styles from "./style";
-import Avatar from '../Avatar';
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import close from "../../assets/images/icons/close_red.png";
+import chat from "../../assets/images/icons/chat.png";
+import camera from "../../assets/images/icons/camera.png";
+import next from "../../assets/images/icons/next.png";
+import {SafeAreaView} from "react-navigation";
 import {CONFIG} from "../../../config";
 const colors = CONFIG.colors;
-const {animationDuration : ANIMATION_DURATION} = CONFIG;
 
 export default class MessagePopup extends Component {
     state = {
-        _animated: new Animated.Value(0),
+        message: ""
     };
     componentDidMount() {
-
-        Animated.timing(this.state._animated, {
-            toValue: 1,
-            duration: ANIMATION_DURATION,
-        }).start();
-        setTimeout(()=>{
-            Animated.timing(this.state._animated, {
-                toValue: 0,
-                duration: ANIMATION_DURATION,
-            }).start(() => this.props.callbackPopup());
-
-        },CONFIG.popupTime)
     }
     render() {
-        const { popupUserName, popupDesc, callbackPopup, userId} = this.props;
-        const rowStyles = [
-            {
-                opacity: this.state._animated.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 1],
-                }),
-            },
-        ];
+
+        const { message } = this.state;
+        const count = message.length;
         return (
+            <SafeAreaView style={styles.container}>
+                <KeyboardAvoidingView style={styles.messageBox} behavior="padding">
+                    <View style={styles.messageBoxHeader}>
+                        <TouchableOpacity onPress={this.props.closeMessageModal}>
+                            <Image style={styles.closeIcon} source={close}/>
+                        </TouchableOpacity>
 
-            <Animated.View  style={[rowStyles,styles.container]}>
-                <View style={styles.hideMobileInfoBox}>
-                    {/*<View style={styles.hideMobileInfo}/>*/}
-                </View>
-                <View style={styles.header}>
-                    <View style={styles.headerIconBox}>
+                        <TouchableOpacity onPress={() => this.myTextInput.focus()} style={styles.subjectBox}>
+                            <MaterialCommunityIcons
+                                size={17}
+                                color={colors.combinatorialColor}
+                                name="playlist-edit"
+                            />
 
+                            <Text style={styles.headerSubject}>Type here…</Text>
+                        </TouchableOpacity>
+                        <View></View>
                     </View>
-                    <View style={{flexDirection:'row', alignItems:'center'}}>
-                        <Avatar userId={userId} size={45} />
+                    <View style={styles.textInputBox}>
+                        <View>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholderTextColor="#000"
+                                autoCorrect={false}
+                                multiline={true}
+                                value={message}
+                                autoFocus={true}
+                                blurOnSubmit={true}
+                                returnKeyType="next"
+                                ref={( ref ) => {
+                                    this.myTextInput = ref
+                                }}
+                                onChangeText={message => {
+                                    this.setState({ message: message.slice(0, 120) })
+                                }}
+                            />
+                        </View>
+                        <View style={styles.footer}>
+                            <View style={styles.footerCounter}>
+                                <Text style={styles.footerCounterText}>{count} / 120</Text>
+                            </View>
+                            <View style={styles.footerActions}>
 
-                        <Text style={styles.text}>
-                            <Text style={{fontWeight:'bold', marginRight:5}}>{popupUserName} </Text>{popupDesc}
-                        </Text>
+                                <View style={styles.nextButton}/>
+                                <View style={styles.footerActions}>
+                                    <TouchableOpacity style={styles.actionBox}>
+                                        <Image resizeMode="contain" style={styles.actionBoxIcon} source={chat}/>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.actionBox}>
+                                        <Image resizeMode="contain" style={styles.actionBoxIcon} source={camera}/>
+                                    </TouchableOpacity>
+
+                                </View>
+                                <TouchableOpacity style={[styles.nextButton,{backgroundColor: colors.combinatorialColor}]}>
+                                    <Image style={styles.iconButton} source={next}/>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
                     </View>
 
-                    <TouchableOpacity
-                        onPress={() => callbackPopup()}
-                    >
-                        <MaterialIcons size={25} color={colors.grayColor} name="close"/>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+
         );
     }
 }

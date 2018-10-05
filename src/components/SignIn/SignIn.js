@@ -20,8 +20,6 @@ import EmptyList from "../EmptyList";
 import logo from "../../assets/images/logo_bigger.png";
 import passwordIcon from "../../assets/images/icons/Lock.png";
 import phoneIcon from "../../assets/images/icons/phone.png";
-// import mailIcon from "../../assets/images/mailIcon.png";
-// import phoneIcon from "../../assets/images/phoneIcon.png";
 import SVGImage from "react-native-svg-image";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "react-native-vector-icons/Feather";

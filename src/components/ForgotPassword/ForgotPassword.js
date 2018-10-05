@@ -377,12 +377,12 @@ export default class ForgotPassword extends Component {
 						/>
 					</View>
 				</View>
-				<TouchableOpacity
-					style={[styles.nextButton, { bottom: this.state.bottom }]}
-					onPress={this.handleSubmit}
-				>
-					<Text style={[appCss.defaultFontApp, styles.nextText]}>Next</Text>
-				</TouchableOpacity>
+					<TouchableOpacity
+						style={[styles.nextButton, { bottom: this.state.bottom }]}
+						onPress={this.handleSubmit}
+					>
+						<Text style={[appCss.defaultFontApp, styles.nextText]}>Next</Text>
+					</TouchableOpacity>
 				</KeyboardAvoidingView>
 			</View>
 		);

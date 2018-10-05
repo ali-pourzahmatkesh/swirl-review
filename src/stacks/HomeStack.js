@@ -1,5 +1,5 @@
 console.log("HomeStack");
-import { StackNavigator } from "react-navigation";
+import {StackNavigator} from "react-navigation";
 import HomeScreen from "../screens/HomeScreen";
 // import ChatsScreen from "./ChatsScreen";
 // import DiscussionScreen from "./DiscussionScreen";
@@ -11,6 +11,8 @@ import ChangePasswordFromProfileScreen from "../screens/ChangePasswordFromProfil
 import TermsAndConditionsScreen from "../screens/TermsAndConditionsScreen";
 import PrivacyPolicyScreen from "../screens/PrivacyPolicyScreen";
 import ChangeInfoScreen from "../screens/ChangeInfoScreen";
+import { CONFIG } from "../../config";
+const COLORS = CONFIG.colors;
 
 export default StackNavigator(
 	{
@@ -33,17 +35,17 @@ export default StackNavigator(
 		headerMode: "screen", //none,
 		navigationOptions: {
 			headerStyle: {
-				backgroundColor: "#ed1b34",
+				backgroundColor: COLORS.appColor,
 				paddingRight: 10,
 				paddingLeft: 10,
 				borderBottomWidth: 1,
 				borderBottomColor: "rgba(255,255,255,.1)"
 			},
-			headerTintColor: "#fff",
+			headerTintColor: COLORS.bodyColor,
 			headerTitleStyle: {
 				fontFamily: "museoSansRounded",
 				fontWeight: "bold",
-				color: "#fff",
+				color: COLORS.bodyColor,
 				fontSize: 20
 			}
 		}

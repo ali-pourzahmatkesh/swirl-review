@@ -9,10 +9,10 @@ const defaultFontApp = {
 const appCss = StyleSheet.create({
     defaultFontApp,
     heavyDefaultFontApp: {
-        fontFamily: 'MuseoSansRounded-1000'
+        // fontFamily: 'MuseoSansRounded-1000'
     },
     thinDefaultFontApp: {
-        fontFamily: 'MuseoSansRounded-300'
+        // fontFamily: 'MuseoSansRounded-300'
     },
 
 	navigationTitle: {

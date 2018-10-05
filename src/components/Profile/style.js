@@ -6,7 +6,7 @@ const COLORS = CONFIG.colors;
 
 const STYLES = StyleSheet.create({
     sectionHeaderText: {
-        fontFamily: 'MuseoSansRounded-1000',
+        // fontFamily: 'MuseoSansRounded-1000',
         fontSize: 12,
         marginLeft: '3%',
         marginTop: '10%'
@@ -40,12 +40,28 @@ const STYLES = StyleSheet.create({
         paddingRight: '5%'
     },
     nameText: {
-        fontFamily: 'MuseoSansRounded-1000',
+        // fontFamily: 'MuseoSansRounded-1000',
         fontSize: 24,
         color: COLORS.tapeWhite,
         alignSelf: 'center',
         marginBottom: '5%'
-    }
+    },
+
+    imageContainer:{ width: "100%" , backgroundColor:COLORS.appColor},
+    editButton:{
+        height: 26,
+        width: 26,
+        position: "absolute",
+        bottom: 5,
+        right: 5,
+        backgroundColor:COLORS.combinatorialColor,
+        borderRadius:13
+    },
+    editIcon: {
+        width: undefined,
+        height: undefined,
+        flex: 1
+    },
 
 });
 

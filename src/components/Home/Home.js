@@ -1,42 +1,97 @@
 import React, {Component} from "react";
-import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, Text, TouchableOpacity, View, Modal} from "react-native";
+import {NavigationActions, SafeAreaView} from "react-navigation";
 import styles from "./style";
 import appCss from "../../../app.css";
 import logo from "../../assets/images/logo_bigger.png";
+import logoOther from "../../assets/images/logo_bigger_other.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
 import Avatar from "../Avatar";
 import {CONFIG} from "../../../config";
+import EmptyList from "../EmptyList";
+// import defaultMoment from "moment";
+import moment from "moment-timezone";
+import MessagePopup from "../MessagePopup/MessagePopup";
 const COLORS = CONFIG.colors;
+
 // import Discussion from "../Discussion";
 
-const test = [
-    {
-    	id:1,
-        name: "VALA RAHMANI",
-        desc: 'tap to unswirl!',
-        time: '2h',
-		status : 'block'
-    },{
-        id:2,
-        name: "MIGUEL MACK",
-        desc: '7:02 left',
-        time: 'now',
-        status : 'unread'
-    },{
-        id:3,
-        name: "THEODORE FRANCIS",
-        desc: 'screenshot!',
-        time: '20h',
-        status : 'read'
-    },
-]
 class Home extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+        this.state = {
+            refreshing: true,
+            messageVisible:false,
+            // list1: [],
+            list: [
+
+                {
+                    id: "1",
+                    senderMemberId: "2",
+                    senderName: "VALA RAHMANI", // username
+                    receiverMemberId: "3",
+                    receiverName: "testReceiver", // username
+                    postType: "text", // or "image"
+                    textContent: "hello world!",
+                    imageContentName: "testImage1",
+                    imageContentExtension: "png",
+                    isSeen: false,
+                    availableAt: "2018-12-03T19:36:39.326Z",
+                    identifier: "1"
+                },
+
+                {
+                    id: "2",
+                    senderMemberId: "2",
+                    senderName: "VALA RAHMANI", // username
+                    receiverMemberId: "3",
+                    receiverName: "testReceiver", // username
+                    postType: "text", // or "image"
+                    textContent: "hello world!",
+                    imageContentName: "testImage1",
+                    imageContentExtension: "png",
+                    isSeen: false,
+                    availableAt: "2018-10-03T19:36:39.326Z",
+                    identifier: "1"
+                },
+
+                {
+                    id: "3",
+                    senderMemberId: "2",
+                    senderName: "THEODORE FRANCIS", // username
+                    receiverMemberId: "3",
+                    receiverName: "testReceiver", // username
+                    postType: "text", // or "image"
+                    textContent: "hello world!",
+                    imageContentName: "testImage1",
+                    imageContentExtension: "png",
+                    isSeen: true,
+                    availableAt: "2018-10-03T19:36:39.326Z",
+                    identifier: "1"
+                },
+
+                {
+                    id: "4",
+                    senderMemberId: "2",
+                    senderName: "THEODORE FRANCIS2", // username
+                    receiverMemberId: "3",
+                    receiverName: "testReceiver", // username
+                    postType: "text", // or "image"
+                    textContent: "hello world!",
+                    imageContentName: "testImage1",
+                    imageContentExtension: "png",
+                    isSeen: true,
+                    availableAt: "2018-10-03T19:36:39.326Z",
+                    identifier: "1"
+                },
+            ]
+        };
 	}
 
+    componentDidMount() {
+        this.refreshing()
+    };
 	handleSubmit = () => {
 		this.props.navigation.push("ProfileScreen", {
 			userId: 1, //item.memberId,
@@ -49,9 +104,7 @@ class Home extends Component {
         return (
 			<View style={appCss.header}>
 				<TouchableOpacity
-					onPress={() => {
-                        this.changeGhostMode();
-                    }}
+                    onPress={()=>this.setState({messageVisible : true})}
 					style={appCss.headerIconBox}
 				>
 					<Image
@@ -85,47 +138,106 @@ class Home extends Component {
 
     };
 
-    loadContentItem = (data) => {
+    loadContentItem = ( { item } ) => {
+        console.log("isAvailable", item)
+        const isAvailable = new Date(item[ "availableAt" ]).getTime() < new Date().getTime();
+
         return (
-			<View style={[styles.chatListBox, data['status']==='block' && styles.chatListBlockBox]} key={data['id'].toString()}>
+			<TouchableOpacity onPress={() => {
+                this.loadDetail(item, isAvailable)
+            }} style={[ styles.chatListBox, !isAvailable && styles.chatListBlockBox ]}>
 				<View style={styles.avatarBox}>
 					<Avatar
-						userId={this.state.profileUserId || this.props.id}
+						userId={item.id}
 						size={57}
 						position="profile"
 					/>
 				</View>
 				<View style={styles.chatListSubjectBox}>
 					<View>
-						<Text style={[styles.chatSubject,data['status']==='block' && {color:COLORS.bodyColor}]}>{data['name']}</Text>
-						<Text style={[styles.chatDesc,data['status']==='block' && {color:COLORS.bodyColor}]}>{data['desc']}</Text>
+						<Text
+							style={[ styles.chatSubject, !isAvailable && { color: COLORS.bodyColor } ]}>{item[ 'senderName' ]}</Text>
+						<Text style={[ styles.chatDesc, !isAvailable && { color: COLORS.bodyColor } ]}>
+                            {!isAvailable && 'Tap to unswirl!' || moment(item[ "availableAt" ], "YYYYMMDD").startOf('hour').fromNow()}
+						</Text>
 					</View>
 					<View style={styles.otherInfo}>
+						<View><Text
+							style={[ styles.chatTime, !isAvailable && { color: COLORS.bodyColor } ]}>{moment(item[ "availableAt" ], "YYYYMMDD").fromNow()}</Text></View>
 						{
-							data['status'] !== 'read' && <Image source={logo} style={{ width: 43, height: 43, marginRight: 5, marginTop: 5 }}/>
+                            (
+                            !item[ 'isSeen' ] || !isAvailable) && <Image source={!isAvailable && logo || logoOther}
+																		 style={styles.otherInfoLogo}/>
 						}
-						{/*<View>*/}
-							{/*<Text style={[styles.chatTime,data['status']==='block' && {color:COLORS.bodyColor}]}>{data['time']}</Text>*/}
-						{/*</View>*/}
+
 					</View>
 
 				</View>
-			</View>
+			</TouchableOpacity>
         )
     };
+    onRefresh = () => {
+    };
+    refreshing = () => {
+        setTimeout(() => {
+            this.setState({ refreshing: false })
+        }, 2000);
+    };
+
+    loadDetail = ( data, isAvailable ) => {
+        if( !isAvailable ) {
+            alert("not Available");
+        } else {
+            alert("Available");
+        }
+
+    };
+
 
     render() {
+        const { list, refreshing } = this.state;
         return (
 			<View style={styles.container}>
+                <Modal
+                    visible={this.state.messageVisible}
+                    animationType="slide"
+                    transparent={true}
+                >
+                        <MessagePopup closeMessageModal={()=>{this.setState({ messageVisible: false })}}/>
+                </Modal>
                 {this.loadHeader()}
-				<ScrollView showsVerticalScrollIndicator={false}>
-					<View style={styles.chatList}>
+				<View style={styles.chatList}>
 					{
-                        test.map(item=>this.loadContentItem(item))
+                        list.length &&
+						<FlatList
+							data={list}
+							keyExtractor={( item, index ) => {
+                                return item.id;
+                            }}
+							renderItem={( { item } ) => this.loadContentItem({ item })}
+							ListEmptyComponent={() => <EmptyList />}
+							onEndReachedThreshold={0.5}
+							onRefresh={() => {
+                                this.onRefresh();
+                            }}
+							refreshing={refreshing}
+						/> ||
+						<View style={styles.chatListEmpty}><Text style={styles.chatListEmptyText}>Nobody swirled you…
+							Yet.. </Text></View>
 					}
-					</View>
 
-				</ScrollView>
+				</View>
+                {
+                    list.length &&
+					<View style={styles.homeBottomBox}>
+						<TouchableOpacity onPress={()=>this.setState({messageVisible : true})}>
+							<View style={styles.iconBottomBox}>
+								<Image style={styles.iconBottom} source={addMessage}/>
+							</View>
+						</TouchableOpacity>
+					</View>
+                }
+
 			</View>
 		);
 	}
