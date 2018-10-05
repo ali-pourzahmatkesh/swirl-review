@@ -2,14 +2,16 @@ console.log("SplashScreen");
 import React, { Component } from "react";
 import { NavigationActions, SafeAreaView } from "react-navigation";
 import { Image, StyleSheet, View, Dimensions } from "react-native";
-import logoPic from "../assets/images/lightening.png";
+import logoPic from "../assets/images/logo_bigger.png";
 import { checkIsLogin } from "../store/member";
 import { connect } from "react-redux";
 const { height } = Dimensions.get("window");
+import { CONFIG } from "../../config";
+const colors = CONFIG.colors;
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: "#ed1b34",
+		backgroundColor: colors.appColor,
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center"

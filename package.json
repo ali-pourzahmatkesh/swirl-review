@@ -15,6 +15,7 @@
 		"react-native-confirmation-code-input": "^1.0.4",
 		"react-native-keyboard-aware-scroll-view": "^0.7.2",
 		"react-native-onesignal": "^3.2.4",
+		"react-native-paged-contacts": "^1.0.23",
 		"react-native-root-toast": "*",
 		"react-native-status-bar-height": "^2.0.0",
 		"react-native-svg-image": "*",

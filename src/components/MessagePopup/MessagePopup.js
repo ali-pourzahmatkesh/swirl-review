@@ -4,7 +4,9 @@ import styles from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import close from "../../assets/images/icons/close_red.png";
 import chat from "../../assets/images/icons/chat.png";
+import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
+import cameraDisable from "../../assets/images/icons/cameraDisable.png";
 import next from "../../assets/images/icons/next.png";
 import {SafeAreaView} from "react-navigation";
 import {CONFIG} from "../../../config";
@@ -12,13 +14,20 @@ const colors = CONFIG.colors;
 
 export default class MessagePopup extends Component {
     state = {
-        message: ""
+        message: "",
+        tabSelected : 'chat'
     };
     componentDidMount() {
     }
+
+
+
+    tabSelectedFunction= (tabSelected)=>{
+        this.setState({tabSelected})
+    };
     render() {
 
-        const { message } = this.state;
+        const { message, tabSelected } = this.state;
         const count = message.length;
         return (
             <SafeAreaView style={styles.container}>
@@ -66,11 +75,11 @@ export default class MessagePopup extends Component {
 
                                 <View style={styles.nextButton}/>
                                 <View style={styles.footerActions}>
-                                    <TouchableOpacity style={styles.actionBox}>
-                                        <Image resizeMode="contain" style={styles.actionBoxIcon} source={chat}/>
+                                    <TouchableOpacity onPress={()=>this.tabSelectedFunction('chat')} style={styles.actionBox}>
+                                        <Image resizeMode="contain" style={styles.actionBoxIcon} source={tabSelected==='chat' && chat || chatDisable}/>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.actionBox}>
-                                        <Image resizeMode="contain" style={styles.actionBoxIcon} source={camera}/>
+                                    <TouchableOpacity onPress={()=>this.tabSelectedFunction('camera')} style={styles.actionBox}>
+                                        <Image resizeMode="contain" style={styles.actionBoxIcon} source={tabSelected==='camera' && camera || cameraDisable}/>
                                     </TouchableOpacity>
 
                                 </View>

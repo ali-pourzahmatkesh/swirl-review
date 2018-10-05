@@ -13,6 +13,7 @@ import EmptyList from "../EmptyList";
 // import defaultMoment from "moment";
 import moment from "moment-timezone";
 import MessagePopup from "../MessagePopup/MessagePopup";
+import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
 const COLORS = CONFIG.colors;
 
 // import Discussion from "../Discussion";
@@ -203,6 +204,7 @@ class Home extends Component {
                     animationType="slide"
                     transparent={true}
                 >
+                    {/*<InviteFromContacts/>*/}
                         <MessagePopup closeMessageModal={()=>{this.setState({ messageVisible: false })}}/>
                 </Modal>
                 {this.loadHeader()}
