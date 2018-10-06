@@ -174,6 +174,10 @@ class Home extends Component {
 		}
 	};
 
+    handleLoadMore=()=>{
+    	alert('loadMore');
+	};
+
 	render() {
 		const { list, refreshing } = this.state;
 		return (
@@ -198,11 +202,14 @@ class Home extends Component {
 							keyExtractor={(item, index) => item.id}
 							renderItem={({ item }) => this.loadContentItem({ item })}
 							ListEmptyComponent={() => <EmptyList />}
-							onEndReachedThreshold={0.5}
 							onRefresh={() => {
 								this.onRefresh();
 							}}
 							refreshing={refreshing}
+							onEndReachedThreshold={0.5}
+							onEndReached={this.handleLoadMore}
+							showsVerticalScrollIndicator={false}
+
 						/>
 					)) || (
 						<View style={styles.chatListEmpty}>
