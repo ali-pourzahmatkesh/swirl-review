@@ -208,6 +208,7 @@ class Home extends Component {
 							refreshing={refreshing}
 							onEndReachedThreshold={0.5}
 							onEndReached={this.handleLoadMore}
+							showsHorizontalScrollIndicator={false}
 							showsVerticalScrollIndicator={false}
 
 						/>
