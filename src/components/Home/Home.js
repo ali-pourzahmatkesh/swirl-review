@@ -35,7 +35,6 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-		//this.refreshing();
 		setTimeout(() => {
 			this.props.chatGetList({
 				id: this.props.id,
@@ -45,12 +44,17 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log("componentWillReceiveProps", nextProps);
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
 			this.state.list.length != nextProps.chatList.length
 		) {
 			this.setState({ list: nextProps.chatList });
+		}
+
+		if (this.state.refreshing != nextProps.chatListRefreshing) {
+			this.setState({ refreshing: nextProps.chatListRefreshing });
 		}
 	}
 
@@ -96,7 +100,6 @@ class Home extends Component {
 	};
 
 	loadContentItem = ({ item }) => {
-		console.log("isAvailable", item);
 		const isAvailable =
 			new Date(item["availableAt"]).getTime() < new Date().getTime();
 
@@ -108,7 +111,7 @@ class Home extends Component {
 				style={[styles.chatListBox, !isAvailable && styles.chatListBlockBox]}
 			>
 				<View style={styles.avatarBox}>
-					<Avatar userId={item.id} size={57} position="profile" />
+					<Avatar userId={item.senderMemberId} size={57} position="profile" />
 				</View>
 				<View style={styles.chatListSubjectBox}>
 					<View>
@@ -155,12 +158,11 @@ class Home extends Component {
 		);
 	};
 
-	onRefresh = () => {};
-
-	refreshing = () => {
-		setTimeout(() => {
-			this.setState({ refreshing: false });
-		}, 2000);
+	onRefresh = () => {
+		this.props.chatGetList({
+			id: this.props.id,
+			refreshing: true // load a new list of updated messages
+		});
 	};
 
 	loadDetail = (data, isAvailable) => {
@@ -191,9 +193,7 @@ class Home extends Component {
 					{(list.length && (
 						<FlatList
 							data={list}
-							keyExtractor={(item, index) => {
-								return item.id;
-							}}
+							keyExtractor={(item, index) => item.id}
 							renderItem={({ item }) => this.loadContentItem({ item })}
 							ListEmptyComponent={() => <EmptyList />}
 							onEndReachedThreshold={0.5}

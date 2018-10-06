@@ -5,7 +5,8 @@ import { chatGetList } from "../../store/chat";
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
-	chatList: state.app.chat.list
+	chatList: state.app.chat.list,
+	chatListRefreshing: state.app.chat.refreshing
 });
 
 const mapDispatchToProps = dispatch => {

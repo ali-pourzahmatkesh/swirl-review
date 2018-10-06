@@ -63,8 +63,8 @@ const chat = (state = initialState, action) => {
 					...state,
 					isLoadingFetch: true,
 					errorMessage: "",
-					hasError: false
-					// refreshing: action.payload.refreshing,
+					hasError: false,
+					refreshing: action.payload.refreshing || false
 					// loading: action.payload.loading
 				},
 				Cmd.run(serverChatGetList, {
@@ -145,7 +145,8 @@ const chat = (state = initialState, action) => {
 			return {
 				...state,
 				isLoadingFetch: false,
-				list: updateList
+				list: updateList,
+				refreshing: false
 			};
 		}
 
@@ -155,7 +156,8 @@ const chat = (state = initialState, action) => {
 					...state,
 					isLoadingFetch: false,
 					errorMessage: action.payload.message,
-					hasError: true
+					hasError: true,
+					refreshing: false
 				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
