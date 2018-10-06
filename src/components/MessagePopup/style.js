@@ -65,6 +65,7 @@ const styles = StyleSheet.flatten({
     footerActions:{
         flexDirection:'row',
         justifyContent:'space-between',
+        alignItems:'center'
     },
     actionBox:{
         width: 40,
@@ -84,7 +85,7 @@ const styles = StyleSheet.flatten({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'transparent',
+
         borderRadius: 50
     },
 
@@ -93,6 +94,44 @@ const styles = StyleSheet.flatten({
         height: 25,
         resizeMode: 'contain'
     },
+
+    cameraBtn: {
+        width: 60,
+        height: 60,
+        paddingRight:50,
+        resizeMode: 'contain'
+    },
+
+
+
+
+    cameraActionBox:{
+        // backgroundColor:"#000",
+        backgroundColor:"transparent",
+        flex:1,
+        position:'absolute',
+        width,
+        height,
+        justifyContent:"space-between",
+        paddingTop:height === 812 ? 50 : 40,
+        paddingBottom:height === 812 ? 70 : 65,
+        paddingLeft:15,
+        paddingRight:15
+    },
+    cameraActions:{
+        // backgroundColor:"yellow",
+        alignItems:"center",
+        justifyContent:"space-between",
+        // height:110
+    },
+    cameraBtnBox:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        // backgroundColor: "red",
+        width ,
+        paddingRight:20,
+        paddingBottom:30
+    }
 
 
 });
