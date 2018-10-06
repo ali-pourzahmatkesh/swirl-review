@@ -14,6 +14,7 @@ import logo from "../../assets/images/logo_bigger.png";
 import logoOther from "../../assets/images/logo_bigger_other.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
+import noSwirl from "../../assets/images/icons/noSwirl.png";
 import Avatar from "../Avatar";
 import { CONFIG } from "../../../config";
 import EmptyList from "../EmptyList";
@@ -105,16 +106,15 @@ class Home extends Component {
 			new Date(item["availableAt"]).getTime() < new Date().getTime();
 
 		return (
-			<TouchableOpacity
-				onPress={() => {
-					this.loadDetail(item, isAvailable);
-				}}
-				style={[styles.chatListBox, !isAvailable && styles.chatListBlockBox]}
-			>
+			<View style={[styles.chatListBox, !isAvailable && styles.chatListBlockBox]}>
 				<View style={styles.avatarBox}>
-					<Avatar userId={item.senderMemberId} size={57} position="profile" />
+					<Avatar userId={item.senderMemberId}  size={57} position="profile" />
 				</View>
-				<View style={styles.chatListSubjectBox}>
+				<TouchableOpacity
+					onPress={() => {
+                        this.loadDetail(item, isAvailable);
+                    }}
+					style={styles.chatListSubjectBox}>
 					<View>
 						<Text
 							style={[
@@ -154,8 +154,8 @@ class Home extends Component {
 							/>
 						)}
 					</View>
-				</View>
-			</TouchableOpacity>
+				</TouchableOpacity>
+			</View>
 		);
 	};
 
@@ -206,8 +206,9 @@ class Home extends Component {
 						/>
 					)) || (
 						<View style={styles.chatListEmpty}>
+							<Image style={styles.iconBottom} source={noSwirl} />
 							<Text style={styles.chatListEmptyText}>
-								Nobody swirled you… Yet..{" "}
+								Nobody swirled you… Yet..
 							</Text>
 						</View>
 					)}
