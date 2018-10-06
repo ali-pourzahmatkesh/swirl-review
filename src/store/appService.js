@@ -58,21 +58,7 @@ const getData = (uri, params) => {
 	}
 
 	// console.log("uri", uri)
-	return fetch(`${CONFIG.serverUrl}${uri}`, {
-		method: "GET",
-		headers: new Headers({
-			"Content-Type": "application/json"
-		})
-	})
-		.then(res => res.json())
-		.catch(error => error)
-		.then(response => {
-			if (response.result) {
-				return response;
-			} else {
-				throw response;
-			}
-		});
+	return get(uri);
 };
 
 const put = (uri, data) => {
