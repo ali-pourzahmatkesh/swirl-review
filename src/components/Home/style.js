@@ -110,6 +110,7 @@ const STYLES = StyleSheet.create({
     },
     chatListEmptyText:{
         fontSize:20,
+        marginTop:10,
         color:colors.bodyColor
     }
 });

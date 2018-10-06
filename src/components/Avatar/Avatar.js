@@ -26,8 +26,8 @@ export default class Avatar extends Component {
 
 	prepareForRedirectToProfile = () => {
 		let userId = this.props.userId;
-		this.props.homeSetCloseModal(true);
-		this.props.profileSetCloseModal(true);
+		// this.props.homeSetCloseModal(true);
+		// this.props.profileSetCloseModal(true);
 		this.props.navigation.push("ProfileScreen", { userId: userId, x: 1 });
 	};
 
@@ -41,12 +41,14 @@ export default class Avatar extends Component {
 		let myStyleSheet = styles.getSheet(this.props.size);
 		if (this.props.position == "profile") {
 			return (
-				<View style={[myStyleSheet.avatarItem, avatarContainerStyle]}>
+				<TouchableOpacity
+					onPress={()=>this.prepareForRedirectToProfile()}
+					style={[myStyleSheet.avatarItem, avatarContainerStyle]}>
 					<Image
 						style={[myStyleSheet.avatarImage, avatarImageStyle]}
 						source={this.avatarUrl(userId)}
 					/>
-				</View>
+				</TouchableOpacity>
 			);
 		} else {
 			return (

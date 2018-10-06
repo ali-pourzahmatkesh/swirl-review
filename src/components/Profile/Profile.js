@@ -142,11 +142,11 @@ export default class Profile extends Component {
 			{
 				title: "Account info",
 				data: [
-					{
-                        icon: changeNameBlue,
-                        name: "Change Name",
-                        clickHandler: () => this.goTo("ChangeInfoScreen")
-                    },
+                    // {
+                    //     icon: changeNameBlue,
+                    //     name: "Change Name",
+                    //     clickHandler: () => this.goTo("ChangeInfoScreen")
+                    // },
                     {
                         icon: changeNameRed,
 						name: "Change Username",
