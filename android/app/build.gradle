@@ -137,6 +137,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-picker')
+    compile project(':react-native-paged-contacts')
     compile project(':react-native-vector-icons')
     compile project(':react-native-onesignal')
     implementation fileTree(dir: "libs", include: ["*.jar"])

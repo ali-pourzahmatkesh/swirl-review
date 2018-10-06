@@ -14,12 +14,14 @@ import logo from "../../assets/images/logo_bigger.png";
 import logoOther from "../../assets/images/logo_bigger_other.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
+import noSwirl from "../../assets/images/icons/noSwirl.png";
 import Avatar from "../Avatar";
 import { CONFIG } from "../../../config";
 import EmptyList from "../EmptyList";
 // import defaultMoment from "moment";
 import moment from "moment-timezone";
 import MessagePopup from "../MessagePopup/MessagePopup";
+import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
 const COLORS = CONFIG.colors;
 
 // import Discussion from "../Discussion";
@@ -105,16 +107,15 @@ class Home extends Component {
 			new Date(item["availableAt"]).getTime() <= new Date().getTime();
 
 		return (
-			<TouchableOpacity
-				onPress={() => {
-					this.loadDetail(item, isAvailable);
-				}}
-				style={[styles.chatListBox, !isAvailable && styles.chatListBlockBox]}
-			>
+			<View style={[styles.chatListBox, !isAvailable && styles.chatListBlockBox]}>
 				<View style={styles.avatarBox}>
-					<Avatar userId={item.senderMemberId} size={57} position="profile" />
+					<Avatar userId={item.senderMemberId}  size={57} position="profile" />
 				</View>
-				<View style={styles.chatListSubjectBox}>
+				<TouchableOpacity
+					onPress={() => {
+                        this.loadDetail(item, isAvailable);
+                    }}
+					style={styles.chatListSubjectBox}>
 					<View>
 						<Text
 							style={[
@@ -154,8 +155,8 @@ class Home extends Component {
 							/>
 						)}
 					</View>
-				</View>
-			</TouchableOpacity>
+				</TouchableOpacity>
+			</View>
 		);
 	};
 
@@ -182,10 +183,15 @@ class Home extends Component {
 		}
 	};
 
+    handleLoadMore=()=>{
+    	alert('loadMore');
+	};
+
 	render() {
 		const { list, refreshing } = this.state;
 		return (
 			<View style={styles.container}>
+
 				<Modal
 					visible={this.state.newMessageModalVisible}
 					animationType="slide"
@@ -205,16 +211,21 @@ class Home extends Component {
 							keyExtractor={(item, index) => item.id}
 							renderItem={({ item }) => this.loadContentItem({ item })}
 							ListEmptyComponent={() => <EmptyList />}
-							onEndReachedThreshold={0.5}
 							onRefresh={() => {
 								this.onRefresh();
 							}}
 							refreshing={refreshing}
+							onEndReachedThreshold={0.5}
+							onEndReached={this.handleLoadMore}
+							showsHorizontalScrollIndicator={false}
+							showsVerticalScrollIndicator={false}
+
 						/>
 					)) || (
 						<View style={styles.chatListEmpty}>
+							<Image style={styles.iconBottom} source={noSwirl} />
 							<Text style={styles.chatListEmptyText}>
-								Nobody swirled you… Yet..{" "}
+								Nobody swirled you… Yet..
 							</Text>
 						</View>
 					)}
