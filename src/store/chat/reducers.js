@@ -4,7 +4,15 @@ import {
 	GET_LIST_FAILED,
 	serverChatGetList,
 	serverChatGetListSuccess,
-	serverChatGetListFailed
+	serverChatGetListFailed,
+	// -----------
+	VISIT_MESSAGE,
+	VISIT_MESSAGE_SUCCESS,
+	VISIT_MESSAGE_FAILED,
+	serverVisitMessage,
+	serverVisitMessageSuccess,
+	serverVisitMessageFailed
+
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
 	// fetchGetListData,
@@ -40,9 +48,9 @@ let initialState = {
 	errorMessage: "",
 	hasError: false,
 	list: [],
-	refreshing: false
+	refreshing: false,
+	loading: false
 	// userData: {},
-	// loading: false,
 	// count: 0,
 	// listAddFriend: [],
 	// refreshingAddFriend: false,
@@ -162,6 +170,57 @@ const chat = (state = initialState, action) => {
 				Cmd.action(showToast(true, action.payload.message))
 			);
 		}
+
+		// ----------------------
+
+		case VISIT_MESSAGE: {
+			return loop(
+				{
+					...state,
+					loading: true,
+					errorMessage: "",
+					hasError: false
+				},
+				Cmd.run(serverVisitMessage, {
+					successActionCreator: serverVisitMessageSuccess,
+					failActionCreator: serverVisitMessageFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case VISIT_MESSAGE_SUCCESS: {
+			let list = [];
+			if (action.payload.length == 1) {
+				list = state.list.map(item => {
+					if (item.id === action.payload[0]) {
+						console.log("find id in list", action.payload[0], item);
+						item.isSeen = true;
+					}
+					return item;
+				});
+			}
+			console.log("new list", list);
+			return {
+				...state,
+				list: list,
+				loading: false
+			};
+		}
+
+		case VISIT_MESSAGE_FAILED: {
+			return loop(
+				{
+					...state,
+					errorMessage: action.payload.message,
+					hasError: true,
+					loading: false
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ------------------------------
 
 		// case SET_TAB_OF_PAGE: {
 		// 	return { ...state, currentTabOfPage: action.payload };

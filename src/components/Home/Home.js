@@ -51,6 +51,7 @@ class Home extends Component {
 			this.state.list.length != nextProps.chatList.length
 		) {
 			this.setState({ list: nextProps.chatList });
+			console.log("new refresh the list of chats");
 		}
 
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
@@ -101,7 +102,7 @@ class Home extends Component {
 
 	loadContentItem = ({ item }) => {
 		const isAvailable =
-			new Date(item["availableAt"]).getTime() < new Date().getTime();
+			new Date(item["availableAt"]).getTime() <= new Date().getTime();
 
 		return (
 			<TouchableOpacity
@@ -143,7 +144,7 @@ class Home extends Component {
 									!isAvailable && { color: COLORS.bodyColor }
 								]}
 							>
-								{moment(item["availableAt"], "YYYYMMDD").fromNow()}
+								{moment(item["createdAt"], "YYYYMMDD").fromNow()}
 							</Text>
 						</View>
 						{(!item["isSeen"] || !isAvailable) && (
@@ -166,6 +167,14 @@ class Home extends Component {
 	};
 
 	loadDetail = (data, isAvailable) => {
+		console.log("receive loadDetail", data);
+		if (data.isSeen === false) {
+			console.log("it is falseeeeeee", data);
+			this.props.visitMessage({
+				listOfId: [data.id]
+			});
+		}
+
 		if (!isAvailable) {
 			alert("not Available");
 		} else {
