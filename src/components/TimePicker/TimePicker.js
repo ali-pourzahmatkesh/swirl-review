@@ -1,53 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Dimensions, Picker, StyleSheet, Text, View} from "react-native";
-import {CONFIG} from "../../../config";
-const colors = CONFIG.colors;
-const { height, width } = Dimensions.get('window');
-const styles = StyleSheet.create({
-    container:{
-        backgroundColor: colors.appColor,
-        width,
-        height:'100%',
-        alignItems:'center',
-        justifyContent:'center'
-    },
-    timePickerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        // backgroundColor:'green',
-        height:'100%',
-        position: 'absolute', width,
-        //
-    },
-    backPicker:{
-        height:111,
-        width,
-        backgroundColor:colors.bodyColor,
-        opacity:0.3
-    },
-    picker: {
-        height:'100%',
-        width: 100,
-    },
-    pickerItem: {
-        height:'100%',
-        color: colors.bodyColor,
-        fontSize: 64,
-        fontWeight: 'bold'
-
-    },
-    timeDivider: {
-        color: colors.bodyColor,
-        fontSize: 64,
-        fontWeight: 'bold'
-    }
-});
-
+import { Picker, Text, View} from "react-native";
+import styles from './style'
 const MAX_HOURS = 23;
 const MAX_MINUTES = 59;
-
 export default class TimePicker extends Component {
     static propTypes = {
         selectedHours: PropTypes.number,
@@ -55,7 +11,7 @@ export default class TimePicker extends Component {
         onChange: PropTypes.func,
         hoursUnit: PropTypes.string,
         minutesUnit: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         selectedHours: 0,
@@ -63,7 +19,7 @@ export default class TimePicker extends Component {
         onChange: null,
         hoursUnit: '',
         minutesUnit: '',
-    }
+    };
 
     constructor( props ) {
         super(props);
@@ -115,7 +71,7 @@ export default class TimePicker extends Component {
             const { selectedHours, selectedMinutes } = this.state;
             onChange(selectedHours, selectedMinutes);
         });
-    }
+    };
 
     render() {
         const { selectedHours, selectedMinutes } = this.state;

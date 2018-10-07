@@ -1,24 +1,46 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+const {  width } = Dimensions.get('window');
 import {CONFIG} from '../../../config';
 const colors = CONFIG.colors;
-export default class StyleSheetFactory {
-    static getSheet(avatarSize) {
-        return StyleSheet.create({
-            avatarItem: {
-                borderWidth: 1,
-                width: avatarSize,
-                height: avatarSize,
-                borderColor: colors.borderColor,
-                borderRadius: avatarSize/2,
-                overflow: "hidden",
+const styles = StyleSheet.create({
+    container:{
+        backgroundColor: colors.appColor,
+        width,
+        height:'100%',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    timePickerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        // backgroundColor:'green',
+        height:'100%',
+        position: 'absolute', width,
+        //
+    },
+    backPicker:{
+        height:111,
+        width,
+        backgroundColor:colors.bodyColor,
+        opacity:0.3
+    },
+    picker: {
+        height:'100%',
+        width: 100,
+    },
+    pickerItem: {
+        height:'100%',
+        color: colors.bodyColor,
+        fontSize: 64,
+        fontWeight: 'bold'
 
-            },
-
-            avatarImage: {
-                width: avatarSize,
-                height: avatarSize,
-                resizeMode:'contain'
-            },
-        })
+    },
+    timeDivider: {
+        color: colors.bodyColor,
+        fontSize: 64,
+        fontWeight: 'bold'
     }
-}
+});
+
+export default styles
