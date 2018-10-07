@@ -1,20 +1,35 @@
 import React, {Component} from "react";
-import {Dimensions, Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View, ImageBackground} from "react-native";
+import {
+    Dimensions,
+    Image,
+    ImageBackground,
+    KeyboardAvoidingView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import styles from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ImagePicker from "react-native-image-picker";
 import close from "../../assets/images/icons/close_red.png";
+import closeWhite from "../../assets/images/icons/close.png";
 import chat from "../../assets/images/icons/chat.png";
 import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
 import cameraDisable from "../../assets/images/icons/cameraDisable.png";
 import cameraBtn from "../../assets/images/icons/cameraBtn.png";
 import background from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
 import {CONFIG} from "../../../config";
-import InviteFromContacts from '../InviteFromContacts/InviteFromContacts'
-const { height, width } = Dimensions.get('window');
+import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
+import TimePicker from "../TimePicker/TimePicker";
+import appCss from "../../../app.css";
 const colors = CONFIG.colors;
+const { height, width } = Dimensions.get('window');
+
+
 const options = {
     title: 'Select Avatar',
     // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
@@ -27,7 +42,10 @@ const options = {
 export default class MessagePopup extends Component {
     state = {
         message: "",
-        tabSelected : 'chat'
+        tabSelected: 'chat',
+        selectedHours: 0,
+        selectedMinutes: 0,
+        lastSection : ''
     };
     componentDidMount() {
     }
@@ -128,7 +146,7 @@ export default class MessagePopup extends Component {
 
                             </View>
                             <TouchableOpacity
-                                onPress={()=>this.setState({tabSelected : 'contacts'})}
+                                onPress={() => this.setState({ tabSelected: 'timePicker', lastSection:'chat' })}
                                 style={[ styles.nextButton, { backgroundColor: colors.combinatorialColor } ]}>
                                 <Image style={styles.iconButton} source={next}/>
                             </TouchableOpacity>
@@ -202,7 +220,7 @@ export default class MessagePopup extends Component {
                     <View style={styles.footer}>
                         <View style={[styles.footerActions, {justifyContent:'flex-end', width, paddingRight:15}]}>
                             <TouchableOpacity
-                                onPress={()=>this.setState({tabSelected : 'contacts'})}
+                                onPress={() => this.setState({ tabSelected: 'timePicker' , lastSection:'camera'})}
                                 style={[ styles.nextButton, { backgroundColor: colors.combinatorialColor } ]}>
                                 <Image style={styles.iconButton} source={next}/>
                             </TouchableOpacity>
@@ -214,9 +232,64 @@ export default class MessagePopup extends Component {
         )
     };
 
-
     loadContacts = ()=>{
         return <View style={{width, height}}><InviteFromContacts /></View>
+    };
+
+    loadTimePicker = () => {
+        const { selectedHours, selectedMinutes , lastSection} = this.state;
+        return (
+            <View style={styles.containerTimePicker}>
+                <View style={[ appCss.header, { width } ]}>
+                    <TouchableOpacity
+                        onPress={() => this.setState({ tabSelected: lastSection })}
+                        style={appCss.otherHeaderIconBox}
+                    >
+                        <Image
+                            style={appCss.headerIcon}
+                            resizeMode={"contain"}
+                            source={closeWhite}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={appCss.headerLogoBox}>
+                        <Image
+                            style={appCss.headerIcon}
+                            resizeMode={"contain"}
+                            source={logo}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={appCss.headerIconBox}
+                        onPress={this.handleSubmit}
+                    >
+
+                    </TouchableOpacity>
+                </View>
+                <Text style={styles.pickerText}>Time until unswirl... </Text>
+                <View style={{ backgroundColor: 'yellow', height: '70%' }}>
+                    <TimePicker
+                        selectedHours={selectedHours}
+                        selectedMinutes={selectedMinutes}
+                        onChange={( hours, minutes ) => this.setState({
+                            selectedHours: hours,
+                            selectedMinutes: minutes
+                        })}
+                    />
+                </View>
+
+                <View style={{ height: 100, width, flexDirection:'row', justifyContent:'flex-end'  }}>
+                    <View style={styles.footer}>
+                        <View style={[styles.footerActions, {justifyContent:'flex-end', width, paddingRight:15}]}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({ tabSelected: 'contacts' })}
+                                style={[ styles.nextButton, { backgroundColor: colors.combinatorialColor } ]}>
+                                <Image style={styles.iconButton} source={next}/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        );
     };
 
     render() {
@@ -234,6 +307,9 @@ export default class MessagePopup extends Component {
                 break;
             case 'contacts':
                 contentLoader = this.loadContacts();
+                break;
+            case 'timePicker':
+                contentLoader = this.loadTimePicker();
                 break;
         }
         return (

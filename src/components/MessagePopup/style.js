@@ -131,6 +131,20 @@ const styles = StyleSheet.flatten({
         width ,
         paddingRight:20,
         paddingBottom:30
+    },
+
+
+    containerTimePicker:{
+        flex:1,
+        backgroundColor:colors.appColor,
+        alignItems:'center',
+        justifyContent:'space-between',
+    },
+
+    pickerText:{
+        color:colors.bodyColor,
+        fontSize:20,
+        marginTop:20
     }
 
 

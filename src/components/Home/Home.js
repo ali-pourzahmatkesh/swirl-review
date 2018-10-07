@@ -175,7 +175,7 @@ class Home extends Component {
 	};
 
     handleLoadMore=()=>{
-    	alert('loadMore');
+    	// alert('loadMore');
 	};
 
 	render() {
