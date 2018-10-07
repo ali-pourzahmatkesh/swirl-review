@@ -32,7 +32,8 @@ class Home extends Component {
 		this.state = {
 			refreshing: false,
 			newMessageModalVisible: false,
-			list: []
+			list: [],
+			lastIdentifier: null
 		};
 	}
 
@@ -53,6 +54,7 @@ class Home extends Component {
 			this.state.list.length != nextProps.chatList.length
 		) {
 			this.setState({ list: nextProps.chatList });
+			console.log("----------------------new refresh the list of chats");
 		}
 
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
@@ -103,18 +105,43 @@ class Home extends Component {
 
 	loadContentItem = ({ item }) => {
 		const isAvailable =
-			new Date(item["availableAt"]).getTime() < new Date().getTime();
+			new Date(item["availableAt"]).getTime() <= new Date().getTime();
+		let messageHint = "";
+		if (isAvailable) {
+			if (item.isSeen) {
+				messageHint =
+					"Unswirled " +
+					moment(item["availableAt"], "YYYYMMDD")
+						.startOf("hour")
+						.fromNow();
+			} else {
+				messageHint = "Tap to unswirl!";
+			}
+		} else {
+			messageHint =
+				moment(item["availableAt"], "YYYYMMDD")
+					.startOf("hour")
+					.fromNow() + " left";
+		}
 
 		return (
-			<View style={[styles.chatListBox, !isAvailable && styles.chatListBlockBox]}>
+			<View
+				style={[
+					styles.chatListBox,
+					isAvailable && !item.isSeen && styles.chatListBlockBox
+				]}
+			>
 				<View style={styles.avatarBox}>
-					<Avatar userId={item.senderMemberId}  size={57} position="profile" />
+					<Avatar userId={item.senderMemberId} size={57} position="profile" />
 				</View>
 				<TouchableOpacity
 					onPress={() => {
-                        this.loadDetail(item, isAvailable);
-                    }}
-					style={styles.chatListSubjectBox}>
+						if (isAvailable) {
+							this.loadDetail(item);
+						}
+					}}
+					style={styles.chatListSubjectBox}
+				>
 					<View>
 						<Text
 							style={[
@@ -122,7 +149,7 @@ class Home extends Component {
 								!isAvailable && { color: COLORS.bodyColor }
 							]}
 						>
-							{item["senderName"]}
+							{item["identifier"]}
 						</Text>
 						<Text
 							style={[
@@ -130,10 +157,7 @@ class Home extends Component {
 								!isAvailable && { color: COLORS.bodyColor }
 							]}
 						>
-							{(!isAvailable && "Tap to unswirl!") ||
-								moment(item["availableAt"], "YYYYMMDD")
-									.startOf("hour")
-									.fromNow()}
+							{messageHint}
 						</Text>
 					</View>
 					<View style={styles.otherInfo}>
@@ -144,12 +168,12 @@ class Home extends Component {
 									!isAvailable && { color: COLORS.bodyColor }
 								]}
 							>
-								{moment(item["availableAt"], "YYYYMMDD").fromNow()}
+								{moment(item["createdAt"], "YYYYMMDD").fromNow()}
 							</Text>
 						</View>
 						{(!item["isSeen"] || !isAvailable) && (
 							<Image
-								source={(!isAvailable && logo) || logoOther}
+								source={(!isAvailable && logoOther) || logo}
 								style={styles.otherInfoLogo}
 							/>
 						)}
@@ -166,23 +190,36 @@ class Home extends Component {
 		});
 	};
 
-	loadDetail = (data, isAvailable) => {
-		if (!isAvailable) {
-			alert("not Available");
-		} else {
-			alert("Available");
+	loadDetail = data => {
+		console.log("receive loadDetail", data);
+		if (data.isSeen === false) {
+			console.log("it is falseeeeeee", data);
+			this.props.visitMessage({
+				listOfId: [data.id]
+			});
 		}
 	};
 
-    handleLoadMore=()=>{
-    	// alert('loadMore');
+	handleLoadMore = () => {
+		if (this.state.list.length) {
+			let lastIdentifier = this.state.list[this.state.list.length - 1]
+				.identifier;
+
+			if (this.state.lastIdentifier != lastIdentifier) {
+				this.setState({ lastIdentifier: lastIdentifier }, () => {
+					this.props.chatGetList({
+						id: this.props.id,
+						identifier: lastIdentifier
+					});
+				});
+			}
+		}
 	};
 
 	render() {
 		const { list, refreshing } = this.state;
 		return (
 			<View style={styles.container}>
-
 				<Modal
 					visible={this.state.newMessageModalVisible}
 					animationType="slide"
@@ -207,10 +244,9 @@ class Home extends Component {
 							}}
 							refreshing={refreshing}
 							onEndReachedThreshold={0.5}
-							onEndReached={this.handleLoadMore}
+							onEndReached={() => this.handleLoadMore()}
 							showsHorizontalScrollIndicator={false}
 							showsVerticalScrollIndicator={false}
-
 						/>
 					)) || (
 						<View style={styles.chatListEmpty}>

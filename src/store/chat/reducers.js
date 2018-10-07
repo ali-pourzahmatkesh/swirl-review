@@ -4,7 +4,15 @@ import {
 	GET_LIST_FAILED,
 	serverChatGetList,
 	serverChatGetListSuccess,
-	serverChatGetListFailed
+	serverChatGetListFailed,
+	// -----------
+	VISIT_MESSAGE,
+	VISIT_MESSAGE_SUCCESS,
+	VISIT_MESSAGE_FAILED,
+	serverVisitMessage,
+	serverVisitMessageSuccess,
+	serverVisitMessageFailed
+
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
 	// fetchGetListData,
@@ -34,15 +42,16 @@ import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
 // import moment from "moment-timezone";
+// import sortChatList from "../../util/sortChatList";
 
 let initialState = {
 	isLoadingFetch: false,
 	errorMessage: "",
 	hasError: false,
 	list: [],
-	refreshing: false
+	refreshing: false,
+	loading: false
 	// userData: {},
-	// loading: false,
 	// count: 0,
 	// listAddFriend: [],
 	// refreshingAddFriend: false,
@@ -76,71 +85,17 @@ const chat = (state = initialState, action) => {
 		}
 
 		case GET_LIST_SUCCESS: {
-			// let list = [
-			// 	{
-			// 		id: "1",
-			// 		senderMemberId: "2",
-			// 		senderName: "VALA RAHMANI", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: false,
-			// 		availableAt: "2018-12-03T19:36:39.326Z",
-			// 		identifier: "1"
-			// 	},
-			//
-			// 	{
-			// 		id: "2",
-			// 		senderMemberId: "2",
-			// 		senderName: "VALA RAHMANI", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: false,
-			// 		availableAt: "2018-10-03T19:36:39.326Z",
-			// 		identifier: "2"
-			// 	},
-			//
-			// 	{
-			// 		id: "3",
-			// 		senderMemberId: "2",
-			// 		senderName: "THEODORE FRANCIS", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: true,
-			// 		availableAt: "2018-10-03T19:36:39.326Z",
-			// 		identifier: "3"
-			// 	},
-			//
-			// 	{
-			// 		id: "4",
-			// 		senderMemberId: "2",
-			// 		senderName: "THEODORE FRANCIS2", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: true,
-			// 		availableAt: "2018-10-03T19:36:39.326Z",
-			// 		identifier: "4"
-			// 	}
-			// ];
-
+			// sortChatList([]);
 			let list = state.list;
 			if (action.payload.refreshing) list = [];
 			let updateList = [...list, ...action.payload.data];
+
+			console.log(
+				"--------- old list",
+				list,
+				"------------ new data",
+				action.payload.data
+			);
 
 			return {
 				...state,
@@ -162,6 +117,57 @@ const chat = (state = initialState, action) => {
 				Cmd.action(showToast(true, action.payload.message))
 			);
 		}
+
+		// ----------------------
+
+		case VISIT_MESSAGE: {
+			return loop(
+				{
+					...state,
+					loading: true,
+					errorMessage: "",
+					hasError: false
+				},
+				Cmd.run(serverVisitMessage, {
+					successActionCreator: serverVisitMessageSuccess,
+					failActionCreator: serverVisitMessageFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case VISIT_MESSAGE_SUCCESS: {
+			let list = [];
+			if (action.payload.length == 1) {
+				list = state.list.map(item => {
+					if (item.id === action.payload[0]) {
+						console.log("find id in list", action.payload[0], item);
+						item.isSeen = true;
+					}
+					return item;
+				});
+			}
+			console.log("new list", list);
+			return {
+				...state,
+				list: list,
+				loading: false
+			};
+		}
+
+		case VISIT_MESSAGE_FAILED: {
+			return loop(
+				{
+					...state,
+					errorMessage: action.payload.message,
+					hasError: true,
+					loading: false
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ------------------------------
 
 		// case SET_TAB_OF_PAGE: {
 		// 	return { ...state, currentTabOfPage: action.payload };

@@ -1,8 +1,10 @@
 export const GET_LIST = "CHAT_GET_LIST",
 	GET_LIST_SUCCESS = "CHAT_GET_LIST_SUCCESS",
-	GET_LIST_FAILED = "CHAT_GET_LIST_FAILED";
-//
-//
+	GET_LIST_FAILED = "CHAT_GET_LIST_FAILED",
+	VISIT_MESSAGE = "CHAT_VISIT_MESSAGE",
+	VISIT_MESSAGE_SUCCESS = "CHAT_VISIT_MESSAGE_SUCCESS",
+	VISIT_MESSAGE_FAILED = "CHAT_VISIT_MESSAGE_FAILED";
+
 // INITIAL_STATE = "CHAT_INITIAL_STATE",
 // CALL_GET_STATUS = "CHAT_CALL_GET_STATUS",
 // GET_STATUS_SUCCESS = "CHAT_GET_STATUS_SUCCESS",
@@ -16,8 +18,8 @@ export const GET_LIST = "CHAT_GET_LIST",
 
 import {
 	// get
-	getData
-	// put,
+	getData,
+	put
 	// restDelete,
 	// post
 } from "../appService";
@@ -29,10 +31,7 @@ export const chatGetList = (data, tab) => ({
 	payload: data
 });
 
-export const serverChatGetList = (data, tab) => {
-	console.log(
-		"------------------------------------- serverChatGetList -----------"
-	);
+export const serverChatGetList = data => {
 	return new Promise((resolve, reject) => {
 		let params = {
 			randomNmber: Math.random(),
@@ -50,7 +49,7 @@ export const serverChatGetList = (data, tab) => {
 				// resolve(resp.data);
 				resolve({
 					data: resp.data,
-					refreshing: data.refreshing
+					refreshing: data.refreshing || false
 				});
 			})
 			.catch(err => {
@@ -70,6 +69,46 @@ export const serverChatGetListSuccess = data => {
 export const serverChatGetListFailed = err => {
 	return {
 		type: GET_LIST_FAILED,
+		payload: err
+	};
+};
+
+// ------------------------------
+
+export const visitMessage = data => ({
+	type: VISIT_MESSAGE,
+	payload: data
+});
+
+export const serverVisitMessage = data => {
+	console.log(
+		"------------------------------------- serverVisitMessage -----------"
+	);
+	return new Promise((resolve, reject) => {
+		put("/api/v1/chats/action/seen", {
+			chatListId: data.listOfId
+		})
+			.then(resp => {
+				console.log("serverVisitMessage response", resp);
+				resolve(data.listOfId);
+			})
+			.catch(err => {
+				console.log("serverVisitMessage EEEEEERRRORRRR", err);
+				reject(err);
+			});
+	});
+};
+
+export const serverVisitMessageSuccess = data => {
+	return {
+		type: VISIT_MESSAGE_SUCCESS,
+		payload: data
+	};
+};
+
+export const serverVisitMessageFailed = err => {
+	return {
+		type: VISIT_MESSAGE_FAILED,
 		payload: err
 	};
 };
