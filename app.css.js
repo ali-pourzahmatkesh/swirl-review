@@ -62,6 +62,10 @@ const appCss = StyleSheet.create({
         fontWeight: 'bold'
     },
 
+    otherHeaderIconBox: {
+	    width: 20,
+        height: 20
+    },
     headerIconBox: {
 	    width: 27,
         height: 27

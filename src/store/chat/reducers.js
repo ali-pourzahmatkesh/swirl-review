@@ -42,7 +42,7 @@ import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
 // import moment from "moment-timezone";
-import sortChatList from "../../util/sortChatList";
+// import sortChatList from "../../util/sortChatList";
 
 let initialState = {
 	isLoadingFetch: false,
@@ -85,7 +85,7 @@ const chat = (state = initialState, action) => {
 		}
 
 		case GET_LIST_SUCCESS: {
-			sortChatList([]);
+			// sortChatList([]);
 			let list = state.list;
 			if (action.payload.refreshing) list = [];
 			let updateList = [...list, ...action.payload.data];
