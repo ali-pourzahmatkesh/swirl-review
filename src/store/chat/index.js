@@ -49,7 +49,7 @@ export const serverChatGetList = data => {
 				// resolve(resp.data);
 				resolve({
 					data: resp.data,
-					refreshing: data.refreshing
+					refreshing: data.refreshing || false
 				});
 			})
 			.catch(err => {

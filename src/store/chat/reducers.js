@@ -42,6 +42,7 @@ import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
 // import moment from "moment-timezone";
+import sortChatList from "../../util/sortChatList";
 
 let initialState = {
 	isLoadingFetch: false,
@@ -84,71 +85,17 @@ const chat = (state = initialState, action) => {
 		}
 
 		case GET_LIST_SUCCESS: {
-			// let list = [
-			// 	{
-			// 		id: "1",
-			// 		senderMemberId: "2",
-			// 		senderName: "VALA RAHMANI", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: false,
-			// 		availableAt: "2018-12-03T19:36:39.326Z",
-			// 		identifier: "1"
-			// 	},
-			//
-			// 	{
-			// 		id: "2",
-			// 		senderMemberId: "2",
-			// 		senderName: "VALA RAHMANI", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: false,
-			// 		availableAt: "2018-10-03T19:36:39.326Z",
-			// 		identifier: "2"
-			// 	},
-			//
-			// 	{
-			// 		id: "3",
-			// 		senderMemberId: "2",
-			// 		senderName: "THEODORE FRANCIS", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: true,
-			// 		availableAt: "2018-10-03T19:36:39.326Z",
-			// 		identifier: "3"
-			// 	},
-			//
-			// 	{
-			// 		id: "4",
-			// 		senderMemberId: "2",
-			// 		senderName: "THEODORE FRANCIS2", // username
-			// 		receiverMemberId: "3",
-			// 		receiverName: "testReceiver", // username
-			// 		postType: "text", // or "image"
-			// 		textContent: "hello world!",
-			// 		imageContentName: "testImage1",
-			// 		imageContentExtension: "png",
-			// 		isSeen: true,
-			// 		availableAt: "2018-10-03T19:36:39.326Z",
-			// 		identifier: "4"
-			// 	}
-			// ];
-
+			sortChatList([]);
 			let list = state.list;
 			if (action.payload.refreshing) list = [];
 			let updateList = [...list, ...action.payload.data];
+
+			console.log(
+				"--------- old list",
+				list,
+				"------------ new data",
+				action.payload.data
+			);
 
 			return {
 				...state,

@@ -31,7 +31,7 @@ const CONFIG = {
 		selectedBoxBorder: "#ff345e"
 	},
 	chat: {
-		receiveMessageLimit: 50
+		receiveMessageLimit: 8
 	}
 };
 
