@@ -8,7 +8,7 @@ export default class SocketWatcher extends Component {
 		id: ""
 	};
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.auth.isLogin && nextProps.id && !this.state.id) {
+		if (nextProps.isLogin && nextProps.id && !this.state.id) {
 			this.setState({ id: nextProps.id }, () => {
 				if (this.state.io) {
 					this.updateSocket(this.state.io);
@@ -18,7 +18,7 @@ export default class SocketWatcher extends Component {
 					});
 				}
 			});
-		} else if (!nextProps.auth.isLogin) {
+		} else if (!nextProps.isLogin) {
 			if (this.state.io && this.state.id) {
 				this.setState({ id: "" });
 			}
@@ -61,105 +61,99 @@ export default class SocketWatcher extends Component {
 		// 	this.props.addNotificationCount();
 		// });
 
-		io.socket.on("new_friend", data => {
-			console.log("new friend data", data);
-			this.props.hasFriendShipRequest();
-			// this.props.getListOfFriendRequests({
-			// 	receiverMemberId: this.props.id,
-			// 	refreshing: true
-			// });
-			this.props.getFriendshipStatus({
-				receiverMemberId: data.senderId,
-				senderMemberId: this.props.id
-			});
-		});
-
-		io.socket.on("new_visit", data => {
-			this.props.socketVisitCount(data.profileViewCount);
-		});
-
-		io.socket.on("member_movement", data => {
-			/*
-				output format
-				{
-					memberId: '5b3a787a88f3df6708de2812',
-					name: "test",
-					distance: 43,
-					location: {
-						type: 'Point',
-						coordinates: [ 51.521201, 35.749212 ],
-						heading: 20
-					}
-				}
-			 */
-			console.log(" receive member_movement event::", data);
-			this.props.updatePersonNearMe(data);
-		});
+		// io.socket.on("new_friend", data => {
+		// 	console.log("new friend data", data);
+		// 	this.props.hasFriendShipRequest();
+		// 	// this.props.getListOfFriendRequests({
+		// 	// 	receiverMemberId: this.props.id,
+		// 	// 	refreshing: true
+		// 	// });
+		// 	this.props.getFriendshipStatus({
+		// 		receiverMemberId: data.senderId,
+		// 		senderMemberId: this.props.id
+		// 	});
+		// });
+		//
+		// io.socket.on("new_visit", data => {
+		// 	this.props.socketVisitCount(data.profileViewCount);
+		// });
+		//
+		// io.socket.on("member_movement", data => {
+		// 	/*
+		// 		output format
+		// 		{
+		// 			memberId: '5b3a787a88f3df6708de2812',
+		// 			name: "test",
+		// 			distance: 43,
+		// 			location: {
+		// 				type: 'Point',
+		// 				coordinates: [ 51.521201, 35.749212 ],
+		// 				heading: 20
+		// 			}
+		// 		}
+		// 	 */
+		// 	console.log(" receive member_movement event::", data);
+		// 	this.props.updatePersonNearMe(data);
+		// });
 
 		io.socket.on("new_chat", data => {
-			let tab = data.isInRequestMode === false ? "Chats" : "Requests";
-			console.log("receive new chat message", data, tab);
-			// TODO: need to check the page I am in and reaction related to that
-			if (this.props.currentTabOfPage == tab) {
-				this.props.getListData(this.state.id, tab);
-			}
-			this.props.addChatCount();
-			this.props.newChat(data);
+			console.log("receive new chat message", data);
+			this.props.chatReceiveNewMessage(data);
 
 			// if are in Home page add this notification to list of notify them
 			//console.log("in page", this.props.currentPage);
 			//if (this.props.currentPage == "Home") {
-			this.props.addNotificationToStack({
-				name: data.senderUsername,
-				userId: data.senderMemberId,
-				messageType: tab,
-				message: data.textContent
-			});
+			// this.props.addNotificationToStack({
+			// 	name: data.senderUsername,
+			// 	userId: data.senderMemberId,
+			// 	messageType: tab,
+			// 	message: data.textContent
+			// });
 			//}
 		});
-
-		io.socket.on("cancel_friendship_request", data => {
-			console.log("cancel friendship request data", data);
-
-			this.props.callGetStatus(this.props.id);
-			// this.props.getListOfFriendRequests({
-			// 	receiverMemberId: this.props.id,
-			// 	refreshing: true
-			// });
-			this.props.getFriendshipStatus({
-				receiverMemberId:
-					data.senderMemberId == this.props.id
-						? data.receiverMemberId
-						: data.senderMemberId,
-				senderMemberId: this.props.id
-			});
-		});
-
-		io.socket.on("cancel_friendship", data => {
-			console.log("cancel friendship data", data);
-
-			this.props.callGetStatus(this.props.id);
-			this.props.getFriendshipStatus({
-				receiverMemberId:
-					data.senderMemberId == this.props.id
-						? data.receiverMemberId
-						: data.senderMemberId,
-				senderMemberId: this.props.id
-			});
-		});
-
-		io.socket.on("approve_friendship", data => {
-			console.log("approve friendship data", data);
-
-			this.props.callGetStatus(this.props.id);
-			this.props.getFriendshipStatus({
-				receiverMemberId:
-					data.senderMemberId == this.props.id
-						? data.receiverMemberId
-						: data.senderMemberId,
-				senderMemberId: this.props.id
-			});
-		});
+		//
+		// io.socket.on("cancel_friendship_request", data => {
+		// 	console.log("cancel friendship request data", data);
+		//
+		// 	this.props.callGetStatus(this.props.id);
+		// 	// this.props.getListOfFriendRequests({
+		// 	// 	receiverMemberId: this.props.id,
+		// 	// 	refreshing: true
+		// 	// });
+		// 	this.props.getFriendshipStatus({
+		// 		receiverMemberId:
+		// 			data.senderMemberId == this.props.id
+		// 				? data.receiverMemberId
+		// 				: data.senderMemberId,
+		// 		senderMemberId: this.props.id
+		// 	});
+		// });
+		//
+		// io.socket.on("cancel_friendship", data => {
+		// 	console.log("cancel friendship data", data);
+		//
+		// 	this.props.callGetStatus(this.props.id);
+		// 	this.props.getFriendshipStatus({
+		// 		receiverMemberId:
+		// 			data.senderMemberId == this.props.id
+		// 				? data.receiverMemberId
+		// 				: data.senderMemberId,
+		// 		senderMemberId: this.props.id
+		// 	});
+		// });
+		//
+		// io.socket.on("approve_friendship", data => {
+		// 	console.log("approve friendship data", data);
+		//
+		// 	this.props.callGetStatus(this.props.id);
+		// 	this.props.getFriendshipStatus({
+		// 		receiverMemberId:
+		// 			data.senderMemberId == this.props.id
+		// 				? data.receiverMemberId
+		// 				: data.senderMemberId,
+		// 		senderMemberId: this.props.id
+		// 	});
+		// });
 	};
 
 	render() {

@@ -3,7 +3,8 @@ export const GET_LIST = "CHAT_GET_LIST",
 	GET_LIST_FAILED = "CHAT_GET_LIST_FAILED",
 	VISIT_MESSAGE = "CHAT_VISIT_MESSAGE",
 	VISIT_MESSAGE_SUCCESS = "CHAT_VISIT_MESSAGE_SUCCESS",
-	VISIT_MESSAGE_FAILED = "CHAT_VISIT_MESSAGE_FAILED";
+	VISIT_MESSAGE_FAILED = "CHAT_VISIT_MESSAGE_FAILED",
+	RECEIVE_NEW_CHAT_MESSAGE = "CHAT_RECEIVE_NEW_CHAT_MESSAGE";
 
 // INITIAL_STATE = "CHAT_INITIAL_STATE",
 // CALL_GET_STATUS = "CHAT_CALL_GET_STATUS",
@@ -25,6 +26,11 @@ import {
 } from "../appService";
 
 import { CONFIG } from "../../../config";
+
+export const chatReceiveNewMessage = data => ({
+	type: RECEIVE_NEW_CHAT_MESSAGE,
+	payload: data
+});
 
 export const chatGetList = (data, tab) => ({
 	type: GET_LIST,

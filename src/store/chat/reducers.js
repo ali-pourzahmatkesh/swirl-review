@@ -11,7 +11,9 @@ import {
 	VISIT_MESSAGE_FAILED,
 	serverVisitMessage,
 	serverVisitMessageSuccess,
-	serverVisitMessageFailed
+	serverVisitMessageFailed,
+	// ------------
+	RECEIVE_NEW_CHAT_MESSAGE
 
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
@@ -66,6 +68,13 @@ let initialState = {
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		case RECEIVE_NEW_CHAT_MESSAGE: {
+			return {
+				...state,
+				list: [action.payload, ...state.list]
+			};
+		}
+
 		case GET_LIST: {
 			return loop(
 				{

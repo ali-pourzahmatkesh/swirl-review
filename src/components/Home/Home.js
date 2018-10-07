@@ -236,7 +236,7 @@ class Home extends Component {
 					{(list.length && (
 						<FlatList
 							data={list}
-							keyExtractor={(item, index) => item.id}
+							keyExtractor={(item, index) => `${item.id}-${item.identifier}`}
 							renderItem={({ item }) => this.loadContentItem({ item })}
 							ListEmptyComponent={() => <EmptyList />}
 							onRefresh={() => {
