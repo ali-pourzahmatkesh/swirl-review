@@ -7,7 +7,7 @@ import {
 	TouchableOpacity,
 	View
 } from "react-native";
-import Swipeout from "react-native-swipeout";
+// import Swipeout from "react-native-swipeout";
 import EmptyList from "../EmptyList";
 import Avatar from "../../components/Avatar";
 import { CONFIG } from "../../../config";
@@ -111,12 +111,12 @@ export default class FriendRequest extends Component {
 		return (
 			// <View style={[item.isSeen ? styles.listViewItemsYellow : ""]}>
 			<View>
-				<Swipeout right={swipeBtns} backgroundColor="transparent">
+				<View backgroundColor="transparent">
 					<View style={[appCss.listItems]}>
 						{this.avatarFunc(item)}
 						{this.titleFunc(item)}
 					</View>
-				</Swipeout>
+				</View>
 			</View>
 		);
 	};
@@ -148,28 +148,28 @@ export default class FriendRequest extends Component {
 	titleFunc = item => {
 		return (
 			<View style={appCss.titleBox}>
-				<TouchableOpacity
-					onPress={() => this.prepareForRedirectToProfile(item)}
-				>
-					<Text
-						numberOfLines={1}
-						ellipsizeMode="tail"
-						style={appCss.titleBoxSubject}
-					>
-						{this.Capitalize(item.name)}
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity onPress={() => this.handleChat(item)}>
-					<View style={appCss.titleBoxDetail}>
-						<Text
-							numberOfLines={2}
-							ellipsizeMode="tail"
-							style={appCss.titleBoxDetailText}
-						>
-							{this.Capitalize(item.recentMessage)}
-						</Text>
-					</View>
-				</TouchableOpacity>
+				{/*<TouchableOpacity*/}
+					{/*onPress={() => this.prepareForRedirectToProfile(item)}*/}
+				{/*>*/}
+					{/*<Text*/}
+						{/*numberOfLines={1}*/}
+						{/*ellipsizeMode="tail"*/}
+						{/*style={appCss.titleBoxSubject}*/}
+					{/*>*/}
+						{/*{this.Capitalize(item.name)}*/}
+					{/*</Text>*/}
+				{/*</TouchableOpacity>*/}
+				{/*<TouchableOpacity onPress={() => this.handleChat(item)}>*/}
+					{/*<View style={appCss.titleBoxDetail}>*/}
+						{/*<Text*/}
+							{/*numberOfLines={2}*/}
+							{/*ellipsizeMode="tail"*/}
+							{/*style={appCss.titleBoxDetailText}*/}
+						{/*>*/}
+							{/*{this.Capitalize(item.recentMessage)}*/}
+						{/*</Text>*/}
+					{/*</View>*/}
+				{/*</TouchableOpacity>*/}
 			</View>
 		);
 	};
@@ -197,6 +197,7 @@ export default class FriendRequest extends Component {
 			<View style={styles.container}>
 				<FlatList
 					data={this.props.list}
+					style={{flex:1}}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
 					ListEmptyComponent={() => <EmptyList />}

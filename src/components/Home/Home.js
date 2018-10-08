@@ -17,12 +17,13 @@ import addMessage from "../../assets/images/icons/Group.png";
 import noSwirl from "../../assets/images/icons/noSwirl.png";
 import Avatar from "../Avatar";
 import { CONFIG } from "../../../config";
+const COLORS = CONFIG.colors;
 import EmptyList from "../EmptyList";
 // import defaultMoment from "moment";
 import moment from "moment-timezone";
 import MessagePopup from "../MessagePopup/MessagePopup";
 import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
-const COLORS = CONFIG.colors;
+
 
 // import Discussion from "../Discussion";
 
@@ -69,11 +70,15 @@ class Home extends Component {
 		});
 	};
 
+	handleInviteSubmit = () => {
+		this.props.navigation.push("InviteTabsScreen");
+	};
+
 	loadHeader = () => {
 		return (
 			<View style={appCss.header}>
 				<TouchableOpacity
-					onPress={() => this.setState({ newMessageModalVisible: true })}
+					onPress={this.handleInviteSubmit}
 					style={appCss.headerIconBox}
 				>
 					<Image
@@ -225,6 +230,7 @@ class Home extends Component {
 					animationType="slide"
 					transparent={true}
 				>
+
 					<MessagePopup
 						closeMessageModal={() => {
 							this.setState({ newMessageModalVisible: false });
