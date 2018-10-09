@@ -11,6 +11,7 @@ import ChangePasswordFromProfileScreen from "../screens/ChangePasswordFromProfil
 import TermsAndConditionsScreen from "../screens/TermsAndConditionsScreen";
 import PrivacyPolicyScreen from "../screens/PrivacyPolicyScreen";
 import ChangeInfoScreen from "../screens/ChangeInfoScreen";
+import MessageDetailScreen from "../screens/MessageDetailScreen";
 import InviteTabsScreen from "../screens/InviteTabsScreen";
 import { CONFIG } from "../../config";
 const COLORS = CONFIG.colors;
@@ -30,7 +31,8 @@ export default StackNavigator(
 		},
 		TermsAndConditionsScreen: { screen: TermsAndConditionsScreen },
 		PrivacyPolicyScreen: { screen: PrivacyPolicyScreen },
-        InviteTabsScreen: { screen: InviteTabsScreen }
+        InviteTabsScreen: { screen: InviteTabsScreen },
+        MessageDetailScreen: { screen: MessageDetailScreen }
 	},
 	{
 		initialRouteName: "HomeScreen",

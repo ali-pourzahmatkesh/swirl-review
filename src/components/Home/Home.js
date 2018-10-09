@@ -197,11 +197,13 @@ class Home extends Component {
 
 	loadDetail = data => {
 		console.log("receive loadDetail", data);
+        this.props.navigation.push("MessageDetailScreen", { data });
 		if (data.isSeen === false) {
 			console.log("it is falseeeeeee", data);
 			this.props.visitMessage({
 				listOfId: [data.id]
 			});
+
 		}
 	};
 
