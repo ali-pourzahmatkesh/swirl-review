@@ -16,7 +16,8 @@ import {
 	RECEIVE_NEW_CHAT_MESSAGE,
 	// ------------
 	reloadChatList,
-	RELOAD_CHAT_LIST
+	RELOAD_CHAT_LIST,
+	CHAT_SET_STORE
 
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
@@ -57,7 +58,8 @@ let initialState = {
 	refreshing: false,
 	loading: false,
 	timers: {},
-	timersFunctions: {}
+	timersFunctions: {},
+	isNewMessage: false
 	// userData: {},
 	// count: 0,
 	// listAddFriend: [],
@@ -73,10 +75,18 @@ let initialState = {
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		case CHAT_SET_STORE: {
+			return {
+				...state,
+				...action.payload
+			};
+		}
+
 		case RECEIVE_NEW_CHAT_MESSAGE: {
 			return {
 				...state,
-				list: [action.payload, ...state.list]
+				list: [action.payload, ...state.list],
+				isNewMessage: true
 			};
 		}
 

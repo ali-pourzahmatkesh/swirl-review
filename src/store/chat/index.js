@@ -5,7 +5,8 @@ export const GET_LIST = "CHAT_GET_LIST",
 	VISIT_MESSAGE_SUCCESS = "CHAT_VISIT_MESSAGE_SUCCESS",
 	VISIT_MESSAGE_FAILED = "CHAT_VISIT_MESSAGE_FAILED",
 	RECEIVE_NEW_CHAT_MESSAGE = "CHAT_RECEIVE_NEW_CHAT_MESSAGE",
-	RELOAD_CHAT_LIST = "CHAT_RELOAD_CHAT_LIST";
+	RELOAD_CHAT_LIST = "CHAT_RELOAD_CHAT_LIST",
+	CHAT_SET_STORE = "CHAT_CHAT_SET_STORE";
 
 // INITIAL_STATE = "CHAT_INITIAL_STATE",
 // CALL_GET_STATUS = "CHAT_CALL_GET_STATUS",
@@ -27,6 +28,11 @@ import {
 } from "../appService";
 
 import { CONFIG } from "../../../config";
+
+export const chatSetStore = data => ({
+	type: CHAT_SET_STORE,
+	payload: data
+});
 
 export const reloadChatList = () => ({
 	type: RELOAD_CHAT_LIST,
