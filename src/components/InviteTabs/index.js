@@ -19,20 +19,6 @@ const ViewStyle = {
 	paddingBottom: 15,
 	paddingTop: 20
 };
-class AddFriendN extends Component{
-	render(){
-		return(
-			<View style={{flex:1}}><Text>AddFriendN</Text></View>
-		)
-	}
-}
-class AddFriendNew extends Component{
-	render(){
-		return(
-			<View style={{flex:1}}><Text>AddFriendNew66666666</Text></View>
-		)
-	}
-}
 export default TabNavigator(
 	{
 		"AddFriends": {
@@ -89,7 +75,7 @@ export default TabNavigator(
 	{
 		initialRouteName: "AddFriends",
 		tabBarPosition: "top",
-		animationEnabled: false,
+		animationEnabled: true,
 		swipeEnabled: true,
 		tabBarOptions: {
 			activeTintColor: "#4a4444",

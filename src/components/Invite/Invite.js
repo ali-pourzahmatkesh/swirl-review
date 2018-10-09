@@ -16,9 +16,9 @@ export default class Invite extends Component {
     }
     search = text => {
         this.setState({searchText : text})
-        this.setState({searchText : text})
     };
     render() {
+        const {searchText} = this.state;
         return (
             <View style={styles.container}>
                 <View style={appCss.header}>
@@ -54,7 +54,7 @@ export default class Invite extends Component {
                     </View>
                     <View style={styles.headerAction}/>
                 </View>
-                <InviteTabs/>
+                <InviteTabs  screenProps={{searchText}}/>
             </View>
 
         );

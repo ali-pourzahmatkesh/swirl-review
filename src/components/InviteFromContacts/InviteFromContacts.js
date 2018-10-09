@@ -14,6 +14,7 @@ export default class InviteFromContacts extends Component {
 		super(props);
 		this.state = {
 			list: [],
+            contacts: [],
 			newList: []
 		};
 		this.getListData.bind(this);
@@ -23,13 +24,17 @@ export default class InviteFromContacts extends Component {
         this.getListData();
 	}
 
+    componentDidUpdate( prevProps ) {
+        if( this.props.screenProps.searchText !== prevProps.screenProps.searchText ) {
+            this.filterContact(this.state.contacts, this.props.screenProps.searchText)
+        }
+    }
 
 	getListData = function() {
 		pg.requestAccess().then(granted => {
 			if (granted !== true) {
 				return;
 			}
-
 			// TODO: need to implement pagination to contacts
 			pg.getContactsCount().then(count => {
 				pg
@@ -37,34 +42,28 @@ export default class InviteFromContacts extends Component {
 						PagedContacts.displayName,
                         PagedContacts.thumbnailImageData,
 						PagedContacts.phoneNumbers
-						//PagedContacts.emailAddresses
 					])
 					.then(contacts => {
-						//Use contacts here
-						console.log(
-							"page",
-							this.state.page,
-							"limit",
-							this.state.limit,
-							"contacts list",
-							contacts
-						);
-
+                        this.setState({ contacts });
 						if (contacts.length > 0) {
-
-                            let sectionList = this.generateSectionList(contacts);
-                            console.log(sectionList)
-							this.setState({
-                                list: sectionList,
-								loading: false,
-								// newContactList: contacts,
-								refreshing: false
-							});
+							this.getMobileNumberList(contacts)
 						}
 					});
 			});
 		});
 	};
+
+    filterContact = ( contacts, search ) => {
+        if( search ) {
+            contacts = contacts.filter(item => item[ 'displayName' ].search(search) > -1)
+        }
+        let sectionList = this.generateSectionList(contacts);
+        this.setState({
+            list: sectionList,
+            loading: false,
+            refreshing: false
+        });
+    };
 
     generateSectionList = array => {
         let list = { letters: [] };
@@ -88,9 +87,26 @@ export default class InviteFromContacts extends Component {
         });
         return sectionList;
     };
+    getMobileNumberList = (contacts)=>{
+    	let numberList = [];
+        contacts.forEach(item=>{
+        	item['phoneNumbers'].forEach(itemNumber=>{
+        		if(itemNumber.label==='mobile'){
+                    numberList.push(itemNumber['value'])
+				}
+			})
+		});
+        console.log("numberList", numberList)
+        this.filterContact(contacts)
 
+	};
+
+    addFriend = contact=>{
+    	console.log(contact)
+	};
     render() {
-		return (
+
+        return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
 					sections={this.state.list}
@@ -98,26 +114,29 @@ export default class InviteFromContacts extends Component {
 					keyExtractor={( item, index ) => index}
 					ListEmptyComponent={() => <EmptyList />}
 					renderItem={( { item } ) => (
-						<TouchableOpacity
+						<View
 							style={styles.sectionItems}
 						>
                            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'flex-start'}}>
-                               {/*<Image style={{width:45, height:45}} resizeMode={'contain'} source={{uri:item.thumbnailImageData}}/>*/}
 
-							   <Image style={{ width: 45, height: 45 }} resizeMode={'contain'} source={logo}/>
-
+							   <Image style={{ width: 45, height: 45, borderRadius: 22.5 }} resizeMode={'contain'}
+									  source={item[ 'thumbnailImageData' ] && { uri: 'data:image/png;base64,' + item[ 'thumbnailImageData' ] } || logo}/>
 							   <Text
 								   style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
 								   numberOfLines={1}
 								   ellipsizeMode="tail"
 							   >
-
                                    {item.displayName}
 							   </Text>
 
 						   </View>
-							<View/>
-						</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.addBtn}
+								onPress={()=>this.addFriend(item)}
+							>
+								<Text style={styles.addBtnText}> Add </Text>
+							</TouchableOpacity>
+						</View>
                     )}
 					renderSectionHeader={( { section } ) => (
 						<View style={styles.sectionHeader}>

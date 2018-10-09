@@ -106,7 +106,6 @@ const styles = StyleSheet.flatten({
 
 
     cameraActionBox:{
-        // backgroundColor:"#000",
         backgroundColor:"transparent",
         flex:1,
         position:'absolute',
