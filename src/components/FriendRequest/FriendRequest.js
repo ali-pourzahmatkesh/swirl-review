@@ -193,6 +193,8 @@ export default class FriendRequest extends Component {
 	};
 
 	render() {
+        console.log("console.log(this.props.screenProps.cats);cccc111", this.props.screenProps)
+        console.log("console.log(this.props.screenProps.cats);cccc111", this.props.navigation.state)
 		return (
 			<View style={styles.container}>
 				<FlatList
