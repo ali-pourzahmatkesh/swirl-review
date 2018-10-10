@@ -24,6 +24,8 @@ import moment from "moment-timezone";
 import MessagePopup from "../MessagePopup/MessagePopup";
 import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
 
+import sortChatList from "../../util/sortChatList";
+
 // import Discussion from "../Discussion";
 
 class Home extends Component {
@@ -68,7 +70,7 @@ class Home extends Component {
 				this.setState({ timers: {}, timersFunctions: {} });
 
 				// set the new timers
-				if (nextProps.chatList) {
+				if (nextProps.chatList.length) {
 					// find messages that need to set timer for them
 					nextProps.chatList.map(message => {
 						if (message.isSeen === false) {
@@ -88,12 +90,12 @@ class Home extends Component {
 									);
 
 									// update the message client side for correct design
-									let localList = this.state.list.filter(msg => {
-										return msg.id != message.id;
-									});
-									console.log("remove item from list", localList);
-									localList.unshift(message);
-									console.log("add to top of list", localList);
+									// let localList = this.state.list.filter(msg => {
+									// 	return msg.id != message.id;
+									// });
+									// console.log("remove item from list", localList);
+									// localList.unshift(message);
+									// console.log("add to top of list", localList);
 
 									clearTimeout(localTimersFunctions[message.id]);
 									delete localTimers[message.id];
@@ -105,6 +107,7 @@ class Home extends Component {
 										localTimersFunctions
 									);
 
+									localList = sortChatList(localList);
 									this.setState({
 										timers: localTimers,
 										timersFunctions: localTimersFunctions,
@@ -121,6 +124,7 @@ class Home extends Component {
 					});
 				}
 
+				nextProps.chatList = sortChatList(nextProps.chatList);
 				this.setState({ list: nextProps.chatList });
 
 				// trn off isNewMessage flag
