@@ -1,58 +1,78 @@
-import React, { Component } from "react";
-import {
-	ActivityIndicator,
-	AlertIOS,
-	FlatList,
-	Text,
-	TouchableOpacity,
-	View
-} from "react-native";
-// import Swipeout from "react-native-swipeout";
+import React, {Component} from "react";
+import {AlertIOS, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import EmptyList from "../EmptyList";
 import Avatar from "../../components/Avatar";
-import { CONFIG } from "../../../config";
+import check from "../../assets/images/icons/check_white.png";
+import cancel from "../../assets/images/icons/close.png";
 import appCss from "../../../app.css";
 import styles from "./style";
-const colors = CONFIG.colors;
 
 export default class FriendRequest extends Component {
-	//state = {};
+    state = {
+        contentList:[],
+        list: [
+            {
+                "_id": "5b742feff6d5974bd647f5ce",
+                "senderMemberId": "5b732315dc53ae8206441e5e",
+                "receiverMemberId": "5b8e829ff22ae764b833921d",
+				"name" : "majid azad",
+                "isApproved": false,
+                "isCanceled": false
+            },
+            {
+                "_id": "5b74300bf6d5974bd647f5cf",
+                "senderMemberId": "5b7322b7dc53ae8206441e5d",
+                "receiverMemberId": "5b732315dc53ae8206441e5e",
+                "name" : "ali Pourzahmatkeshhhhhhhh",
+                "isApproved": false,
+                "isCanceled": false
+            },
+            {
+                "_id": "5b8e8bd9a4ee0d8b6de0b5e4",
+                "createdAt": "2018-09-04T13:42:49.290Z",
+                "isApproved": true,
+                "isCanceled": false,
+                "name" : "seyed",
+                "receiverMemberId": "5b8e829ff22ae764b833921d",
+                "senderMemberId": "5b7322b7dc53ae8206441e5d",
+                "updatedAt": "2018-09-04T13:42:49.290Z"
+            },
+            {
+                "_id": "5b8ff5e2a4ee0d8b6de0e783",
+                "createdAt": "2018-09-05T15:27:30.133Z",
+                "isApproved": true,
+                "isCanceled": false,
+                "name" : "mgs",
+                "receiverMemberId": "5b8ff1333d956ba8d028ec7b",
+                "senderMemberId": "5b8e829ff22ae764b833921d",
+                "updatedAt": "2018-09-05T15:27:30.133Z"
+            }
+        ]
+    };
 
-	// componentDidMount() {
-	// 	this.getListRequest();
-	// }
+    componentDidMount() {
+        this.getListRequest();
+        this.filterContact(this.state.list)
+    }
+    componentDidUpdate( prevProps ) {
+        if( this.props.screenProps && prevProps.screenProps ) {
+            if( this.props.screenProps.searchText !== prevProps.screenProps.searchText ) {
+                this.filterContact(this.state.list, this.props.screenProps.searchText)
+            }
+        }
+    }
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if (this.state.loading !== nextProps.loading) {
-	// 		this.setState({ loading: nextProps.loading });
-	// 	}
-	// }
 
-	// renderFooter = () => {
-	// 	if (this.state.loading && this.state.page > 1) {
-	// 		return <ActivityIndicator />;
-	// 	} else {
-	// 		return null;
-	// 	}
-	// };
+    filterContact = (contentList, searchText)=>{
+    	console.log(contentList, searchText)
+    	if(searchText){
+            contentList = contentList.filter(i=>i['name'].toLowerCase().search(searchText.toLowerCase()) > -1)
+		}
 
-	// handleLoadMore = () => {
-	// 	if (
-	// 		this.props.list.length > 0 &&
-	// 		!this.state.loading &&
-	// 		this.props.list.length < this.props.count
-	// 	) {
-	// 		this.setState({ page: this.state.page + 1, loading: true }, () => {
-	// 			this.getListRequest(this.state.loading);
-	// 		});
-	// 	}
-	// };
-	//
-	// handleRefresh = () => {
-	// 	this.setState({ page: 1 }, () => {
-	// 		this.getListRequest(null, true);
-	// 	});
-	// };
+		this.setState({contentList})
+
+	};
+
 
 	getListRequest = (/*loading = false, refreshing = false*/) => {
 		// const { page, limit } = this.state;
@@ -65,7 +85,7 @@ export default class FriendRequest extends Component {
 		// };
 
 		//this.props.getListData(options, "FriendRequests");
-		this.props.getListData(this.props.id, "FriendRequests");
+        // this.props.getListData(this.props.id, "FriendRequests");
 	};
 
 	handleChat = item => {
@@ -99,17 +119,8 @@ export default class FriendRequest extends Component {
 	};
 
 	loadList = ({ item }) => {
-		let swipeBtns = [
-			{
-				text: "Delete",
-				backgroundColor: colors.appColor,
-				onPress: () => {
-					this.deleteNote(item);
-				}
-			}
-		];
+
 		return (
-			// <View style={[item.isSeen ? styles.listViewItemsYellow : ""]}>
 			<View>
 				<View backgroundColor="transparent">
 					<View style={[appCss.listItems]}>
@@ -131,59 +142,51 @@ export default class FriendRequest extends Component {
 
 	avatarFunc = item => {
 		return (
-			<View style={appCss.avatarBox}>
-				<Avatar userId={item.memberId} size={60} />
-			</View>
+			<TouchableOpacity onPress={() => this.props.screenProps.profileNavigate(item)} style={appCss.avatarBox}>
+				<Avatar userId={item.memberId} position="image" size={45}/>
+			</TouchableOpacity>
 		);
 	};
-
-	prepareForRedirectToProfile = item => {
-		this.props.onClickItem();
-		this.props.navigation.push("ProfileScreen", {
-			userId: item.memberId,
-			x: 1
-		});
-	};
-
 	titleFunc = item => {
 		return (
 			<View style={appCss.titleBox}>
-				{/*<TouchableOpacity*/}
-					{/*onPress={() => this.prepareForRedirectToProfile(item)}*/}
-				{/*>*/}
-					{/*<Text*/}
-						{/*numberOfLines={1}*/}
-						{/*ellipsizeMode="tail"*/}
-						{/*style={appCss.titleBoxSubject}*/}
-					{/*>*/}
-						{/*{this.Capitalize(item.name)}*/}
-					{/*</Text>*/}
-				{/*</TouchableOpacity>*/}
-				{/*<TouchableOpacity onPress={() => this.handleChat(item)}>*/}
-					{/*<View style={appCss.titleBoxDetail}>*/}
-						{/*<Text*/}
-							{/*numberOfLines={2}*/}
-							{/*ellipsizeMode="tail"*/}
-							{/*style={appCss.titleBoxDetailText}*/}
-						{/*>*/}
-							{/*{this.Capitalize(item.recentMessage)}*/}
-						{/*</Text>*/}
-					{/*</View>*/}
-				{/*</TouchableOpacity>*/}
+				<View>
+					<Text
+						numberOfLines={1}
+						ellipsizeMode="tail"
+						style={appCss.titleBoxSubject}
+					>
+						{this.Capitalize(item.name)}
+					</Text>
+				</View>
 			</View>
 		);
 	};
 
-	// loadList = ({ item }) => {
-	// 	return (
-	// 		<View style={styles.listViewItems}>
-	// 			{this.avatarFunc(item)}
-	// 			{this.titleFunc(item)}
-	// 			<View style={styles.lastStatusImageBox}>{this.positionFunc(item)}</View>
-	// 		</View>
-	// 	);
-	// };
+    loadList = ( { item } ) => {
+        return (
+			<View style={appCss.listItems}>
+                {this.avatarFunc(item)}
+                {this.titleFunc(item)}
+                {this.positionFunc(item)}
+			</View>
+        );
+    };
 
+    positionFunc = item => {
+        return (
+			<View style={styles.actionBox}>
+				<TouchableOpacity onPress={() => {
+                    this.deleteNote(item)
+                }} style={[ styles.actionBtn, styles.cancel ]}>
+					<Image source={cancel} resizeMode={'contain'} style={styles.actionIcon}/>
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => this.approve(item)} style={[ styles.actionBtn, styles.verify ]}>
+					<Image source={check} resizeMode={'contain'} style={styles.actionIcon}/>
+				</TouchableOpacity>
+			</View>
+        );
+    };
 	approve = item => {
 		this.props.callApprove(item.id);
 	};
@@ -193,12 +196,12 @@ export default class FriendRequest extends Component {
 	};
 
 	render() {
-        console.log("console.log(this.props.screenProps.cats);cccc111", this.props.screenProps)
-        console.log("console.log(this.props.screenProps.cats);cccc111", this.props.navigation.state)
+        // console.log("console.log(this.props.screenProps.cats);cccc111", this.props.screenProps)
+        // console.log("console.log(this.props.screenProps.cats);cccc111", this.props.navigation.state)
 		return (
 			<View style={styles.container}>
 				<FlatList
-					data={this.props.list}
+					data={this.state.contentList}
 					style={{flex:1}}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
