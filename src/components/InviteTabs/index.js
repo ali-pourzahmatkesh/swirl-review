@@ -10,7 +10,7 @@ import { CONFIG } from "../../../config";
 const COLORS = CONFIG.colors;
 
 const ViewStyle = {
-	borderBottomWidth: 1,
+	borderBottomWidth: 2,
 	width: "100%",
 	height: 60,
 	display: "flex",
@@ -36,6 +36,7 @@ export default TabNavigator(
 								appCss.defaultFontApp,
 								{
 									color: COLORS.bodyColor,
+									fontSize:19,
 									opacity: props.focused && 1 || 0.8
 								}
 							]}
@@ -61,6 +62,7 @@ export default TabNavigator(
                                 appCss.defaultFontApp,
                                 {
                                     color: COLORS.bodyColor,
+                                    fontSize:19,
                                     opacity: props.focused && 1 || 0.8
                                 }
                             ]}
@@ -86,7 +88,9 @@ export default TabNavigator(
 			},
 			style: {
 				backgroundColor: COLORS.appColor,
-				marginBottom: marginBottom
+				marginBottom: marginBottom,
+				borderTopWidth:1,
+				borderTopColor:COLORS.appColor
 			},
 			tabStyle: {
 				width: width / 2,

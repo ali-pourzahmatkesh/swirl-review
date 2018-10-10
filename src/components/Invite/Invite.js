@@ -17,6 +17,15 @@ export default class Invite extends Component {
     search = text => {
         this.setState({searchText : text})
     };
+
+
+    prepareForRedirectToProfile = item => {
+        console.log("********::", item)
+        this.props.navigation.push("ProfileScreen", {
+            userId: item,
+            x: 1
+        });
+    };
     render() {
         const {searchText} = this.state;
         return (
@@ -54,7 +63,7 @@ export default class Invite extends Component {
                     </View>
                     <View style={styles.headerAction}/>
                 </View>
-                <InviteTabs  screenProps={{searchText}}/>
+                <InviteTabs  screenProps={{searchText, profileNavigate:this.prepareForRedirectToProfile}}/>
             </View>
 
         );

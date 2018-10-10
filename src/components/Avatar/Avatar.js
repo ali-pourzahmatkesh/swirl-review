@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Image, TouchableOpacity, View, Text } from "react-native";
+import React, {Component} from "react";
+import {Image, TouchableOpacity, View} from "react-native";
 import styles from "./style";
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
 
 export default class Avatar extends Component {
 	state = {
@@ -39,7 +39,7 @@ export default class Avatar extends Component {
 			disabled
 		} = this.props;
 		let myStyleSheet = styles.getSheet(this.props.size);
-		if (this.props.position == "profile") {
+        if( this.props.position === "profile" ) {
 			return (
 				<TouchableOpacity
 					onPress={()=>this.prepareForRedirectToProfile()}
@@ -50,7 +50,19 @@ export default class Avatar extends Component {
 					/>
 				</TouchableOpacity>
 			);
-		} else {
+        } else
+            if( this.props.position === "image" ) {
+                return (
+					<View
+
+						style={[ myStyleSheet.avatarItem, avatarContainerStyle ]}>
+						<Image
+							style={[ myStyleSheet.avatarImage, avatarImageStyle ]}
+							source={this.avatarUrl(userId)}
+						/>
+					</View>
+                );
+            } else {
 			return (
 				<TouchableOpacity
 					style={[myStyleSheet.avatarItem, avatarContainerStyle]}
