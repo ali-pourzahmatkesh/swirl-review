@@ -124,8 +124,8 @@ class Home extends Component {
 					});
 				}
 
-				nextProps.chatList = sortChatList(nextProps.chatList);
-				this.setState({ list: nextProps.chatList });
+				let orderedChatList = sortChatList(nextProps.chatList);
+				this.setState({ list: orderedChatList });
 
 				// trn off isNewMessage flag
 				this.props.chatSetStore({

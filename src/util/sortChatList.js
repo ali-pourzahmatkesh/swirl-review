@@ -35,7 +35,7 @@ export default function(list) {
 	// ----------------------------------------------------------------------
 	// sort each part by when they are available
 	// ----------------------------------------------------------------------
-	if (messageAreReady.length) {
+	if (messageAreReady.length > 1) {
 		_.sortBy(messageAreReady, [
 			function(msg) {
 				return msg.availableAt;
@@ -43,7 +43,7 @@ export default function(list) {
 		]);
 	}
 
-	if (messageAreWaiting.length) {
+	if (messageAreWaiting.length > 1) {
 		_.sortBy(messageAreWaiting, [
 			function(msg) {
 				return msg.availableAt;
@@ -51,7 +51,7 @@ export default function(list) {
 		]);
 	}
 
-	if (messageAreArchived.length) {
+	if (messageAreArchived.length > 1) {
 		_.sortBy(messageAreArchived, [
 			function(msg) {
 				return msg.availableAt;
