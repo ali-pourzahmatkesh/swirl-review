@@ -13,7 +13,11 @@ import {
 	serverVisitMessageSuccess,
 	serverVisitMessageFailed,
 	// ------------
-	RECEIVE_NEW_CHAT_MESSAGE
+	RECEIVE_NEW_CHAT_MESSAGE,
+	// ------------
+	reloadChatList,
+	RELOAD_CHAT_LIST,
+	CHAT_SET_STORE
 
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
@@ -52,7 +56,10 @@ let initialState = {
 	hasError: false,
 	list: [],
 	refreshing: false,
-	loading: false
+	loading: false,
+	timers: {},
+	timersFunctions: {},
+	isNewMessage: false
 	// userData: {},
 	// count: 0,
 	// listAddFriend: [],
@@ -68,10 +75,18 @@ let initialState = {
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		case CHAT_SET_STORE: {
+			return {
+				...state,
+				...action.payload
+			};
+		}
+
 		case RECEIVE_NEW_CHAT_MESSAGE: {
 			return {
 				...state,
-				list: [action.payload, ...state.list]
+				list: [action.payload, ...state.list],
+				isNewMessage: true
 			};
 		}
 
@@ -96,7 +111,9 @@ const chat = (state = initialState, action) => {
 		case GET_LIST_SUCCESS: {
 			// sortChatList([]);
 			let list = state.list;
-			if (action.payload.refreshing) list = [];
+			if (action.payload.refreshing) {
+				list = [];
+			}
 			let updateList = [...list, ...action.payload.data];
 
 			console.log(
@@ -111,6 +128,14 @@ const chat = (state = initialState, action) => {
 				isLoadingFetch: false,
 				list: updateList,
 				refreshing: false
+			};
+		}
+
+		case RELOAD_CHAT_LIST: {
+			console.log("RELOAD_CHAT_LIST");
+			return {
+				...state,
+				list: [...state.list]
 			};
 		}
 

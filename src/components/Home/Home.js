@@ -24,7 +24,6 @@ import moment from "moment-timezone";
 import MessagePopup from "../MessagePopup/MessagePopup";
 import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
 
-
 // import Discussion from "../Discussion";
 
 class Home extends Component {
@@ -34,7 +33,9 @@ class Home extends Component {
 			refreshing: false,
 			newMessageModalVisible: false,
 			list: [],
-			lastIdentifier: null
+			lastIdentifier: null,
+			timers: {},
+			timersFunctions: {}
 		};
 	}
 
@@ -54,8 +55,79 @@ class Home extends Component {
 			Array.isArray(nextProps.chatList) &&
 			this.state.list.length != nextProps.chatList.length
 		) {
-			this.setState({ list: nextProps.chatList });
 			console.log("----------------------new refresh the list of chats");
+			if (this.state.refreshing === true || nextProps.isNewMessage === true) {
+				console.log("refreshing list ....", this.state.refreshing);
+				console.log("new message ....", nextProps.isNewMessage);
+
+				// remove all old timers
+				for (message in this.state.timers) {
+					console.log("a message from timer cycle", message);
+					clearTimeout(this.state.timersFunctions[message.id]);
+				}
+				this.setState({ timers: {}, timersFunctions: {} });
+
+				// set the new timers
+				if (nextProps.chatList) {
+					// find messages that need to set timer for them
+					nextProps.chatList.map(message => {
+						if (message.isSeen === false) {
+							let intervalByMiliSeconds =
+								new Date(message["availableAt"]).getTime() -
+								new Date().getTime();
+
+							if (intervalByMiliSeconds > 0) {
+								let localTimers = this.state.timers;
+								let localTimersFunctions = this.state.timersFunctions;
+
+								localTimers[message.id] = message;
+								localTimersFunctions[message.id] = setTimeout(() => {
+									console.log(
+										"ready to remove interval for message ",
+										message.id
+									);
+
+									// update the message client side for correct design
+									let localList = this.state.list.filter(msg => {
+										return msg.id != message.id;
+									});
+									console.log("remove item from list", localList);
+									localList.unshift(message);
+									console.log("add to top of list", localList);
+
+									clearTimeout(localTimersFunctions[message.id]);
+									delete localTimers[message.id];
+									delete localTimersFunctions[message.id];
+									console.log(
+										"------ SET REMOVE ----- timers",
+										localTimers,
+										"timers func",
+										localTimersFunctions
+									);
+
+									this.setState({
+										timers: localTimers,
+										timersFunctions: localTimersFunctions,
+										list: localList
+									});
+								}, intervalByMiliSeconds);
+								console.log(
+									"new timer set for next ",
+									intervalByMiliSeconds,
+									" Miliseconds"
+								);
+							}
+						}
+					});
+				}
+
+				this.setState({ list: nextProps.chatList });
+
+				// trn off isNewMessage flag
+				this.props.chatSetStore({
+					isNewMessage: false
+				});
+			}
 		}
 
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
@@ -197,13 +269,12 @@ class Home extends Component {
 
 	loadDetail = data => {
 		console.log("receive loadDetail", data);
-        this.props.navigation.push("MessageDetailScreen", { data });
+		this.props.navigation.push("MessageDetailScreen", { data });
 		if (data.isSeen === false) {
 			console.log("it is falseeeeeee", data);
 			this.props.visitMessage({
 				listOfId: [data.id]
 			});
-
 		}
 	};
 
@@ -232,7 +303,6 @@ class Home extends Component {
 					animationType="slide"
 					transparent={true}
 				>
-
 					<MessagePopup
 						closeMessageModal={() => {
 							this.setState({ newMessageModalVisible: false });
