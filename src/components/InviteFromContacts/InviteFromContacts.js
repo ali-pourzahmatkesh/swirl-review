@@ -25,9 +25,12 @@ export default class InviteFromContacts extends Component {
 	}
 
     componentDidUpdate( prevProps ) {
-        if( this.props.screenProps.searchText !== prevProps.screenProps.searchText ) {
-            this.filterContact(this.state.contacts, this.props.screenProps.searchText)
+        if( this.props.screenProps && prevProps.screenProps ) {
+            if( this.props.screenProps.searchText !== prevProps.screenProps.searchText ) {
+                this.filterContact(this.state.contacts, this.props.screenProps.searchText)
+            }
         }
+
     }
 
 	getListData = function() {
@@ -55,7 +58,7 @@ export default class InviteFromContacts extends Component {
 
     filterContact = ( contacts, search ) => {
         if( search ) {
-            contacts = contacts.filter(item => item[ 'displayName' ].search(search) > -1)
+            contacts = contacts.filter(item => item[ 'displayName' ].toLowerCase().search(search.toLowerCase()) > -1)
         }
         let sectionList = this.generateSectionList(contacts);
         this.setState({

@@ -4,7 +4,7 @@ const { height, width } = Dimensions.get('window');
 const colors = CONFIG.colors;
 const widthFilter = width/5;
 const defaultFontApp = {
-    fontFamily: 'MuseoSansRounded-700'
+    // fontFamily: 'MuseoSansRounded-700'
 };
 const appCss = StyleSheet.create({
     defaultFontApp,
@@ -53,6 +53,7 @@ const appCss = StyleSheet.create({
         paddingRight: 16,
         marginBottom: 10,
         height: 44,
+        borderBottomWidth:0,
         marginTop: height === 812 ? 43 : 20
     },
     headerTitle: {
@@ -95,9 +96,9 @@ const appCss = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 2,
 		// marginLeft:16,
-        height: 80,
-        borderBottomWidth: 1,
-        borderColor: '#ddd'
+        height: 60,
+        // borderBottomWidth: 1,
+        // borderColor: '#ddd'
     },
     avatarBox: {
         paddingLeft: 16,
@@ -111,13 +112,15 @@ const appCss = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        flexDirection: 'column'
+        // backgroundColor:'red'
+        // flexDirection: 'column'
     },
     titleBoxSubject: {
         ...defaultFontApp,
-        fontSize: 15,
-        fontWeight: 'bold',
-        marginBottom: 5
+        fontSize: 17,
+        color:colors.bodyColor
+        // fontWeight: 'bold',
+        // marginBottom: 5
     },
 
     titleBoxDetail: {
@@ -349,6 +352,7 @@ const appCss = StyleSheet.create({
 
     countryNameSearch: {
         color: colors.bodyColor,
+        fontSize:17,
         marginLeft: 20
     },
     sectionHeader: {
