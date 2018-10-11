@@ -23,7 +23,7 @@ import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
 import {CONFIG} from "../../../config";
-import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
+import SendTo from "../SendTo/SendTo";
 import TimePicker from "../TimePicker/TimePicker";
 import appCss from "../../../app.css";
 const colors = CONFIG.colors;
@@ -233,13 +233,39 @@ export default class MessagePopup extends Component {
     };
 
     loadContacts = ()=>{
-        return <View style={{width, height}}><InviteFromContacts /></View>
+        return (
+            <View style={styles.containerOtherPage}>
+                <View style={[ appCss.header, { width } ]}>
+                    <TouchableOpacity
+                        onPress={() => this.setState({ tabSelected: 'timePicker' })}
+                        style={appCss.otherHeaderIconBox}
+                    >
+                        <Image
+                            style={appCss.headerIcon}
+                            resizeMode={"contain"}
+                            source={closeWhite}
+                        />
+                    </TouchableOpacity>
+                    <View>
+                        <Text style={appCss.headerTitle}>Send To</Text>
+                    </View>
+                   <View/>
+                </View>
+                <SendTo friendList={this.friendList} />
+            </View>
+        )
+    };
+    friendList = list=>{
+        let memberListId = [];
+        this.props.closeMessageModal()
+        list.forEach(i=>i['data'].forEach(ii=>ii['checked'] && memberListId.push(ii['receiverMemberId'])));
+        console.log("memberListId", memberListId)
     };
 
     loadTimePicker = () => {
         const { selectedHours, selectedMinutes , lastSection} = this.state;
         return (
-            <View style={styles.containerTimePicker}>
+            <View style={styles.containerOtherPage}>
                 <View style={[ appCss.header, { width } ]}>
                     <TouchableOpacity
                         onPress={() => this.setState({ tabSelected: lastSection })}

@@ -118,19 +118,19 @@ export default class FriendRequest extends Component {
 		]);
 	};
 
-	loadList = ({ item }) => {
-
-		return (
-			<View>
-				<View backgroundColor="transparent">
-					<View style={[appCss.listItems]}>
-						{this.avatarFunc(item)}
-						{this.titleFunc(item)}
-					</View>
-				</View>
-			</View>
-		);
-	};
+	// loadList = ({ item }) => {
+    //
+	// 	return (
+	// 		<View>
+	// 			<View backgroundColor="transparent">
+	// 				<View style={[appCss.listItems]}>
+	// 					{this.avatarFunc(item)}
+	// 					{this.titleFunc(item)}
+	// 				</View>
+	// 			</View>
+	// 		</View>
+	// 	);
+	// };
 
 	Capitalize(str) {
 		if (str) {
@@ -168,12 +168,12 @@ export default class FriendRequest extends Component {
 			<View style={appCss.listItems}>
                 {this.avatarFunc(item)}
                 {this.titleFunc(item)}
-                {this.positionFunc(item)}
+                {this.actionFunc(item)}
 			</View>
         );
     };
 
-    positionFunc = item => {
+    actionFunc = item => {
         return (
 			<View style={styles.actionBox}>
 				<TouchableOpacity onPress={() => {

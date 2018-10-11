@@ -85,8 +85,7 @@ const styles = StyleSheet.flatten({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-
-        borderRadius: 50
+        borderRadius: 25
     },
 
     iconButton: {
@@ -133,7 +132,7 @@ const styles = StyleSheet.flatten({
     },
 
 
-    containerTimePicker:{
+    containerOtherPage:{
         flex:1,
         backgroundColor:colors.appColor,
         alignItems:'center',
