@@ -5,11 +5,11 @@ import usernameIcon from "../../assets/images/icons/Mask.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
+const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 
 // import moment from "moment";
 
-const colors = CONFIG.colors;
 
 export default class ChangeInfo extends Component {
     state = {
