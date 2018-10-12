@@ -198,16 +198,17 @@ export default class SignUp extends Component {
 		//     this.props.showToast('You must be 18 or older.')
 		// }else{
 		// }
-		const resetAction = NavigationActions.reset({
-			index: 0,
-			actions: [
-				NavigationActions.navigate({
-					routeName: "HomeStack",
-					params: { signUp: true }
-				})
-			],
-			key: null
-		});
+		// const resetAction = NavigationActions.reset({
+		// 	index: 0,
+		// 	actions: [
+		// 		NavigationActions.navigate({
+		// 			routeName: "HomeStack",
+		// 			params: { signUp: true }
+		// 		})
+		// 	],
+		// 	key: null
+		// });
+        const resetAction =  this.props.navigation.navigate('SignUpAddFriendScreen');
 		this.props.sendUser({
 			user: {
 				username: this.state.username,
