@@ -9,8 +9,8 @@ export default class ChangeInfoScreen extends Component {
 		return {
 			headerStyle: {
 				backgroundColor: colors.appColor,
-				paddingRight: 20,
-				paddingLeft: 20,
+				paddingRight: 16,
+				paddingLeft: 16,
 				borderBottomWidth: 0
 			},
             headerTitle: (
