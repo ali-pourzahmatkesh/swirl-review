@@ -8,6 +8,7 @@ import SignInScreen from "../screens/SignInScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import ForgotPasswordVerifyScreen from "../screens/ForgotPasswordVerifyScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+import SignUpAddFriendScreen from "../screens/SignUpAddFriendScreen";
 
 const COLORS = CONFIG.colors;
 
@@ -30,6 +31,9 @@ export default StackNavigator(
 		},
 		ChangePasswordScreen: {
 			screen: ChangePasswordScreen
+		},
+        SignUpAddFriendScreen: {
+			screen: SignUpAddFriendScreen
 		}
 	},
 	{
