@@ -1,5 +1,7 @@
 import {Dimensions, StyleSheet} from "react-native";
 import {CONFIG} from "../../../config";
+import appCss from "../../../app.css";
+
 const colors = CONFIG.colors;
 const  {height, width} = Dimensions.get('window');
 
@@ -59,17 +61,17 @@ const STYLES = StyleSheet.create({
         marginTop: 1
     },
 
-    chatSubject:{
+    chatSubject:StyleSheet.flatten([appCss.defaultFontApp,{
         fontSize:16,
         marginBottom:5
-    },
-    chatDesc :{
+    }]),
+    chatDesc :StyleSheet.flatten([appCss.defaultFontApp,{
         fontSize:12,
         marginLeft:10
-    },
-    chatTime:{
+    }]),
+    chatTime:StyleSheet.flatten([appCss.defaultFontApp,{
         fontSize:12,
-    },
+    }]),
 
 
 

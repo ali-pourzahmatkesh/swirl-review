@@ -33,19 +33,17 @@ const STYLES = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: COLORS.borderColor
     },
-    optionText: {
-
-    },
+    optionText:  StyleSheet.flatten([appCss.defaultFontApp]),
     optionArrow: {
         paddingRight: '5%'
     },
-    nameText: {
+    nameText: StyleSheet.flatten([appCss.defaultFontApp,{
         // fontFamily: 'MuseoSansRounded-1000',
         fontSize: 24,
         color: COLORS.tapeWhite,
         alignSelf: 'center',
         marginBottom: '5%'
-    },
+    }]),
 
     imageContainer:{ width: "100%" , backgroundColor:COLORS.appColor},
     editButton:{

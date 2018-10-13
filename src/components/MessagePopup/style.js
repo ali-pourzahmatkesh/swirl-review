@@ -35,10 +35,10 @@ const styles = StyleSheet.flatten({
         alignItems:'center',
         justifyContent:"center"
     },
-    headerSubject:{
+    headerSubject:StyleSheet.flatten([appCss.defaultFontApp,{
         color:colors.combinatorialColor,
         fontSize:17
-    },
+    }]),
 
     textInputBox:{
         padding:15,
@@ -56,10 +56,10 @@ const styles = StyleSheet.flatten({
         alignItems:'flex-end',
         marginBottom:20
     },
-    footerCounterText:{
+    footerCounterText:StyleSheet.flatten([appCss.defaultFontApp,{
         color:colors.combinatorialColor,
         fontSize:12
-    },
+    }]),
 
 
     footerActions:{
@@ -139,11 +139,11 @@ const styles = StyleSheet.flatten({
         justifyContent:'space-between',
     },
 
-    pickerText:{
+    pickerText:StyleSheet.flatten([appCss.defaultFontApp,{
         color:colors.bodyColor,
         fontSize:20,
         marginTop:20
-    }
+    }])
 
 
 });

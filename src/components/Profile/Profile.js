@@ -13,10 +13,20 @@ import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy.png";
 import editIcon from "../../assets/images/icons/edit.png";
 import feedback from "../../assets/images/icons/feedBack.png";
 import logout from "../../assets/images/icons/logout.png";
+import ImagePicker from 'react-native-image-picker';
 
 import {CONFIG} from "../../../config";
 const COLORS = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
+
+const options = {
+    title: 'Select Avatar',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
+
 
 export default class Profile extends Component {
 	constructor(props) {
@@ -136,6 +146,34 @@ export default class Profile extends Component {
 	// 	}
 	// };
 
+
+	uploadImage = ()=>{
+        /**
+         * The first arg is the options object for customization (it can also be null or omitted for default options),
+         * The second arg is the callback which sends object: response (more info in the API Reference)
+         */
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                this.setState({
+                    avatarSource: source,
+                });
+            }
+        });
+	}
+
 	render() {
 		let { userProfile } = this.props;
 		let options = [
@@ -216,12 +254,21 @@ export default class Profile extends Component {
                                 position: "relative"
 							}}
 						>
-							<Avatar
-								userId={this.props.id}
-								size={height * 0.15}
-								position="profile"
-							/>
-							<TouchableOpacity  style={styles.editButton}>
+							{
+                                this.state.avatarSource && <Avatar
+									userId={this.state.avatarSource}
+									imageType='data'
+									size={height * 0.15}
+									position="profile"
+								/> || <Avatar
+									userId={this.props.id}
+									size={height * 0.15}
+									position="profile"
+								/>
+							}
+
+
+							<TouchableOpacity onPress={()=>this.uploadImage()}  style={styles.editButton}>
 								<Image style={styles.editIcon} resizeMode={"contain"} source={editIcon}/>
 							</TouchableOpacity>
 						</View>
