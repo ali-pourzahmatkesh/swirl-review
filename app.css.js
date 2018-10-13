@@ -4,15 +4,15 @@ const { height, width } = Dimensions.get('window');
 const colors = CONFIG.colors;
 const widthFilter = width/5;
 const defaultFontApp = {
-    // fontFamily: 'MuseoSansRounded-700'
+    fontFamily: 'MuseoSansRounded-700'
 };
 const appCss = StyleSheet.create({
     defaultFontApp,
     heavyDefaultFontApp: {
-        // fontFamily: 'MuseoSansRounded-1000'
+        fontFamily: 'MuseoSansRounded-1000'
     },
     thinDefaultFontApp: {
-        // fontFamily: 'MuseoSansRounded-300'
+        fontFamily: 'MuseoSansRounded-300'
     },
 
 	navigationTitle: {

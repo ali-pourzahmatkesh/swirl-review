@@ -13,7 +13,7 @@ export default class Invite extends Component {
 
     state = {
         searchText : ""
-    }
+    };
     search = text => {
         this.setState({searchText : text})
     };

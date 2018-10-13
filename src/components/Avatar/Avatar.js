@@ -40,16 +40,31 @@ export default class Avatar extends Component {
 		} = this.props;
 		let myStyleSheet = styles.getSheet(this.props.size);
         if( this.props.position === "profile" ) {
-			return (
-				<TouchableOpacity
-					onPress={()=>this.prepareForRedirectToProfile()}
-					style={[myStyleSheet.avatarItem, avatarContainerStyle]}>
-					<Image
-						style={[myStyleSheet.avatarImage, avatarImageStyle]}
-						source={this.avatarUrl(userId)}
-					/>
-				</TouchableOpacity>
-			);
+        	if(this.props.imageType === "data"){
+                return (
+					<View
+
+						style={[ myStyleSheet.avatarItem, avatarContainerStyle ]}>
+						<Image
+							resizeMode={'cover'}
+							style={[ myStyleSheet.avatarImage, avatarImageStyle ]}
+							source={userId}
+						/>
+					</View>
+                );
+			}else{
+                return (
+					<TouchableOpacity
+						onPress={()=>this.prepareForRedirectToProfile()}
+						style={[myStyleSheet.avatarItem, avatarContainerStyle]}>
+						<Image
+							style={[myStyleSheet.avatarImage, avatarImageStyle]}
+							source={this.avatarUrl(userId)}
+						/>
+					</TouchableOpacity>
+                );
+			}
+
         } else
             if( this.props.position === "image" ) {
                 return (

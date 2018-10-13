@@ -15,9 +15,10 @@ export default class StyleSheetFactory {
             },
 
             avatarImage: {
-                width: avatarSize,
-                height: avatarSize,
-                resizeMode:'contain'
+                flex:1,
+                width: undefined,
+                height: undefined,
+                // resizeMode:'contain'
             },
         })
     }
