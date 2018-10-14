@@ -17,8 +17,14 @@ import {
 	// ------------
 	reloadChatList,
 	RELOAD_CHAT_LIST,
-	CHAT_SET_STORE
-
+	CHAT_SET_STORE,
+	// ------------
+	NEW_MESSAGE,
+	NEW_MESSAGE_SUCCESS,
+	NEW_MESSAGE_FAILED,
+	serverNewMessage,
+	serverNewMessageSuccess,
+	serverNewMessageFailed
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
 	// fetchGetListData,
@@ -48,7 +54,7 @@ import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
 // import moment from "moment-timezone";
-// import sortChatList from "../../util/sortChatList";
+import sortChatList from "../../util/sortChatList";
 
 let initialState = {
 	isLoadingFetch: false,
@@ -59,7 +65,8 @@ let initialState = {
 	loading: false,
 	timers: {},
 	timersFunctions: {},
-	isNewMessage: false
+	isNewMessage: false,
+	resorted: false
 	// userData: {},
 	// count: 0,
 	// listAddFriend: [],
@@ -75,6 +82,43 @@ let initialState = {
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		case NEW_MESSAGE: {
+			return loop(
+				{
+					...state,
+					errorMessage: "",
+					hasError: false,
+					loading: true
+				},
+				Cmd.run(serverNewMessage, {
+					successActionCreator: serverNewMessageSuccess,
+					failActionCreator: serverNewMessageFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case NEW_MESSAGE_SUCCESS: {
+			return {
+				...state,
+				loading: false
+			};
+		}
+
+		case NEW_MESSAGE_FAILED: {
+			return loop(
+				{
+					...state,
+					loading: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ---------------------------------
+
 		case CHAT_SET_STORE: {
 			return {
 				...state,
@@ -182,10 +226,13 @@ const chat = (state = initialState, action) => {
 				});
 			}
 			console.log("new list", list);
+			let localList = sortChatList(list);
+
 			return {
 				...state,
-				list: list,
-				loading: false
+				list: localList,
+				loading: false,
+				resorted: true
 			};
 		}
 

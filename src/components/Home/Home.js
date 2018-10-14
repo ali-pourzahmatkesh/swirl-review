@@ -21,7 +21,9 @@ const COLORS = CONFIG.colors;
 import EmptyList from "../EmptyList";
 // import defaultMoment from "moment";
 import moment from "moment-timezone";
-import MessagePopup from "../MessagePopup/MessagePopup";
+// import ReactMomentCountDown from "react-moment-countdown";
+import TimerCountdown from "react-native-timer-countdown";
+import MessagePopup from "../MessagePopup";
 import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
 
 import sortChatList from "../../util/sortChatList";
@@ -55,10 +57,15 @@ class Home extends Component {
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
-			this.state.list.length != nextProps.chatList.length
+			(this.state.list.length != nextProps.chatList.length ||
+				nextProps.resorted === true)
 		) {
 			console.log("----------------------new refresh the list of chats");
-			if (this.state.refreshing === true || nextProps.isNewMessage === true) {
+			if (
+				this.state.refreshing === true ||
+				nextProps.isNewMessage === true ||
+				nextProps.resorted === true
+			) {
 				console.log("refreshing list ....", this.state.refreshing);
 				console.log("new message ....", nextProps.isNewMessage);
 
@@ -107,7 +114,7 @@ class Home extends Component {
 										localTimersFunctions
 									);
 
-									localList = sortChatList(localList);
+									let localList = sortChatList(localList);
 									this.setState({
 										timers: localTimers,
 										timersFunctions: localTimersFunctions,
@@ -129,7 +136,8 @@ class Home extends Component {
 
 				// trn off isNewMessage flag
 				this.props.chatSetStore({
-					isNewMessage: false
+					isNewMessage: false,
+					resorted: false
 				});
 			}
 		}
@@ -188,21 +196,50 @@ class Home extends Component {
 		const isAvailable =
 			new Date(item["availableAt"]).getTime() <= new Date().getTime();
 		let messageHint = "";
+		let messageOnpress;
+		let messageStyle;
 		if (isAvailable) {
 			if (item.isSeen) {
-				messageHint =
-					"Unswirled " +
-					moment(item["availableAt"], "YYYYMMDD")
-						.startOf("hour")
-						.fromNow();
+				messageHint = () => {
+					return (
+						"Unswirled " +
+						moment(item["availableAt"], "YYYYMMDD")
+							.startOf("hour")
+							.fromNow(true)
+					);
+				};
+				messageOnpress = () => {};
+				messageStyle = "Archived";
 			} else {
-				messageHint = "Tap to unswirl!";
+				messageHint = () => {
+					return "Tap to unswirl!";
+				};
+				messageOnpress = () => {
+					this.loadDetail(item);
+				};
+				messageStyle = "Ready";
 			}
 		} else {
-			messageHint =
-				moment(item["availableAt"], "YYYYMMDD")
-					.startOf("hour")
-					.fromNow() + " left";
+			const remainingSeconds =
+				new Date(item["availableAt"]).getTime() - new Date().getTime();
+
+			messageHint = () => {
+				return (
+					<View>
+						<TimerCountdown
+							initialSecondsRemaining={remainingSeconds}
+							onTick={secondsRemaining => console.log("tick", secondsRemaining)}
+							onTimeElapsed={() => console.log("complete")}
+							allowFontScaling={true}
+							style={{ fontSize: 12 }}
+						/>{" "}
+						<Text> left</Text>
+					</View>
+				);
+			};
+
+			messageOnpress = () => {};
+			messageStyle = "Waiting";
 		}
 
 		return (
@@ -217,9 +254,7 @@ class Home extends Component {
 				</View>
 				<TouchableOpacity
 					onPress={() => {
-						if (isAvailable) {
-							this.loadDetail(item);
-						}
+						messageOnpress();
 					}}
 					style={styles.chatListSubjectBox}
 				>
@@ -227,18 +262,18 @@ class Home extends Component {
 						<Text
 							style={[
 								styles.chatSubject,
-								!isAvailable && { color: COLORS.bodyColor }
+								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
 						>
-							{item["identifier"]}
+							{item.identifier}
 						</Text>
 						<Text
 							style={[
 								styles.chatDesc,
-								!isAvailable && { color: COLORS.bodyColor }
+								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
 						>
-							{messageHint}
+							{messageHint()}
 						</Text>
 					</View>
 					<View style={styles.otherInfo}>
@@ -246,15 +281,15 @@ class Home extends Component {
 							<Text
 								style={[
 									styles.chatTime,
-									!isAvailable && { color: COLORS.bodyColor }
+									messageStyle == "Ready" && { color: COLORS.bodyColor }
 								]}
 							>
-								{moment(item["createdAt"], "YYYYMMDD").fromNow()}
+								{moment(item["createdAt"], "YYYYMMDD").fromNow(true)}
 							</Text>
 						</View>
-						{(!item["isSeen"] || !isAvailable) && (
+						{(messageStyle == "Ready" || messageStyle == "Waiting") && (
 							<Image
-								source={(!isAvailable && logoOther) || logo}
+								source={(messageStyle == "Waiting" && logoOther) || logo}
 								style={styles.otherInfoLogo}
 							/>
 						)}
@@ -279,6 +314,9 @@ class Home extends Component {
 			this.props.visitMessage({
 				listOfId: [data.id]
 			});
+			//let localList = sortChatList(this.state.list);
+			//console.log("+++++++++++++ sort again", localList);
+			//this.setState({ list: localList });
 		}
 	};
 
@@ -309,7 +347,9 @@ class Home extends Component {
 				>
 					<MessagePopup
 						closeMessageModal={() => {
-							this.setState({ newMessageModalVisible: false });
+							this.setState({
+								newMessageModalVisible: false
+							});
 						}}
 					/>
 				</Modal>
@@ -339,17 +379,15 @@ class Home extends Component {
 						</View>
 					)}
 				</View>
-				{list.length && (
-					<View style={styles.homeBottomBox}>
-						<TouchableOpacity
-							onPress={() => this.setState({ newMessageModalVisible: true })}
-						>
-							<View style={styles.iconBottomBox}>
-								<Image style={styles.iconBottom} source={addMessage} />
-							</View>
-						</TouchableOpacity>
-					</View>
-				)}
+				<View style={styles.homeBottomBox}>
+					<TouchableOpacity
+						onPress={() => this.setState({ newMessageModalVisible: true })}
+					>
+						<View style={styles.iconBottomBox}>
+							<Image style={styles.iconBottom} source={addMessage} />
+						</View>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}

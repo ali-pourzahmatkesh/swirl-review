@@ -6,7 +6,10 @@ export const GET_LIST = "CHAT_GET_LIST",
 	VISIT_MESSAGE_FAILED = "CHAT_VISIT_MESSAGE_FAILED",
 	RECEIVE_NEW_CHAT_MESSAGE = "CHAT_RECEIVE_NEW_CHAT_MESSAGE",
 	RELOAD_CHAT_LIST = "CHAT_RELOAD_CHAT_LIST",
-	CHAT_SET_STORE = "CHAT_CHAT_SET_STORE";
+	CHAT_SET_STORE = "CHAT_CHAT_SET_STORE",
+	NEW_MESSAGE = "CHAT_NEW_MESSAGE",
+	NEW_MESSAGE_SUCCESS = "CHAT_NEW_MESSAGE_SUCCESS",
+	NEW_MESSAGE_FAILED = "CHAT_NEW_MESSAGE_FAILED";
 
 // INITIAL_STATE = "CHAT_INITIAL_STATE",
 // CALL_GET_STATUS = "CHAT_CALL_GET_STATUS",
@@ -22,12 +25,47 @@ export const GET_LIST = "CHAT_GET_LIST",
 import {
 	// get
 	getData,
-	put
+	put,
 	// restDelete,
-	// post
+	post
 } from "../appService";
 
 import { CONFIG } from "../../../config";
+
+export const newMessage = data => ({
+	type: NEW_MESSAGE,
+	payload: data
+});
+
+export const serverNewMessage = data => {
+	return new Promise((resolve, reject) => {
+		post("/api/v1/chats", data)
+			.then(resp => {
+				console.log("serverNewMessage response", resp);
+				resolve(resp.data);
+			})
+			.catch(err => {
+				console.log("serverNewMessage EEEEEERRRORRRR", err);
+				reject(err);
+			});
+	});
+};
+
+export const serverNewMessageSuccess = data => {
+	return {
+		type: NEW_MESSAGE_SUCCESS,
+		payload: data
+	};
+};
+
+export const serverNewMessageFailed = err => {
+	return {
+		type: NEW_MESSAGE_FAILED,
+		payload: err
+	};
+};
+
+// ------------------------------
 
 export const chatSetStore = data => ({
 	type: CHAT_SET_STORE,

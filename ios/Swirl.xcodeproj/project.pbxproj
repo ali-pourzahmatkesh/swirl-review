@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -39,14 +40,15 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		34842C9073C74740BBC8193B /* MuseoSansRounded-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 49447055665C4E28A9550BB0 /* MuseoSansRounded-300.otf */; };
 		3B58FE1263B34FF98A74EBFF /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D9C70828DF04E738C7196FD /* FontAwesome.ttf */; };
-		4E1FF892272A45D08254F816 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DC72EC4F03943C1A163F3B7 /* libRCTOneSignal.a */; };
-		5F7AF124E60A4C7B8D5C424C /* libRCTPagedContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCBF1C13823C462BB0AE58FC /* libRCTPagedContacts.a */; };
 		6543AFC5251445B4A99E0B8E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C18E94D86FB47D4802A89CC /* Octicons.ttf */; };
-		78F526BC91A342D8803E437A /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C028C4A388954666923405B2 /* libRNVectorIcons.a */; };
 		7ABE5C0C076F422B90A88FE2 /* MuseoSansRounded.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21678ACBA6941C296D142E0 /* MuseoSansRounded.ttf */; };
 		7DCE2B5755144AFFA25D08B1 /* MuseoSansRounded-300Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1A0E6FFA9F074693AF91A9A3 /* MuseoSansRounded-300Italic.otf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		83ED6B44757D4F3499E34256 /* MuseoSansRounded.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3BD5A946DE574C12A07519C7 /* MuseoSansRounded.otf */; };
+		852091792172BBE00035A2D2 /* libRCTPagedContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69413B2167DA67004B29D1 /* libRCTPagedContacts.a */; };
+		8520917B2172BBEE0035A2D2 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8533100E2160D426007E284B /* libRCTOneSignal.a */; };
+		8520917D2172BBFB0035A2D2 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 853310112160D426007E284B /* libRNVectorIcons.a */; };
+		8520917F2172BC040035A2D2 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69413E2167DA67004B29D1 /* libRNImagePicker.a */; };
 		8694CAA34AA64C9492F1CB61 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1D2EDEE7E5B43C68ACB4E5F /* MaterialIcons.ttf */; };
 		8C6B726D9D6942ADBCFA4914 /* MuseoSansRounded-1000.otf in Resources */ = {isa = PBXBuildFile; fileRef = A68643CC280B415683A29E5C /* MuseoSansRounded-1000.otf */; };
 		9131A403154E4E06949AE591 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F062A2C492747DD8A775435 /* Feather.ttf */; };
@@ -58,7 +60,6 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		C7C8EA218AD3442CA8D70259 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7FF08BD3CD6747ECADE3DADD /* Zocial.ttf */; };
 		D021EC5CA3414C5AA9238D02 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 727F63C5F2A241C9B94135B2 /* FontAwesome5_Regular.ttf */; };
-		D95A577CC48F4E15964AF9F0 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A58A808428F048FF9282E63F /* libRNImagePicker.a */; };
 		DD3AE1E52069486081EDF732 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAA9174D1EFD4672909618DF /* Foundation.ttf */; };
 		E4D10EE4A29C4DC7B6F42CF1 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC24F4C2DC5C47E0B21761D5 /* MaterialCommunityIcons.ttf */; };
 /* End PBXBuildFile section */
@@ -444,6 +445,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8520917F2172BC040035A2D2 /* libRNImagePicker.a in Frameworks */,
+				8520917D2172BBFB0035A2D2 /* libRNVectorIcons.a in Frameworks */,
+				8520917B2172BBEE0035A2D2 /* libRCTOneSignal.a in Frameworks */,
+				852091792172BBE00035A2D2 /* libRCTPagedContacts.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -456,10 +461,6 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				4E1FF892272A45D08254F816 /* libRCTOneSignal.a in Frameworks */,
-				78F526BC91A342D8803E437A /* libRNVectorIcons.a in Frameworks */,
-				5F7AF124E60A4C7B8D5C424C /* libRCTPagedContacts.a in Frameworks */,
-				D95A577CC48F4E15964AF9F0 /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

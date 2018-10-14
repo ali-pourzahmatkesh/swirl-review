@@ -1,5 +1,5 @@
 console.log("HomeStack");
-import {StackNavigator} from "react-navigation";
+import { StackNavigator } from "react-navigation";
 import HomeScreen from "../screens/HomeScreen";
 // import ChatsScreen from "./ChatsScreen";
 // import DiscussionScreen from "./DiscussionScreen";
@@ -31,8 +31,8 @@ export default StackNavigator(
 		},
 		TermsAndConditionsScreen: { screen: TermsAndConditionsScreen },
 		PrivacyPolicyScreen: { screen: PrivacyPolicyScreen },
-        InviteTabsScreen: { screen: InviteTabsScreen },
-        MessageDetailScreen: { screen: MessageDetailScreen }
+		InviteTabsScreen: { screen: InviteTabsScreen },
+		MessageDetailScreen: { screen: MessageDetailScreen }
 	},
 	{
 		initialRouteName: "HomeScreen",

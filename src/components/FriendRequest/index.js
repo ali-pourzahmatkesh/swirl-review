@@ -10,10 +10,10 @@ import {
 import { getListData, callDeleteChat } from "../../store/chat";
 
 const mapStateToProps = state => ({
-	id: state.app.auth.userData.id,
+	id: state.app.member.userData.id,
 	//list: state.app.friendRequest.list,
-	list: state.app.chat.list,
-	deleteChat: state.app.chat.deleteChat,
+	// list: state.app.chat.list,
+	// deleteChat: state.app.chat.deleteChat,
 	isLoadingFetch: state.app.friendRequest.isLoadingFetch,
 	refreshing: state.app.friendRequest.refreshing,
 	loading: state.app.friendRequest.loading,
