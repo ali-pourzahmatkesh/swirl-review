@@ -176,7 +176,14 @@ import {
 	UPDATE_MEMBER_FAILED,
 	serverUpdateMember,
 	serverUpdateMemberSuccess,
-	serverUpdateMemberFailed
+	serverUpdateMemberFailed,
+	// --------
+	GET_MEMBERS_FROM_CONTACTS,
+	GET_MEMBERS_FROM_CONTACTS_SUCCESS,
+	GET_MEMBERS_FROM_CONTACTS_FAILED,
+	serverGetMemberFromContacts,
+	serverGetMemberFromContactsSuccess,
+	serverGetMemberFromContactsFailed
 } from "./";
 
 import { showToast } from "../toast";
@@ -216,7 +223,8 @@ let initialState = {
 	closeModalFromOther: false,
 	visitCount: 0,
 	instagramFeed: [],
-	ghostNotif: false
+	ghostNotif: false,
+	membersFromContactsAreNotFriend: []
 };
 
 const chat = (state = initialState, action) => {
@@ -419,6 +427,11 @@ const chat = (state = initialState, action) => {
 				Cmd.action(showToast(true, action.payload.message))
 			);
 		}
+
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+
 		case CALL_LOGOUT: {
 			return loop(
 				{ ...state },
@@ -1232,6 +1245,41 @@ const chat = (state = initialState, action) => {
 				{
 					...state,
 					isLoadingFetch: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// ---------
+
+		case GET_MEMBERS_FROM_CONTACTS: {
+			return loop(
+				{ ...state, loading: true, errorMessage: "", hasError: false },
+				Cmd.run(serverGetMemberFromContacts, {
+					successActionCreator: serverGetMemberFromContactsSuccess,
+					failActionCreator: serverGetMemberFromContactsFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case GET_MEMBERS_FROM_CONTACTS_SUCCESS: {
+			return {
+				...state,
+				loading: false,
+				errorMessage: "",
+				hasError: false,
+				membersFromContactsAreNotFriend: action.payload
+			};
+		}
+
+		case GET_MEMBERS_FROM_CONTACTS_FAILED: {
+			return loop(
+				{
+					...state,
+					loading: false,
 					errorMessage: action.payload.message,
 					hasError: true
 				},

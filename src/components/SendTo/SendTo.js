@@ -26,46 +26,27 @@ export default class SendTo extends Component {
 		super(props);
 		this.state = {
 			finalList: []
-			// list: [
-			// 	{
-			// 		_id: "5b742feff6d5974bd647f5ce",
-			// 		senderMemberId: "5b732315dc53ae8206441e5e",
-			// 		receiverMemberId: "5b8e829ff22ae764b833921d",
-			// 		name: "majid azad",
-			// 		isApproved: false,
-			// 		isCanceled: false
-			// 	},
-			// 	{
-			// 		_id: "5b74300bf6d5974bd647f5cf",
-			// 		senderMemberId: "5b7322b7dc53ae8206441e5d",
-			// 		receiverMemberId: "5b732315dc53ae8206441e5e",
-			// 		name: "ali Pourzahmatkeshhhhhhhhhhhhhhh",
-			// 		isApproved: false,
-			// 		isCanceled: false
-			// 	},
-			// 	{
-			// 		_id: "5b8e8bd9a4ee0d8b6de0b5e4",
-			// 		createdAt: "2018-09-04T13:42:49.290Z",
-			// 		isApproved: true,
-			// 		isCanceled: false,
-			// 		name: "seyed",
-			// 		receiverMemberId: "5b8e829ff22ae764b833921d",
-			// 		senderMemberId: "5b7322b7dc53ae8206441e5d",
-			// 		updatedAt: "2018-09-04T13:42:49.290Z"
-			// 	},
-			// 	{
-			// 		_id: "5b8ff5e2a4ee0d8b6de0e783",
-			// 		createdAt: "2018-09-05T15:27:30.133Z",
-			// 		isApproved: true,
-			// 		isCanceled: false,
-			// 		name: "mgs",
-			// 		receiverMemberId: "5b8ff1333d956ba8d028ec7b",
-			// 		senderMemberId: "5b8e829ff22ae764b833921d",
-			// 		updatedAt: "2018-09-05T15:27:30.133Z"
-			// 	}
-			// ]
 		};
-		// this.getPhoneNumbersFromContactList.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log("IN componentWillReceiveProps", nextProps);
+		if (
+			nextProps.membersFromContactsAreNotFriend &&
+			this.state.finalList.length !=
+				nextProps.membersFromContactsAreNotFriend.length
+		) {
+			console.log(
+				"membersFromContactsAreNotFriend",
+				nextProps.membersFromContactsAreNotFriend
+			);
+			this.setState({
+				finalList: this.generateSectionList(
+					nextProps.membersFromContactsAreNotFriend,
+					"username"
+				)
+			});
+		}
 	}
 
 	componentDidMount() {
@@ -92,21 +73,20 @@ export default class SendTo extends Component {
 		});
 	};
 
-	// getPhoneNumbersFromContactList = () => {
-	// 	const { list } = this.state;
-	// 	this.setState({ finalList: this.generateSectionList(list, "name") });
-	// };
-
 	getAllPhoneNumbers = contacts => {
 		let numberList = [];
 		contacts.forEach(item => {
 			item["phoneNumbers"].forEach(itemNumber => {
-				if (itemNumber.label === "mobile") {
-					numberList.push(itemNumber["value"]);
-				}
+				//if (itemNumber.label === "mobile") {
+				numberList.push(itemNumber["value"]);
+				//}
 			});
 		});
-		console.log("getAllPhoneNumbers", numberList);
+		console.log("getAllPhoneNumbers", numberList, this.props);
+		this.props.getMembersAreInMyContactsThatNotFriend({
+			memberOwner: this.props.id,
+			numberList: numberList
+		});
 	};
 
 	generateSectionList = (array, key) => {
@@ -147,7 +127,7 @@ export default class SendTo extends Component {
 				onPress={() => this.props.screenProps.profileNavigate(item)}
 				style={appCss.avatarBox}
 			>
-				<Avatar userId={item.memberId} position="image" size={45} />
+				<Avatar userId={item.id} position="image" size={45} />
 			</TouchableOpacity>
 		);
 	};
@@ -161,7 +141,7 @@ export default class SendTo extends Component {
 						ellipsizeMode="tail"
 						style={appCss.titleBoxSubject}
 					>
-						{this.Capitalize(item.name)}
+						{this.Capitalize(item.username)}
 					</Text>
 				</View>
 			</View>

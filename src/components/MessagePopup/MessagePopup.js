@@ -23,7 +23,7 @@ import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
 import { CONFIG } from "../../../config";
-import SendTo from "../SendTo/SendTo";
+import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
 import appCss from "../../../app.css";
 const colors = CONFIG.colors;
@@ -308,11 +308,10 @@ export default class MessagePopup extends Component {
 	};
 
 	friendList = list => {
+		console.log("get the list from SendTo component", list);
 		let memberListId = [];
 		list.forEach(i =>
-			i["data"].forEach(
-				ii => ii["checked"] && memberListId.push(ii["receiverMemberId"])
-			)
+			i["data"].forEach(ii => ii["checked"] && memberListId.push(ii["id"]))
 		);
 		console.log("memberListId", memberListId);
 		if (memberListId.length) {

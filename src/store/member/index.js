@@ -96,7 +96,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	// -------
 	UPDATE_MEMBER = "UPDATE_MEMBER",
 	UPDATE_MEMBER_SUCCESS = "UPDATE_MEMBER_SUCCESS",
-	UPDATE_MEMBER_FAILED = "UPDATE_MEMBER_FAILED";
+	UPDATE_MEMBER_FAILED = "UPDATE_MEMBER_FAILED",
+	//--------
+	GET_MEMBERS_FROM_CONTACTS = "GET_MEMBERS_FROM_CONTACTS",
+	GET_MEMBERS_FROM_CONTACTS_SUCCESS = "GET_MEMBERS_FROM_CONTACTS_SUCCESS",
+	GET_MEMBERS_FROM_CONTACTS_FAILED = " GET_MEMBERS_FROM_CONTACTS_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -106,6 +110,41 @@ import {
 	restDelete,
 	post
 } from "../appService";
+
+// --------------------------------------------------------------------------
+
+export const getMembersAreInMyContactsThatNotFriend = data => ({
+	type: GET_MEMBERS_FROM_CONTACTS,
+	payload: data
+});
+
+export const serverGetMemberFromContacts = data => {
+	return new Promise((resolve, reject) => {
+		post("/api/v1/member/action/not-friend", data)
+			.then(resp => {
+				console.log(
+					"serverGetMemberFromContacts >> receive from server",
+					resp.data
+				);
+				resolve(resp.data);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverGetMemberFromContactsSuccess = data => ({
+	type: GET_MEMBERS_FROM_CONTACTS_SUCCESS,
+	payload: data
+});
+
+export const serverGetMemberFromContactsFailed = err => ({
+	type: GET_MEMBERS_FROM_CONTACTS_FAILED,
+	payload: err
+});
+
+// --------------------------------------------------------------------------
 
 export const setTabOfPage = tabName => ({
 	type: SET_TAB_OF_PAGE,
@@ -231,6 +270,10 @@ export const fetchChatGetListDataFailed = err => {
 		payload: err
 	};
 };
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 export const callDeleteAccount = id => {
 	return {
