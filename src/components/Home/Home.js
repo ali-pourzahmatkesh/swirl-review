@@ -205,10 +205,13 @@ class Home extends Component {
 						"Unswirled " +
 						moment(item["availableAt"], "YYYYMMDD")
 							.startOf("hour")
-							.fromNow(true)
+							.fromNow(true) +
+						" ago"
 					);
 				};
-				messageOnpress = () => {};
+				messageOnpress = () => {
+					this.setState({ newMessageModalVisible: true });
+				};
 				messageStyle = "Archived";
 			} else {
 				messageHint = () => {
