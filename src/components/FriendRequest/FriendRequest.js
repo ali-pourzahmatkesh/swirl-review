@@ -20,11 +20,9 @@ export default class FriendRequest extends Component {
 	};
 
 	componentDidMount() {
-		//	setTimeout(() => {
 		this.props.getListData({
 			receiverMemberId: this.props.id
 		});
-		//	}, 100);
 	}
 
 	componentWillReceiveProps(nextProps) {
