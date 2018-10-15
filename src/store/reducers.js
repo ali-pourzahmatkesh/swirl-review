@@ -5,13 +5,15 @@ import toast from "./toast/reducers";
 import member from "./member/reducers";
 import chat from "./chat/reducers";
 import feedback from "./feedBack/reducers";
+import friendRequest from "./friendRequest/reducers";
 
 const appReducers = combineReducers({
 	appReducer,
 	toast,
 	member,
 	chat,
-	feedback
+	feedback,
+	friendRequest
 });
 
 const app = (state, action) => {

@@ -1,15 +1,22 @@
 import InviteFromContacts from "./InviteFromContacts";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
-// import { homeSetCloseModal } from "../../store/home";
-// import { profileSetCloseModal } from "../../store/profile";
+import { getMembersAreInMyContactsThatNotFriend } from "../../store/member";
 
-const mapStateToProps = state => ({});
+import { callAddFriend } from "../../store/friendRequest";
+
+const mapStateToProps = state => ({
+	id: state.app.member.userData.id,
+	membersFromContactsAreNotFriend:
+		state.app.member.membersFromContactsAreNotFriend
+});
 
 const mapDispatchToProps = dispatch => ({
-	// homeSetCloseModal: data => dispatch(homeSetCloseModal(data)),
-	// profileSetCloseModal: data => dispatch(profileSetCloseModal(data))
+	getMembersAreInMyContactsThatNotFriend: data =>
+		dispatch(getMembersAreInMyContactsThatNotFriend(data)),
+	callAddFriend: data => dispatch(callAddFriend(data))
 });
+
 export default withNavigation(
 	connect(
 		mapStateToProps,

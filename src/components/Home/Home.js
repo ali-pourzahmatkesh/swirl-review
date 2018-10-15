@@ -24,7 +24,7 @@ import moment from "moment-timezone";
 // import ReactMomentCountDown from "react-moment-countdown";
 import TimerCountdown from "react-native-timer-countdown";
 import MessagePopup from "../MessagePopup";
-import InviteFromContacts from "../InviteFromContacts/InviteFromContacts";
+import InviteFromContacts from "../InviteFromContacts";
 
 import sortChatList from "../../util/sortChatList";
 

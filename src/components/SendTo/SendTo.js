@@ -25,7 +25,8 @@ export default class SendTo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			finalList: []
+			finalList: [],
+			list: []
 		};
 	}
 
@@ -33,14 +34,14 @@ export default class SendTo extends Component {
 		console.log("IN componentWillReceiveProps", nextProps);
 		if (
 			nextProps.membersFromContactsAreNotFriend &&
-			this.state.finalList.length !=
-				nextProps.membersFromContactsAreNotFriend.length
+			this.state.list.length != nextProps.membersFromContactsAreNotFriend.length
 		) {
 			console.log(
 				"membersFromContactsAreNotFriend",
 				nextProps.membersFromContactsAreNotFriend
 			);
 			this.setState({
+				list: nextProps.membersFromContactsAreNotFriend,
 				finalList: this.generateSectionList(
 					nextProps.membersFromContactsAreNotFriend,
 					"username"
@@ -59,16 +60,14 @@ export default class SendTo extends Component {
 				return;
 			}
 			pg.getContactsCount().then(count => {
-				pg.getContactsWithRange(0, count, [
-					PagedContacts.displayName,
-					PagedContacts.thumbnailImageData,
-					PagedContacts.phoneNumbers
-				]).then(contacts => {
-					this.setState({ contacts });
-					if (contacts.length > 0) {
-						this.getAllPhoneNumbers(contacts);
+				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
+					contacts => {
+						this.setState({ contacts });
+						if (contacts.length > 0) {
+							this.getAllPhoneNumbers(contacts);
+						}
 					}
-				});
+				);
 			});
 		});
 	};

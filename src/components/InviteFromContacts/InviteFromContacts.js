@@ -1,10 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import EmptyList from "../EmptyList";
-import {Image, SectionList, Text, TouchableOpacity, View} from "react-native";
+import { Image, SectionList, Text, TouchableOpacity, View } from "react-native";
 import styles from "./style";
 import appCss from "../../../app.css";
-import {SafeAreaView} from "react-navigation";
-import {PagedContacts} from "react-native-paged-contacts";
+import Avatar from "../../components/Avatar";
+import { SafeAreaView } from "react-navigation";
+import { PagedContacts } from "react-native-paged-contacts";
 import logo from "../../assets/images/logo_bigger.png";
 // import checkedImage from "../../assets/images/checked.png";
 let pg = new PagedContacts();
@@ -13,145 +14,180 @@ export default class InviteFromContacts extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			finalList: [],
 			list: [],
-            contacts: [],
-			newList: []
+			loading: false
 		};
-		this.getListData.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log("IN componentWillReceiveProps", nextProps);
+		if (
+			nextProps.membersFromContactsAreNotFriend &&
+			this.state.list.length != nextProps.membersFromContactsAreNotFriend.length
+		) {
+			console.log(
+				"membersFromContactsAreNotFriend",
+				nextProps.membersFromContactsAreNotFriend
+			);
+			this.setState({
+				list: nextProps.membersFromContactsAreNotFriend,
+				finalList: this.generateSectionList(
+					nextProps.membersFromContactsAreNotFriend,
+					"username"
+				)
+			});
+		}
 	}
 
 	componentDidMount() {
-        this.getListData();
+		this.getPhoneNumbersFromContactList();
 	}
 
-    componentDidUpdate( prevProps ) {
-        if( this.props.screenProps && prevProps.screenProps ) {
-            if( this.props.screenProps.searchText !== prevProps.screenProps.searchText ) {
-                this.filterContact(this.state.contacts, this.props.screenProps.searchText)
-            }
-        }
-
-    }
-
-	getListData = function() {
+	getPhoneNumbersFromContactList = function() {
 		pg.requestAccess().then(granted => {
 			if (granted !== true) {
 				return;
 			}
-			// TODO: need to implement pagination to contacts
 			pg.getContactsCount().then(count => {
-				pg
-					.getContactsWithRange(0, count, [
-						PagedContacts.displayName,
-                        PagedContacts.thumbnailImageData,
-						PagedContacts.phoneNumbers
-					])
-					.then(contacts => {
-                        this.setState({ contacts });
+				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
+					contacts => {
+						this.setState({ contacts });
 						if (contacts.length > 0) {
-							this.getMobileNumberList(contacts)
+							this.getAllPhoneNumbers(contacts);
 						}
-					});
+					}
+				);
 			});
 		});
 	};
 
-    filterContact = ( contacts, search ) => {
-        if( search ) {
-            contacts = contacts.filter(item => item[ 'displayName' ].toLowerCase().search(search.toLowerCase()) > -1)
-        }
-        let sectionList = this.generateSectionList(contacts);
-        this.setState({
-            list: sectionList,
-            loading: false,
-            refreshing: false
-        });
-    };
-
-    generateSectionList = array => {
-        let list = { letters: [] };
-        array.forEach(item => {
-            let itLetter = item[ "displayName" ].substring(0, 1).toUpperCase();
-            if( !(
-                itLetter in list) ) {
-                list[ itLetter ] = [];
-                list.letters.push(itLetter);
-            }
-            list[ itLetter ].push(item);
-        });
-        list.letters = list.letters.sort();
-        let sectionList = [];
-
-        list.letters.forEach(item => {
-            sectionList.push({
-                title: item,
-                data: list[ item ]
-            });
-        });
-        return sectionList;
-    };
-    getMobileNumberList = (contacts)=>{
-    	let numberList = [];
-        contacts.forEach(item=>{
-        	item['phoneNumbers'].forEach(itemNumber=>{
-        		if(itemNumber.label==='mobile'){
-                    numberList.push(itemNumber['value'])
-				}
-			})
+	getAllPhoneNumbers = contacts => {
+		let numberList = [];
+		contacts.forEach(item => {
+			item["phoneNumbers"].forEach(itemNumber => {
+				//if (itemNumber.label === "mobile") {
+				numberList.push(itemNumber["value"]);
+				//}
+			});
 		});
-        console.log("numberList", numberList)
-        this.filterContact(contacts)
-
+		console.log("getAllPhoneNumbers", numberList, this.props);
+		this.props.getMembersAreInMyContactsThatNotFriend({
+			memberOwner: this.props.id,
+			numberList: numberList
+		});
 	};
 
-    addFriend = contact=>{
-    	console.log(contact)
-	};
-    render() {
+	componentDidUpdate(prevProps) {
+		if (this.props.screenProps && prevProps.screenProps) {
+			if (
+				this.props.screenProps.searchText !== prevProps.screenProps.searchText
+			) {
+				this.filterContact(this.state.list, this.props.screenProps.searchText);
+			}
+		}
+	}
 
-        return (
+	filterContact = (contacts, search) => {
+		console.log("invite from filterContact", contacts);
+		if (search && contacts.length > 0) {
+			contacts = contacts.filter(
+				item => item["username"].toLowerCase().search(search.toLowerCase()) > -1
+			);
+		}
+		let sectionList = this.generateSectionList(contacts);
+		this.setState({
+			finalList: sectionList,
+			loading: false
+		});
+	};
+
+	generateSectionList = array => {
+		let list = { letters: [] };
+		array.forEach(item => {
+			let itLetter = item["username"].substring(0, 1).toUpperCase();
+			if (!(itLetter in list)) {
+				list[itLetter] = [];
+				list.letters.push(itLetter);
+			}
+			list[itLetter].push(item);
+		});
+		list.letters = list.letters.sort();
+		let sectionList = [];
+
+		list.letters.forEach(item => {
+			sectionList.push({
+				title: item,
+				data: list[item]
+			});
+		});
+		return sectionList;
+	};
+
+	addFriend = item => {
+		console.log(item);
+		this.props.callAddFriend({
+			senderMemberId: this.props.id,
+			receiverMemberId: item.id
+		});
+		let filteredList = this.state.list.filter(member => member.id != item.id);
+		this.setState(
+			{
+				list: filteredList
+			},
+			() => {
+				this.filterContact(filteredList, this.props.screenProps.searchText);
+			}
+		);
+	};
+
+	render() {
+		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
-					sections={this.state.list}
-					extraData={this.state.list}
-					keyExtractor={( item, index ) => index}
+					sections={this.state.finalList}
+					extraData={this.state.finalList}
+					keyExtractor={(item, index) => index}
 					ListEmptyComponent={() => <EmptyList />}
-					renderItem={( { item } ) => (
-						<View
-							style={styles.sectionItems}
-						>
-                           <View style={{flexDirection:'row', alignItems:'center', justifyContent:'flex-start'}}>
-
-							   <Image style={{ width: 45, height: 45, borderRadius: 22.5 }} resizeMode={'contain'}
-									  source={item[ 'thumbnailImageData' ] && { uri: 'data:image/png;base64,' + item[ 'thumbnailImageData' ] } || logo}/>
-							   <Text
-								   style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
-								   numberOfLines={1}
-								   ellipsizeMode="tail"
-							   >
-                                   {item.displayName}
-							   </Text>
-
-						   </View>
+					renderItem={({ item }) => (
+						<View style={styles.sectionItems}>
+							<View
+								style={{
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "flex-start"
+								}}
+							>
+								<TouchableOpacity
+									onPress={() => this.props.screenProps.profileNavigate(item)}
+									style={appCss.avatarBox}
+								>
+									<Avatar userId={item.id} position="image" size={45} />
+								</TouchableOpacity>
+								<Text
+									style={[appCss.defaultFontApp, appCss.countryNameSearch]}
+									numberOfLines={1}
+									ellipsizeMode="tail"
+								>
+									{item.username}
+								</Text>
+							</View>
 							<TouchableOpacity
 								style={styles.addBtn}
-								onPress={()=>this.addFriend(item)}
+								onPress={() => this.addFriend(item)}
 							>
 								<Text style={styles.addBtnText}> Add </Text>
 							</TouchableOpacity>
 						</View>
-                    )}
-					renderSectionHeader={( { section } ) => (
+					)}
+					renderSectionHeader={({ section }) => (
 						<View style={styles.sectionHeader}>
-							<Text
-								style={[ appCss.defaultFontApp, styles.sectionHeaderTitle ]}
-							>
-                                {section.title}
+							<Text style={[appCss.defaultFontApp, styles.sectionHeaderTitle]}>
+								{section.title}
 							</Text>
 						</View>
-                    )}
+					)}
 				/>
-
 			</SafeAreaView>
 		);
 	}

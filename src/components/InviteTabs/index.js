@@ -2,10 +2,10 @@ import { TabNavigator } from "react-navigation";
 import React, { Component } from "react";
 import { Text, View, Dimensions } from "react-native";
 import appCss from "../../../app.css";
-import FriendRequest from '../FriendRequest/FriendRequest'
-import InviteFromContacts from '../InviteFromContacts/InviteFromContacts'
-const {width, height} = Dimensions.get("window");
-let marginBottom = height === 812 && -25 || 10;
+import FriendRequest from "../FriendRequest";
+import InviteFromContacts from "../InviteFromContacts";
+const { width, height } = Dimensions.get("window");
+let marginBottom = (height === 812 && -25) || 10;
 import { CONFIG } from "../../../config";
 const COLORS = CONFIG.colors;
 
@@ -21,14 +21,17 @@ const ViewStyle = {
 };
 export default TabNavigator(
 	{
-		"AddFriends": {
+		AddFriends: {
 			screen: InviteFromContacts,
 			navigationOptions: {
 				tabBarLabel: props => (
 					<View
 						style={[
 							ViewStyle,
-							{ borderBottomColor: (props.focused && COLORS.bodyColor) || "transparent" }
+							{
+								borderBottomColor:
+									(props.focused && COLORS.bodyColor) || "transparent"
+							}
 						]}
 					>
 						<Text
@@ -36,8 +39,8 @@ export default TabNavigator(
 								appCss.defaultFontApp,
 								{
 									color: COLORS.bodyColor,
-									fontSize:19,
-									opacity: props.focused && 1 || 0.8
+									fontSize: 19,
+									opacity: (props.focused && 1) || 0.8
 								}
 							]}
 						>
@@ -47,25 +50,28 @@ export default TabNavigator(
 				)
 			}
 		},
-		"FriendRequests": {
+		FriendRequests: {
 			screen: FriendRequest,
 			navigationOptions: {
 				tabBarLabel: props => (
 					<View
 						style={[
-                            ViewStyle,
-                            { borderBottomColor: (props.focused && COLORS.bodyColor) || "transparent" }
-                        ]}
+							ViewStyle,
+							{
+								borderBottomColor:
+									(props.focused && COLORS.bodyColor) || "transparent"
+							}
+						]}
 					>
 						<Text
 							style={[
-                                appCss.defaultFontApp,
-                                {
-                                    color: COLORS.bodyColor,
-                                    fontSize:19,
-                                    opacity: props.focused && 1 || 0.8
-                                }
-                            ]}
+								appCss.defaultFontApp,
+								{
+									color: COLORS.bodyColor,
+									fontSize: 19,
+									opacity: (props.focused && 1) || 0.8
+								}
+							]}
 						>
 							Requests
 						</Text>
@@ -89,11 +95,11 @@ export default TabNavigator(
 			style: {
 				backgroundColor: COLORS.appColor,
 				marginBottom: marginBottom,
-				borderTopWidth:1,
-				borderTopColor:COLORS.appColor
+				borderTopWidth: 1,
+				borderTopColor: COLORS.appColor
 			},
 			tabStyle: {
-				width: width / 2,
+				width: width / 2
 			}
 		}
 	}
