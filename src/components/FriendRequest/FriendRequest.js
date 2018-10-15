@@ -114,7 +114,7 @@ export default class FriendRequest extends Component {
 			<View style={styles.actionBox}>
 				<TouchableOpacity
 					onPress={() => {
-						this.cancel(item);
+						this.cancel(item.id);
 					}}
 					style={[styles.actionBtn, styles.cancel]}
 				>
@@ -125,7 +125,7 @@ export default class FriendRequest extends Component {
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity
-					onPress={() => this.approve(item)}
+					onPress={() => this.approve(item.id)}
 					style={[styles.actionBtn, styles.verify]}
 				>
 					<Image
@@ -137,12 +137,12 @@ export default class FriendRequest extends Component {
 			</View>
 		);
 	};
-	approve = item => {
-		this.props.callApprove(item.id);
+	approve = id => {
+		this.props.callApprove(id);
 	};
 
-	cancel = item => {
-		this.props.callCancel(item.id);
+	cancel = id => {
+		this.props.callCancel(id);
 	};
 
 	render() {

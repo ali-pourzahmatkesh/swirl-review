@@ -100,7 +100,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	//--------
 	GET_MEMBERS_FROM_CONTACTS = "GET_MEMBERS_FROM_CONTACTS",
 	GET_MEMBERS_FROM_CONTACTS_SUCCESS = "GET_MEMBERS_FROM_CONTACTS_SUCCESS",
-	GET_MEMBERS_FROM_CONTACTS_FAILED = " GET_MEMBERS_FROM_CONTACTS_FAILED";
+	GET_MEMBERS_FROM_CONTACTS_FAILED = " GET_MEMBERS_FROM_CONTACTS_FAILED",
+	//--------
+	GET_FRIENDS = "MEMBER_GET_FRIENDS",
+	GET_FRIENDS_SUCCESS = "MEMBER_GET_FRIENDS_SUCCESS",
+	GET_FRIENDS_FAILED = " MEMBER_GET_FRIENDS_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -110,6 +114,39 @@ import {
 	restDelete,
 	post
 } from "../appService";
+
+// --------------------------------------------------------------------------
+
+export const getFriends = data => ({
+	type: GET_FRIENDS,
+	payload: data
+});
+
+export const serverGetFriends = data => {
+	return new Promise((resolve, reject) => {
+		post("/api/v1/members/action/friends", data)
+			.then(resp => {
+				resolve(resp.data);
+			})
+			.catch(err => {
+				reject(err);
+			});
+	});
+};
+
+export const serverGetFriendsSuccess = data => {
+	return {
+		type: GET_FRIENDS_SUCCESS,
+		payload: data
+	};
+};
+
+export const serverGetFriendsFailed = err => {
+	return {
+		type: GET_FRIENDS_FAILED,
+		payload: err
+	};
+};
 
 // --------------------------------------------------------------------------
 
@@ -831,40 +868,9 @@ export const fetchProfileUserFailed = err => ({
 	payload: err
 });
 
-export const getListData = data => ({
-	type: GET_LIST_DATA,
-	payload: data
-});
-
 export const initialState = data => ({
 	type: INITIAL_STATE
 });
-
-export const fetchGetListData = data => {
-	return new Promise((resolve, reject) => {
-		post(`/api/v1/members/action/friends`, data)
-			.then(resp => {
-				resolve({ ...resp, refreshing: data.refreshing });
-			})
-			.catch(err => {
-				reject(err);
-			});
-	});
-};
-
-export const fetchGetListDataSuccess = data => {
-	return {
-		type: GET_LIST_DATA_SUCCESS,
-		payload: data
-	};
-};
-
-export const fetchGetListDataFailed = err => {
-	return {
-		type: GET_LIST_DATA_FAILED,
-		payload: err
-	};
-};
 
 export const fetchGetAddFriendListData = data => {
 	return new Promise((resolve, reject) => {

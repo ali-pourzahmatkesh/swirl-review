@@ -12,38 +12,33 @@ import styles from "./style";
 import appCss from "../../../app.css";
 import Avatar from "../../components/Avatar";
 import { SafeAreaView } from "react-navigation";
-import { PagedContacts } from "react-native-paged-contacts";
 import checkedImage from "../../assets/images/icons/check_white.png";
 import { CONFIG } from "../../../config";
 import next from "../../assets/images/icons/next.png";
 const colors = CONFIG.colors;
 const { width } = Dimensions.get("window");
 
-const pg = new PagedContacts();
-
 export default class SendTo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			finalList: [],
-			list: []
+			list: [],
+			membersThatAreFriends: []
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		console.log("IN componentWillReceiveProps", nextProps);
 		if (
-			nextProps.membersFromContactsAreNotFriend &&
-			this.state.list.length != nextProps.membersFromContactsAreNotFriend.length
+			nextProps.membersThatAreFriends &&
+			this.state.membersThatAreFriends.length !=
+				nextProps.membersThatAreFriends.length
 		) {
-			console.log(
-				"membersFromContactsAreNotFriend",
-				nextProps.membersFromContactsAreNotFriend
-			);
+			console.log("membersThatAreFriends", nextProps.membersThatAreFriends);
 			this.setState({
-				list: nextProps.membersFromContactsAreNotFriend,
-				finalList: this.generateSectionList(
-					nextProps.membersFromContactsAreNotFriend,
+				membersThatAreFriends: nextProps.membersThatAreFriends,
+				list: this.generateSectionList(
+					nextProps.membersThatAreFriends,
 					"username"
 				)
 			});
@@ -51,62 +46,32 @@ export default class SendTo extends Component {
 	}
 
 	componentDidMount() {
-		this.getPhoneNumbersFromContactList();
+		this.props.getFriends({
+			id: this.props.id
+		});
 	}
 
-	getPhoneNumbersFromContactList = function() {
-		pg.requestAccess().then(granted => {
-			if (granted !== true) {
-				return;
-			}
-			pg.getContactsCount().then(count => {
-				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
-					contacts => {
-						this.setState({ contacts });
-						if (contacts.length > 0) {
-							this.getAllPhoneNumbers(contacts);
-						}
-					}
-				);
-			});
-		});
-	};
-
-	getAllPhoneNumbers = contacts => {
-		let numberList = [];
-		contacts.forEach(item => {
-			item["phoneNumbers"].forEach(itemNumber => {
-				//if (itemNumber.label === "mobile") {
-				numberList.push(itemNumber["value"]);
-				//}
-			});
-		});
-		console.log("getAllPhoneNumbers", numberList, this.props);
-		this.props.getMembersAreInMyContactsThatNotFriend({
-			memberOwner: this.props.id,
-			numberList: numberList
-		});
-	};
-
-	generateSectionList = (array, key) => {
+	generateSectionList = (arrData, key) => {
 		let list = { letters: [] };
-		array.forEach(item => {
-			let itLetter = item[key].substring(0, 1).toUpperCase();
-			if (!(itLetter in list)) {
-				list[itLetter] = [];
-				list.letters.push(itLetter);
-			}
-			list[itLetter].push(item);
-		});
-		list.letters = list.letters.sort();
 		let sectionList = [];
-
-		list.letters.forEach(item => {
-			sectionList.push({
-				title: item,
-				data: list[item]
+		if (arrData && arrData.length) {
+			arrData.forEach(item => {
+				let itLetter = item[key].substring(0, 1).toUpperCase();
+				if (!(itLetter in list)) {
+					list[itLetter] = [];
+					list.letters.push(itLetter);
+				}
+				list[itLetter].push(item);
 			});
-		});
+			list.letters = list.letters.sort();
+
+			list.letters.forEach(item => {
+				sectionList.push({
+					title: item,
+					data: list[item]
+				});
+			});
+		}
 		return sectionList;
 	};
 
@@ -172,9 +137,9 @@ export default class SendTo extends Component {
 	};
 
 	onChange = item => {
-		const { finalList } = this.state;
+		const { list } = this.state;
 		item["checked"] = !item["checked"];
-		this.setState({ finalList });
+		this.setState({ list });
 	};
 
 	Capitalize(str) {
@@ -186,12 +151,12 @@ export default class SendTo extends Component {
 	}
 
 	render() {
-		const { finalList } = this.state;
+		const { list } = this.state;
 		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
-					sections={finalList}
-					extraData={finalList}
+					sections={list}
+					extraData={list}
 					keyExtractor={(item, index) => index}
 					ListEmptyComponent={() => <EmptyList />}
 					renderItem={({ item }) => this.loadList({ item })}
@@ -214,7 +179,7 @@ export default class SendTo extends Component {
 				>
 					<TouchableOpacity
 						style={styles.footer}
-						onPress={() => this.props.friendList(finalList)}
+						onPress={() => this.props.friendList(list)}
 					>
 						<Image
 							resizeMode={"contain"}

@@ -9,11 +9,11 @@ import {
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
-	list: state.app.friendRequest.list
+	list: state.app.friendRequest.list,
 	// deleteChat: state.app.chat.deleteChat,
 	// isLoadingFetch: state.app.friendRequest.isLoadingFetch,
 	// refreshing: state.app.friendRequest.refreshing,
-	// loading: state.app.friendRequest.loading,
+	loading: state.app.friendRequest.loading
 	// count: state.app.friendRequest.count
 });
 

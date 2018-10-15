@@ -183,7 +183,14 @@ import {
 	GET_MEMBERS_FROM_CONTACTS_FAILED,
 	serverGetMemberFromContacts,
 	serverGetMemberFromContactsSuccess,
-	serverGetMemberFromContactsFailed
+	serverGetMemberFromContactsFailed,
+	// ---------
+	GET_FRIENDS,
+	GET_FRIENDS_SUCCESS,
+	GET_FRIENDS_FAILED,
+	serverGetFriends,
+	serverGetFriendsSuccess,
+	serverGetFriendsFailed
 } from "./";
 
 import { showToast } from "../toast";
@@ -224,11 +231,71 @@ let initialState = {
 	visitCount: 0,
 	instagramFeed: [],
 	ghostNotif: false,
-	membersFromContactsAreNotFriend: []
+	membersFromContactsAreNotFriend: [],
+	membersThatAreFriends: []
 };
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+
+		case GET_FRIENDS: {
+			return loop(
+				{
+					...state,
+					errorMessage: "",
+					hasError: false,
+					loading: true
+				},
+				Cmd.run(serverGetFriends, {
+					successActionCreator: serverGetFriendsSuccess,
+					failActionCreator: serverGetFriendsFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case GET_FRIENDS_SUCCESS: {
+			return {
+				...state,
+				errorMessage: "",
+				hasError: false,
+				membersThatAreFriends: action.payload,
+				loading: false
+			};
+		}
+
+		case GET_FRIENDS_FAILED: {
+			return loop(
+				{
+					...state,
+					loading: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+
+		case CHAT_INITIAL_STATE: {
+			return {
+				...state,
+				isLoadingFetch: false,
+				errorMessage: "",
+				hasError: false,
+				list: [],
+				refreshing: false,
+				loading: false,
+				count: 0
+			};
+		}
+
 		case SET_TAB_OF_PAGE: {
 			return { ...state, currentTabOfPage: action.payload };
 		}
@@ -310,102 +377,6 @@ const chat = (state = initialState, action) => {
 
 		case GET_STATUS_FAILED: {
 			return { ...state };
-		}
-
-		case CHAT_GET_LIST_DATA: {
-			// console.log(action.payload)
-			return loop(
-				{
-					...state,
-					// isLoadingFetch: true,
-					errorMessage: "",
-					hasError: false
-					// refreshing: action.payload.refreshing,
-					// loading: action.payload.loading
-				},
-				Cmd.run(fetchGetListData, {
-					successActionCreator: fetchGetListDataSuccess,
-					failActionCreator: fetchGetListDataFailed,
-					args: [action.payload, action.tab]
-				})
-			);
-		}
-		case CHAT_GET_LIST_DATA_SUCCESS: {
-			// let list = state.list;
-			// if (action.payload.refreshing) list = [];
-			// let updateList = [...list, ...action.payload.data];
-
-			// updateList.forEach(item => {
-			// 	if (action.payload.id === item.senderMemberOwner.id) {
-			// 		/**
-			// 		 * send message
-			// 		 */
-			// 		if (item["whenSeen"]) {
-			// 			let opened = moment(item["whenSeen"]).tz("Europe/London");
-			// 			item["relativeDate"] =
-			// 				"Was Visited " + defaultMoment(opened, "YYYYMMDD").fromNow();
-			// 		} else {
-			// 			let created = moment(item["createdAt"]).tz("Europe/London");
-			// 			item["relativeDate"] =
-			// 				"Created " + defaultMoment(created, "YYYYMMDD").fromNow();
-			// 		}
-			// 	} else if (action.payload.id === item.receiverMemberOwner) {
-			// 		/**
-			// 		 * receive message
-			// 		 */
-			// 		if (item["whenSeen"]) {
-			// 			let opened = moment(item["whenSeen"]).tz("Europe/London");
-			// 			item["relativeDate"] =
-			// 				"Opened " + defaultMoment(opened, "YYYYMMDD").fromNow();
-			// 		} else {
-			// 			let created = moment(item["createdAt"]).tz("Europe/London");
-			// 			item["relativeDate"] =
-			// 				"visited you " + defaultMoment(created, "YYYYMMDD").fromNow();
-			// 		}
-			// 	}
-			// });
-			// console.log('action==========', action.payload);
-			// action.payload = [
-			// {
-			// 	memberId: '5b44dbe3cd31daf32570447f',
-			// 	recentMessage: 'salam khobi?',
-			// 	recentMessageAt: '2018-07-12T14:22:25',
-			// 	unreadMessageCount: 1
-			// }
-			// ];
-			return {
-				...state,
-				// isLoadingFetch: false,
-				errorMessage: "",
-				hasError: false,
-				list: action.payload
-				// refreshing: false,
-				// loading: false,
-				// count: action.payload.metadata.count
-			};
-		}
-		case CHAT_GET_LIST_DATA_FAILED: {
-			return loop(
-				{
-					...state,
-					// isLoadingFetch: false,
-					errorMessage: action.payload.message,
-					hasError: true
-				},
-				Cmd.action(showToast(true, action.payload.message))
-			);
-		}
-		case CHAT_INITIAL_STATE: {
-			return {
-				...state,
-				isLoadingFetch: false,
-				errorMessage: "",
-				hasError: false,
-				list: [],
-				refreshing: false,
-				loading: false,
-				count: 0
-			};
 		}
 
 		case CALL_DELETE_ACCOUNT: {

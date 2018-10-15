@@ -163,12 +163,14 @@ export default class MessagePopup extends Component {
 
 							{/* go to next page */}
 							<TouchableOpacity
-								onPress={() =>
-									this.setState({
-										tabSelected: "timePicker",
-										messageType: "chat"
-									})
-								}
+								onPress={() => {
+									if (this.state.message != "") {
+										this.setState({
+											tabSelected: "timePicker",
+											messageType: "chat"
+										});
+									}
+								}}
 								style={[
 									styles.nextButton,
 									{ backgroundColor: colors.combinatorialColor }
