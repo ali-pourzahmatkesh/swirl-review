@@ -1064,13 +1064,17 @@ export const updateMember = data => ({
 });
 
 export const serverUpdateMember = data => {
+	if (data.blockRedirect !== true) {
+		data.blockRedirect = false;
+	}
 	return new Promise((resolve, reject) => {
 		put(`/api/v1/members/${data.id}`, data)
 			.then(resp => {
 				resolve({
 					...resp,
 					id: data.id,
-					navigation: data.navigation
+					navigation: data.navigation || null,
+					blockRedirect: data.blockRedirect
 				});
 			})
 			.catch(err => {

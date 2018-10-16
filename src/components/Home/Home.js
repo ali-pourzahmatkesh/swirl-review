@@ -28,8 +28,6 @@ import InviteFromContacts from "../InviteFromContacts";
 
 import sortChatList from "../../util/sortChatList";
 
-// import Discussion from "../Discussion";
-
 class Home extends Component {
 	constructor(props) {
 		super(props);

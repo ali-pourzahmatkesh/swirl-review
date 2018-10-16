@@ -1190,6 +1190,16 @@ const chat = (state = initialState, action) => {
 		}
 		case UPDATE_MEMBER_SUCCESS: {
 			// action.payload.navigation.navigate('ConfirmPasswordScreen');
+
+			let arrayOfActions = [];
+			arrayOfActions[0] = Cmd.action(callGetProfile(action.payload.id));
+
+			if (!action.payload.blockRedirect) {
+				arrayOfActions[1] = Cmd.run(() => {
+					action.payload.navigation && action.payload.navigation.goBack();
+				});
+			}
+
 			return loop(
 				{
 					...state,
@@ -1197,17 +1207,9 @@ const chat = (state = initialState, action) => {
 					errorMessage: "",
 					hasError: false
 				},
-				Cmd.list(
-					[
-						Cmd.action(callGetProfile(action.payload.id)),
-						Cmd.run(() => {
-							action.payload.navigation.goBack();
-						})
-					],
-					{
-						sequence: true
-					}
-				)
+				Cmd.list(arrayOfActions, {
+					sequence: true
+				})
 			);
 		}
 

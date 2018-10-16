@@ -1,6 +1,13 @@
-import React, {Component} from "react";
-import {Dimensions, Image, SectionList, Text, TouchableOpacity, View} from "react-native";
-import {NavigationActions} from "react-navigation";
+import React, { Component } from "react";
+import {
+	Dimensions,
+	Image,
+	SectionList,
+	Text,
+	TouchableOpacity,
+	View
+} from "react-native";
+import { NavigationActions } from "react-navigation";
 import Avatar from "../Avatar";
 import appCss from "../../../app.css";
 import styles from "./style";
@@ -13,20 +20,20 @@ import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy.png";
 import editIcon from "../../assets/images/icons/edit.png";
 import feedback from "../../assets/images/icons/feedBack.png";
 import logout from "../../assets/images/icons/logout.png";
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from "react-native-image-picker";
+var CryptoJS = require("crypto-js");
 
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
 const COLORS = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 
 const options = {
-    title: 'Select Avatar',
-    storageOptions: {
-        skipBackup: true,
-        path: 'images',
-    },
+	title: "Select Avatar",
+	storageOptions: {
+		skipBackup: true,
+		path: "images"
+	}
 };
-
 
 export default class Profile extends Component {
 	constructor(props) {
@@ -146,33 +153,76 @@ export default class Profile extends Component {
 	// 	}
 	// };
 
+	uploadImageToCloud = uri => {
+		let timestamp = ((Date.now() / 1000) | 0).toString();
+		let api_key = CONFIG.cloudinary.api_key;
+		let api_secret = CONFIG.cloudinary.api_secret;
+		let cloud = CONFIG.cloudinary.cloud;
+		let hash_string = "timestamp=" + timestamp + api_secret;
+		let signature = CryptoJS.SHA1(hash_string).toString();
+		let upload_url =
+			CONFIG.cloudinary.upload_url_prefix +
+			cloud +
+			CONFIG.cloudinary.upload_url_suffix;
 
-	uploadImage = ()=>{
-        /**
-         * The first arg is the options object for customization (it can also be null or omitted for default options),
-         * The second arg is the callback which sends object: response (more info in the API Reference)
-         */
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", upload_url);
+		xhr.onload = () => {
+			try {
+				let resp = JSON.parse(xhr._response);
+				console.log("onload >", resp);
 
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            } else {
-                const source = { uri: response.uri };
+				this.props.updateMember({
+					id: this.props.id,
+					avatarName: `v${resp.version}/${resp.public_id}`,
+					avatarExtension: resp.format,
+					blockRedirect: true
+				});
+			} catch (e) {
+				console.log("error in update avatar image");
+			}
+		};
 
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+		let formdata = new FormData();
+		formdata.append("file", {
+			uri: uri,
+			type: "image/png",
+			name: `${timestamp}.png`
+		});
 
-                this.setState({
-                    avatarSource: source,
-                });
-            }
-        });
-	}
+		// formdata.append("upload_preset", "test_apz");
+		formdata.append("timestamp", timestamp);
+		formdata.append("api_key", api_key);
+		formdata.append("signature", signature);
+		xhr.send(formdata);
+	};
+
+	uploadImage = () => {
+		/**
+		 * The first arg is the options object for customization (it can also be null or omitted for default options),
+		 * The second arg is the callback which sends object: response (more info in the API Reference)
+		 */
+		ImagePicker.showImagePicker(options, response => {
+			console.log("Response = ", response);
+
+			if (response.didCancel) {
+				console.log("User cancelled image picker");
+			} else if (response.error) {
+				console.log("ImagePicker Error: ", response.error);
+			} else if (response.customButton) {
+				console.log("User tapped custom button: ", response.customButton);
+			} else {
+				//
+				// const source = { uri: response.uri };
+				// this.setState({
+				// 	avatarSource: source
+				// });
+				// You can also display the image using data:
+				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+				this.uploadImageToCloud(response.uri);
+			}
+		});
+	};
 
 	render() {
 		let { userProfile } = this.props;
@@ -180,13 +230,13 @@ export default class Profile extends Component {
 			{
 				title: "Account info",
 				data: [
-                    // {
-                    //     icon: changeNameBlue,
-                    //     name: "Change Name",
-                    //     clickHandler: () => this.goTo("ChangeInfoScreen")
-                    // },
-                    {
-                        icon: changeNameRed,
+					// {
+					//     icon: changeNameBlue,
+					//     name: "Change Name",
+					//     clickHandler: () => this.goTo("ChangeInfoScreen")
+					// },
+					{
+						icon: changeNameRed,
 						name: "Change Username",
 						clickHandler: () => this.goTo("ChangeInfoScreen")
 					},
@@ -201,12 +251,12 @@ export default class Profile extends Component {
 				title: "Legal stuff",
 				data: [
 					{
-                        icon: termsOfUseSwirl,
+						icon: termsOfUseSwirl,
 						name: "Terms of Use",
 						clickHandler: () => this.goTo("TermsAndConditionsScreen")
 					},
 					{
-                        icon: privacyPolicySwirl,
+						icon: privacyPolicySwirl,
 						name: "Privacy Policy",
 						clickHandler: () => this.goTo("PrivacyPolicyScreen")
 					}
@@ -250,26 +300,34 @@ export default class Profile extends Component {
 							style={{
 								borderWidth: 0,
 								height: height * 0.15,
-                                alignSelf: "center",
-                                position: "relative"
+								alignSelf: "center",
+								position: "relative"
 							}}
 						>
-							{
-                                this.state.avatarSource && <Avatar
+							{(this.state.avatarSource && (
+								<Avatar
 									userId={this.state.avatarSource}
-									imageType='data'
+									imageType="data"
 									size={height * 0.15}
 									position="profile"
-								/> || <Avatar
+								/>
+							)) || (
+								<Avatar
 									userId={this.props.id}
 									size={height * 0.15}
 									position="profile"
 								/>
-							}
+							)}
 
-
-							<TouchableOpacity onPress={()=>this.uploadImage()}  style={styles.editButton}>
-								<Image style={styles.editIcon} resizeMode={"contain"} source={editIcon}/>
+							<TouchableOpacity
+								onPress={() => this.uploadImage()}
+								style={styles.editButton}
+							>
+								<Image
+									style={styles.editIcon}
+									resizeMode={"contain"}
+									source={editIcon}
+								/>
 							</TouchableOpacity>
 						</View>
 						<Text style={styles.nameText}>{userProfile.username}</Text>

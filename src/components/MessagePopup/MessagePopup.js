@@ -19,7 +19,7 @@ import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
 import cameraDisable from "../../assets/images/icons/cameraDisable.png";
 import cameraBtn from "../../assets/images/icons/cameraBtn.png";
-import background from "../../assets/images/logo_bigger.png";
+// import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
 import { CONFIG } from "../../../config";
@@ -29,6 +29,8 @@ import appCss from "../../../app.css";
 const colors = CONFIG.colors;
 const { height, width } = Dimensions.get("window");
 import moment from "moment-timezone";
+var CryptoJS = require("crypto-js");
+import Toast from "../Toast";
 
 const options = {
 	// title: "Select Avatar",
@@ -58,8 +60,65 @@ export default class MessagePopup extends Component {
 		console.log("nextProps", nextProps);
 	}
 
+	uploadImageToCloud = uri => {
+		let timestamp = ((Date.now() / 1000) | 0).toString();
+		let api_key = CONFIG.cloudinary.api_key;
+		let api_secret = CONFIG.cloudinary.api_secret;
+		let cloud = CONFIG.cloudinary.cloud;
+		let hash_string = "timestamp=" + timestamp + api_secret;
+		let signature = CryptoJS.SHA1(hash_string).toString();
+		let upload_url =
+			CONFIG.cloudinary.upload_url_prefix +
+			cloud +
+			CONFIG.cloudinary.upload_url_suffix;
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", upload_url);
+		xhr.onload = () => {
+			try {
+				let resp = JSON.parse(xhr._response);
+				console.log("onload >", resp);
+
+				if (resp.error && resp.error.message) {
+					console.log("errorrrrr", resp.error, resp.error.message);
+					this.props.showToast(resp.error.message);
+				} else {
+					let availableAt = moment()
+						.add(this.state.selectedHours, "hours")
+						.add(this.state.selectedMinutes, "minutes")
+						.toDate();
+
+					this.props.newMessage({
+						senderMemberId: this.props.id,
+						receiverMemberList: this.state.memberListId,
+						availableAt: availableAt,
+						postType: "image",
+						imageContentName: `v${resp.version}/${resp.public_id}`,
+						imageContentExtension: resp.format
+					});
+					this.props.closeMessageModal();
+				}
+			} catch (e) {
+				console.log("error in update message image");
+			}
+		};
+
+		let formdata = new FormData();
+		formdata.append("file", {
+			uri: uri,
+			type: "image/png",
+			name: `${timestamp}.png`
+		});
+
+		// formdata.append("upload_preset", "test_apz");
+		formdata.append("timestamp", timestamp);
+		formdata.append("api_key", api_key);
+		formdata.append("signature", signature);
+		xhr.send(formdata);
+	};
+
 	tabSelectedFunction = tabSelected => {
-		this.setState({ tabSelected, avatarSource: "" });
+		this.setState({ tabSelected, messageImageSource: "" });
 
 		if (tabSelected === "chat") {
 		} else {
@@ -74,13 +133,16 @@ export default class MessagePopup extends Component {
 				if (response.error) {
 					console.log("ImagePicker Error: ", response.error);
 				} else {
-					const source = { uri: response.uri };
+					//const source = { uri: response.uri };
 
 					// You can also display the image using data:
 					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
 					this.setState({
-						avatarSource: source
+						messageImageSource: {
+							pathUri: { uri: response.uri },
+							dataUri: { uri: "data:image/jpeg;base64," + response.data }
+						}
 					});
 				}
 			});
@@ -88,8 +150,8 @@ export default class MessagePopup extends Component {
 	};
 
 	loadMessageContent = () => {
-		const { message, tabSelected, avatarSource } = this.state;
-		console.log("this.state.avatarSource", this.state.avatarSource);
+		const { message, tabSelected, messageImageSource } = this.state;
+		console.log("this.state.messageImageSource", this.state.messageImageSource);
 		const count = message.length;
 		return (
 			<KeyboardAvoidingView style={styles.messageBox} behavior="padding">
@@ -246,7 +308,10 @@ export default class MessagePopup extends Component {
 
 	loadImageContent = () => {
 		return (
-			<ImageBackground style={styles.cameraActionBox} source={background}>
+			<ImageBackground
+				style={styles.cameraActionBox}
+				source={this.state.messageImageSource.dataUri}
+			>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity
 						onPress={() => this.setState({ tabSelected: "camera" })}
@@ -304,6 +369,7 @@ export default class MessagePopup extends Component {
 					</View>
 					<View />
 				</View>
+				<Toast />
 				<SendTo friendList={this.friendList} />
 			</View>
 		);
@@ -318,19 +384,24 @@ export default class MessagePopup extends Component {
 		console.log("memberListId", memberListId);
 		if (memberListId.length) {
 			this.setState({ memberListId }, () => {
-				let availableAt = moment()
-					.add(this.state.selectedHours, "hours")
-					.add(this.state.selectedMinutes, "minutes")
-					.toDate();
+				console.log("message type is", this.state.messageType);
+				if (this.state.messageType != "chat") {
+					this.uploadImageToCloud(this.state.messageImageSource.pathUri.uri);
+				} else {
+					let availableAt = moment()
+						.add(this.state.selectedHours, "hours")
+						.add(this.state.selectedMinutes, "minutes")
+						.toDate();
 
-				this.props.newMessage({
-					senderMemberId: this.props.id,
-					receiverMemberList: this.state.memberListId,
-					availableAt: availableAt,
-					postType: this.state.messageType == "camera" ? "image" : "text",
-					textContent: this.state.message
-				});
-				this.props.closeMessageModal();
+					this.props.newMessage({
+						senderMemberId: this.props.id,
+						receiverMemberList: this.state.memberListId,
+						availableAt: availableAt,
+						postType: "text",
+						textContent: this.state.message
+					});
+					this.props.closeMessageModal();
+				}
 			});
 		}
 	};
