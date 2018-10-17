@@ -78,10 +78,10 @@ const STYLES = StyleSheet.create({
     homeBottomBox: {
         display: 'flex',
         position: 'absolute',
+        width:50,
         bottom: 0,
-        left: 0,
+        left: width/2-25,
         right: 0,
-        // top:'100%',
         margin: 'auto',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -114,6 +114,13 @@ const STYLES = StyleSheet.create({
         fontSize:20,
         marginTop:10,
         color:colors.bodyColor
+    },
+
+    TimerCountdown:{
+        flex:1,
+        flexDirection:"row",
+        // alignItem:'center',
+        justifyContent:'flex-start'
     }
 });
 
