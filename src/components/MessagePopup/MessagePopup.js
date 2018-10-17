@@ -1,17 +1,16 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-	Dimensions,
-	Image,
-	ImageBackground,
-	KeyboardAvoidingView,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View
+    Dimensions,
+    Image,
+    ImageBackground,
+    KeyboardAvoidingView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 import styles from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ImagePicker from "react-native-image-picker";
 import close from "../../assets/images/icons/close_red.png";
 import closeWhite from "../../assets/images/icons/close.png";
 import chat from "../../assets/images/icons/chat.png";
@@ -22,15 +21,16 @@ import cameraBtn from "../../assets/images/icons/cameraBtn.png";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
 import appCss from "../../../app.css";
+import Camera from "react-native-camera";
+import moment from "moment-timezone";
+import Toast from "../Toast";
 const colors = CONFIG.colors;
 const { height, width } = Dimensions.get("window");
-import moment from "moment-timezone";
 var CryptoJS = require("crypto-js");
-import Toast from "../Toast";
 
 const options = {
 	// title: "Select Avatar",
@@ -48,7 +48,8 @@ export default class MessagePopup extends Component {
 		selectedHours: 0,
 		selectedMinutes: 0,
 		messageType: "",
-		memberListId: []
+        memberListId: [],
+        cameraData: {}
 	};
 
 	constructor(props) {
@@ -127,25 +128,25 @@ export default class MessagePopup extends Component {
 			 * The second arg is the callback which sends object: response (more info in the API Reference)
 			 */
 
-			ImagePicker.launchCamera(options, response => {
-				console.log("Response = ", response);
-
-				if (response.error) {
-					console.log("ImagePicker Error: ", response.error);
-				} else {
-					//const source = { uri: response.uri };
-
-					// You can also display the image using data:
-					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-					this.setState({
-						messageImageSource: {
-							pathUri: { uri: response.uri },
-							dataUri: { uri: "data:image/jpeg;base64," + response.data }
-						}
-					});
-				}
-			});
+            // ImagePicker.launchCamera(options, response => {
+            // 	console.log("Response = ", response);
+            //
+            // 	if (response.error) {
+            // 		console.log("ImagePicker Error: ", response.error);
+            // 	} else {
+            // 		//const source = { uri: response.uri };
+            //
+            // 		// You can also display the image using data:
+            // 		// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+            //
+            // 		this.setState({
+            // 			messageImageSource: {
+            // 				pathUri: { uri: response.uri },
+            // 				dataUri: { uri: "data:image/jpeg;base64," + response.data }
+            // 			}
+            // 		});
+            // 	}
+            // });
 		}
 	};
 
@@ -247,14 +248,36 @@ export default class MessagePopup extends Component {
 		);
 	};
 
-	takePhoto = () => {
-		this.setState({ tabSelected: "image" });
-	};
+    takePicture() {
+        const options = {};
+        this.camera.capture({ metadata: options })
+            .then(( data ) => {
+                // this.uploadImageToCloud(data['mediaUri'])
+                this.setState({ tabSelected: "image", cameraData: data });
+                console.log("tabSelected:::", data)
+            })
+            .catch(err => console.error(err));
+    }
+
+    onBarCodeRead( e ) {
+        console.log(
+            "Barcode Found!",
+            "Type: " + e.type + "\nData: " + e.data
+        );
+    }
+
 
 	loadCameraContent = () => {
 		const { tabSelected } = this.state;
 		return (
-			<View style={styles.cameraActionBox}>
+			<Camera
+				ref={( cam ) => {
+                    this.camera = cam;
+                }}
+				onBarCodeRead={this.onBarCodeRead.bind(this)}
+				style={styles.cameraActionBox}
+				aspect={Camera.constants.Aspect.fill}>
+                {/*<View style={styles.cameraActionBox}>*/}
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity onPress={this.props.closeMessageModal}>
 						<Image style={styles.closeIcon} source={close} />
@@ -262,10 +285,13 @@ export default class MessagePopup extends Component {
 					<View />
 					<View />
 				</View>
+
 				<View style={styles.cameraActions}>
+
+
 					<View style={styles.cameraBtnBox}>
 						<TouchableOpacity
-							onPress={() => this.takePhoto("chat")}
+							onPress={this.takePicture.bind(this)}
 							style={styles.actionBox}
 						>
 							<Image
@@ -302,7 +328,7 @@ export default class MessagePopup extends Component {
 						<View style={styles.nextButton} />
 					</View>
 				</View>
-			</View>
+			</Camera>
 		);
 	};
 
