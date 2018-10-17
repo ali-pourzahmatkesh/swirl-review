@@ -1,13 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
-    Dimensions,
-    Image,
-    ImageBackground,
-    KeyboardAvoidingView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+	Dimensions,
+	Image,
+	ImageBackground,
+	KeyboardAvoidingView,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View
 } from "react-native";
 import styles from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -21,7 +21,7 @@ import cameraBtn from "../../assets/images/icons/cameraBtn.png";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
 import appCss from "../../../app.css";
@@ -48,8 +48,8 @@ export default class MessagePopup extends Component {
 		selectedHours: 0,
 		selectedMinutes: 0,
 		messageType: "",
-        memberListId: [],
-        cameraData: {}
+		memberListId: [],
+		messageImageSource: {}
 	};
 
 	constructor(props) {
@@ -107,8 +107,8 @@ export default class MessagePopup extends Component {
 		let formdata = new FormData();
 		formdata.append("file", {
 			uri: uri,
-			type: "image/png",
-			name: `${timestamp}.png`
+			type: "image/jpg",
+			name: `${timestamp}.jpg`
 		});
 
 		// formdata.append("upload_preset", "test_apz");
@@ -127,26 +127,25 @@ export default class MessagePopup extends Component {
 			 * The first arg is the options object for customization (it can also be null or omitted for default options),
 			 * The second arg is the callback which sends object: response (more info in the API Reference)
 			 */
-
-            // ImagePicker.launchCamera(options, response => {
-            // 	console.log("Response = ", response);
-            //
-            // 	if (response.error) {
-            // 		console.log("ImagePicker Error: ", response.error);
-            // 	} else {
-            // 		//const source = { uri: response.uri };
-            //
-            // 		// You can also display the image using data:
-            // 		// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-            //
-            // 		this.setState({
-            // 			messageImageSource: {
-            // 				pathUri: { uri: response.uri },
-            // 				dataUri: { uri: "data:image/jpeg;base64," + response.data }
-            // 			}
-            // 		});
-            // 	}
-            // });
+			// ImagePicker.launchCamera(options, response => {
+			// 	console.log("Response = ", response);
+			//
+			// 	if (response.error) {
+			// 		console.log("ImagePicker Error: ", response.error);
+			// 	} else {
+			// 		//const source = { uri: response.uri };
+			//
+			// 		// You can also display the image using data:
+			// 		// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+			//
+			// 		this.setState({
+			// 			messageImageSource: {
+			// 				pathUri: { uri: response.uri },
+			// 				dataUri: { uri: "data:image/jpeg;base64," + response.data }
+			// 			}
+			// 		});
+			// 	}
+			// });
 		}
 	};
 
@@ -248,36 +247,36 @@ export default class MessagePopup extends Component {
 		);
 	};
 
-    takePicture() {
-        const options = {};
-        this.camera.capture({ metadata: options })
-            .then(( data ) => {
-                // this.uploadImageToCloud(data['mediaUri'])
-                this.setState({ tabSelected: "image", cameraData: data });
-                console.log("tabSelected:::", data)
-            })
-            .catch(err => console.error(err));
-    }
-
-    onBarCodeRead( e ) {
-        console.log(
-            "Barcode Found!",
-            "Type: " + e.type + "\nData: " + e.data
-        );
-    }
-
+	takePicture() {
+		const options = {};
+		this.camera
+			.capture({ metadata: options })
+			.then(data => {
+				// this.uploadImageToCloud(data['mediaUri'])
+				this.setState({
+					tabSelected: "image",
+					messageImageSource: {
+						pathUri: { uri: data.path },
+						mediaUri: { uri: data.path, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
+					}
+				});
+				console.log("messageImageSource:::", data);
+			})
+			.catch(err => console.error(err));
+	}
 
 	loadCameraContent = () => {
 		const { tabSelected } = this.state;
 		return (
 			<Camera
-				ref={( cam ) => {
-                    this.camera = cam;
-                }}
-				onBarCodeRead={this.onBarCodeRead.bind(this)}
+				ref={cam => {
+					this.camera = cam;
+				}}
 				style={styles.cameraActionBox}
-				aspect={Camera.constants.Aspect.fill}>
-                {/*<View style={styles.cameraActionBox}>*/}
+				aspect={Camera.constants.Aspect.fill}
+				captureTarget={Camera.constants.CaptureTarget.disk}
+			>
+				{/*<View style={styles.cameraActionBox}>*/}
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity onPress={this.props.closeMessageModal}>
 						<Image style={styles.closeIcon} source={close} />
@@ -287,8 +286,6 @@ export default class MessagePopup extends Component {
 				</View>
 
 				<View style={styles.cameraActions}>
-
-
 					<View style={styles.cameraBtnBox}>
 						<TouchableOpacity
 							onPress={this.takePicture.bind(this)}
@@ -336,7 +333,7 @@ export default class MessagePopup extends Component {
 		return (
 			<ImageBackground
 				style={styles.cameraActionBox}
-				source={this.state.messageImageSource.dataUri}
+				source={this.state.messageImageSource.mediaUri}
 			>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity
