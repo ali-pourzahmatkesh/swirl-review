@@ -226,7 +226,7 @@ class Home extends Component {
 
 			messageHint = () => {
 				return (
-					<View>
+					<View style={styles.TimerCountdown}>
 						<TimerCountdown
 							initialSecondsRemaining={remainingSeconds}
 							onTick={secondsRemaining => console.log("tick", secondsRemaining)}

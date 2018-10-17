@@ -8,50 +8,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "#e6e7e9"
 	},
 
-	backContainer: {
-		flexBasis: "10%",
-		display: "flex",
-		backgroundColor: "#ed1b34",
-		justifyContent: "space-around",
-		flexDirection: "row",
-		alignItems: "flex-end",
-		paddingTop: 5,
-		paddingBottom: 10,
-		paddingRight: 20,
-		paddingLeft: 20,
-		borderColor: "rgba(255,255,255,0.1)",
-		borderBottomWidth: 1
-	},
-	menuOptions: {
-		color: "#fff",
-		fontWeight: "bold",
-		fontSize: 20,
-		flex: 5,
-		textAlign: "center"
-	},
-
 	flatList: {
 		flex: 1,
 		padding: 20
-	},
-
-	listViewItems: {
-		display: "flex",
-		justifyContent: "space-between",
-		backgroundColor: "#e6e7e9",
-		flexDirection: "row",
-		alignItems: "center",
-		paddingRight: 20,
-		paddingLeft: 20,
-		height: 60,
-		borderBottomWidth: 1,
-		borderColor: "#ddd"
-	},
-
-	listTitle: {
-		fontSize: 15,
-		fontWeight: "bold",
-		color: "#414143"
 	},
 	terms: {
 		textAlign: "justify",
@@ -292,11 +251,11 @@ export default class TermsAndConditions extends Component {
 							To opt out, you must send your name, residence address, username, email address or phone
 							number you use for your swirl account, and a clear statement that you want to opt out of
 							this arbitration agreement, and you must send them here:
-							<TouchableOpacity
-								onPress={() => this.openURL("mailto:feedback@test.com")}
-							>
-								<Text style={{ color: 'blue' }}> info@realswirlapp.com</Text>
-							</TouchableOpacity>
+
+								<Text
+									onPress={() => this.openURL("mailto:info@realswirlapp.com")}
+									style={{ color: 'blue', marginTop:20 }}> info@realswirlapp.com</Text>
+
 						</Text>
 
 
@@ -317,7 +276,7 @@ export default class TermsAndConditions extends Component {
 						The laws of the State of California, to the extent not preempted by or inconsistent with federal
 						law, will govern these Terms and any claim, without regard to conflict of law provisions.
 					</Text>
-					<View style={{ height: 20 }} />
+					<View style={{ height: 200 }} />
 				</ScrollView>
 			</View>
 		);
