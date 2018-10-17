@@ -136,7 +136,9 @@ export default class InviteFromContacts extends Component {
 				list: filteredList
 			},
 			() => {
-				this.filterContact(filteredList, this.props.screenProps.searchText);
+				let searchPhrase =
+					(this.props.screenProps && this.props.screenProps.searchText) || "";
+				this.filterContact(filteredList, searchPhrase);
 			}
 		);
 	};
@@ -159,7 +161,11 @@ export default class InviteFromContacts extends Component {
 								}}
 							>
 								<TouchableOpacity
-									onPress={() => this.props.screenProps.profileNavigate(item)}
+									onPress={() =>
+										(this.props.screenProps &&
+											this.props.screenProps.profileNavigate(item)) ||
+										null
+									}
 									style={appCss.avatarBox}
 								>
 									<Avatar userId={item.id} position="image" size={45} />

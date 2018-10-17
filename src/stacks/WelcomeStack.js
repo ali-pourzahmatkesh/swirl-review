@@ -32,7 +32,7 @@ export default StackNavigator(
 		ChangePasswordScreen: {
 			screen: ChangePasswordScreen
 		},
-        SignUpAddFriendScreen: {
+		SignUpAddFriendScreen: {
 			screen: SignUpAddFriendScreen
 		}
 	},
