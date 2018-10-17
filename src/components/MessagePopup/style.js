@@ -143,7 +143,15 @@ const styles = StyleSheet.flatten({
         color:colors.bodyColor,
         fontSize:20,
         marginTop:20
-    }])
+    }]),
+
+
+
+    preview: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
 
 
 });
