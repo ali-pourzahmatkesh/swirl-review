@@ -37,7 +37,9 @@ class Home extends Component {
 			list: [],
 			lastIdentifier: null,
 			timers: {},
-			timersFunctions: {}
+			timersFunctions: {},
+			isNewMessage: false,
+			resorted: false
 		};
 	}
 
@@ -56,7 +58,8 @@ class Home extends Component {
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
 			(this.state.list.length != nextProps.chatList.length ||
-				nextProps.resorted === true)
+				nextProps.resorted === true ||
+				this.state.refreshing === true)
 		) {
 			console.log("----------------------new refresh the list of chats");
 			if (
@@ -65,7 +68,7 @@ class Home extends Component {
 				nextProps.resorted === true
 			) {
 				console.log("refreshing list ....", this.state.refreshing);
-				console.log("new message ....", nextProps.isNewMessage);
+				console.log("check new message ....", nextProps.isNewMessage);
 
 				// remove all old timers
 				for (message in this.state.timers) {
@@ -77,56 +80,59 @@ class Home extends Component {
 				// set the new timers
 				if (nextProps.chatList.length) {
 					// find messages that need to set timer for them
-					nextProps.chatList.map(message => {
-						if (message.isSeen === false) {
-							let intervalByMiliSeconds =
-								new Date(message["availableAt"]).getTime() -
-								new Date().getTime();
+					nextProps.chatList &&
+						nextProps.chatList.length &&
+						nextProps.chatList.map(message => {
+							if (message.isSeen === false) {
+								let intervalByMiliSeconds =
+									new Date(message["availableAt"]).getTime() -
+									new Date().getTime();
 
-							if (intervalByMiliSeconds > 0) {
-								let localTimers = this.state.timers;
-								let localTimersFunctions = this.state.timersFunctions;
+								if (intervalByMiliSeconds > 0) {
+									let localTimers = this.state.timers;
+									let localTimersFunctions = this.state.timersFunctions;
 
-								localTimers[message.id] = message;
-								localTimersFunctions[message.id] = setTimeout(() => {
+									localTimers[message.id] = message;
+									localTimersFunctions[message.id] = setTimeout(() => {
+										console.log(
+											"ready to remove interval for message ",
+											message.id
+										);
+
+										// update the message client side for correct design
+										// let localList = this.state.list.filter(msg => {
+										// 	return msg.id != message.id;
+										// });
+										// console.log("remove item from list", localList);
+										// localList.unshift(message);
+										// console.log("add to top of list", localList);
+
+										clearTimeout(localTimersFunctions[message.id]);
+										delete localTimers[message.id];
+										delete localTimersFunctions[message.id];
+										console.log(
+											"------ SET REMOVE ----- timers",
+											localTimers,
+											"timers func",
+											localTimersFunctions
+										);
+
+										let localList = sortChatList(localList);
+										this.setState({
+											timers: localTimers,
+											timersFunctions: localTimersFunctions,
+											list: localList,
+											resorted: true
+										});
+									}, intervalByMiliSeconds);
 									console.log(
-										"ready to remove interval for message ",
-										message.id
+										"new timer set for next ",
+										intervalByMiliSeconds,
+										" Miliseconds"
 									);
-
-									// update the message client side for correct design
-									// let localList = this.state.list.filter(msg => {
-									// 	return msg.id != message.id;
-									// });
-									// console.log("remove item from list", localList);
-									// localList.unshift(message);
-									// console.log("add to top of list", localList);
-
-									clearTimeout(localTimersFunctions[message.id]);
-									delete localTimers[message.id];
-									delete localTimersFunctions[message.id];
-									console.log(
-										"------ SET REMOVE ----- timers",
-										localTimers,
-										"timers func",
-										localTimersFunctions
-									);
-
-									let localList = sortChatList(localList);
-									this.setState({
-										timers: localTimers,
-										timersFunctions: localTimersFunctions,
-										list: localList
-									});
-								}, intervalByMiliSeconds);
-								console.log(
-									"new timer set for next ",
-									intervalByMiliSeconds,
-									" Miliseconds"
-								);
+								}
 							}
-						}
-					});
+						});
 				}
 
 				let orderedChatList = sortChatList(nextProps.chatList);
@@ -308,10 +314,10 @@ class Home extends Component {
 	};
 
 	loadDetail = data => {
-		console.log("receive loadDetail", data);
+		console.log("start showing a message detail", data);
 		this.props.navigation.push("MessageDetailScreen", { data });
 		if (data.isSeen === false) {
-			console.log("it is falseeeeeee", data);
+			console.log("this message need to update with new status isSeen");
 			this.props.visitMessage({
 				listOfId: [data.id]
 			});
