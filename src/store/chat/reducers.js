@@ -172,20 +172,22 @@ const chat = (state = initialState, action) => {
 			if (action.payload.refreshing) {
 				list = [];
 			}
-			let updateList = [...list, ...action.payload.data];
+			let updateList = _.uniqBy([...list, ...action.payload.data], "id");
 
 			console.log(
 				"--------- old list",
 				list,
 				"------------ new data",
-				action.payload.data
+				action.payload.data,
+				"updated",
+				updateList
 			);
 
 			return {
 				...state,
 				isLoadingFetch: false,
 				list: updateList,
-				refreshing: false
+				refreshing: action.payload.refreshing || false
 			};
 		}
 

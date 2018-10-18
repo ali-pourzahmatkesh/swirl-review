@@ -27,7 +27,8 @@ import MessagePopup from "../MessagePopup";
 import InviteFromContacts from "../InviteFromContacts";
 
 import sortChatList from "../../util/sortChatList";
-const timeZoneOffsetByMilliSeconds = new Date().getTimezoneOffset() * 60 * 60;
+// const timeZoneOffsetByMilliSeconds = new Date().getTimezoneOffset() * 60 * 60;
+const _ = require("lodash");
 
 class Home extends Component {
 	constructor(props) {
@@ -54,7 +55,7 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// console.log("componentWillReceiveProps", nextProps);
+		console.log("componentWillReceiveProps", nextProps);
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
@@ -170,6 +171,10 @@ class Home extends Component {
 					isNewMessage: false,
 					resorted: false
 				});
+			} else {
+				// just update the list
+				let orderedChatList = sortChatList(nextProps.chatList);
+				this.setState({ list: orderedChatList });
 			}
 		}
 
@@ -355,18 +360,21 @@ class Home extends Component {
 	};
 
 	handleLoadMore = () => {
+		console.log("handleLoadMore", this.state.list.length);
 		if (this.state.list.length) {
-			let lastIdentifier = this.state.list[this.state.list.length - 1]
-				.identifier;
-
-			if (this.state.lastIdentifier != lastIdentifier) {
-				this.setState({ lastIdentifier: lastIdentifier }, () => {
-					this.props.chatGetList({
-						id: this.props.id,
-						identifier: lastIdentifier
-					});
+			let lastMessage = _.minBy(this.state.list, "identifier");
+			let lastIdentifier = lastMessage.identifier;
+			console.log("lastIdentifier", lastIdentifier);
+			// if (this.state.lastIdentifier != lastIdentifier) {
+			this.setState({ lastIdentifier: lastIdentifier }, () => {
+				console.log("call more page", lastIdentifier);
+				this.props.chatGetList({
+					id: this.props.id,
+					identifier: lastIdentifier,
+					refreshing: false
 				});
-			}
+			});
+			// }
 		}
 	};
 
@@ -392,15 +400,17 @@ class Home extends Component {
 					{(list.length && (
 						<FlatList
 							data={list}
-							keyExtractor={(item, index) => "msg_" + item.identifier}
+							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
 							renderItem={({ item }) => this.loadContentItem({ item })}
 							ListEmptyComponent={() => <EmptyList />}
 							onRefresh={() => {
 								this.onRefresh();
 							}}
 							refreshing={refreshing}
-							onEndReachedThreshold={0.5}
-							onEndReached={() => this.handleLoadMore()}
+							onEndReachedThreshold={0.3}
+							onEndReached={() => {
+								this.handleLoadMore();
+							}}
 							showsHorizontalScrollIndicator={false}
 							showsVerticalScrollIndicator={false}
 						/>
