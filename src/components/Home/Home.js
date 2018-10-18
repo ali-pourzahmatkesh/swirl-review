@@ -27,6 +27,7 @@ import MessagePopup from "../MessagePopup";
 import InviteFromContacts from "../InviteFromContacts";
 
 import sortChatList from "../../util/sortChatList";
+const timeZoneOffsetByMilliSeconds = new Date().getTimezoneOffset() * 60 * 60;
 
 class Home extends Component {
 	constructor(props) {
@@ -53,83 +54,109 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("componentWillReceiveProps", nextProps);
+		// console.log("componentWillReceiveProps", nextProps);
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
 			(this.state.list.length != nextProps.chatList.length ||
 				nextProps.resorted === true ||
-				this.state.refreshing === true)
+				this.state.refreshing === true ||
+				nextProps.isNewMessage === true)
 		) {
-			console.log("----------------------new refresh the list of chats");
+			// console.log("----------------------new refresh the list of chats");
 			if (
 				this.state.refreshing === true ||
 				nextProps.isNewMessage === true ||
 				nextProps.resorted === true
 			) {
-				console.log("refreshing list ....", this.state.refreshing);
-				console.log("check new message ....", nextProps.isNewMessage);
+				// console.log("refreshing list ....", this.state.refreshing);
+				// console.log("check new message ....", nextProps.isNewMessage);
 
 				// remove all old timers
 				for (message in this.state.timers) {
-					console.log("a message from timer cycle", message);
-					clearTimeout(this.state.timersFunctions[message.id]);
+					// console.log("a message from timer cycle", message);
+					clearTimeout(this.state.timersFunctions[`${message.id}`]);
 				}
 				this.setState({ timers: {}, timersFunctions: {} });
 
 				// set the new timers
 				if (nextProps.chatList.length) {
 					// find messages that need to set timer for them
+
 					nextProps.chatList &&
 						nextProps.chatList.length &&
 						nextProps.chatList.map(message => {
 							if (message.isSeen === false) {
-								let intervalByMiliSeconds =
-									new Date(message["availableAt"]).getTime() -
-									new Date().getTime();
+								let availableAtByMS = new Date(
+									message["availableAt"]
+								).getTime();
 
+								let nowByMS = new Date().getTime(); // + timeZoneOffsetByMilliSeconds;
+
+								let intervalByMiliSeconds = availableAtByMS - nowByMS;
 								if (intervalByMiliSeconds > 0) {
 									let localTimers = this.state.timers;
 									let localTimersFunctions = this.state.timersFunctions;
 
-									localTimers[message.id] = message;
-									localTimersFunctions[message.id] = setTimeout(() => {
-										console.log(
-											"ready to remove interval for message ",
-											message.id
-										);
+									if (!localTimers[`${message.id}`]) {
+										// console.log(
+										// 	"*********************** create timer for message ",
+										// 	message.id
+										// );
 
-										// update the message client side for correct design
-										// let localList = this.state.list.filter(msg => {
-										// 	return msg.id != message.id;
-										// });
-										// console.log("remove item from list", localList);
-										// localList.unshift(message);
-										// console.log("add to top of list", localList);
+										localTimers[`${message.id}`] = message;
+										localTimersFunctions[`${message.id}`] = setTimeout(() => {
+											// console.log(
+											// 	"ready to remove interval for message ",
+											// 	message.id
+											// );
 
-										clearTimeout(localTimersFunctions[message.id]);
-										delete localTimers[message.id];
-										delete localTimersFunctions[message.id];
-										console.log(
-											"------ SET REMOVE ----- timers",
-											localTimers,
-											"timers func",
-											localTimersFunctions
-										);
+											let localTimers = this.state.timers;
+											let localTimersFunctions = this.state.timersFunctions;
 
-										let localList = sortChatList(localList);
+											// update the message client side for correct design
+											// let localList = this.state.list.filter(message => {
+											// 	return message.id != message.id;
+											// });
+											// console.log("remove item from list", localList);
+											// localList.unshift(message);
+											// console.log("add to top of list", localList);
+
+											clearTimeout(localTimersFunctions[`${message.id}`]);
+											delete localTimers[`${message.id}`];
+											delete localTimersFunctions[`${message.id}`];
+											// console.log(
+											// 	"------ SET REMOVE ----- timers",
+											// 	localTimers,
+											// 	"timers func",
+											// 	localTimersFunctions
+											// );
+											//
+											// console.log("list", this.state.list);
+											let localList = sortChatList(this.state.list);
+											this.setState({
+												timers: localTimers,
+												timersFunctions: localTimersFunctions,
+												list: localList
+											});
+										}, intervalByMiliSeconds);
+										// console.log(
+										// 	"------ SET ----- timers",
+										// 	localTimers,
+										// 	"timers func",
+										// 	localTimersFunctions
+										// );
 										this.setState({
 											timers: localTimers,
-											timersFunctions: localTimersFunctions,
-											list: localList,
-											resorted: true
+											timersFunctions: localTimersFunctions
 										});
-									}, intervalByMiliSeconds);
-									console.log(
-										"new timer set for next ",
-										intervalByMiliSeconds,
-										" Miliseconds"
-									);
+
+										// console.log(
+										// 	"new timer set for next ",
+										// 	intervalByMiliSeconds,
+										// 	" Miliseconds"
+										// );
+									}
 								}
 							}
 						});
@@ -231,12 +258,12 @@ class Home extends Component {
 				new Date(item["availableAt"]).getTime() - new Date().getTime();
 
 			messageHint = () => {
+				// onTick={secondsRemaining => console.log("tick", secondsRemaining)}
+				// onTimeElapsed={() => console.log("complete")}
 				return (
 					<View style={styles.TimerCountdown}>
 						<TimerCountdown
 							initialSecondsRemaining={remainingSeconds}
-							onTick={secondsRemaining => console.log("tick", secondsRemaining)}
-							onTimeElapsed={() => console.log("complete")}
 							allowFontScaling={true}
 							style={{ fontSize: 12 }}
 						/>{" "}
@@ -365,7 +392,7 @@ class Home extends Component {
 					{(list.length && (
 						<FlatList
 							data={list}
-							keyExtractor={(item, index) => `${item.id}-${item.identifier}`}
+							keyExtractor={(item, index) => "msg_" + item.identifier}
 							renderItem={({ item }) => this.loadContentItem({ item })}
 							ListEmptyComponent={() => <EmptyList />}
 							onRefresh={() => {

@@ -10,23 +10,25 @@ export default function(list) {
 	// ----------------------------------------------------------------------
 	// separate messages by the 3 sections
 	// ----------------------------------------------------------------------
-	list.map(message => {
-		if (message.isSeen) {
-			// archived messages
-			messageAreArchived.push(message);
-		} else {
-			let intervalByMiliSeconds =
-				new Date(message["availableAt"]).getTime() - new Date().getTime();
-
-			if (intervalByMiliSeconds > 0) {
-				// waiting messages
-				messageAreWaiting.push(message);
+	Array.isArray(list) &&
+		list.length &&
+		list.map(message => {
+			if (message.isSeen) {
+				// archived messages
+				messageAreArchived.push(message);
 			} else {
-				// ready messages
-				messageAreReady.push(message);
+				let intervalByMiliSeconds =
+					new Date(message["availableAt"]).getTime() - new Date().getTime();
+
+				if (intervalByMiliSeconds > 0) {
+					// waiting messages
+					messageAreWaiting.push(message);
+				} else {
+					// ready messages
+					messageAreReady.push(message);
+				}
 			}
-		}
-	});
+		});
 	// ----------------------------------------------------------------------
 	console.log("messageAreReady", messageAreReady);
 	console.log("messageAreWaiting", messageAreWaiting);
@@ -36,15 +38,17 @@ export default function(list) {
 	// sort each part by when they are available
 	// ----------------------------------------------------------------------
 	if (messageAreReady.length > 1) {
-		_.sortBy(messageAreReady, [
-			function(msg) {
-				return msg.availableAt;
-			}
-		]);
+		messageAreReady = _.reverse(
+			_.sortBy(messageAreReady, [
+				function(msg) {
+					return msg.availableAt;
+				}
+			])
+		);
 	}
 
 	if (messageAreWaiting.length > 1) {
-		_.sortBy(messageAreWaiting, [
+		messageAreWaiting = _.sortBy(messageAreWaiting, [
 			function(msg) {
 				return msg.availableAt;
 			}
@@ -52,11 +56,13 @@ export default function(list) {
 	}
 
 	if (messageAreArchived.length > 1) {
-		_.sortBy(messageAreArchived, [
-			function(msg) {
-				return msg.availableAt;
-			}
-		]);
+		messageAreArchived = _.reverse(
+			_.sortBy(messageAreArchived, [
+				function(msg) {
+					return msg.availableAt;
+				}
+			])
+		);
 	}
 	// ----------------------------------------------------------------------
 	console.log("SORT messageAreReady", messageAreReady);

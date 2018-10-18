@@ -55,6 +55,7 @@ import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
 // import moment from "moment-timezone";
 import sortChatList from "../../util/sortChatList";
+const _ = require("lodash");
 
 let initialState = {
 	isLoadingFetch: false,
@@ -127,9 +128,22 @@ const chat = (state = initialState, action) => {
 		}
 
 		case RECEIVE_NEW_CHAT_MESSAGE: {
+			let updatedList = [action.payload, ...state.list];
+			updatedList = _.uniqBy(updatedList, "id");
+
+			console.log(
+				"RECEIVE_NEW_CHAT_MESSAGE",
+				"old list count",
+				state.list.length,
+				"new list count",
+				updatedList.length,
+				"data is",
+				action.payload
+			);
+
 			return {
 				...state,
-				list: [action.payload, ...state.list],
+				list: updatedList,
 				isNewMessage: true
 			};
 		}
