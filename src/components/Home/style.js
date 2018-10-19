@@ -117,10 +117,9 @@ const STYLES = StyleSheet.create({
     },
 
     TimerCountdown:{
-        flex:1,
         flexDirection:"row",
-        // alignItem:'center',
-        justifyContent:'flex-start'
+        alignItems:'center',
+        justifyContent:'flex-start',
     }
 });
 
