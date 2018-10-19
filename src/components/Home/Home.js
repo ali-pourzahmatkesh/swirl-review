@@ -1,13 +1,5 @@
-import React, { Component } from "react";
-import {
-	FlatList,
-	Image,
-	Text,
-	TouchableOpacity,
-	View,
-	Modal
-} from "react-native";
-import { NavigationActions, SafeAreaView } from "react-navigation";
+import React, {Component} from "react";
+import {FlatList, Image, Modal, Text, TouchableOpacity, View} from "react-native";
 import styles from "./style";
 import appCss from "../../../app.css";
 import logo from "../../assets/images/logo_bigger.png";
@@ -16,17 +8,16 @@ import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
 import noSwirl from "../../assets/images/icons/noSwirl.png";
 import Avatar from "../Avatar";
-import { CONFIG } from "../../../config";
-const COLORS = CONFIG.colors;
+import {CONFIG} from "../../../config";
 import EmptyList from "../EmptyList";
 // import defaultMoment from "moment";
 import moment from "moment-timezone";
 // import ReactMomentCountDown from "react-moment-countdown";
 import TimerCountdown from "react-native-timer-countdown";
 import MessagePopup from "../MessagePopup";
-import InviteFromContacts from "../InviteFromContacts";
 
 import sortChatList from "../../util/sortChatList";
+const COLORS = CONFIG.colors;
 // const timeZoneOffsetByMilliSeconds = new Date().getTimezoneOffset() * 60 * 60;
 const _ = require("lodash");
 
@@ -267,12 +258,14 @@ class Home extends Component {
 				// onTimeElapsed={() => console.log("complete")}
 				return (
 					<View style={styles.TimerCountdown}>
-						<TimerCountdown
-							initialSecondsRemaining={remainingSeconds}
-							allowFontScaling={true}
-							style={{ fontSize: 12 }}
-						/>{" "}
-						<Text> left</Text>
+						<View>
+							<TimerCountdown
+								initialSecondsRemaining={remainingSeconds}
+								allowFontScaling={true}
+								style={[appCss.defaultFontApp,{ fontSize: 12 }]}
+							/>{" "}
+						</View>
+						<Text style={appCss.defaultFontApp}> left</Text>
 					</View>
 				);
 			};
