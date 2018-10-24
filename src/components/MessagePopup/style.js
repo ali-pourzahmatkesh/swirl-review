@@ -120,6 +120,7 @@ const styles = StyleSheet.flatten({
         // backgroundColor:"yellow",
         alignItems:"center",
         justifyContent:"space-between",
+        flexDirection:"row"
         // height:110
     },
     cameraBtnBox:{

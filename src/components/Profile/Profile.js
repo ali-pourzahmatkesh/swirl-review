@@ -5,12 +5,14 @@ import {
 	SectionList,
 	Text,
 	TouchableOpacity,
-	View
+	View,
+    Modal
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 import Avatar from "../Avatar";
 import appCss from "../../../app.css";
 import styles from "./style";
+import ImageCropPic from '../ImageCropPic'
 import Ionicons from "react-native-vector-icons/Ionicons";
 import changeNameRed from "../../assets/images/icons/profileRed.png";
 import changeNameBlue from "../../assets/images/icons/profileBlue.png";
@@ -39,6 +41,7 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+            cropImage : false
 			// ghost: false,
 			// ghostNotif: false
 		};
@@ -214,12 +217,13 @@ export default class Profile extends Component {
 			} else {
 				//
 				// const source = { uri: response.uri };
-				// this.setState({
-				// 	avatarSource: source
-				// });
+				this.setState({
+					avatarSource: response.uri,
+                    cropImage: true
+				});
 				// You can also display the image using data:
 				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-				this.uploadImageToCloud(response.uri);
+				// this.uploadImageToCloud(response.uri);
 			}
 		});
 	};
@@ -283,6 +287,12 @@ export default class Profile extends Component {
 			<View style={{ flex: 1 }}>
 				{/*this.showGhostModePopup()*/}
 				<View style={{ flex: 1 }}>
+					<Modal
+						visible={this.state.cropImage}
+						animationType="slide"
+					>
+						<ImageCropPic imageSource={this.state.avatarSource}/>
+					</Modal>
 					<View style={styles.imageContainer}>
 						<View style={[appCss.header, { marginBottom: 0 }]}>
 							<TouchableOpacity
