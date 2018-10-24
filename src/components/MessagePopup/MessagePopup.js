@@ -72,6 +72,8 @@ export default class MessagePopup extends Component {
 			CONFIG.cloudinary.upload_url_prefix +
 			cloud +
 			CONFIG.cloudinary.upload_url_suffix;
+		//+ "/messages"; //?upload_preset=" +
+		//"messages";
 
 		let xhr = new XMLHttpRequest();
 		xhr.open("POST", upload_url);
@@ -109,9 +111,11 @@ export default class MessagePopup extends Component {
 			uri: uri,
 			type: "image/jpg",
 			name: `${timestamp}.jpg`
+			// folder: "messages"
 		});
 
 		// formdata.append("upload_preset", "test_apz");
+		// formdata.append("folder", "messages");
 		formdata.append("timestamp", timestamp);
 		formdata.append("api_key", api_key);
 		formdata.append("signature", signature);
