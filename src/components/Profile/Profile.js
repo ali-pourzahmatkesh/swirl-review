@@ -6,13 +6,13 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
-    Modal
+	Modal
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 import Avatar from "../Avatar";
 import appCss from "../../../app.css";
 import styles from "./style";
-import ImageCropPic from '../ImageCropPic'
+// import ImageCropPic from "../ImageCropPic";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import changeNameRed from "../../assets/images/icons/profileRed.png";
 import changeNameBlue from "../../assets/images/icons/profileBlue.png";
@@ -24,6 +24,7 @@ import feedback from "../../assets/images/icons/feedBack.png";
 import logout from "../../assets/images/icons/logout.png";
 import ImagePicker from "react-native-image-picker";
 var CryptoJS = require("crypto-js");
+import ImageCropPicker from "react-native-image-crop-picker";
 
 import { CONFIG } from "../../../config";
 const COLORS = CONFIG.colors;
@@ -41,7 +42,8 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            cropImage : false
+			avatarSource: "" // a uri content
+			// cropImage: false
 			// ghost: false,
 			// ghostNotif: false
 		};
@@ -206,7 +208,7 @@ export default class Profile extends Component {
 		 * The second arg is the callback which sends object: response (more info in the API Reference)
 		 */
 		ImagePicker.showImagePicker(options, response => {
-			console.log("Response = ", response);
+			// console.log("Response = ", response);
 
 			if (response.didCancel) {
 				console.log("User cancelled image picker");
@@ -215,12 +217,31 @@ export default class Profile extends Component {
 			} else if (response.customButton) {
 				console.log("User tapped custom button: ", response.customButton);
 			} else {
-				//
 				// const source = { uri: response.uri };
-				this.setState({
-					avatarSource: response.uri,
-                    cropImage: true
+				// this.setState({
+				// 	avatarSource: response.uri
+				// 	//cropImage: true
+				// });
+
+				ImageCropPicker.openCropper({
+					path: response,
+					width: 256,
+					height: 256,
+					cropperCircleOverlay: true,
+					mediaType: "photo"
+				}).then(image => {
+					if (image && image.path) {
+						// console.log("after crop get image:", image, {
+						// 	uri: "file://" + image.path
+						// });
+						this.setState({
+							avatarSource: { uri: "file://" + image.path }
+							//cropImage: true
+						});
+						this.uploadImageToCloud("file://" + image.path);
+					}
 				});
+
 				// You can also display the image using data:
 				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
 				// this.uploadImageToCloud(response.uri);
@@ -287,12 +308,9 @@ export default class Profile extends Component {
 			<View style={{ flex: 1 }}>
 				{/*this.showGhostModePopup()*/}
 				<View style={{ flex: 1 }}>
-					<Modal
-						visible={this.state.cropImage}
-						animationType="slide"
-					>
-						<ImageCropPic imageSource={this.state.avatarSource}/>
-					</Modal>
+					{/* <Modal visible={this.state.cropImage} animationType="slide">
+						<ImageCropPic imageSource={this.state.avatarSource} />
+					</Modal> */}
 					<View style={styles.imageContainer}>
 						<View style={[appCss.header, { marginBottom: 0 }]}>
 							<TouchableOpacity
