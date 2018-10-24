@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-	Dimensions,
-	Image,
-	ImageBackground,
-	KeyboardAvoidingView,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View
+    Dimensions,
+    Image,
+    ImageBackground,
+    KeyboardAvoidingView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 import styles from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -18,10 +18,12 @@ import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
 import cameraDisable from "../../assets/images/icons/cameraDisable.png";
 import cameraBtn from "../../assets/images/icons/cameraBtn.png";
+import Feather from "react-native-vector-icons/Feather";
+import Entypo from "react-native-vector-icons/Entypo";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
 import next from "../../assets/images/icons/next.png";
-import { CONFIG } from "../../../config";
+import {CONFIG} from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
 import appCss from "../../../app.css";
@@ -286,44 +288,38 @@ export default class MessagePopup extends Component {
 				</View>
 
 				<View style={styles.cameraActions}>
-					<View style={styles.cameraBtnBox}>
-						<TouchableOpacity
-							onPress={this.takePicture.bind(this)}
-							style={styles.actionBox}
-						>
-							<Image
-								resizeMode="contain"
-								style={styles.cameraBtn}
-								source={cameraBtn}
-							/>
-						</TouchableOpacity>
-					</View>
-					<View style={[styles.footerActions, { width }]}>
-						<View style={styles.nextButton} />
-						<View style={styles.footerActions}>
-							<TouchableOpacity
-								onPress={() => this.tabSelectedFunction("chat")}
-								style={styles.actionBox}
-							>
-								<Image
-									resizeMode="contain"
-									style={styles.actionBoxIcon}
-									source={(tabSelected === "chat" && chat) || chatDisable}
-								/>
-							</TouchableOpacity>
-							<TouchableOpacity
-								onPress={() => this.tabSelectedFunction("camera")}
-								style={styles.actionBox}
-							>
-								<Image
-									resizeMode="contain"
-									style={styles.actionBoxIcon}
-									source={(tabSelected === "camera" && camera) || cameraDisable}
-								/>
-							</TouchableOpacity>
-						</View>
-						<View style={styles.nextButton} />
-					</View>
+
+					<TouchableOpacity
+						onPress={() => this.tabSelectedFunction("camera")}
+
+					>
+
+						<Entypo
+							size={35}
+							color="#fff"
+							name="image"
+						/>
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={this.takePicture.bind(this)}
+					>
+						<Image
+							resizeMode="contain"
+							style={styles.cameraBtn}
+							source={cameraBtn}
+						/>
+
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => this.tabSelectedFunction("chat")}
+					>
+						<Feather
+							size={35}
+							color="#fff"
+							name="message-circle"
+						/>
+					</TouchableOpacity>
+
 				</View>
 			</Camera>
 		);
@@ -344,12 +340,11 @@ export default class MessagePopup extends Component {
 					<View />
 					<View />
 				</View>
-				<View style={styles.cameraActions}>
 					<View style={styles.footer}>
 						<View
 							style={[
 								styles.footerActions,
-								{ justifyContent: "flex-end", width, paddingRight: 15 }
+                                { justifyContent: "flex-end", width, paddingRight: 30 }
 							]}
 						>
 							<TouchableOpacity
@@ -368,7 +363,6 @@ export default class MessagePopup extends Component {
 							</TouchableOpacity>
 						</View>
 					</View>
-				</View>
 			</ImageBackground>
 		);
 	};
