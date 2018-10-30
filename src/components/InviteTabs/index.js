@@ -39,6 +39,7 @@ export default TabNavigator(
 								appCss.defaultFontApp,
 								{
 									color: COLORS.bodyColor,
+									fontFamily: 'MuseoSansRounded-900',
 									fontSize: 19,
 									opacity: (props.focused && 1) || 0.8
 								}
@@ -68,6 +69,7 @@ export default TabNavigator(
 								appCss.defaultFontApp,
 								{
 									color: COLORS.bodyColor,
+									fontFamily: 'MuseoSansRounded-900',
 									fontSize: 19,
 									opacity: (props.focused && 1) || 0.8
 								}

@@ -10,16 +10,14 @@ const styles = StyleSheet.create({
         // flexDirection: 'column'
     },
     imageContainer: {
-        flex:2,
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
-    },
-    imagesContent: {
-        height: '35%',
-
+        marginBottom: 30
     },
     imageItem: {
-        flex: 1,
+        height: 75,
+        width: 75,
         aspectRatio: 1,
         resizeMode: "contain"
     },
@@ -44,16 +42,17 @@ const styles = StyleSheet.create({
     //     marginBottom: 15
     // },
     nextButton: {
-        backgroundColor: colors.combinatorialColor,
-        height: "10%",
+        backgroundColor: colors.highlightColorTwo,
+        height: height * 0.07,
         width: "100%",
         justifyContent: "center",
         position: "absolute"
     },
     nextText: {
-        color: colors.tapeBlack,
+        color: colors.tapeWhite,
         textAlign: "center",
-        fontSize: 20
+        fontSize: 24,
+        fontFamily: 'MuseoSansRounded-1000'
     },
     textInput: {
         fontSize: 16,

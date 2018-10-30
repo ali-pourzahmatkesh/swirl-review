@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 		}
 	]),
     nextButton: {
-        backgroundColor: colors.combinatorialColor,
+        backgroundColor: colors.highlightColorTwo,
         height: height === 812 ? 65 : 55,
         width: "100%",
         justifyContent: "center",
@@ -98,9 +98,10 @@ const styles = StyleSheet.create({
     nextText: StyleSheet.flatten([
         appCss.defaultFontApp,
         {
-            color: colors.tapeBlack,
+            color: colors.tapeWhite,
             textAlign: "center",
-            fontSize: 20
+			fontSize: 24,
+			fontFamily: 'MuseoSansRounded-700'
         }
     ]),
 

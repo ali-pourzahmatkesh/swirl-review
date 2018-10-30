@@ -1,19 +1,27 @@
 import React, {Component} from "react";
-import {Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View, Dimensions} from "react-native";
+import {
+	Image,
+	KeyboardAvoidingView,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+	Dimensions
+} from "react-native";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+
 import logo from "../../assets/images/logo_bigger.png";
-import usernameIcon from "../../assets/images/icons/Mask.png";
+// import usernameIcon from "../../assets/images/icons/Mask.png";
+import usernameIcon from "../../assets/images/icons/profile3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 
-// import moment from "moment";
-
-
 export default class ChangeInfo extends Component {
     state = {
-        username: ""
+        username: this.props.username
     };
     onPressButton = () => {
         this.props.updateMember({
@@ -45,10 +53,10 @@ export default class ChangeInfo extends Component {
 							<Image style={appCss.formInputIcon} source={usernameIcon}/>
 							<TextInput
 								style={[ appCss.textInput ]}
-								placeholder={this.props.username}
-								placeholderTextColor={colors.combinatorialColor}
+								placeholder='Username here'
+								placeholderTextColor={colors.highlightColorTwo + '66'}
 								autoCorrect={false}
-								value={username}
+								value={this.props.username}
 								blurOnSubmit={true}
 								autoFocus={true}
 								onChangeText={username => this.setState({ username })}
@@ -56,13 +64,12 @@ export default class ChangeInfo extends Component {
 						</View>
 
 					</View>
-					<TouchableOpacity
-						style={[ styles.nextButton ]}
+					<KeyboardAwareButton
+						title='Save'
 						onPress={this.onPressButton}
-						disabled={!this.props.username}
-					>
-						<Text style={[ styles.nextText, !this.props.username && { opacity: 0.5 } ]}>save</Text>
-					</TouchableOpacity>
+						disabled={disabledBtn}
+						beginOnPage={true}
+					/>
 				</KeyboardAvoidingView>
 			</View>
 		);

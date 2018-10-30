@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import EmptyList from "../EmptyList";
 import Avatar from "../../components/Avatar";
-import check from "../../assets/images/icons/check_white.png";
-import cancel from "../../assets/images/icons/close.png";
+import check from "../../assets/images/icons/check4.png";
+import cancel from "../../assets/images/icons/close2.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 
@@ -88,7 +88,7 @@ export default class FriendRequest extends Component {
 					<Text
 						numberOfLines={1}
 						ellipsizeMode="tail"
-						style={appCss.titleBoxSubject}
+						style={[appCss.titleBoxSubject, {fontFamily: 'MuseoSansRounded-900'}]}
 					>
 						{this.Capitalize(item.senderMemberId.username)}
 					</Text>
@@ -118,6 +118,7 @@ export default class FriendRequest extends Component {
 				>
 					<Image
 						source={cancel}
+						// source={decline}
 						resizeMode={"contain"}
 						style={styles.actionIcon}
 					/>
@@ -129,7 +130,7 @@ export default class FriendRequest extends Component {
 					<Image
 						source={check}
 						resizeMode={"contain"}
-						style={styles.actionIcon}
+						style={[styles.actionIcon, {height: 25, width: 25}]}
 					/>
 				</TouchableOpacity>
 			</View>

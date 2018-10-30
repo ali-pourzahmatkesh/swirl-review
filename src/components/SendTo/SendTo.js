@@ -14,7 +14,7 @@ import Avatar from "../../components/Avatar";
 import { SafeAreaView } from "react-navigation";
 import checkedImage from "../../assets/images/icons/check_white.png";
 import { CONFIG } from "../../../config";
-import next from "../../assets/images/icons/next.png";
+import next from "../../assets/images/icons/next1.png";
 const colors = CONFIG.colors;
 const { width } = Dimensions.get("window");
 

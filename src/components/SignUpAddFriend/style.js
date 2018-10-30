@@ -17,12 +17,21 @@ const STYLES = StyleSheet.create({
 
 
 
-    headerText: StyleSheet.flatten([
-        appCss.defaultFontApp,
+    titleText: StyleSheet.flatten([
+        // appCss.defaultFontApp,
         {
-            textAlign: "center"
+            fontFamily: 'MuseoSansRounded-900',
+            textAlign: "center",
+            color: colors.tapeWhite,
+            fontSize: 19
         }
-    ])
+    ]),
+    done: {
+        fontFamily: 'MuseoSansRounded-500',
+        textAlign: "right",
+        color: colors.tapeWhite,
+        fontSize: 18,
+    }
 });
 
 export default STYLES;

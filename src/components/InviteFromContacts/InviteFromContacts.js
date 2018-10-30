@@ -52,6 +52,7 @@ export default class InviteFromContacts extends Component {
 			pg.getContactsCount().then(count => {
 				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
 					contacts => {
+						console.log('contacts: ', contacts)
 						this.setState({ contacts });
 						if (contacts.length > 0) {
 							this.getAllPhoneNumbers(contacts);

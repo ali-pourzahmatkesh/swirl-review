@@ -14,14 +14,14 @@ import appCss from "../../../app.css";
 import styles from "./style";
 import ImageCropPic from '../ImageCropPic'
 import Ionicons from "react-native-vector-icons/Ionicons";
-import changeNameRed from "../../assets/images/icons/profileRed.png";
-import changeNameBlue from "../../assets/images/icons/profileBlue.png";
-import changePassword from "../../assets/images/icons/LockOther.png";
-import termsOfUseSwirl from "../../assets/images/icons/termOfUse.png";
-import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy.png";
-import editIcon from "../../assets/images/icons/edit.png";
-import feedback from "../../assets/images/icons/feedBack.png";
-import logout from "../../assets/images/icons/logout.png";
+import changeNameRed from "../../assets/images/icons/profile3.png";
+import changePassword from "../../assets/images/icons/passwordOrange1.png";
+import termsOfUseSwirl from "../../assets/images/icons/termsOfUse2.png";
+import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy1.png";
+// import editIcon from "../../assets/images/icons/edit.png";
+import editIcon from "../../assets/images/icons/edit2.png";
+import feedback from "../../assets/images/icons/feedback1.png";
+import logout from "../../assets/images/icons/logout1.png";
 import ImagePicker from "react-native-image-picker";
 var CryptoJS = require("crypto-js");
 
@@ -42,8 +42,6 @@ export default class Profile extends Component {
 		super(props);
 		this.state = {
             cropImage : false
-			// ghost: false,
-			// ghostNotif: false
 		};
 	}
 
@@ -52,25 +50,7 @@ export default class Profile extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// if (
-		// 	nextProps.userProfile &&
-		// 	nextProps.userProfile.isInGhostMode !== undefined &&
-		// 	nextProps.userProfile.isInGhostMode !== this.state.ghost
-		// ) {
-		// 	this.setState({
-		// 		ghost: nextProps.userProfile.isInGhostMode
-		// 	});
-		//
-		// 	// read updated ghostmode notification and update profile page
-		// 	if (
-		// 		nextProps.ghostNotif !== undefined &&
-		// 		nextProps.ghostNotif !== this.state.ghostNotif
-		// 	) {
-		// 		this.setState({
-		// 			ghostNotif: nextProps.ghostNotif
-		// 		});
-		// 	}
-		// }
+
 	}
 
 	goTo(screenName) {
@@ -78,12 +58,13 @@ export default class Profile extends Component {
 	}
 
 	renderOptionTitle = ({ section: { title } }) => {
-		return <Text style={styles.sectionHeaderText}>{title}</Text>;
+		return <Text style={[styles.sectionHeaderText]}>{title}</Text>;
+		// return <Text>{title}</Text>
 	};
 
 	renderOption = ({ item, index }) => {
 		return (
-			<View style={styles.optionContainer}>
+			<View style={[styles.optionContainer, index === 0 && {marginTop: 0}]}>
 				<View style={styles.optionIconContainer}>
 					<Image
 						source={item.icon}
@@ -105,6 +86,11 @@ export default class Profile extends Component {
 				</TouchableOpacity>
 			</View>
 		);
+		// return (
+		// 	<View>
+		// 		<Text>{item.name}</Text>
+		// 	</View>
+		// )
 	};
 
 	handleSignOut = flag => {
@@ -120,41 +106,6 @@ export default class Profile extends Component {
 			id: this.props.id
 		});
 	};
-
-	// changeGhostMode = () => {
-	// 	this.props.updateGhostMode({
-	// 		id: this.props.id,
-	// 		isInGhostMode: !this.state.ghost
-	// 	});
-	// };
-	//
-	// closeGhostModePopup = () => {
-	// 	this.props.updateGhostModeNotification(false);
-	// 	this.setState({
-	// 		ghostNotif: false
-	// 	});
-	// };
-
-	// showGhostModePopup = () => {
-	// 	let { ghost, ghostNotif } = this.state;
-	// 	if (ghostNotif) {
-	// 		return (
-	// 			<Popup
-	// 				popupIcon={ghost ? ghostFill : ghostEmpty}
-	// 				popupText={
-	// 					ghost ? "Nobody can see you!" : "People can see you again!"
-	// 				}
-	// 				popupCallback={() => this.closeGhostModePopup()}
-	// 				//reducing height so ghost icon overlaps
-	// 				containerStyle={{
-	// 					height: 44
-	// 				}}
-	// 			/>
-	// 		);
-	// 	} else {
-	// 		return null;
-	// 	}
-	// };
 
 	uploadImageToCloud = uri => {
 		let timestamp = ((Date.now() / 1000) | 0).toString();
@@ -345,7 +296,9 @@ export default class Profile extends Component {
 					<View
 						style={{
 							borderWidth: 0,
-							borderColor: "blue"
+							borderColor: "blue",
+							flex: 1,
+							backgroundColor: COLORS.tapeWhite
 						}}
 					>
 						<SectionList
@@ -353,10 +306,15 @@ export default class Profile extends Component {
 							renderSectionHeader={this.renderOptionTitle}
 							keyExtractor={(item, index) => item + index}
 							sections={options}
-							contentContainerStyle={{
-								height: "100%"
+							style={{
+								height: '100%',
+								paddingLeft: '5%',
+								paddingRight: '5%'
 							}}
-							scrollEnabled={false}
+							contentContainerStyle={{
+								alignItems: 'center'
+							}}
+							stickySectionHeadersEnabled={false}
 						/>
 					</View>
 				</View>

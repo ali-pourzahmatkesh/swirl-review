@@ -22,8 +22,8 @@ import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
-import next from "../../assets/images/icons/next.png";
-import {CONFIG} from "../../../config";
+import next from "../../assets/images/icons/next1.png";
+import { CONFIG } from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
 import appCss from "../../../app.css";
@@ -237,7 +237,6 @@ export default class MessagePopup extends Component {
 								}}
 								style={[
 									styles.nextButton,
-									{ backgroundColor: colors.combinatorialColor }
 								]}
 							>
 								<Image style={styles.iconButton} source={next} />
@@ -281,7 +280,7 @@ export default class MessagePopup extends Component {
 				{/*<View style={styles.cameraActionBox}>*/}
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity onPress={this.props.closeMessageModal}>
-						<Image style={styles.closeIcon} source={close} />
+						<Image style={styles.closeIcon} source={closeWhite} />
 					</TouchableOpacity>
 					<View />
 					<View />
@@ -335,7 +334,7 @@ export default class MessagePopup extends Component {
 					<TouchableOpacity
 						onPress={() => this.setState({ tabSelected: "camera" })}
 					>
-						<Image style={styles.closeIcon} source={close} />
+						<Image style={styles.closeIcon} source={closeWhite} />
 					</TouchableOpacity>
 					<View />
 					<View />
@@ -356,7 +355,6 @@ export default class MessagePopup extends Component {
 								}
 								style={[
 									styles.nextButton,
-									{ backgroundColor: colors.combinatorialColor }
 								]}
 							>
 								<Image style={styles.iconButton} source={next} />
@@ -483,7 +481,6 @@ export default class MessagePopup extends Component {
 								onPress={() => this.setState({ tabSelected: "contacts" })}
 								style={[
 									styles.nextButton,
-									{ backgroundColor: colors.combinatorialColor }
 								]}
 							>
 								<Image style={styles.iconButton} source={next} />

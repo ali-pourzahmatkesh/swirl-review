@@ -6,6 +6,7 @@ import logo from "../../assets/images/logo_bigger.png";
 import logoOther from "../../assets/images/logo_bigger_other.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
+import twoPeople from "../../assets/images/icons/twoPeople.png"
 import noSwirl from "../../assets/images/icons/noSwirl.png";
 import Avatar from "../Avatar";
 import {CONFIG} from "../../../config";
@@ -15,6 +16,8 @@ import moment from "moment-timezone";
 // import ReactMomentCountDown from "react-moment-countdown";
 import TimerCountdown from "react-native-timer-countdown";
 import MessagePopup from "../MessagePopup";
+
+import loading from "../../assets/loading.gif";
 
 import sortChatList from "../../util/sortChatList";
 const COLORS = CONFIG.colors;
@@ -175,6 +178,7 @@ class Home extends Component {
 	}
 
 	handleSubmit = () => {
+		console.log('a;lshf;klajsdf;lkaj')
 		this.props.navigation.push("ProfileScreen", {
 			userId: 1, //item.memberId,
 			x: 1
@@ -193,9 +197,9 @@ class Home extends Component {
 					style={appCss.headerIconBox}
 				>
 					<Image
-						style={appCss.headerIcon}
+						style={[appCss.headerIcon, {height: 50, width: 50}]}
 						resizeMode={"contain"}
-						source={addMessage}
+						source={twoPeople}
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity style={appCss.headerLogoBox}>
@@ -225,6 +229,7 @@ class Home extends Component {
 		let messageHint = "";
 		let messageOnpress;
 		let messageStyle;
+		console.log(item, 'itemmmmmmmmmm *********************************************************************************')
 		if (isAvailable) {
 			if (item.isSeen) {
 				messageHint = () => {
@@ -242,7 +247,7 @@ class Home extends Component {
 				messageStyle = "Archived";
 			} else {
 				messageHint = () => {
-					return "Tap to unswirl!";
+					return "Tap to unswirl! " + this.loadPostTypeEmoji(item.postType);
 				};
 				messageOnpress = () => {
 					this.loadDetail(item);
@@ -258,14 +263,15 @@ class Home extends Component {
 				// onTimeElapsed={() => console.log("complete")}
 				return (
 					<View style={styles.TimerCountdown}>
+						<Text>⏳ </Text>
 						<View>
 							<TimerCountdown
 								initialSecondsRemaining={remainingSeconds}
 								allowFontScaling={true}
-								style={[appCss.defaultFontApp,{ fontSize: 12 }]}
+								style={[appCss.defaultFontApp,{ fontSize: 14, fontFamily: 'MuseoSansRounded-500' }]}
 							/>{" "}
 						</View>
-						<Text style={appCss.defaultFontApp}> left</Text>
+						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)}</Text>
 					</View>
 				);
 			};
@@ -338,6 +344,18 @@ class Home extends Component {
 		});
 	};
 
+	loadPostTypeEmoji = postType => {
+		if(postType === 'text'){
+			return '✉️';
+		}
+		else if(postType === 'image'){
+			return '📷';
+		}
+		else if(postType === 'vidoe'){ // is it called video?
+			return '🎥';
+		}
+	}
+
 	loadDetail = data => {
 		console.log("start showing a message detail", data);
 		this.props.navigation.push("MessageDetailScreen", { data });
@@ -389,33 +407,33 @@ class Home extends Component {
 					/>
 				</Modal>
 				{this.loadHeader()}
-				<View style={styles.chatList}>
-					{(list.length && (
-						<FlatList
-							data={list}
-							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
-							renderItem={({ item }) => this.loadContentItem({ item })}
-							ListEmptyComponent={() => <EmptyList />}
-							onRefresh={() => {
-								this.onRefresh();
-							}}
-							refreshing={refreshing}
-							onEndReachedThreshold={0.3}
-							onEndReached={() => {
-								this.handleLoadMore();
-							}}
-							showsHorizontalScrollIndicator={false}
-							showsVerticalScrollIndicator={false}
-						/>
-					)) || (
-						<View style={styles.chatListEmpty}>
-							<Image style={styles.iconBottom} source={noSwirl} />
-							<Text style={styles.chatListEmptyText}>
-								Nobody swirled you… Yet..
-							</Text>
-						</View>
-					)}
-				</View>
+				{(list.length && (
+					<FlatList
+						contentContainerStyle={styles.chatList}
+						data={list}
+						keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+						renderItem={({ item }) => this.loadContentItem({ item })}
+						ListEmptyComponent={() => <EmptyList />}
+						onRefresh={() => {
+							this.onRefresh();
+						}}
+						refreshing={refreshing}
+						onEndReachedThreshold={0.3}
+						onEndReached={() => {
+							this.handleLoadMore();
+						}}
+						showsHorizontalScrollIndicator={false}
+						showsVerticalScrollIndicator={false}
+					/>
+				)) || (
+					<View style={styles.chatListEmpty}>
+						{/* <Image style={styles.iconBottom} source={noSwirl} /> */}
+						<Text style={{fontSize: 40}}>🍭</Text>
+						<Text style={styles.chatListEmptyText}>
+							Nobody swirled you… Yet..
+						</Text>
+					</View>
+				)}
 				<View style={styles.homeBottomBox}>
 					<TouchableOpacity
 						onPress={() => this.setState({ newMessageModalVisible: true })}

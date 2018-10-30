@@ -10,38 +10,39 @@ const styles = StyleSheet.flatten({
         width
     },
     sectionHeader:{
-        backgroundColor:colors.bodyColor,
-        width:65,
-        height:20,
-        alignItems:'center',
-        justifyContent:'center',
-        borderTopEndRadius:30,
-        borderBottomEndRadius:30,
-        marginTop:10,
-        marginBottom:10
+        backgroundColor: colors.bodyColor,
+        width: 65,
+        height: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopEndRadius: 30,
+        borderBottomEndRadius: 30,
+        marginTop: 10,
+        marginBottom: 10
     },
-    sectionHeaderTitle:{
-        color:colors.appColor
+    sectionHeaderTitle: {
+        color: colors.appColor
     },
     sectionItems:{
-        height:60,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        paddingRight:15,
-        paddingLeft:15
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 15,
+        paddingLeft: 15
     },
     addBtn:{
-        width:53,
-        height:23,
-        backgroundColor:colors.combinatorialColor,
-        borderRadius:11.5,
-        alignItems:'center',
-        justifyContent:'center'
+        width: 53,
+        height: 23,
+        backgroundColor: colors.highlightColorTwo,
+        borderRadius: 11.5,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     addBtnText:{
-        color:colors.bodyColor,
-        fontSize:13
+        color: colors.bodyColor,
+        fontFamily: 'MuseoSansRounded-1000',
+        fontSize: 13
     }
 
 });

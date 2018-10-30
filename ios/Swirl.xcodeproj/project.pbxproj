@@ -42,8 +42,15 @@
 		3B58FE1263B34FF98A74EBFF /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D9C70828DF04E738C7196FD /* FontAwesome.ttf */; };
 		5CDAF7A7943A4B6B9D509AAF /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC15D6B0C9FE43B6A4AB7D49 /* libRNCamera.a */; };
 		6543AFC5251445B4A99E0B8E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C18E94D86FB47D4802A89CC /* Octicons.ttf */; };
+		6807BBD4217920B6006A3A66 /* MuseoSansRounded-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBD3217920B6006A3A66 /* MuseoSansRounded-500.otf */; };
+		6807BBDD21792B3A006A3A66 /* MuseoSansRounded-700Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBD521792B3A006A3A66 /* MuseoSansRounded-700Italic.otf */; };
+		6807BBDE21792B3A006A3A66 /* MuseoSansRounded-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBD621792B3A006A3A66 /* MuseoSansRounded-100.otf */; };
+		6807BBDF21792B3A006A3A66 /* MuseoSansRounded-500Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBD721792B3A006A3A66 /* MuseoSansRounded-500Italic.otf */; };
+		6807BBE021792B3A006A3A66 /* MuseoSansRounded-900Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBD821792B3A006A3A66 /* MuseoSansRounded-900Italic.otf */; };
+		6807BBE121792B3A006A3A66 /* MuseoSansRounded-700.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBD921792B3A006A3A66 /* MuseoSansRounded-700.otf */; };
+		6807BBE221792B3A006A3A66 /* MuseoSansRounded-100Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBDA21792B3A006A3A66 /* MuseoSansRounded-100Italic.otf */; };
+		6807BBE421792B3A006A3A66 /* MuseoSansRounded-1000Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6807BBDC21792B3A006A3A66 /* MuseoSansRounded-1000Italic.otf */; };
 		7ABE5C0C076F422B90A88FE2 /* MuseoSansRounded.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21678ACBA6941C296D142E0 /* MuseoSansRounded.ttf */; };
-		7DCE2B5755144AFFA25D08B1 /* MuseoSansRounded-300Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1A0E6FFA9F074693AF91A9A3 /* MuseoSansRounded-300Italic.otf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		83ED6B44757D4F3499E34256 /* MuseoSansRounded.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3BD5A946DE574C12A07519C7 /* MuseoSansRounded.otf */; };
 		852091792172BBE00035A2D2 /* libRCTPagedContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69413B2167DA67004B29D1 /* libRCTPagedContacts.a */; };
@@ -339,6 +346,13 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		6807BBA2217904DE006A3A66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
+			remoteInfo = React;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -421,6 +435,14 @@
 		5D67BDB7D119499590D43298 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		631C6265E4C24FF397D22356 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		6807BBD3217920B6006A3A66 /* MuseoSansRounded-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-500.otf"; path = "../src/assets/fonts/MuseoSansRounded-500.otf"; sourceTree = "<group>"; };
+		6807BBD521792B3A006A3A66 /* MuseoSansRounded-700Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-700Italic.otf"; path = "../src/assets/fonts/MuseoSansRounded-700Italic.otf"; sourceTree = "<group>"; };
+		6807BBD621792B3A006A3A66 /* MuseoSansRounded-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-100.otf"; path = "../src/assets/fonts/MuseoSansRounded-100.otf"; sourceTree = "<group>"; };
+		6807BBD721792B3A006A3A66 /* MuseoSansRounded-500Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-500Italic.otf"; path = "../src/assets/fonts/MuseoSansRounded-500Italic.otf"; sourceTree = "<group>"; };
+		6807BBD821792B3A006A3A66 /* MuseoSansRounded-900Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-900Italic.otf"; path = "../src/assets/fonts/MuseoSansRounded-900Italic.otf"; sourceTree = "<group>"; };
+		6807BBD921792B3A006A3A66 /* MuseoSansRounded-700.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-700.otf"; path = "../src/assets/fonts/MuseoSansRounded-700.otf"; sourceTree = "<group>"; };
+		6807BBDA21792B3A006A3A66 /* MuseoSansRounded-100Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-100Italic.otf"; path = "../src/assets/fonts/MuseoSansRounded-100Italic.otf"; sourceTree = "<group>"; };
+		6807BBDC21792B3A006A3A66 /* MuseoSansRounded-1000Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-1000Italic.otf"; path = "../src/assets/fonts/MuseoSansRounded-1000Italic.otf"; sourceTree = "<group>"; };
 		727F63C5F2A241C9B94135B2 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7FF08BD3CD6747ECADE3DADD /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -781,10 +803,18 @@
 				8C18E94D86FB47D4802A89CC /* Octicons.ttf */,
 				D3FD8F3F2FA44B37B65DCFE2 /* SimpleLineIcons.ttf */,
 				7FF08BD3CD6747ECADE3DADD /* Zocial.ttf */,
-				A68643CC280B415683A29E5C /* MuseoSansRounded-1000.otf */,
+				6807BBD621792B3A006A3A66 /* MuseoSansRounded-100.otf */,
+				6807BBDA21792B3A006A3A66 /* MuseoSansRounded-100Italic.otf */,
 				49447055665C4E28A9550BB0 /* MuseoSansRounded-300.otf */,
 				1A0E6FFA9F074693AF91A9A3 /* MuseoSansRounded-300Italic.otf */,
+				6807BBD3217920B6006A3A66 /* MuseoSansRounded-500.otf */,
+				6807BBD721792B3A006A3A66 /* MuseoSansRounded-500Italic.otf */,
+				6807BBD921792B3A006A3A66 /* MuseoSansRounded-700.otf */,
+				6807BBD521792B3A006A3A66 /* MuseoSansRounded-700Italic.otf */,
 				3361E427A75749C59E7DE512 /* MuseoSansRounded-900.otf */,
+				6807BBD821792B3A006A3A66 /* MuseoSansRounded-900Italic.otf */,
+				A68643CC280B415683A29E5C /* MuseoSansRounded-1000.otf */,
+				6807BBDC21792B3A006A3A66 /* MuseoSansRounded-1000Italic.otf */,
 				3BD5A946DE574C12A07519C7 /* MuseoSansRounded.otf */,
 				E21678ACBA6941C296D142E0 /* MuseoSansRounded.ttf */,
 			);
@@ -824,6 +854,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6807BBA3217904DE006A3A66 /* PBXTargetDependency */,
 				5B6941402167DDDE004B29D1 /* PBXTargetDependency */,
 			);
 			name = Swirl;
@@ -1296,13 +1327,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6807BBE421792B3A006A3A66 /* MuseoSansRounded-1000Italic.otf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				A6C0C55012584FB59251DA1D /* Entypo.ttf in Resources */,
+				6807BBE221792B3A006A3A66 /* MuseoSansRounded-100Italic.otf in Resources */,
 				97121A3B5F7648C1A355FD2F /* EvilIcons.ttf in Resources */,
 				9131A403154E4E06949AE591 /* Feather.ttf in Resources */,
 				3B58FE1263B34FF98A74EBFF /* FontAwesome.ttf in Resources */,
 				16EE0DFE81164CE09A0DBFFD /* FontAwesome5_Brands.ttf in Resources */,
 				D021EC5CA3414C5AA9238D02 /* FontAwesome5_Regular.ttf in Resources */,
+				6807BBDF21792B3A006A3A66 /* MuseoSansRounded-500Italic.otf in Resources */,
 				9B22CF656C5D46C2A4EF2A62 /* FontAwesome5_Solid.ttf in Resources */,
 				DD3AE1E52069486081EDF732 /* Foundation.ttf in Resources */,
 				A026F3E6CE1C4E9B8452EE21 /* Ionicons.ttf in Resources */,
@@ -1311,10 +1345,14 @@
 				6543AFC5251445B4A99E0B8E /* Octicons.ttf in Resources */,
 				2673321F8A204B9791A17236 /* SimpleLineIcons.ttf in Resources */,
 				C7C8EA218AD3442CA8D70259 /* Zocial.ttf in Resources */,
-				8C6B726D9D6942ADBCFA4914 /* MuseoSansRounded-1000.otf in Resources */,
+				6807BBDE21792B3A006A3A66 /* MuseoSansRounded-100.otf in Resources */,
 				34842C9073C74740BBC8193B /* MuseoSansRounded-300.otf in Resources */,
-				7DCE2B5755144AFFA25D08B1 /* MuseoSansRounded-300Italic.otf in Resources */,
+				6807BBD4217920B6006A3A66 /* MuseoSansRounded-500.otf in Resources */,
+				6807BBE121792B3A006A3A66 /* MuseoSansRounded-700.otf in Resources */,
 				A3AA48C506DE473A8806CC95 /* MuseoSansRounded-900.otf in Resources */,
+				6807BBDD21792B3A006A3A66 /* MuseoSansRounded-700Italic.otf in Resources */,
+				6807BBE021792B3A006A3A66 /* MuseoSansRounded-900Italic.otf in Resources */,
+				8C6B726D9D6942ADBCFA4914 /* MuseoSansRounded-1000.otf in Resources */,
 				83ED6B44757D4F3499E34256 /* MuseoSansRounded.otf in Resources */,
 				7ABE5C0C076F422B90A88FE2 /* MuseoSansRounded.ttf in Resources */,
 			);
@@ -1420,6 +1458,11 @@
 			isa = PBXTargetDependency;
 			name = RCTPagedContacts;
 			targetProxy = 5B69413F2167DDDE004B29D1 /* PBXContainerItemProxy */;
+		};
+		6807BBA3217904DE006A3A66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = React;
+			targetProxy = 6807BBA2217904DE006A3A66 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1532,7 +1575,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.RealSwirlApp;
 				PRODUCT_NAME = Swirl;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1563,7 +1606,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.RealSwirlApp;
 				PRODUCT_NAME = Swirl;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";

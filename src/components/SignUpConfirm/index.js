@@ -24,3 +24,5 @@ export default withNavigation(
 		mapDispatchToProps
 	)(SignUpConfirm)
 );
+
+// export default withNavigation(SignUpConfirm);

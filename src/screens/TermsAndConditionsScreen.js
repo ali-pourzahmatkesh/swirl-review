@@ -7,7 +7,7 @@ export default class TermsAndConditionsScreen extends Component{
     static navigationOptions = ({ navigation }) => {
         return {
             headerTitle: (
-                <Text style={[appCss.defaultFontApp,appCss.navigationTitle]} numberOfLines={1} ellipsizeMode='tail'>Terms and Conditions</Text>
+                <Text style={[appCss.defaultFontApp,appCss.navigationTitle]} numberOfLines={1} ellipsizeMode='tail'>Terms of Use</Text>
             )
         }
     };

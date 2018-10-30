@@ -3,7 +3,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import styles from "./style";
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
-// import defaultMoment from "moment";
 import InviteFromContacts from "../InviteFromContacts";
 const colors = CONFIG.colors;
 import { NavigationActions } from "react-navigation";
@@ -28,14 +27,14 @@ class SignUpAddFriend extends Component {
 	loadHeader = () => {
 		return (
 			<View style={appCss.header}>
-				<View />
-				<View>
-					<Text style={[styles.headerText, { color: colors.tapeWhite }]}>
+				<View style={{flex: 1}} />
+				<View style={{flex: 1}}>
+					<Text style={styles.titleText}>
 						Add Friends
 					</Text>
 				</View>
-				<TouchableOpacity onPress={() => this.handleSubmit()}>
-					<Text style={[styles.headerText, { color: colors.tapeWhite }]}>
+				<TouchableOpacity style={{flex: 1}} onPress={() => this.handleSubmit()}>
+					<Text style={styles.done}>
 						Done
 					</Text>
 				</TouchableOpacity>

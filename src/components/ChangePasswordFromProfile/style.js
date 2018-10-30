@@ -23,24 +23,31 @@ const styles = StyleSheet.create({
 		resizeMode: "contain"
 	},
     imageContainer: {
-        flex:2,
+        flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+		alignItems: "center",
+		// borderWidth: 1
     },
     imagesContent: {
-        height: '35%',
-
+        // height: '35%',
+		flex: .8
     },
     imageItem: {
-        flex: 1,
+		// flex: 1,
+		height: '100%',
+		width: '100%',
         aspectRatio: 1,
-        resizeMode: "contain"
+		resizeMode: "contain",
+		// borderWidth: 1
     },
     formInputContainer: {
         alignItems: "flex-start",
-        width: 300,
-        flex:3,
-        alignSelf: "center"
+		height: height * 0.7,
+		paddingTop: height * 0.1,
+		width,
+		alignSelf: "center",
+		paddingLeft: width * 0.06,
+		paddingRight: width * 0.06,
     },
 	minLengthText: StyleSheet.flatten([
 		appCss.thinDefaultFontApp,

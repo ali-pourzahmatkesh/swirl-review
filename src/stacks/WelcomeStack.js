@@ -9,6 +9,7 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import ForgotPasswordVerifyScreen from "../screens/ForgotPasswordVerifyScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import SignUpAddFriendScreen from "../screens/SignUpAddFriendScreen";
+import TermsAndConditionsScreen from "../screens/TermsAndConditionsScreen";
 
 const COLORS = CONFIG.colors;
 
@@ -34,7 +35,10 @@ export default StackNavigator(
 		},
 		SignUpAddFriendScreen: {
 			screen: SignUpAddFriendScreen
-		}
+		},
+		TermsAndConditionsScreen: {
+			screen: TermsAndConditionsScreen
+		},
 	},
 	{
 		initialRouteName: "SignInScreen",
@@ -54,7 +58,7 @@ export default StackNavigator(
 				fontWeight: "bold",
 				color: "#fff",
 				fontSize: 20
-			}
+			},
 		}
 	}
 );
