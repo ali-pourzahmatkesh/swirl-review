@@ -1,13 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
-    Dimensions,
-    Image,
-    ImageBackground,
-    KeyboardAvoidingView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+	Dimensions,
+	Image,
+	ImageBackground,
+	KeyboardAvoidingView,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View
 } from "react-native";
 import styles from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -22,7 +22,11 @@ import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
+<<<<<<< HEAD
 import next from "../../assets/images/icons/next1.png";
+=======
+import next from "../../assets/images/icons/next.png";
+>>>>>>> 4a9a40f2ede901ac86ebc29afb2e811f4feeda97
 import { CONFIG } from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
@@ -51,16 +55,25 @@ export default class MessagePopup extends Component {
 		selectedMinutes: 0,
 		messageType: "",
 		memberListId: [],
-		messageImageSource: {}
+		messageImageSource: {},
+		loadingSendMessage: false
 	};
 
 	constructor(props) {
 		super(props);
-		console.log("props", props);
+		console.log("MessagePopup props", props);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("nextProps", nextProps);
+		console.log(
+			"messagePopup > componentWillReceiveProps nextProps",
+			nextProps
+		);
+		if (nextProps.loadingSendMessage !== this.state.loadingSendMessage) {
+			this.setState({
+				loadingSendMessage: nextProps.loadingSendMessage
+			});
+		}
 	}
 
 	uploadImageToCloud = uri => {
@@ -74,6 +87,8 @@ export default class MessagePopup extends Component {
 			CONFIG.cloudinary.upload_url_prefix +
 			cloud +
 			CONFIG.cloudinary.upload_url_suffix;
+		//+ "/messages"; //?upload_preset=" +
+		//"messages";
 
 		let xhr = new XMLHttpRequest();
 		xhr.open("POST", upload_url);
@@ -111,9 +126,11 @@ export default class MessagePopup extends Component {
 			uri: uri,
 			type: "image/jpg",
 			name: `${timestamp}.jpg`
+			// folder: "messages"
 		});
 
 		// formdata.append("upload_preset", "test_apz");
+		// formdata.append("folder", "messages");
 		formdata.append("timestamp", timestamp);
 		formdata.append("api_key", api_key);
 		formdata.append("signature", signature);
@@ -287,38 +304,19 @@ export default class MessagePopup extends Component {
 				</View>
 
 				<View style={styles.cameraActions}>
-
-					<TouchableOpacity
-						onPress={() => this.tabSelectedFunction("camera")}
-
-					>
-
-						<Entypo
-							size={35}
-							color="#fff"
-							name="image"
-						/>
+					<TouchableOpacity onPress={() => this.tabSelectedFunction("camera")}>
+						<Entypo size={35} color="#fff" name="image" />
 					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={this.takePicture.bind(this)}
-					>
+					<TouchableOpacity onPress={this.takePicture.bind(this)}>
 						<Image
 							resizeMode="contain"
 							style={styles.cameraBtn}
 							source={cameraBtn}
 						/>
-
 					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={() => this.tabSelectedFunction("chat")}
-					>
-						<Feather
-							size={35}
-							color="#fff"
-							name="message-circle"
-						/>
+					<TouchableOpacity onPress={() => this.tabSelectedFunction("chat")}>
+						<Feather size={35} color="#fff" name="message-circle" />
 					</TouchableOpacity>
-
 				</View>
 			</Camera>
 		);
@@ -339,13 +337,26 @@ export default class MessagePopup extends Component {
 					<View />
 					<View />
 				</View>
-					<View style={styles.footer}>
-						<View
+				<View style={styles.footer}>
+					<View
+						style={[
+							styles.footerActions,
+							{ justifyContent: "flex-end", width, paddingRight: 30 }
+						]}
+					>
+						<TouchableOpacity
+							onPress={() =>
+								this.setState({
+									tabSelected: "timePicker",
+									messageType: "camera"
+								})
+							}
 							style={[
-								styles.footerActions,
-                                { justifyContent: "flex-end", width, paddingRight: 30 }
+								styles.nextButton,
+								{ backgroundColor: colors.combinatorialColor }
 							]}
 						>
+<<<<<<< HEAD
 							<TouchableOpacity
 								onPress={() =>
 									this.setState({
@@ -360,12 +371,19 @@ export default class MessagePopup extends Component {
 								<Image style={styles.iconButton} source={next} />
 							</TouchableOpacity>
 						</View>
+=======
+							<Image style={styles.iconButton} source={next} />
+						</TouchableOpacity>
+>>>>>>> 4a9a40f2ede901ac86ebc29afb2e811f4feeda97
 					</View>
+				</View>
 			</ImageBackground>
 		);
 	};
 
 	loadContacts = () => {
+		const { loadingSendMessage } = this.state;
+
 		return (
 			<View style={styles.containerOtherPage}>
 				<View style={[appCss.header, { width }]}>
@@ -385,7 +403,10 @@ export default class MessagePopup extends Component {
 					<View />
 				</View>
 				<Toast />
-				<SendTo friendList={this.friendList} />
+				<SendTo
+					friendList={this.friendList}
+					loadingSendMessage={loadingSendMessage}
+				/>
 			</View>
 		);
 	};
@@ -398,7 +419,7 @@ export default class MessagePopup extends Component {
 		);
 		console.log("memberListId", memberListId);
 		if (memberListId.length) {
-			this.setState({ memberListId }, () => {
+			this.setState({ memberListId, loadingSendMessage: true }, () => {
 				console.log("message type is", this.state.messageType);
 				if (this.state.messageType != "chat") {
 					this.uploadImageToCloud(this.state.messageImageSource.pathUri.uri);

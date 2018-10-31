@@ -25,9 +25,9 @@ export default class MessageDetail extends Component {
 	loadImageContent = data => {
 		let imageSource = `${CONFIG.cloudinary.resource_url_prefix}/${
 			CONFIG.cloudinary.cloud
-		}/image/upload/${data["imageContentName"]}.${
-			data["imageContentExtension"]
-		}`;
+		}/image/upload/${CONFIG.cloudinary.resource_url_params_message}${
+			data["imageContentName"]
+		}.${data["imageContentExtension"]}`;
 		console.log("data.imageContentName", imageSource);
 		return (
 			<ImageBackground

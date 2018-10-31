@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-navigation";
 import checkedImage from "../../assets/images/icons/check_white.png";
 import { CONFIG } from "../../../config";
 import next from "../../assets/images/icons/next1.png";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 const colors = CONFIG.colors;
 const { width } = Dimensions.get("window");
 
@@ -23,12 +24,13 @@ export default class SendTo extends Component {
 		super(props);
 		this.state = {
 			list: [],
-			membersThatAreFriends: []
+			membersThatAreFriends: [],
+			loadingSendMessage: props.loadingSendMessage || false
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("IN componentWillReceiveProps", nextProps);
+		console.log("sendTo > componentWillReceiveProps nextProps", nextProps);
 		if (
 			nextProps.membersThatAreFriends &&
 			this.state.membersThatAreFriends.length !=
@@ -41,6 +43,12 @@ export default class SendTo extends Component {
 					nextProps.membersThatAreFriends,
 					"username"
 				)
+			});
+		}
+
+		if (nextProps.loadingSendMessage !== this.state.loadingSendMessage) {
+			this.setState({
+				loadingSendMessage: nextProps.loadingSendMessage
 			});
 		}
 	}
@@ -151,7 +159,19 @@ export default class SendTo extends Component {
 	}
 
 	render() {
-		const { list } = this.state;
+		const { list, loadingSendMessage } = this.state;
+		var sendButton = loadingSendMessage ? (
+			<TouchableOpacity style={styles.footer}>
+				<LoadingCircles3 />
+			</TouchableOpacity>
+		) : (
+			<TouchableOpacity
+				style={styles.footer}
+				onPress={() => this.props.friendList(list)}
+			>
+				<Image resizeMode={"contain"} style={styles.nextIcon} source={next} />
+			</TouchableOpacity>
+		);
 		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
@@ -177,16 +197,7 @@ export default class SendTo extends Component {
 						right: 15
 					}}
 				>
-					<TouchableOpacity
-						style={styles.footer}
-						onPress={() => this.props.friendList(list)}
-					>
-						<Image
-							resizeMode={"contain"}
-							style={styles.nextIcon}
-							source={next}
-						/>
-					</TouchableOpacity>
+					{sendButton}
 				</View>
 			</SafeAreaView>
 		);
