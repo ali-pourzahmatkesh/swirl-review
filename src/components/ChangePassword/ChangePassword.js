@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {
     Image,
     KeyboardAvoidingView,
-    View
+	View,
+	Dimensions
 } from "react-native";
 
 import {NavigationActions, SafeAreaView} from "react-navigation";
@@ -16,6 +17,7 @@ import styles from "./style";
 import {CONFIG} from "../../../config";
 
 const colors = CONFIG.colors;
+const {width, height} = Dimensions.get('window');
 
 export default class ChangePassword extends Component {
 	constructor(props) {
@@ -54,7 +56,7 @@ export default class ChangePassword extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={height * 0.09 + 45}>
 					<View style={ styles.imageContainer }>
 						<Image style={styles.imageItem} source={logo}/>
 					</View>

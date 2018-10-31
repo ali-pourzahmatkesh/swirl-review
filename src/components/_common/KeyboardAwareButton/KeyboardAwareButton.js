@@ -41,7 +41,7 @@ export default class KeyboardAwareButton extends Component{
     }
 
     keyboardWillShow = event => {	
-        console.log('showing', event)
+        // console.log('showing', event)
         if(event.startCoordinates.screenY !== event.endCoordinates.screenY){
             Animated.timing(this.buttonY, {
                 duration: event.duration,
@@ -51,7 +51,7 @@ export default class KeyboardAwareButton extends Component{
 	};
 
 	keyboardWillHide = event => {	
-        console.log('hiding', event)
+        // console.log('hiding', event)
         Animated.timing(this.buttonY, {
             duration: event.duration,
             toValue: 0

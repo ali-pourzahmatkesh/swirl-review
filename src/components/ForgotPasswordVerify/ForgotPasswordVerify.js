@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
-import CodeInput from "react-native-confirmation-code-input";
+import CodeField from "react-native-confirmation-code-field";
 
 import logo from "../../assets/images/logo_bigger.png";
 
@@ -27,6 +27,20 @@ export default class ForgotPasswordVerify extends Component {
 	toConfirm = () => {
 		this.props.navigation.navigate("ChangePasswordScreen");
 	};
+
+	propsForCodeField = (index)=>{
+        return {
+            autoCorrect: false,
+			returnKeyType: null,
+			selectionColor: colors.appColor, // changes the caret/cursor/blinking line color
+        }
+	}
+	
+	updateCode = code => {
+		this.setState({
+			code
+		}, ()=>console.log(this.state))
+	}
 
 	handleSubmit = () => {
 		this.props.updateCodeGetUser({
@@ -55,22 +69,14 @@ export default class ForgotPasswordVerify extends Component {
 						<Text style={styles.promptText}>
 							Please enter the verification code
 						</Text>
-						<CodeInput
-							ref="vcode"
-							className="border-b"
-							codeInputStyle={[appCss.defaultFontApp, styles.codeInput]}
+						<CodeField
 							codeLength={4}
-							keyboardType="numeric"
-							onFulfill={(isMatching, code) => {
-								
-							}}
-							returnKeyType={null}
-							// The CodeInput has a returnKeyType automatically set to 'done'.
-							// Setting it to null here to keep a consistent look.
-							size={65}
-							onContentSizeChange={() =>
-								this.setState({ code: this.refs.vcode.state.codeArr.join("") })
-							}
+							autoFocus={true}
+                            keyboardType='numeric'
+							getInputStyle={() => styles.codeInput}
+							getInputProps={this.propsForCodeField}
+							onFulfill={this.updateCode}
+							onChangeCode={this.updateCode}
 						/>
 					</View>
 				</KeyboardAvoidingView>
@@ -80,7 +86,6 @@ export default class ForgotPasswordVerify extends Component {
 					disabled={nextDisabled}
 					beginOnPage={true}
 				/>
-
 			</SafeAreaView>
 		);
 	}
