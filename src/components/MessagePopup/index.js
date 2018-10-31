@@ -5,7 +5,8 @@ import { newMessage } from "../../store/chat";
 import { showToast } from "../../store/toast";
 
 const mapStateToProps = state => ({
-	id: state.app.member.userData.id
+	id: state.app.member.userData.id,
+	loadingSendMessage: state.app.chat.loading
 });
 
 const mapDispatchToProps = dispatch => {
