@@ -14,32 +14,26 @@ const STYLES = StyleSheet.create({
     chatList: {
         alignItems: 'center',
         flex: 1,
-        // borderWidth: 1
     },
     chatListBox: {
-        // width: width - 30,
         width: width * 0.9,
-        height: 70,
+        height: height * 0.09,
         backgroundColor: colors.bodyColor,
         borderRadius: 20,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        // paddingRight: 5,
-        // paddingLeft: 10,
         marginBottom: 10,
         shadowOffset: {
             height: 1
         },
         shadowOpacity: 0.6,
         shadowRadius: 2.5,
-        // borderWidth: 1        
+        borderWidth: 0
     },
 
     chatListBlockBox: {
         backgroundColor: colors.highlightColorTwo,
         borderColor: colors.selectedBoxBorder,
-        borderWidth: 2,
         shadowOffset: {
             height: 1
         },
@@ -48,46 +42,52 @@ const STYLES = StyleSheet.create({
     },
 
     avatarBox: {
-        flexBasis: 80,
         alignItems: "center",
-        justifyContent:'center'
+        justifyContent:'center',
+        width: '25%',
+        borderWidth: 0
     },
 
     chatListSubjectBox: {
-        width: width-110,
+        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center'
-
+    },
+    messageInfoBox: {
+        width: '50%',
+        borderWidth: 0
     },
     otherInfo: {
-        // flexDirection:'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-start',
-        height: 70,
+        flexDirection:'row',
+        justifyContent: 'flex-end',
+        height: height * 0.09,
+        paddingRight: width * 0.05,
         paddingTop: 5,
-        paddingRight: 15
+        width: '25%',
+        borderWidth: 0
     },
     otherInfoLogo: {
         width: 43,
         height: 43,
-        marginTop: 1
+        alignSelf: 'center'
     },
 
-    chatSubject: StyleSheet.flatten([appCss.defaultFontApp,{
+    chatSubject: {
         fontSize: 16,
         fontFamily: 'MuseoSansRounded-900',
-        marginBottom: 5
-    }]),
-    chatDesc: StyleSheet.flatten([appCss.defaultFontApp,{
+    },
+    chatDesc: {
         fontSize: 14,
         fontFamily: 'MuseoSansRounded-300',
-        marginLeft: 10
-    }]),
-    chatTime: StyleSheet.flatten([appCss.defaultFontApp,{
+    },
+    chatTime: {
         fontSize: 12,
         fontFamily: 'MuseoSansRounded-300',
-    }]),
+        position: 'absolute',
+        alignSelf: 'flex-start',
+        right: width * 0.02,
+        top: 3
+    },
 
 
 

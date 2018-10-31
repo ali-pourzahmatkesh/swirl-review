@@ -287,23 +287,23 @@ class Home extends Component {
 					isAvailable && !item.isSeen && styles.chatListBlockBox
 				]}
 			>
-				<View style={styles.avatarBox}>
-					<Avatar userId={item.senderMemberId} size={57} position="profile" />
-				</View>
 				<TouchableOpacity
 					onPress={() => {
 						messageOnpress();
 					}}
 					style={styles.chatListSubjectBox}
 				>
-					<View>
+					<View style={styles.avatarBox}>
+						<Avatar userId={item.senderMemberId} size={57} position="profile" />
+					</View>
+					<View style={styles.messageInfoBox}>
 						<Text
 							style={[
 								styles.chatSubject,
 								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
 						>
-							{item.identifier}
+							{item.senderName}
 						</Text>
 						<Text
 							style={[
@@ -315,16 +315,14 @@ class Home extends Component {
 						</Text>
 					</View>
 					<View style={styles.otherInfo}>
-						<View>
-							<Text
-								style={[
-									styles.chatTime,
-									messageStyle == "Ready" && { color: COLORS.bodyColor }
-								]}
-							>
-								{moment(item["createdAt"], "YYYYMMDD").fromNow(true)}
-							</Text>
-						</View>
+						<Text
+							style={[
+								styles.chatTime,
+								messageStyle == "Ready" && { color: COLORS.bodyColor }
+							]}
+						>
+							{moment(item["createdAt"], "YYYYMMDD").fromNow(true)}
+						</Text>
 						{(messageStyle == "Ready" || messageStyle == "Waiting") && (
 							<Image
 								source={(messageStyle == "Waiting" && logoOther) || logo}
