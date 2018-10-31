@@ -22,11 +22,7 @@ import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
-<<<<<<< HEAD
 import next from "../../assets/images/icons/next1.png";
-=======
-import next from "../../assets/images/icons/next.png";
->>>>>>> 4a9a40f2ede901ac86ebc29afb2e811f4feeda97
 import { CONFIG } from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
@@ -356,25 +352,8 @@ export default class MessagePopup extends Component {
 								{ backgroundColor: colors.combinatorialColor }
 							]}
 						>
-<<<<<<< HEAD
-							<TouchableOpacity
-								onPress={() =>
-									this.setState({
-										tabSelected: "timePicker",
-										messageType: "camera"
-									})
-								}
-								style={[
-									styles.nextButton,
-								]}
-							>
-								<Image style={styles.iconButton} source={next} />
-							</TouchableOpacity>
-						</View>
-=======
 							<Image style={styles.iconButton} source={next} />
 						</TouchableOpacity>
->>>>>>> 4a9a40f2ede901ac86ebc29afb2e811f4feeda97
 					</View>
 				</View>
 			</ImageBackground>

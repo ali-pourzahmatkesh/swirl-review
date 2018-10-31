@@ -42,14 +42,10 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-<<<<<<< HEAD
-            cropImage : false
-=======
 			avatarSource: "" // a uri content
 			// cropImage: false
 			// ghost: false,
 			// ghostNotif: false
->>>>>>> 4a9a40f2ede901ac86ebc29afb2e811f4feeda97
 		};
 	}
 
