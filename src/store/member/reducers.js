@@ -405,7 +405,7 @@ const chat = (state = initialState, action) => {
 
 		case CALL_LOGOUT: {
 			return loop(
-				{ ...state },
+				{ ...state, loading: true },
 				Cmd.run(removeUserData, {
 					successActionCreator: removeUserDataSuccess,
 					failActionCreator: removeUserDataFailed,
@@ -421,7 +421,8 @@ const chat = (state = initialState, action) => {
 					isLogin: false,
 					userData: {},
 					errorMessage: "",
-					hasError: false
+					hasError: false,
+					loading: false
 				},
 				Cmd.action(fetchLogout(action.payload.id))
 			);
@@ -434,7 +435,8 @@ const chat = (state = initialState, action) => {
 					isLogin: false,
 					userData: {},
 					errorMessage: "",
-					hasError: false
+					hasError: false,
+					loading: false
 				},
 				Cmd.action(fetchLogout(action.payload.id))
 			);
@@ -526,7 +528,13 @@ const chat = (state = initialState, action) => {
 
 		case SEND_VERIFY_CODE: {
 			return loop(
-				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				{
+					...state,
+					isLoadingFetch: true,
+					errorMessage: "",
+					hasError: false,
+					loading: true
+				},
 				Cmd.run(fetchSendVerifyCode, {
 					successActionCreator: fetchSendVerifyCodeSuccess,
 					failActionCreator: fetchSendVerifyCodeFailed,
@@ -545,7 +553,8 @@ const chat = (state = initialState, action) => {
 				verifyCode: action.payload.data,
 				isLoadingFetch: false,
 				errorMessage: "",
-				hasError: false
+				hasError: false,
+				loading: false
 			};
 		}
 		case SEND_VERIFY_CODE_FAILED: {
@@ -555,7 +564,8 @@ const chat = (state = initialState, action) => {
 					verifyCode: "",
 					isLoadingFetch: false,
 					errorMessage: "Error sending verifyCode.",
-					hasError: true
+					hasError: true,
+					loading: false
 				},
 				Cmd.action(showToast(true, "Error sending verifyCode."))
 			);
@@ -565,7 +575,13 @@ const chat = (state = initialState, action) => {
 
 		case UPDATE_CODE_GET_USER: {
 			return loop(
-				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				{
+					...state,
+					isLoadingFetch: true,
+					errorMessage: "",
+					hasError: false,
+					loading: true
+				},
 				Cmd.run(fetchUpdateCodeGetUser, {
 					successActionCreator: fetchUpdateCodeGetUserSuccess,
 					failActionCreator: fetchUpdateCodeGetUserFailed,
@@ -584,7 +600,8 @@ const chat = (state = initialState, action) => {
 				...state,
 				isLoadingFetch: false,
 				errorMessage: "",
-				hasError: false
+				hasError: false,
+				loading: false
 			};
 		}
 		case UPDATE_CODE_GET_USER_FAILED: {
@@ -593,7 +610,8 @@ const chat = (state = initialState, action) => {
 					...state,
 					isLoadingFetch: false,
 					errorMessage: action.payload.message,
-					hasError: true
+					hasError: true,
+					loading: false
 				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
@@ -603,7 +621,13 @@ const chat = (state = initialState, action) => {
 
 		case SEND_USER: {
 			return loop(
-				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				{
+					...state,
+					loading: true,
+					isLoadingFetch: true,
+					errorMessage: "",
+					hasError: false
+				},
 				Cmd.run(fetchSendUser, {
 					successActionCreator: fetchSendUserSuccess,
 					failActionCreator: fetchSendUserFailed,
@@ -618,7 +642,13 @@ const chat = (state = initialState, action) => {
 			// return {...state, isLoadingFetch: false, errorMessage: '', hasError: false}
 
 			return loop(
-				{ ...state, isLoadingFetch: false, errorMessage: "", hasError: false },
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: "",
+					hasError: false,
+					loading: false
+				},
 				Cmd.action(
 					callLogin(
 						action.payload.navigation,
@@ -638,6 +668,7 @@ const chat = (state = initialState, action) => {
 				{
 					...state,
 					isLoadingFetch: false,
+					loading: false,
 					errorMessage: action.payload.message,
 					hasError: true
 				},
@@ -1074,7 +1105,7 @@ const chat = (state = initialState, action) => {
 
 		case SEND_PASSWORD: {
 			return loop(
-				{ ...state, isLoadingFetch: true, errorMessage: "", hasError: false },
+				{ ...state, loading: true, errorMessage: "", hasError: false },
 				Cmd.run(fetchSendPassword, {
 					successActionCreator: fetchSendPasswordSuccess,
 					failActionCreator: fetchSendPasswordFailed,
@@ -1084,7 +1115,7 @@ const chat = (state = initialState, action) => {
 		}
 		case PASSWORD_SUCCESS: {
 			return loop(
-				{ ...state, isLoadingFetch: false, errorMessage: "", hasError: false },
+				{ ...state, loading: false, errorMessage: "", hasError: false },
 				Cmd.action(
 					callLogin(
 						action.payload.navigation,
@@ -1098,7 +1129,7 @@ const chat = (state = initialState, action) => {
 			return loop(
 				{
 					...state,
-					isLoadingFetch: false,
+					loading: false,
 					errorMessage: action.payload.message,
 					hasError: true
 				},

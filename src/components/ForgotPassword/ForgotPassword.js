@@ -1,19 +1,19 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
-    ActivityIndicator,
-    Image,
-    Keyboard,
-    KeyboardAvoidingView,
-    LayoutAnimation,
-    Modal,
-    SectionList,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+	ActivityIndicator,
+	Image,
+	Keyboard,
+	KeyboardAvoidingView,
+	LayoutAnimation,
+	Modal,
+	SectionList,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View
 } from "react-native";
 
-import {SafeAreaView} from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 import EmptyList from "../EmptyList";
 
 import logo from "../../assets/images/logo_bigger.png";
@@ -22,9 +22,10 @@ import SVGImage from "react-native-svg-image";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "react-native-vector-icons/Feather";
 import appCss from "../../../app.css";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
 import styles from "./style";
 const colors = CONFIG.colors;
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ForgotPassword extends Component {
 	constructor(props) {
@@ -97,10 +98,10 @@ export default class ForgotPassword extends Component {
 	};
 
 	openModal() {
-        this.setState({ modalVisible: true }, () => {
-            if( this.state.countries.length ) return;
-            this.props.getCountries();
-        });
+		this.setState({ modalVisible: true }, () => {
+			if (this.state.countries.length) return;
+			this.props.getCountries();
+		});
 	}
 
 	closeModal = () => {
@@ -130,45 +131,43 @@ export default class ForgotPassword extends Component {
 		});
 	};
 
-    renderCountryCodes = () => {
-        let { cellphoneCountryCode, flagCountry, flag } = this.state;
-        if( cellphoneCountryCode.length === 0 || flagCountry.length === 0 ) {
-            return (
+	renderCountryCodes = () => {
+		let { cellphoneCountryCode, flagCountry, flag } = this.state;
+		if (cellphoneCountryCode.length === 0 || flagCountry.length === 0) {
+			return (
 				<ActivityIndicator
 					size={1}
 					style={appCss.countryCodeBox}
 					color={colors.combinatorialColor}
 				/>
-            );
-        } else {
-            return (
+			);
+		} else {
+			return (
 				<TouchableOpacity
 					style={appCss.countryCodeBox}
 					onPress={() => this.openModal()}
 				>
 					<View style={appCss.countryCodeImageBox}>
-
-
-                        {flag.length > 0? (
+						{flag.length > 0 ? (
 							<SVGImage
 								style={appCss.countryFlagSvg}
 								source={{ uri: flag }}
 								originWhitelist={["*"]}
 							/>
-                        ): (
+						) : (
 							<Image
 								source={{ uri: flagCountry }}
 								style={appCss.countryCodeFlag}
 							/>
-                        )}
+						)}
 					</View>
-					<Text style={[ appCss.defaultFontApp, appCss.countryCode ]}>
+					<Text style={[appCss.defaultFontApp, appCss.countryCode]}>
 						+ {cellphoneCountryCode}
 					</Text>
 				</TouchableOpacity>
-            );
-        }
-    };
+			);
+		}
+	};
 
 	handlePressItemCountry = item => {
 		this.setState({
@@ -195,28 +194,28 @@ export default class ForgotPassword extends Component {
 	}
 
 	keyboardWillShow = event => {
-        LayoutAnimation.configureNext({
-            duration: event.duration,
-            create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: { type: LayoutAnimation.Types.easeInEaseOut },
-        });
+		LayoutAnimation.configureNext({
+			duration: event.duration,
+			create: {
+				type: LayoutAnimation.Types.easeInEaseOut,
+				property: LayoutAnimation.Properties.opacity
+			},
+			update: { type: LayoutAnimation.Types.easeInEaseOut }
+		});
 		this.setState({
 			bottom: event.endCoordinates.height
 		});
 	};
 
 	keyboardWillHide = event => {
-        LayoutAnimation.configureNext({
-            duration: event.duration,
-            create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: { type: LayoutAnimation.Types.easeInEaseOut },
-        });
+		LayoutAnimation.configureNext({
+			duration: event.duration,
+			create: {
+				type: LayoutAnimation.Types.easeInEaseOut,
+				property: LayoutAnimation.Properties.opacity
+			},
+			update: { type: LayoutAnimation.Types.easeInEaseOut }
+		});
 		this.setState({
 			bottom: 0
 		});
@@ -231,10 +230,7 @@ export default class ForgotPassword extends Component {
 	};
 
 	render() {
-		let {
-			countryCodeGroup,
-			searchValue
-		} = this.state;
+		let { countryCodeGroup, searchValue } = this.state;
 
 		return (
 			<View style={styles.container}>
@@ -276,7 +272,7 @@ export default class ForgotPassword extends Component {
 									/>
 								</View>
 							</View>
-							<View style={appCss.modalOptions}/>
+							<View style={appCss.modalOptions} />
 						</View>
 						<View style={{ flex: 1 }}>
 							<SectionList
@@ -297,91 +293,90 @@ export default class ForgotPassword extends Component {
 											/>
 										</View>
 										<Text
-											style={[ appCss.defaultFontApp, appCss.countryCodeSearch ]}
+											style={[appCss.defaultFontApp, appCss.countryCodeSearch]}
 										>
 											+ {item.callingCodes[0]}
 										</Text>
 										<Text
-											style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
+											style={[appCss.defaultFontApp, appCss.countryNameSearch]}
 											numberOfLines={1}
 											ellipsizeMode="tail"
 										>
-                                            {item.name}
+											{item.name}
 										</Text>
 									</TouchableOpacity>
-                                )}
+								)}
 								renderSectionHeader={({ section }) => (
 									<View style={appCss.sectionHeader}>
 										<Text
-											style={[ appCss.defaultFontApp, appCss.sectionHeaderTitle ]}
+											style={[appCss.defaultFontApp, appCss.sectionHeaderTitle]}
 										>
-                                            {section.title}
+											{section.title}
 										</Text>
 									</View>
-                                )}
+								)}
 							/>
 						</View>
 					</SafeAreaView>
 				</Modal>
 
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<View
-						style={
-                            styles.imageContainer
-                        }
-					>
+					<View style={styles.imageContainer}>
 						<View style={styles.imagesContent}>
-							<Image style={styles.imageItem} source={logo}/>
+							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
 					<View style={styles.formInputContainer}>
-					<View
-						style={[
-                            appCss.iconFormInput,
-                            { paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
-                        ]}
-					>
-                        {this.state.countryCodeVisible? (
-                            this.renderCountryCodes()
-                        ): (
-							<Image
-								style={[
-                                    appCss.formInputIcon,
-                                    { marginLeft: 10, marginTop: 8, height: "60%" }
-                                ]}
-								source={phoneIcon}
-							/>
-                        )}
-						<TextInput
+						<View
 							style={[
-                                appCss.defaultFontApp,
-                                appCss.textInput,
-                                { marginBottom: 12, marginTop: 10 }
-                            ]}
-							placeholder="Phone Number"
-							placeholderTextColor={colors.combinatorialColor}
-							keyboardType="number-pad"
-							onChangeText={cellphone => this.setState({ cellphone })}
-							// onFocus={this.handlePhoneFieldFocus}
-							onFocus={() => {
-                                this.props.navigation.setParams({
-                                    curScreen: "Login",
-                                    nextScreen: "Signup",
-                                    rightNav: "SignUpScreen"
-                                });
-                                this.handlePhoneFieldFocus()
-                            }
-                            }
-							// onPress={this.handlePhoneFieldFocus}
-							onBlur={this.handlePhoneFieldBlur}
-						/>
+								appCss.iconFormInput,
+								{ paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
+							]}
+						>
+							{this.state.countryCodeVisible ? (
+								this.renderCountryCodes()
+							) : (
+								<Image
+									style={[
+										appCss.formInputIcon,
+										{ marginLeft: 10, marginTop: 8, height: "60%" }
+									]}
+									source={phoneIcon}
+								/>
+							)}
+							<TextInput
+								style={[
+									appCss.defaultFontApp,
+									appCss.textInput,
+									{ marginBottom: 12, marginTop: 10 }
+								]}
+								placeholder="Phone Number"
+								placeholderTextColor={colors.combinatorialColor}
+								keyboardType="number-pad"
+								onChangeText={cellphone => this.setState({ cellphone })}
+								// onFocus={this.handlePhoneFieldFocus}
+								onFocus={() => {
+									this.props.navigation.setParams({
+										curScreen: "Login",
+										nextScreen: "Signup",
+										rightNav: "SignUpScreen"
+									});
+									this.handlePhoneFieldFocus();
+								}}
+								// onPress={this.handlePhoneFieldFocus}
+								onBlur={this.handlePhoneFieldBlur}
+							/>
+						</View>
 					</View>
-				</View>
 					<TouchableOpacity
 						style={[styles.nextButton, { bottom: this.state.bottom }]}
 						onPress={this.handleSubmit}
 					>
-						<Text style={[appCss.defaultFontApp, styles.nextText]}>Next</Text>
+						{this.props.loading ? (
+							<LoadingCircles3 />
+						) : (
+							<Text style={[appCss.defaultFontApp, styles.nextText]}>Next</Text>
+						)}
 					</TouchableOpacity>
 				</KeyboardAvoidingView>
 			</View>

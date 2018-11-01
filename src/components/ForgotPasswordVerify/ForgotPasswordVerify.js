@@ -6,7 +6,7 @@ import {
 	View,
 	StyleSheet,
 	TextInput,
-    KeyboardAvoidingView,
+	KeyboardAvoidingView,
 	Animated,
 	Keyboard,
 	Easing,
@@ -20,6 +20,7 @@ import logo from "../../assets/images/logo_bigger.png";
 
 import appCss from "../../../app.css";
 import styles from "./style";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ForgotPasswordVerify extends Component {
 	constructor(props) {
@@ -98,13 +99,9 @@ export default class ForgotPasswordVerify extends Component {
 		return (
 			<SafeAreaView style={styles.container}>
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<View
-						style={
-                            styles.imageContainer
-                        }
-					>
+					<View style={styles.imageContainer}>
 						<View style={styles.imagesContent}>
-							<Image style={styles.imageItem} source={logo}/>
+							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
 
@@ -143,15 +140,19 @@ export default class ForgotPasswordVerify extends Component {
 						onPress={this.handleSubmit}
 						disabled={nextDisabled}
 					>
-						<Text
-							style={[
-								appCss.defaultFontApp,
-								styles.nextText,
-								nextDisabled && { opacity: 0.5 }
-							]}
-						>
-							Next
-						</Text>
+						{this.props.loading ? (
+							<LoadingCircles3 />
+						) : (
+							<Text
+								style={[
+									appCss.defaultFontApp,
+									styles.nextText,
+									nextDisabled && { opacity: 0.5 }
+								]}
+							>
+								Next
+							</Text>
+						)}
 					</TouchableOpacity>
 				</Animated.View>
 			</SafeAreaView>

@@ -8,6 +8,8 @@ import { SafeAreaView } from "react-navigation";
 import { PagedContacts } from "react-native-paged-contacts";
 import logo from "../../assets/images/logo_bigger.png";
 // import checkedImage from "../../assets/images/checked.png";
+import LoadingCircles3 from "../../components/LoadingCircles3";
+
 let pg = new PagedContacts();
 
 export default class InviteFromContacts extends Component {
@@ -182,7 +184,11 @@ export default class InviteFromContacts extends Component {
 								style={styles.addBtn}
 								onPress={() => this.addFriend(item)}
 							>
-								<Text style={styles.addBtnText}> Add </Text>
+								{this.props.loading ? (
+									<LoadingCircles3 />
+								) : (
+									<Text style={styles.addBtnText}> Add </Text>
+								)}
 							</TouchableOpacity>
 						</View>
 					)}

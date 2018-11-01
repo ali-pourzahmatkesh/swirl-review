@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import { showToast } from "../../store/toast";
 import { updateCodeGetUser } from "../../store/member";
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+	loading: state.app.member.loading
+});
 
 const mapDispatchToProps = dispatch => ({
 	updateCodeGetUser: data => dispatch(updateCodeGetUser(data))

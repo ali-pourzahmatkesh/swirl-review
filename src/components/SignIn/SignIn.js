@@ -1,20 +1,20 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
-    ActivityIndicator,
-    Animated,
-    Image,
-    Keyboard,
-    KeyboardAvoidingView,
-    LayoutAnimation,
-    Modal,
-    SectionList,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+	ActivityIndicator,
+	Animated,
+	Image,
+	Keyboard,
+	KeyboardAvoidingView,
+	LayoutAnimation,
+	Modal,
+	SectionList,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View
 } from "react-native";
 
-import {NavigationActions, SafeAreaView} from "react-navigation";
+import { NavigationActions, SafeAreaView } from "react-navigation";
 import EmptyList from "../EmptyList";
 
 import logo from "../../assets/images/logo_bigger.png";
@@ -25,7 +25,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Feather from "react-native-vector-icons/Feather";
 import appCss from "../../../app.css";
 import styles from "./style";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 const colors = CONFIG.colors;
 
@@ -50,10 +51,10 @@ export default class SignIn extends Component {
 		this.connectFontSize = new Animated.Value(35);
 		this.connectOpacity = new Animated.Value(1);
 		this.forgotPassMargin = new Animated.Value(100);
-        this.forgotPassMarginInterpolate = this.forgotPassMargin.interpolate({
-            inputRange: [0, 100],
-            outputRange: ["2%", "27%"]
-        });
+		this.forgotPassMarginInterpolate = this.forgotPassMargin.interpolate({
+			inputRange: [0, 100],
+			outputRange: ["2%", "27%"]
+		});
 
 		this.logoHeight = new Animated.Value(100);
 		// this.logoHeightInterpolate = this.logoHeight.interpolate({
@@ -117,11 +118,10 @@ export default class SignIn extends Component {
 	};
 
 	openModal() {
-        this.setState({ modalVisible: true }, () => {
-            if( this.state.countries.length ) return;
-            this.props.getCountries();
-        });
-
+		this.setState({ modalVisible: true }, () => {
+			if (this.state.countries.length) return;
+			this.props.getCountries();
+		});
 	}
 
 	closeModal = () => {
@@ -168,8 +168,6 @@ export default class SignIn extends Component {
 					onPress={() => this.openModal()}
 				>
 					<View style={appCss.countryCodeImageBox}>
-
-
 						{flag.length > 0 ? (
 							<SVGImage
 								style={appCss.countryFlagSvg}
@@ -183,7 +181,7 @@ export default class SignIn extends Component {
 							/>
 						)}
 					</View>
-					<Text style={[ appCss.defaultFontApp, appCss.countryCode ]}>
+					<Text style={[appCss.defaultFontApp, appCss.countryCode]}>
 						+ {cellphoneCountryCode}
 					</Text>
 				</TouchableOpacity>
@@ -216,14 +214,14 @@ export default class SignIn extends Component {
 	}
 
 	keyboardWillShow = event => {
-        LayoutAnimation.configureNext({
-            duration: event.duration,
-            create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: { type: LayoutAnimation.Types.easeInEaseOut },
-        });
+		LayoutAnimation.configureNext({
+			duration: event.duration,
+			create: {
+				type: LayoutAnimation.Types.easeInEaseOut,
+				property: LayoutAnimation.Properties.opacity
+			},
+			update: { type: LayoutAnimation.Types.easeInEaseOut }
+		});
 		this.setState({
 			bottom: event.endCoordinates.height
 		});
@@ -249,14 +247,14 @@ export default class SignIn extends Component {
 	};
 
 	keyboardWillHide = event => {
-        LayoutAnimation.configureNext({
-            duration: event.duration,
-            create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: { type: LayoutAnimation.Types.easeInEaseOut },
-        });
+		LayoutAnimation.configureNext({
+			duration: event.duration,
+			create: {
+				type: LayoutAnimation.Types.easeInEaseOut,
+				property: LayoutAnimation.Properties.opacity
+			},
+			update: { type: LayoutAnimation.Types.easeInEaseOut }
+		});
 		this.setState({
 			bottom: -100
 		});
@@ -265,10 +263,10 @@ export default class SignIn extends Component {
 				duration: event.duration,
 				toValue: 35
 			}),
-            Animated.timing(this.connectOpacity, {
-                duration: event.duration,
-                toValue: 1
-            }),
+			Animated.timing(this.connectOpacity, {
+				duration: event.duration,
+				toValue: 1
+			}),
 			Animated.timing(this.forgotPassMargin, {
 				duration: event.duration,
 				toValue: 100
@@ -298,10 +296,7 @@ export default class SignIn extends Component {
 	};
 
 	render() {
-		let {
-			countryCodeGroup,
-			searchValue
-		} = this.state;
+		let { countryCodeGroup, searchValue } = this.state;
 
 		return (
 			<SafeAreaView style={styles.container}>
@@ -343,7 +338,7 @@ export default class SignIn extends Component {
 									/>
 								</View>
 							</View>
-							<View style={appCss.modalOptions}/>
+							<View style={appCss.modalOptions} />
 						</View>
 						<View style={{ flex: 1 }}>
 							<SectionList
@@ -364,12 +359,12 @@ export default class SignIn extends Component {
 											/>
 										</View>
 										<Text
-											style={[ appCss.defaultFontApp, appCss.countryCodeSearch ]}
+											style={[appCss.defaultFontApp, appCss.countryCodeSearch]}
 										>
 											+ {item.callingCodes[0]}
 										</Text>
 										<Text
-											style={[ appCss.defaultFontApp, appCss.countryNameSearch ]}
+											style={[appCss.defaultFontApp, appCss.countryNameSearch]}
 											numberOfLines={1}
 											ellipsizeMode="tail"
 										>
@@ -380,7 +375,7 @@ export default class SignIn extends Component {
 								renderSectionHeader={({ section }) => (
 									<View style={appCss.sectionHeader}>
 										<Text
-											style={[ appCss.defaultFontApp, appCss.sectionHeaderTitle ]}
+											style={[appCss.defaultFontApp, appCss.sectionHeaderTitle]}
 										>
 											{section.title}
 										</Text>
@@ -392,11 +387,7 @@ export default class SignIn extends Component {
 				</Modal>
 
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<View
-						style={
-							styles.imageContainer
-						}
-					>
+					<View style={styles.imageContainer}>
 						<View style={styles.imagesContent}>
 							<Image style={styles.imageItem} source={logo} />
 						</View>
@@ -404,7 +395,7 @@ export default class SignIn extends Component {
 					<View style={appCss.formInputContainer}>
 						<View
 							style={[
-                                appCss.iconFormInput,
+								appCss.iconFormInput,
 								{ paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
 							]}
 						>
@@ -413,7 +404,7 @@ export default class SignIn extends Component {
 							) : (
 								<Image
 									style={[
-                                        appCss.formInputIcon,
+										appCss.formInputIcon,
 										{ marginLeft: 10, marginTop: 8, height: "60%" }
 									]}
 									source={phoneIcon}
@@ -422,7 +413,7 @@ export default class SignIn extends Component {
 							<TextInput
 								style={[
 									appCss.defaultFontApp,
-                                    appCss.textInput,
+									appCss.textInput,
 									{ marginBottom: 12, marginTop: 10 }
 								]}
 								placeholder="Phone Number"
@@ -431,50 +422,41 @@ export default class SignIn extends Component {
 								onChangeText={cellphone => this.setState({ cellphone })}
 								// onFocus={this.handlePhoneFieldFocus}
 								onFocus={() => {
+									this.props.navigation.setParams({
+										curScreen: "Login",
+										nextScreen: "Signup",
+										rightNav: "SignUpScreen"
+									});
 
-                                    this.props.navigation.setParams({
-                                        curScreen: "Login",
-                                        nextScreen: "Signup",
-                                        rightNav: "SignUpScreen"
-                                    });
-
-                                    this.handlePhoneFieldFocus()
-                                }
-                                }
+									this.handlePhoneFieldFocus();
+								}}
 								// onPress={this.handlePhoneFieldFocus}
-								onBlur={
-                                    () => {
-                                        this.handlePhoneFieldBlur();
-                                    }
-                                }
+								onBlur={() => {
+									this.handlePhoneFieldBlur();
+								}}
 							/>
 						</View>
 
 						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon}/>
+							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								style={appCss.textInput}
 								placeholder="Password"
 								placeholderTextColor={colors.combinatorialColor}
 								secureTextEntry={true}
-								onFocus={
-                                    () => {
-                                        this.props.navigation.setParams({
-                                            curScreen: "Login",
-                                            nextScreen: "Signup",
-                                            rightNav: "SignUpScreen"
-                                        });
-
-                                    }
-                                }
-								onBlur={
-                                    () => {
-                                        this.props.navigation.setParams({
-                                            curScreen: "",
-                                            nextScreen: ""
-                                        })
-                                    }
-                                }
+								onFocus={() => {
+									this.props.navigation.setParams({
+										curScreen: "Login",
+										nextScreen: "Signup",
+										rightNav: "SignUpScreen"
+									});
+								}}
+								onBlur={() => {
+									this.props.navigation.setParams({
+										curScreen: "",
+										nextScreen: ""
+									});
+								}}
 								onChangeText={text => this.setState({ password: text })}
 							/>
 						</View>
@@ -504,7 +486,11 @@ export default class SignIn extends Component {
 					style={[styles.loginButton, { bottom: this.state.bottom }]}
 					onPress={this.handleSubmit}
 				>
-					<Text style={styles.loginText}>Login</Text>
+					{this.props.loading ? (
+						<LoadingCircles3 />
+					) : (
+						<Text style={styles.loginText}>Login</Text>
+					)}
 				</TouchableOpacity>
 			</SafeAreaView>
 		);

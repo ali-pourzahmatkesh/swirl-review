@@ -8,7 +8,8 @@ import { callAddFriend } from "../../store/friendRequest";
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
 	membersFromContactsAreNotFriend:
-		state.app.member.membersFromContactsAreNotFriend
+		state.app.member.membersFromContactsAreNotFriend,
+	loading: state.app.friendRequest.loading
 });
 
 const mapDispatchToProps = dispatch => ({

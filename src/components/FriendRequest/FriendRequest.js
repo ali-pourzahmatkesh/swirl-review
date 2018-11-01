@@ -13,6 +13,7 @@ import check from "../../assets/images/icons/check_white.png";
 import cancel from "../../assets/images/icons/close.png";
 import appCss from "../../../app.css";
 import styles from "./style";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class FriendRequest extends Component {
 	state = {
@@ -116,21 +117,29 @@ export default class FriendRequest extends Component {
 					}}
 					style={[styles.actionBtn, styles.cancel]}
 				>
-					<Image
-						source={cancel}
-						resizeMode={"contain"}
-						style={styles.actionIcon}
-					/>
+					{this.props.loading ? (
+						<LoadingCircles3 />
+					) : (
+						<Image
+							source={cancel}
+							resizeMode={"contain"}
+							style={styles.actionIcon}
+						/>
+					)}
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => this.approve(item.id)}
 					style={[styles.actionBtn, styles.verify]}
 				>
-					<Image
-						source={check}
-						resizeMode={"contain"}
-						style={styles.actionIcon}
-					/>
+					{this.props.loading ? (
+						<LoadingCircles3 />
+					) : (
+						<Image
+							source={check}
+							resizeMode={"contain"}
+							style={styles.actionIcon}
+						/>
+					)}
 				</TouchableOpacity>
 			</View>
 		);
