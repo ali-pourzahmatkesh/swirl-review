@@ -406,7 +406,7 @@ const appCss = StyleSheet.create({
 
     emptyList:{
         flex:1,
-        minHeight:height/2,
+        minHeight:height/4,
         alignItems:'center',
         justifyContent:'center'
     },

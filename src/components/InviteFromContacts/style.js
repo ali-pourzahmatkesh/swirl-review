@@ -1,6 +1,7 @@
 import {Dimensions, StyleSheet} from "react-native";
 import {CONFIG} from "../../../config";
 const colors = CONFIG.colors;
+import appCss from "../../../app.css";
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.flatten({
     container: {
@@ -42,7 +43,31 @@ const styles = StyleSheet.flatten({
     addBtnText:{
         color:colors.bodyColor,
         fontSize:13
-    }
+    },
+    boxEmptySearch:{
+        width:width/4*3,
+        height:70,
+        backgroundColor:colors.bodyColor,
+        borderRadius:10,
+        marginTop:20,
+        paddingLeft:15,
+        paddingRight:15,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    boxEmptySearchFaq:{
+        backgroundColor:"#E0E3EB",
+        width:60,
+        height:60,
+        borderRadius:30,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+
+    boxEmptySearchText:StyleSheet.flatten([appCss.defaultFontApp,{
+        marginLeft:15,
+        fontSize:16
+    }]),
 
 });
 export default styles;
