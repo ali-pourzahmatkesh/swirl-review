@@ -26,7 +26,7 @@ import { CONFIG } from "../../../config";
 import styles from "./style";
 const colors = CONFIG.colors;
 import LoadingCircles3 from "../../components/LoadingCircles3";
-
+import emptyIcon from "../../assets/images/icons/emptyCountry.png";
 export default class ForgotPassword extends Component {
 	constructor(props) {
 		super(props);
@@ -279,7 +279,7 @@ export default class ForgotPassword extends Component {
 								sections={countryCodeGroup}
 								extraData={countryCodeGroup}
 								keyExtractor={(item, index) => index}
-								ListEmptyComponent={() => <EmptyList />}
+								ListEmptyComponent={() => <EmptyList emptyIcon={emptyIcon} emptyText={`Imaginary Countries don't count. ${this.state.searchValue && '"'+this.state.searchValue+'"'}`}/>}
 								renderItem={({ item }) => (
 									<TouchableOpacity
 										style={appCss.sectionItems}
