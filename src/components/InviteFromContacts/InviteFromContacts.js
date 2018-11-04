@@ -6,6 +6,7 @@ import appCss from "../../../app.css";
 import Avatar from "../../components/Avatar";
 import { SafeAreaView } from "react-navigation";
 import { PagedContacts } from "react-native-paged-contacts";
+import emptyIcon from "../../assets/images/icons/emptyInviteContact.png";
 import logo from "../../assets/images/logo_bigger.png";
 // import checkedImage from "../../assets/images/checked.png";
 import LoadingCircles3 from "../../components/LoadingCircles3";
@@ -145,6 +146,7 @@ export default class InviteFromContacts extends Component {
 		);
 	};
 
+
 	render() {
 		return (
 			<SafeAreaView style={styles.container}>
@@ -152,7 +154,7 @@ export default class InviteFromContacts extends Component {
 					sections={this.state.finalList}
 					extraData={this.state.finalList}
 					keyExtractor={(item, index) => index}
-					ListEmptyComponent={() => <EmptyList />}
+					ListEmptyComponent={() => <EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>}
 					renderItem={({ item }) => (
 						<View style={styles.sectionItems}>
 							<View

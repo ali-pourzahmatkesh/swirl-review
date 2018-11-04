@@ -16,7 +16,7 @@ import {
 
 import { NavigationActions, SafeAreaView } from "react-navigation";
 import EmptyList from "../EmptyList";
-
+import emptyIcon from "../../assets/images/icons/emptyCountry.png";
 import logo from "../../assets/images/logo_bigger.png";
 import passwordIcon from "../../assets/images/icons/Lock.png";
 import phoneIcon from "../../assets/images/icons/phone.png";
@@ -345,7 +345,7 @@ export default class SignIn extends Component {
 								sections={countryCodeGroup}
 								extraData={countryCodeGroup}
 								keyExtractor={(item, index) => index}
-								ListEmptyComponent={() => <EmptyList />}
+								ListEmptyComponent={() =><EmptyList emptyIcon={emptyIcon} emptyText={`Imaginary Countries don't count. ${this.state.searchValue && '"'+this.state.searchValue+'"'}`}/>}
 								renderItem={({ item }) => (
 									<TouchableOpacity
 										style={appCss.sectionItems}

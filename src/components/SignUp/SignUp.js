@@ -18,6 +18,7 @@ import phoneIcon from "../../assets/images/icons/phone.png";
 import usernameIcon from "../../assets/images/icons/Mask.png";
 
 import EmptyList from "../EmptyList";
+import emptyIcon from "../../assets/images/icons/emptyCountry.png";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SVGImage from "react-native-svg-image";
@@ -291,7 +292,7 @@ export default class SignUp extends Component {
 								sections={countryCodeGroup}
 								extraData={countryCodeGroup}
 								keyExtractor={(item, index) => index}
-								ListEmptyComponent={() => <EmptyList />}
+								ListEmptyComponent={() => <EmptyList emptyIcon={emptyIcon} emptyText={`Imaginary Countries don't count. ${this.state.searchValue && '"'+this.state.searchValue+'"'}`}/>}
 								renderItem={({ item }) => (
 									<TouchableOpacity
 										style={appCss.sectionItems}
