@@ -6,8 +6,13 @@ import appCss from "../../../app.css";
 import Avatar from "../../components/Avatar";
 import { SafeAreaView } from "react-navigation";
 import { PagedContacts } from "react-native-paged-contacts";
+import emptyIcon from "../../assets/images/icons/emptyInviteContact.png";
+import faq from "../../assets/images/icons/faq.png";
+import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
 import logo from "../../assets/images/logo_bigger.png";
 // import checkedImage from "../../assets/images/checked.png";
+import LoadingCircles3 from "../../components/LoadingCircles3";
+
 let pg = new PagedContacts();
 
 export default class InviteFromContacts extends Component {
@@ -144,6 +149,28 @@ export default class InviteFromContacts extends Component {
 		);
 	};
 
+
+	emptyList = ()=>{
+        if(this.props.screenProps && this.props.screenProps.searchText){
+
+        	return (
+			<View style={{flex:1 , alignItems:'center'}}>
+				<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
+				<View style={styles.boxEmptySearch}>
+					<View style={styles.boxEmptySearchFaq}>
+						<Image style={appCss.emptyIcon} source={faq}/>
+
+					</View>
+					<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText}"</Text>
+				</View>
+			</View>
+			)
+		}else{
+        	return (
+				<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
+			)
+		}
+	}
 	render() {
 		return (
 			<SafeAreaView style={styles.container}>
@@ -151,7 +178,7 @@ export default class InviteFromContacts extends Component {
 					sections={this.state.finalList}
 					extraData={this.state.finalList}
 					keyExtractor={(item, index) => index}
-					ListEmptyComponent={() => <EmptyList />}
+					ListEmptyComponent={() =>this.emptyList() }
 					renderItem={({ item }) => (
 						<View style={styles.sectionItems}>
 							<View
@@ -183,7 +210,11 @@ export default class InviteFromContacts extends Component {
 								style={styles.addBtn}
 								onPress={() => this.addFriend(item)}
 							>
-								<Text style={styles.addBtnText}> Add </Text>
+								{this.props.loading ? (
+									<LoadingCircles3 />
+								) : (
+									<Text style={styles.addBtnText}> Add </Text>
+								)}
 							</TouchableOpacity>
 						</View>
 					)}

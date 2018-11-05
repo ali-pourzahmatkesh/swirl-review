@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { changePasswordFromProfile } from "../../store/member";
 
 const mapStateToProps = state => ({
-	id: state.app.member.userData.id
+	id: state.app.member.userData.id,
+	isLoadingFetch: state.app.member.isLoadingFetch
 });
 
 const mapDispatchToProps = dispatch => ({

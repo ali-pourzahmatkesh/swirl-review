@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     Text,
     TouchableOpacity,
@@ -17,12 +17,14 @@ import passwordIcon from "../../assets/images/icons/password3.png";
 import phoneIcon from "../../assets/images/icons/phone3.png";
 
 import EmptyList from "../EmptyList";
+import emptyIcon from "../../assets/images/icons/emptyCountry.png";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SVGImage from "react-native-svg-image";
 import appCss from "../../../app.css";
 import styles from "./style";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 // import moment from "moment";
 
@@ -243,7 +245,7 @@ export default class SignUp extends Component {
 								<Text style={styles.textSignup}>By signing up you agree to the <Text style={styles.bolderSignup}>terms of use</Text></Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={[ styles.signUpButton ]}
+								style={[styles.signUpButton]}
 								onPress={this.handleSubmit}
 								disabled={signUpDisabled}
 							>

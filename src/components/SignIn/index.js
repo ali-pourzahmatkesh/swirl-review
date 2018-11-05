@@ -5,6 +5,7 @@ import { sendPassword, getIpData, getCountries } from "../../store/member";
 import { showToast } from "../../store/toast";
 
 const mapStateToProps = state => ({
+	loading: state.app.member.loading,
 	isLoadingFetch: state.app.member.isLoadingFetch,
 	ipData: state.app.member.ipData,
 	countries: state.app.member.countries

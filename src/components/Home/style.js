@@ -122,8 +122,8 @@ const STYLES = StyleSheet.create({
     },
 
     iconBottom: {
-        width: 25,
-        height: 25,
+        width: 30,
+        height: 30,
         resizeMode: 'contain'
     },
     chatListEmpty:{

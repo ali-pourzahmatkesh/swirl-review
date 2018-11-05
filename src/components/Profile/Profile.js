@@ -42,6 +42,7 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loadingUpdateAvatar: true,
 			avatarSource: "" // a uri content
 			// cropImage: false
 			// ghost: false,
@@ -54,7 +55,11 @@ export default class Profile extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-
+		if (nextProps.loadingUpdateAvatar !== this.state.loadingUpdateAvatar) {
+			this.setState({
+				loadingUpdateAvatar: nextProps.loadingUpdateAvatar
+			});
+		}
 	}
 
 	goTo(screenName) {
@@ -181,14 +186,19 @@ export default class Profile extends Component {
 					width: 256,
 					height: 256,
 					cropperCircleOverlay: true,
-					mediaType: "photo"
+					mediaType: "photo",
+					loadingLabelText: "Processing..."
+					// cropperChooseText: this.state.loadingUpdateAvatar
+					// 	? "Loading..."
+					// 	: "Choose" // it is IOS only
 				}).then(image => {
 					if (image && image.path) {
 						// console.log("after crop get image:", image, {
 						// 	uri: "file://" + image.path
 						// });
 						this.setState({
-							avatarSource: { uri: "file://" + image.path }
+							avatarSource: { uri: "file://" + image.path },
+							loadingUpdateAvatar: true
 							//cropImage: true
 						});
 						this.uploadImageToCloud("file://" + image.path);

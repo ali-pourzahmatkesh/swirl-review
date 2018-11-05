@@ -10,6 +10,7 @@ import {
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 const styles = StyleSheet.create({
 	container: {
@@ -107,7 +108,11 @@ export default class Feedback extends Component {
 							}
 							underlayColor={colors.tapeWhite}
 						>
-							<Text style={styles.buttonText}>Submit</Text>
+							{this.props.loading ? (
+								<LoadingCircles3 />
+							) : (
+								<Text style={styles.buttonText}>Submit</Text>
+							)}
 						</TouchableOpacity>
 					</View>
 				</KeyboardAvoidingView>

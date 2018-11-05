@@ -78,7 +78,8 @@ const friendRequest = (
 					...state,
 					errorMessage: "",
 					hasError: false,
-					loading: true
+					loading: true,
+					isLoadingFetch: true
 				},
 				Cmd.run(fetchGetListData, {
 					successActionCreator: fetchGetListDataSuccess,
@@ -92,7 +93,8 @@ const friendRequest = (
 			return {
 				...state,
 				list: action.payload,
-				loading: false
+				loading: false,
+				isLoadingFetch: false
 			};
 		}
 
@@ -102,7 +104,8 @@ const friendRequest = (
 					...state,
 					loading: false,
 					errorMessage: action.payload.message,
-					hasError: true
+					hasError: true,
+					isLoadingFetch: false
 				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
@@ -226,7 +229,7 @@ const friendRequest = (
 
 		case CALL_APPROVE: {
 			return loop(
-				{ ...state },
+				{ ...state, loading: true },
 				Cmd.run(fetchApprove, {
 					successActionCreator: fetchApproveSuccess,
 					failActionCreator: fetchApproveFailed,
@@ -239,12 +242,23 @@ const friendRequest = (
 			let list = state.list.filter(item => {
 				return item.id !== action.payload;
 			});
-			return { ...state, errorMessage: "", hasError: false, list };
+			return {
+				...state,
+				errorMessage: "",
+				hasError: false,
+				list,
+				loading: false
+			};
 		}
 
 		case APPROVE_FAILED: {
 			return loop(
-				{ ...state, errorMessage: action.payload.message, hasError: true },
+				{
+					...state,
+					errorMessage: action.payload.message,
+					hasError: true,
+					loading: false
+				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
 		}
@@ -253,7 +267,7 @@ const friendRequest = (
 
 		case CALL_CANCEL: {
 			return loop(
-				{ ...state },
+				{ ...state, loading: true },
 				Cmd.run(fetchCancel, {
 					successActionCreator: fetchCancelSuccess,
 					failActionCreator: fetchCancelFailed,
@@ -264,12 +278,23 @@ const friendRequest = (
 
 		case CANCEL_SUCCESS: {
 			let list = state.list.filter(item => item.id !== action.payload);
-			return { ...state, errorMessage: "", hasError: false, list };
+			return {
+				...state,
+				errorMessage: "",
+				hasError: false,
+				list,
+				loading: false
+			};
 		}
 
 		case CANCEL_FAILED: {
 			return loop(
-				{ ...state, errorMessage: action.payload.message, hasError: true },
+				{
+					...state,
+					errorMessage: action.payload.message,
+					hasError: true,
+					loading: false
+				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
 		}

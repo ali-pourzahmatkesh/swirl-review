@@ -5,7 +5,9 @@ import { callLogout, callGetProfile, updateMember } from "../../store/member";
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
-	userProfile: state.app.member.userData
+	userProfile: state.app.member.userData,
+	loadingUpdateAvatar: state.app.member.isLoadingFetch,
+	loading: state.app.member.loading
 });
 
 const mapDispatchToProps = dispatch => {

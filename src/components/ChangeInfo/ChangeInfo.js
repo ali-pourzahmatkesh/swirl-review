@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
 	Image,
 	KeyboardAvoidingView,
@@ -15,9 +15,10 @@ import logo from "../../assets/images/logo_bigger.png";
 import usernameIcon from "../../assets/images/icons/profile3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ChangeInfo extends Component {
     state = {
@@ -32,25 +33,25 @@ export default class ChangeInfo extends Component {
     };
 
 	render() {
-        let { username } = this.state;
-        let disabledBtn = false;
-        if( !username || username.length === 0 ) disabledBtn = true;
+		let { username } = this.state;
+		let disabledBtn = false;
+		if (!username || username.length === 0) disabledBtn = true;
 
-        return (
+		return (
 			<View style={styles.container}>
-				<KeyboardAvoidingView keyboardVerticalOffset={height === 812 ? 85 : 65} style={{ flex: 1 }} behavior="padding">
-					<View
-						style={
-                            styles.imageContainer
-                        }
-					>
+				<KeyboardAvoidingView
+					keyboardVerticalOffset={height === 812 ? 85 : 65}
+					style={{ flex: 1 }}
+					behavior="padding"
+				>
+					<View style={styles.imageContainer}>
 						<View style={styles.imagesContent}>
-							<Image style={styles.imageItem} source={logo}/>
+							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
-					<View style={[ appCss.formInputContainer ]}>
+					<View style={[appCss.formInputContainer]}>
 						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={usernameIcon}/>
+							<Image style={appCss.formInputIcon} source={usernameIcon} />
 							<TextInput
 								style={[ appCss.textInput ]}
 								placeholder='Username here'
@@ -62,7 +63,6 @@ export default class ChangeInfo extends Component {
 								onChangeText={username => this.setState({ username })}
 							/>
 						</View>
-
 					</View>
 					<KeyboardAwareButton
 						title='Save'
