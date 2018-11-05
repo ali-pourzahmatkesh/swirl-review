@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     Text,
     TouchableOpacity,
@@ -15,7 +15,8 @@ import logo from "../../assets/images/logo_bigger.png";
 import usernameIcon from "../../assets/images/icons/profile3.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
 import styles from "./style";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
@@ -234,7 +235,7 @@ export default class SignUp extends Component {
 								<Text style={styles.textSignup}>By signing up you agree to the <Text style={styles.bolderSignup}>terms of use</Text></Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={[ styles.signUpButton ]}
+								style={[styles.signUpButton]}
 								onPress={this.handleSubmit}
 								disabled={signUpDisabled}
 							>

@@ -13,6 +13,8 @@ import check from "../../assets/images/icons/check4.png";
 import cancel from "../../assets/images/icons/close2.png";
 import appCss from "../../../app.css";
 import styles from "./style";
+import emptyIcon from "../../assets/images/icons/messageEmpty.png";
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class FriendRequest extends Component {
 	state = {
@@ -152,7 +154,7 @@ export default class FriendRequest extends Component {
 					style={{ flex: 1 }}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
-					ListEmptyComponent={() => <EmptyList />}
+					ListEmptyComponent={() =><EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
 					onEndReachedThreshold={0.5}
 				/>
 			</View>

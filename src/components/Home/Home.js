@@ -8,6 +8,8 @@ import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
 import twoPeople from "../../assets/images/icons/twoPeople.png"
 import noSwirl from "../../assets/images/icons/noSwirl.png";
+// import noSwirl from "../../assets/images/icons/noSwirl.png";
+import emptyIcon from "../../assets/images/icons/messageEmpty.png";
 import Avatar from "../Avatar";
 import {CONFIG} from "../../../config";
 import EmptyList from "../EmptyList";
@@ -414,33 +416,29 @@ class Home extends Component {
 					/>
 				</Modal>
 				{this.loadHeader()}
-				{(list.length && (
-					<FlatList
-						contentContainerStyle={styles.chatList}
-						data={list}
-						keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
-						renderItem={({ item }) => this.loadContentItem({ item })}
-						ListEmptyComponent={() => <EmptyList />}
-						onRefresh={() => {
-							this.onRefresh();
-						}}
-						refreshing={refreshing}
-						onEndReachedThreshold={0.3}
-						onEndReached={() => {
-							this.handleLoadMore();
-						}}
-						showsHorizontalScrollIndicator={false}
-						showsVerticalScrollIndicator={false}
-					/>
-				)) || (
-					<View style={styles.chatListEmpty}>
-						{/* <Image style={styles.iconBottom} source={noSwirl} /> */}
-						<Text style={{fontSize: 40}}>🍭</Text>
-						<Text style={styles.chatListEmptyText}>
-							Nobody swirled you… Yet..
-						</Text>
-					</View>
-				)}
+				<View style={styles.chatList}>
+					{(list.length && (
+						<FlatList
+							data={list}
+							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+							renderItem={({ item }) => this.loadContentItem({ item })}
+							ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
+							onRefresh={() => {
+								this.onRefresh();
+							}}
+							refreshing={refreshing}
+							onEndReachedThreshold={0.3}
+							onEndReached={() => {
+								this.handleLoadMore();
+							}}
+							showsHorizontalScrollIndicator={false}
+							showsVerticalScrollIndicator={false}
+						/>
+					)) || (
+						<EmptyList emptyIcon={emptyIcon} emptyText={'Nobody swirled you… Yet..'}/>
+
+					)}
+				</View>
 				<View style={styles.homeBottomBox}>
 					<TouchableOpacity
 						onPress={() => this.setState({ newMessageModalVisible: true })}

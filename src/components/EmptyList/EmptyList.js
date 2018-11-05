@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import logo from '../../assets/images/logo_bigger.png';
-import { StyleSheet, Image, View, Dimensions} from "react-native";
+import { StyleSheet, Image, View, Dimensions, Text} from "react-native";
 const {width, height} = Dimensions.get('window');
+import appCss from "../../../app.css";
 const styles = StyleSheet.create({
     container: {
         flex:1,
@@ -21,10 +22,13 @@ export default class EmptyList extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-
-                <Image resizeMode={'contain'} style={[styles.exportPic, {opacity:0.5}]} source={logo}/>
+            <View style={appCss.emptyList}>
+                <Image style={appCss.emptyIcon} source={this.props.emptyIcon} />
+                <Text style={appCss.emptyListText}>
+                    {this.props.emptyText}
+                </Text>
             </View>
+
         )
     }
 }

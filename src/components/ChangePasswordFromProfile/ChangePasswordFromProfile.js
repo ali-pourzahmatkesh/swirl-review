@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
 	Dimensions,
 	Image,
@@ -15,9 +15,10 @@ import logo from "../../assets/images/logo_bigger.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
-import {CONFIG} from "../../../config";
+import { CONFIG } from "../../../config";
 const { height } = Dimensions.get("window");
 const colors = CONFIG.colors;
+import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ChangePasswordFromProfile extends Component {
 	constructor(props) {
@@ -114,13 +115,13 @@ export default class ChangePasswordFromProfile extends Component {
 				<View style={{flex: 1}}>
 					<View style={styles.imageContainer}>
 						<View style={styles.imagesContent}>
-							<Image style={styles.imageItem} source={logo}/>
+							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
 					{/* <Animated.View style={[ appCss.formInputContainer, {borderWidth: 1, transform: [{translateY: height * 0.0}]} ]}> */}
 					<Animated.View style={[styles.formInputContainer, {height: this.formHeight, paddingTop: this.formTopPadding}]}>
 						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon}/>
+							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								placeholder="Old Password"
 								placeholderTextColor={colors.highlightColorTwo}
@@ -130,7 +131,7 @@ export default class ChangePasswordFromProfile extends Component {
 							/>
 						</View>
 						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon}/>
+							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								placeholder="New Password"
 								placeholderTextColor={colors.highlightColorTwo}
@@ -141,13 +142,15 @@ export default class ChangePasswordFromProfile extends Component {
 						</View>
 						<Text style={styles.minLengthText}>min 7 characters</Text>
 						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon}/>
+							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								placeholder="Re-enter Password"
 								placeholderTextColor={colors.highlightColorTwo}
 								secureTextEntry={true}
 								style={appCss.textInput}
-								onChangeText={text => this.setState({ retypeNewPassword: text })}
+								onChangeText={text =>
+									this.setState({ retypeNewPassword: text })
+								}
 							/>
 						</View>
 					</Animated.View>

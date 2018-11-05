@@ -16,6 +16,7 @@ import checkedImage from "../../assets/images/icons/check4.png";
 import { CONFIG } from "../../../config";
 import next from "../../assets/images/icons/next1.png";
 import LoadingCircles3 from "../../components/LoadingCircles3";
+import emptyIcon from "../../assets/images/icons/emptyInviteContact.png";
 const colors = CONFIG.colors;
 const { width } = Dimensions.get("window");
 
@@ -178,7 +179,7 @@ export default class SendTo extends Component {
 					sections={list}
 					extraData={list}
 					keyExtractor={(item, index) => index}
-					ListEmptyComponent={() => <EmptyList />}
+					ListEmptyComponent={() => <EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>}
 					renderItem={({ item }) => this.loadList({ item })}
 					renderSectionHeader={({ section }) => (
 						<View style={styles.sectionHeader}>
