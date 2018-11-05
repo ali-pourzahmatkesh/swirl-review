@@ -1,11 +1,13 @@
 import React, {Component} from "react";
 import {Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import appCss from "../../../app.css";
+import {CONFIG} from "../../../config";
+const COLORS = CONFIG.colors;
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#e6e7e9"
+		backgroundColor: COLORS.tapeWhite
 	},
 
 	flatList: {

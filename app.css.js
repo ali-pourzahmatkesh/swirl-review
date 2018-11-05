@@ -352,11 +352,11 @@ const appCss = StyleSheet.create({
 
     countryCodeSearch: {
         color: colors.bodyColor,
-        flexBasis: "15%",
+        flexBasis: "19%",
         marginLeft: 10,
         textAlign: "right",
         fontFamily: 'MuseoSansRounded-900',
-        fontSize: 17
+        fontSize: 17,
     },
 
     countryNameSearch: {

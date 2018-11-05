@@ -5,6 +5,10 @@ const { width, height } = Dimensions.get("window");
 const COLORS = CONFIG.colors;
 
 const STYLES = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.tapeWhite
+    },
     sectionHeaderText: {
         fontFamily: 'MuseoSansRounded-700',
         fontSize: 15,
@@ -66,7 +70,7 @@ const STYLES = StyleSheet.create({
         shadowOffset: {
             height: 1
         },
-        shadowOpacity: .3,
+        shadowOpacity: 0.4,
         shadowRadius: 5,
     },
     editButton: {

@@ -269,6 +269,14 @@ class Home extends Component {
 								initialSecondsRemaining={remainingSeconds}
 								allowFontScaling={true}
 								style={[appCss.defaultFontApp,{ fontSize: 14, fontFamily: 'MuseoSansRounded-500' }]}
+								formatSecondsRemaining={
+									(milliseconds) => {
+										const remainingSec = Math.round(milliseconds / 1000);
+										const minutes = parseInt(((remainingSec / 60) % 60).toString(), 10);
+										const hours = parseInt((remainingSec / 3600).toString(), 10);
+										return `${hours < 10 ? 0 : ''}${hours}:${minutes < 10 ? 0 : ''}${minutes}`;
+									}
+								}
 							/>{" "}
 						</View>
 						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)}</Text>
@@ -308,7 +316,8 @@ class Home extends Component {
 						<Text
 							style={[
 								styles.chatDesc,
-								messageStyle == "Ready" && { color: COLORS.bodyColor }
+								messageStyle == "Ready" && { color: COLORS.bodyColor },
+								messageStyle !== "Ready" && { lineHeight: 24 }
 							]}
 						>
 							{messageHint()}
@@ -349,7 +358,7 @@ class Home extends Component {
 		else if(postType === 'image'){
 			return '📷';
 		}
-		else if(postType === 'vidoe'){ // is it called video?
+		else if(postType === 'video'){ // is it called video?
 			return '🎥';
 		}
 	}

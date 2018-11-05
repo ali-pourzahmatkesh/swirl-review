@@ -73,9 +73,12 @@ export default class CountryCodeModal extends Component {
 				nextProps.countries.length !== this.state.countries.length) ||
 			(nextProps.defaultCountryCode)
 		) {
-			let countryCodeGroup = [];
-			if (nextProps.countries.length > 0) {
+			if (nextProps.countries.length > 0 && this.state.countryCodeGroup.length === 0) {
+				let countryCodeGroup = [];
 				countryCodeGroup = this.generateSectionList(nextProps.countries);
+				this.setState({
+					countryCodeGroup
+				});
 			}
 			console.log('default country code', nextProps.defaultCountryCode)
 			let cellphoneCountryCode = nextProps.defaultCountryCode || this.state.cellphoneCountryCode;
@@ -89,7 +92,7 @@ export default class CountryCodeModal extends Component {
 				flagCountry: nextProps.ipData["flag"] || [],
 				flag: nextProps.defaultFlag,
 				countries: nextProps.countries,
-				countryCodeGroup
+				// countryCodeGroup
 			});
 		}
 	}
@@ -148,20 +151,14 @@ export default class CountryCodeModal extends Component {
 			return (
 				<ActivityIndicator
 					size={1}
-					style={[appCss.countryCodeBox, {
-						marginTop: 7,
-						marginLeft: 10
-					}]}
+					style={appCss.countryCodeBox}
 					color={colors.combinatorialColor}
 				/>
 			);
 		} else {
 			return (
 				<TouchableOpacity
-					style={[appCss.countryCodeBox, {
-						// marginTop: 7,
-						// marginLeft: 10
-					}]}
+					style={[appCss.countryCodeBox, cellphoneCountryCode.length > 3 && {width: 75}]}
 					onPress={() => this.openModal()}
 				>
 					<View style={appCss.countryCodeImageBox}>
@@ -258,6 +255,7 @@ export default class CountryCodeModal extends Component {
 						</View>
 						<View style={{ flex: 1 }}>
 							<SectionList
+								keyboardShouldPersistTaps='handled'
 								sections={countryCodeGroup}
 								extraData={countryCodeGroup}
 								keyExtractor={(item, index) => index}

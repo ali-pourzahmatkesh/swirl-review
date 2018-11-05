@@ -8,23 +8,14 @@ import {
 	Dimensions,
 } from "react-native";
 import {SafeAreaView} from "react-navigation";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import BubbleInput from "../_common/BubbleInput";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 
 import logo from "../../assets/images/logo_bigger.png";
 import usernameIcon from "../../assets/images/icons/profile3.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
-import phoneIcon from "../../assets/images/icons/phone3.png";
-
-import EmptyList from "../EmptyList";
-import Feather from "react-native-vector-icons/Feather";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import SVGImage from "react-native-svg-image";
-import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
-
-// import moment from "moment";
 
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
@@ -38,7 +29,7 @@ export default class SignUp extends Component {
 			reEnterPassword: "",
 
 			//for country code modal
-			cellphoneCountryCode: "",
+			cellphoneCountryCode: 1,
 			cellphone: "",
 			flag: "",
 		};
@@ -196,7 +187,7 @@ export default class SignUp extends Component {
 					</View>
 					<Animated.View style={[styles.formInputContainer, {height: this.formHeight}]}>
 						<BubbleInput
-							icon={passwordIcon}
+							icon={usernameIcon}
 							inputProps={{
 								autoFocus:true,
 								placeholder: "Username",
@@ -258,6 +249,7 @@ export default class SignUp extends Component {
 					title='Sign Up'
 					onPress={this.handleSubmit}
 					disabled={signUpDisabled}
+					loading={isLoadingFetch}
 				/>
 			</SafeAreaView>
 		);

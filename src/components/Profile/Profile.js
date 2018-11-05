@@ -258,86 +258,71 @@ export default class Profile extends Component {
 		];
 
 		return (
-			<View style={{ flex: 1 }}>
-				{/*this.showGhostModePopup()*/}
-				<View style={{ flex: 1 }}>
-					{/* <Modal visible={this.state.cropImage} animationType="slide">
-						<ImageCropPic imageSource={this.state.avatarSource} />
-					</Modal> */}
-					<View style={styles.imageContainer}>
-						<View style={[appCss.header, { marginBottom: 0 }]}>
-							<TouchableOpacity
-								style={appCss.headerIconBox}
-								onPress={() => this.props.navigation.goBack()}
-							>
-								<Ionicons
-									size={30}
-									color={COLORS.bodyColor}
-									name="ios-arrow-back"
-								/>
-							</TouchableOpacity>
-						</View>
-						<View
-							style={{
-								borderWidth: 0,
-								height: height * 0.15,
-								alignSelf: "center",
-								position: "relative"
-							}}
+			<View style={styles.container}>
+				<View style={styles.imageContainer}>
+					<View style={[appCss.header, { marginBottom: 0 }]}>
+						<TouchableOpacity
+							style={appCss.headerIconBox}
+							onPress={() => this.props.navigation.goBack()}
 						>
-							{(this.state.avatarSource && (
-								<Avatar
-									userId={this.state.avatarSource}
-									imageType="data"
-									size={height * 0.15}
-									position="profile"
-								/>
-							)) || (
-								<Avatar
-									userId={this.props.id}
-									size={height * 0.15}
-									position="profile"
-								/>
-							)}
-
-							<TouchableOpacity
-								onPress={() => this.uploadImage()}
-								style={styles.editButton}
-							>
-								<Image
-									style={styles.editIcon}
-									resizeMode={"contain"}
-									source={editIcon}
-								/>
-							</TouchableOpacity>
-						</View>
-						<Text style={styles.nameText}>{userProfile.username}</Text>
+							<Ionicons
+								size={30}
+								color={COLORS.bodyColor}
+								name="ios-arrow-back"
+							/>
+						</TouchableOpacity>
 					</View>
 					<View
 						style={{
 							borderWidth: 0,
-							borderColor: "blue",
-							flex: 1,
-							backgroundColor: COLORS.tapeWhite
+							height: height * 0.15,
+							alignSelf: "center",
+							position: "relative"
 						}}
 					>
-						<SectionList
-							renderItem={this.renderOption}
-							renderSectionHeader={this.renderOptionTitle}
-							keyExtractor={(item, index) => item + index}
-							sections={options}
-							style={{
-								height: '100%',
-								paddingLeft: '5%',
-								paddingRight: '5%'
-							}}
-							contentContainerStyle={{
-								alignItems: 'center'
-							}}
-							stickySectionHeadersEnabled={false}
-						/>
+						{(this.state.avatarSource && (
+							<Avatar
+								userId={this.state.avatarSource}
+								imageType="data"
+								size={height * 0.15}
+								position="profile"
+							/>
+						)) || (
+							<Avatar
+								userId={this.props.id}
+								size={height * 0.15}
+								position="profile"
+							/>
+						)}
+
+						<TouchableOpacity
+							onPress={() => this.uploadImage()}
+							style={styles.editButton}
+						>
+							<Image
+								style={styles.editIcon}
+								resizeMode={"contain"}
+								source={editIcon}
+							/>
+						</TouchableOpacity>
 					</View>
+					<Text style={styles.nameText}>{userProfile.username}</Text>
 				</View>
+				<SectionList
+					renderItem={this.renderOption}
+					renderSectionHeader={this.renderOptionTitle}
+					keyExtractor={(item, index) => item + index}
+					sections={options}
+					style={{
+						height: '100%',
+						paddingLeft: '5%',
+						paddingRight: '5%'
+					}}
+					contentContainerStyle={{
+						alignItems: 'center'
+					}}
+					stickySectionHeadersEnabled={false}
+				/>
 			</View>
 		);
 	}

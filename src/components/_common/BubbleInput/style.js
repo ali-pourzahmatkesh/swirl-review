@@ -6,9 +6,6 @@ const styles = StyleSheet.create({
     iconFormInput: {
         flexDirection: 'row',
         marginTop: 25,
-        // paddingLeft: 20,
-        borderBottomWidth: 1.5,
-        borderBottomColor: colors.formInputUnderline,
         backgroundColor: colors.bodyColor,
         borderRadius: 50,
         height: height * 0.06,
@@ -23,8 +20,7 @@ const styles = StyleSheet.create({
         height: height * 0.035,
         width: "10%",
         resizeMode: "contain",
-        marginLeft: 20
-        // marginTop: 10
+        marginLeft: 20,
     },
     textInput: {
         fontFamily: "MuseoSansRounded-900",
@@ -34,7 +30,6 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         paddingLeft: 18,
         color: colors.highlightColorTwo,
-        marginTop: 2,
         height: '100%',
     },
 

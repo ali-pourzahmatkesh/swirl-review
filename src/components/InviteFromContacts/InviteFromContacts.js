@@ -22,14 +22,12 @@ export default class InviteFromContacts extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		console.log("IN componentWillReceiveProps", nextProps);
-		if (
-			nextProps.membersFromContactsAreNotFriend &&
-			this.state.list.length != nextProps.membersFromContactsAreNotFriend.length
-		) {
-			console.log(
-				"membersFromContactsAreNotFriend",
-				nextProps.membersFromContactsAreNotFriend
-			);
+		if(nextProps.id && !this.props.id){
+			this.getPhoneNumbersFromContactList();
+		}
+		if(nextProps.membersFromContactsAreNotFriend &&
+			nextProps.membersFromContactsAreNotFriend.length !== 0 &&
+			this.props.membersFromContactsAreNotFriend.length === 0){
 			this.setState({
 				list: nextProps.membersFromContactsAreNotFriend,
 				finalList: this.generateSectionList(
@@ -41,7 +39,7 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentDidMount() {
-		this.getPhoneNumbersFromContactList();
+		
 	}
 
 	getPhoneNumbersFromContactList = function() {
@@ -145,6 +143,7 @@ export default class InviteFromContacts extends Component {
 	};
 
 	render() {
+		console.log(this.props, 'alsjdf;akjsf;lkajs;dflja;dsfj;adj;akljdf;kajds')
 		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList

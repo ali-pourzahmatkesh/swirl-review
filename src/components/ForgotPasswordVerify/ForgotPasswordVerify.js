@@ -24,6 +24,12 @@ export default class ForgotPasswordVerify extends Component {
 		};
 	}
 
+	componentWillReceiveProps(nextProps){
+		if(this.props.isLoadingFetch !== nextProps.isLoadingFetch && nextProps.hasError){
+			this.refs.vcode.clear()
+		}
+	}
+
 	toConfirm = () => {
 		this.props.navigation.navigate("ChangePasswordScreen");
 	};
@@ -35,11 +41,11 @@ export default class ForgotPasswordVerify extends Component {
 			selectionColor: colors.appColor, // changes the caret/cursor/blinking line color
         }
 	}
-	
-	updateCode = code => {
+
+	onFulfill = code => {
 		this.setState({
 			code
-		}, ()=>console.log(this.state))
+		}, this.handleSubmit)
 	}
 
 	handleSubmit = () => {
@@ -53,6 +59,10 @@ export default class ForgotPasswordVerify extends Component {
 	};
 
 	render() {
+		let {
+			isLoadingFetch
+		} = this.props;
+
 		let nextDisabled = false;
 		if (this.state.code.length !== 4) {
 			nextDisabled = true;
@@ -70,13 +80,14 @@ export default class ForgotPasswordVerify extends Component {
 							Please enter the verification code
 						</Text>
 						<CodeField
+							ref='vcode'
 							codeLength={4}
 							autoFocus={true}
                             keyboardType='numeric'
 							getInputStyle={() => styles.codeInput}
 							getInputProps={this.propsForCodeField}
-							onFulfill={this.updateCode}
-							onChangeCode={this.updateCode}
+							onFulfill={this.onFulfill}
+							onChangeCode={code => this.setState({code})}
 						/>
 					</View>
 				</KeyboardAvoidingView>
@@ -85,6 +96,7 @@ export default class ForgotPasswordVerify extends Component {
 					onPress={this.handleSubmit}
 					disabled={nextDisabled}
 					beginOnPage={true}
+					loading={isLoadingFetch}
 				/>
 			</SafeAreaView>
 		);

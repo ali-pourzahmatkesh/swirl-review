@@ -12,7 +12,7 @@ import styles from "./style";
 import appCss from "../../../app.css";
 import Avatar from "../../components/Avatar";
 import { SafeAreaView } from "react-navigation";
-import checkedImage from "../../assets/images/icons/check_white.png";
+import checkedImage from "../../assets/images/icons/check4.png";
 import { CONFIG } from "../../../config";
 import next from "../../assets/images/icons/next1.png";
 import LoadingCircles3 from "../../components/LoadingCircles3";

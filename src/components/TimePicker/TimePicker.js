@@ -1,9 +1,16 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import { Picker, Text, View} from "react-native";
+import {
+    Picker,
+    Text,
+    View,
+    TouchableOpacity,
+    Dimensions
+} from "react-native";
 import styles from './style'
 const MAX_HOURS = 23;
 const MAX_MINUTES = 59;
+const {  width } = Dimensions.get('window');
 export default class TimePicker extends Component {
     static propTypes = {
         selectedHours: PropTypes.number,
@@ -41,7 +48,7 @@ export default class TimePicker extends Component {
         return items;
     };
 
-    getMinutesImtes = () => {
+    getMinutesItems = () => {
         const items = [];
         const { minutesUnit } = this.props;
         for( let i = 0; i <= MAX_MINUTES; i++ ) {
@@ -73,12 +80,46 @@ export default class TimePicker extends Component {
         });
     };
 
+    quickTime = (time, unit) => {
+        return (
+            <TouchableOpacity
+                style={styles.quickTimeButton}
+                onPress={() => {
+                    const { onChange } = this.props;
+                    if(unit === 'min'){
+                        this.setState({
+                            selectedMinutes: time,
+                            selectedHours: 0
+                        }, () => {
+                            const { selectedHours, selectedMinutes } = this.state;
+                            onChange(selectedHours, selectedMinutes);
+                        })
+                    }
+                    else if(unit === 'hour'){
+                        this.setState({
+                            selectedHours: time,
+                            selectedMinutes: 0
+                        }, () => {
+                            const { selectedHours, selectedMinutes } = this.state;
+                            onChange(selectedHours, selectedMinutes);
+                        })
+                    }
+                    else{
+                        console.log('???')
+                    }
+                }}
+            >
+                <Text style={styles.quickTimeButtonText}>{time} {unit + (time > 1 ? 's' : '')}</Text>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
         const { selectedHours, selectedMinutes } = this.state;
         return (
             <View style={styles.container}>
-                <View style={styles.backPicker}/>
                 <View style={styles.timePickerContainer}>
+                    <View style={styles.backPicker}/>
                     <Picker
                         style={styles.picker}
                         itemStyle={styles.pickerItem}
@@ -94,8 +135,18 @@ export default class TimePicker extends Component {
                         selectedValue={selectedMinutes}
                         onValueChange={( itemValue ) => this.handleChangeMinutes(itemValue)}
                     >
-                        {this.getMinutesImtes()}
+                        {this.getMinutesItems()}
                     </Picker>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <View style={styles.buttonRow}>
+                        {this.quickTime(30, 'min')}
+                        {this.quickTime(1, 'hour')}
+                    </View>
+                    <View style={styles.buttonRow}>
+                        {this.quickTime(12, 'hour')}
+                        {this.quickTime(24, 'hour')}
+                    </View>
                 </View>
             </View>
         );

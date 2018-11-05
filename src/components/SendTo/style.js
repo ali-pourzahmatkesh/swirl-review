@@ -10,104 +10,104 @@ const styles = StyleSheet.flatten({
         width
     },
     sectionHeader:{
-        backgroundColor:colors.bodyColor,
-        width:65,
-        height:20,
-        alignItems:'center',
-        justifyContent:'center',
-        borderTopEndRadius:30,
-        borderBottomEndRadius:30,
-        marginTop:10,
-        marginBottom:10
+        backgroundColor: colors.bodyColor,
+        width: 65,
+        height: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopEndRadius: 30,
+        borderBottomEndRadius: 30,
+        marginTop: 10,
+        marginBottom: 10
     },
-    sectionHeaderTitle:{
-        color:colors.appColor
+    sectionHeaderTitle: {
+        color: colors.appColor
     },
-    sectionItems:{
-        height:60,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        paddingRight:15,
-        paddingLeft:15
+    sectionItems: {
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 15,
+        paddingLeft: 15
     },
-    addBtn:{
-        width:53,
-        height:23,
-        backgroundColor:colors.combinatorialColor,
-        borderRadius:11.5,
-        alignItems:'center',
-        justifyContent:'center'
+    addBtn: {
+        width: 53,
+        height: 23,
+        backgroundColor: colors.combinatorialColor,
+        borderRadius: 11.5,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    addBtnText:{
-        color:colors.bodyColor,
-        fontSize:13
+    addBtnText: {
+        color: colors.bodyColor,
+        fontSize: 13
     },
 
     actionBox: {
         alignItems: 'center',
-        justifyContent:'center',
-        flexDirection:'row',
-        marginRight:10
+        justifyContent: 'center',
+        flexDirection: 'row',
+        marginRight: 10
     },
 
-    actionBtn:{
-        width:30,
-        height:30,
-        borderRadius:15,
-        alignItems:'center',
-        justifyContent:'center',
-        marginRight:10,
-        marginLeft:10,
+    actionBtn: {
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+        marginLeft: 10,
 
     },
 
-    actionBtnUnSelect:{
-        borderWidth:2,
-        borderColor:colors.combinatorialColor
+    actionBtnUnSelect: {
+        borderWidth: 3,
+        borderColor: colors.tapeWhite
     },
 
-    actionBtnSelect:{
-        backgroundColor:colors.combinatorialColor
+    actionBtnSelect: {
+        backgroundColor:  colors.highlightColorTwo
     },
-    actionIcon:{
-        width:15,
-        height:15
+    actionIcon: {
+        width: 15,
+        height: 15
     },
 
 
-    footer:{
-        backgroundColor:colors.combinatorialColor ,
-        alignItems:'center',
-        justifyContent:'center',
+    footer: {
+        backgroundColor: colors.combinatorialColor ,
+        alignItems: 'center',
+        justifyContent: 'center',
 
-        borderRadius:25,
-        height:50,
-        width:50
+        borderRadius: 25,
+        height: 50,
+        width: 50
 
 
     },
-    nextIcon:{
+    nextIcon: {
         // width:25,
         // height:25,
         width: '100%',
         height: '100%'
 
     },
-    footerCounter:{
-        alignItems:'flex-end',
-        marginBottom:20
+    footerCounter: {
+        alignItems: 'flex-end',
+        marginBottom: 20
     },
-    footerCounterText:{
-        color:colors.combinatorialColor,
-        fontSize:12
+    footerCounterText: {
+        color: colors.combinatorialColor,
+        fontSize: 12
     },
 
 
-    footerActions:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center'
+    footerActions: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
 
 });

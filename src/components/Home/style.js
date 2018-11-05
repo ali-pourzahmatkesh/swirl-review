@@ -26,19 +26,13 @@ const STYLES = StyleSheet.create({
         shadowOffset: {
             height: 1
         },
-        shadowOpacity: 0.6,
-        shadowRadius: 2.5,
-        borderWidth: 0
+        shadowOpacity: 0.3,
+        shadowRadius: 1.5,
     },
 
     chatListBlockBox: {
         backgroundColor: colors.highlightColorTwo,
-        borderColor: colors.selectedBoxBorder,
-        shadowOffset: {
-            height: 1
-        },
-        shadowOpacity: 0.6,
-        shadowRadius: 2.5,
+        // borderColor: colors.selectedBoxBorder,
     },
 
     avatarBox: {
@@ -79,6 +73,7 @@ const STYLES = StyleSheet.create({
     chatDesc: {
         fontSize: 14,
         fontFamily: 'MuseoSansRounded-300',
+        borderWidth: 0,
     },
     chatTime: {
         fontSize: 12,
@@ -142,7 +137,7 @@ const STYLES = StyleSheet.create({
         flexDirection:"row",
         alignItems:'center',
         justifyContent:'flex-start',
-        // borderWidth: 5
+        marginTop: 16,
     }
 });
 

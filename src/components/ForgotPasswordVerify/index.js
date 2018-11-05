@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import { showToast } from "../../store/toast";
 import { updateCodeGetUser } from "../../store/member";
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+	isLoadingFetch: state.app.member.isLoadingFetch,
+	hasError: state.app.member.hasError
+});
 
 const mapDispatchToProps = dispatch => ({
 	updateCodeGetUser: data => dispatch(updateCodeGetUser(data))
@@ -12,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 
 export default withNavigation(
 	connect(
-		null,
+		mapStateToProps,
 		mapDispatchToProps
 	)(ForgotPasswordVerify)
 );

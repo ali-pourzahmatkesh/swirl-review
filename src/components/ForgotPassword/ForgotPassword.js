@@ -33,6 +33,10 @@ export default class ForgotPassword extends Component {
 	render() {
 		let inactive = this.state.cellphone.length !== 10;
 
+		let {
+			isLoadingFetch
+		} = this.props;
+
 		return (
 			<View style={styles.container}>
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -59,6 +63,7 @@ export default class ForgotPassword extends Component {
 						title='Next'
 						onPress={this.handleSubmit}
 						disabled={inactive}
+						loading={isLoadingFetch}
 					/>
 				</KeyboardAvoidingView>
 			</View>

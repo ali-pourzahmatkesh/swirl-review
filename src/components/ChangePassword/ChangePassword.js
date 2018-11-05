@@ -46,6 +46,10 @@ export default class ChangePassword extends Component {
 	};
 
 	render() {
+		let {
+			isLoadingFetch
+		} = this.props;
+
 		let nextDisabled = true;
 		if (
 			this.state.password === this.state.reEnterPassword &&
@@ -85,6 +89,7 @@ export default class ChangePassword extends Component {
 					onPress={this.handleSubmit}
 					disabled={nextDisabled}
 					beginOnPage={true}
+					loading={isLoadingFetch}
 				/>
 			</SafeAreaView>
 		);

@@ -118,35 +118,37 @@ const styles = StyleSheet.flatten({
         paddingLeft:15,
         paddingRight:15
     },
-    cameraActions:{
+    cameraActions: {
         // backgroundColor:"yellow",
-        alignItems:"center",
-        justifyContent:"space-between",
-        flexDirection:"row"
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexDirection: "row"
         // height:110
     },
-    cameraBtnBox:{
+    cameraBtnBox: {
         alignItems: 'center',
         justifyContent: 'center',
         // backgroundColor: "red",
-        width ,
-        paddingRight:20,
-        paddingBottom:30
+        width,
+        paddingRight: 20,
+        paddingBottom: 30
     },
 
 
-    containerOtherPage:{
-        flex:1,
-        backgroundColor:colors.appColor,
-        alignItems:'center',
-        justifyContent:'space-between',
+    containerOtherPage: {
+        flex: 1,
+        backgroundColor: colors.appColor,
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
 
-    pickerText:StyleSheet.flatten([appCss.defaultFontApp,{
-        color:colors.bodyColor,
-        fontSize:20,
-        marginTop:20
-    }]),
+    pickerText: {
+        color: colors.bodyColor,
+        fontSize: 17,
+        fontFamily: 'MuseoSansRounded-900',
+        marginBottom: 20,
+        marginTop: 10
+    },
 
 
 
