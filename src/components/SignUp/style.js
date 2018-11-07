@@ -18,22 +18,28 @@ const styles = StyleSheet.create({
 		width: 80,
         aspectRatio: 1,
 		resizeMode: "contain",
-		position: 'absolute',
-		top: 10
+		// position: 'absolute',
+		// top: 10
     },
     formInputContainer: {
         alignItems: "flex-start",
 		width: '90%',
-		height: height * 0.66,
 		alignSelf: "center",
-    },
+	},
+	bottomContainer: {
+		borderWidth: 0,
+		borderColor: 'blue',
+		width: '100%', 
+		paddingBottom: height * 0.1,
+		height: height * 0.3,
+	},
 	signUpButton: {
 		alignSelf: "center",
 		backgroundColor: colors.highlightColorTwo,
 		borderRadius: 30,
 		width: "80%",
-        paddingTop:10,
-		paddingBottom:10,
+        paddingTop: 10,
+		paddingBottom: 10,
 		justifyContent: "center"
 	},
 	signUpText: {
@@ -43,7 +49,6 @@ const styles = StyleSheet.create({
 		fontFamily: 'MuseoSansRounded-1000'
 	},
     textSignup: {
-		flex: 1,
 		fontSize: 14,
 		fontFamily: 'MuseoSansRounded-300',
 		paddingBottom: 20,

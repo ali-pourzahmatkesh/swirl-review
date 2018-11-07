@@ -154,7 +154,8 @@ export default class FriendRequest extends Component {
 					style={{ flex: 1 }}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
-					ListEmptyComponent={() =><EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
+					// empty list component no longer function. keeps icon from reloading
+					ListEmptyComponent={<EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
 					onEndReachedThreshold={0.5}
 				/>
 			</View>

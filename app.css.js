@@ -425,27 +425,25 @@ const appCss = StyleSheet.create({
     },
 
 
-    emptyList:{
-        flex:1,
-        minHeight:height/4,
-        alignItems:'center',
-        justifyContent:'center'
+    emptyList: {
+        flex: 1,
+        minHeight: height * 0.25,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     emptyIcon: {
         width: 30,
         height: 30,
         resizeMode: 'contain'
     },
-    emptyListText:{
-        fontSize:20,
-        textAlign:'center',
-        width:width/4*3,
-        marginTop:20,
-        color:colors.bodyColor
+    emptyListText: {
+        fontSize: 20,
+        fontFamily: 'MuseoSansRounded-700',
+        textAlign: 'center',
+        width: width * 0.75,
+        marginTop: 20,
+        color: colors.bodyColor,
     },
-
-
-
 
 
 });

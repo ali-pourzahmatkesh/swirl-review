@@ -8,6 +8,7 @@ import {
 	Dimensions,
 } from "react-native";
 import {SafeAreaView} from "react-navigation";
+import { getBottomSpace } from 'react-native-iphone-x-helper'
 import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 
@@ -38,7 +39,7 @@ export default class SignUp extends Component {
 		this.logoSize = new Animated.Value(80);
 		this.bottomPadding = new Animated.Value(0);
 		this.buttonAndTextOpacity = new Animated.Value(1);
-		this.formHeight = new Animated.Value(.66);
+		this.marginTop = new Animated.Value(0);
 		this.logoY = new  Animated.Value(0);
 	}
 
@@ -65,6 +66,7 @@ export default class SignUp extends Component {
 			"keyboardWillHide",
 			this.keyboardWillHide
 		);
+		console.log(getBottomSpace(), 'bottooooooooom')
 	}
 
 	keyboardWillShow = e => {
@@ -82,9 +84,13 @@ export default class SignUp extends Component {
 					duration: e.duration,
 					toValue: 0
 				}),
-				Animated.timing(this.formHeight, {
+				Animated.timing(this.marginTop, {
 					duration: e.duration,
-					toValue: e.endCoordinates.height + (height * 0.4) + 25
+					// this is the height of the obscuring item (keyboard + button)
+					// minus the item already under the form (bottom container, terms of use text + signup button)
+					// minus the potential bottom space. should be 34 for iPhone X line and 0 for other ios devices
+					// plus the usual top margin associated with form inputs
+					toValue: (e.endCoordinates.height + (height * 0.08)) - (height * 0.3) - getBottomSpace() + 25
 				}),
 				Animated.timing(this.logoY, {
 					duration: e.duration,
@@ -108,9 +114,9 @@ export default class SignUp extends Component {
 				duration: e.duration,
 				toValue: 1
 			}),
-			Animated.timing(this.formHeight, {
+			Animated.timing(this.marginTop, {
 				duration: e.duration,
-				toValue: height * 0.66
+				toValue: 0
 			}),
 			Animated.timing(this.logoY, {
 				duration: e.duration,
@@ -175,18 +181,19 @@ export default class SignUp extends Component {
 					<View style={{flex: 1}}/>
 				</View>
 				
-				<Animated.View style={{ flex: 1, borderWidth: 0 }} behavior="padding">
-					<View style={styles.imageContainer}>
+				<Animated.View style={{ flex: 1, borderWidth: 0 }}>
+					<View style={[styles.imageContainer, {borderWidth: 0}]}>
 						<Animated.Image style={[styles.imageItem, {
 							height: this.logoSize,
-							transform: [
-								{
-									translateY: this.logoY
-								}
-							]
+							// transform: [
+							// 	{
+							// 		translateY: this.logoY
+							// 	}
+							// ],
+							borderWidth: 0
 						}]} source={logo}/>
 					</View>
-					<Animated.View style={[styles.formInputContainer, {height: this.formHeight}]}>
+					<Animated.View style={[styles.formInputContainer, { borderWidth: 0}]}>
 						<BubbleInput
 							icon={usernameIcon}
 							inputProps={{
@@ -227,23 +234,23 @@ export default class SignUp extends Component {
 								onChangeText: reEnterPassword => this.setState({ reEnterPassword })
 							}}
 						/>
-						<Animated.View style={{ width: '100%', opacity: this.buttonAndTextOpacity }}>
-							<TouchableOpacity
-								style={{ width: '100%', alignItems:'center',paddingTop:30, paddingBottom:30}}
-								onPress={() => this.props.navigation.navigate('TermsAndConditionsScreen')}
-							>
-								<Text style={styles.textSignup}>By signing up you agree to the <Text style={styles.bolderSignup}>terms of use</Text></Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={[styles.signUpButton]}
-								onPress={this.handleSubmit}
-								disabled={signUpDisabled}
-							>
-								<Text style={[ styles.signUpText, signUpDisabled && { opacity: 0.8 } ]}>
-									Sign Up
-								</Text>
-							</TouchableOpacity>
-						</Animated.View>
+					</Animated.View>
+					<Animated.View style={[styles.bottomContainer, { opacity: this.buttonAndTextOpacity, marginTop: this.marginTop }]}>
+						<TouchableOpacity
+							style={{ width: '100%', alignItems: 'center', paddingTop: 30, paddingBottom: 30}}
+							onPress={() => this.props.navigation.navigate('TermsAndConditionsScreen')}
+						>
+							<Text style={styles.textSignup}>By signing up you agree to the <Text style={styles.bolderSignup}>terms of use</Text></Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={[styles.signUpButton]}
+							onPress={this.handleSubmit}
+							disabled={signUpDisabled}
+						>
+							<Text style={[ styles.signUpText, signUpDisabled && { opacity: 0.8 } ]}>
+								Sign Up
+							</Text>
+						</TouchableOpacity>
 					</Animated.View>
 				</Animated.View>
 				<KeyboardAwareButton

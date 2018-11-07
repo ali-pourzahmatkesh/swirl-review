@@ -15,6 +15,7 @@ import EmptyList from "../../EmptyList";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SVGImage from "react-native-svg-image";
 import Feather from "react-native-vector-icons/Feather";
+import emptyIcon from "../../../assets/images/icons/emptyCountry.png";
 import search from "../../../assets/images/icons/search3.png";
 import appCss from "../../../../app.css";
 
@@ -259,7 +260,14 @@ export default class CountryCodeModal extends Component {
 								sections={countryCodeGroup}
 								extraData={countryCodeGroup}
 								keyExtractor={(item, index) => index}
-								ListEmptyComponent={() => <EmptyList />}
+								ListEmptyComponent={
+									<EmptyList
+										emptyIcon={emptyIcon}
+										emptyText={
+											<Text>Imaginary Countries don't count. <Text style={{fontFamily: 'MuseoSansRounded-1000Italic'}}>{'"'+this.state.searchValue+'"'}</Text></Text>
+										}
+									/>
+								}
 								renderItem={({ item }) => (
 									<TouchableOpacity
 										style={appCss.sectionItems}

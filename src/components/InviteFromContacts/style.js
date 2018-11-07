@@ -54,7 +54,12 @@ const styles = StyleSheet.flatten({
         paddingLeft:15,
         paddingRight:15,
         flexDirection:'row',
-        alignItems:'center'
+        alignItems:'center',
+        shadowOffset: {
+            height: 1
+        },
+        shadowOpacity: .2,
+        shadowRadius: 1
     },
     boxEmptySearchFaq:{
         backgroundColor:"#E0E3EB",
@@ -65,10 +70,11 @@ const styles = StyleSheet.flatten({
         justifyContent:'center'
     },
 
-    boxEmptySearchText:StyleSheet.flatten([appCss.defaultFontApp,{
-        marginLeft:15,
-        fontSize:16
-    }]),
+    boxEmptySearchText: {
+        marginLeft: 15,
+        fontSize: 16,
+        fontFamily: 'MuseoSansRounded-900'
+    },
 
 });
 export default styles;

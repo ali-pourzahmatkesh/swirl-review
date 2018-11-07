@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {FlatList, Image, Modal, Text, TouchableOpacity, View} from "react-native";
+import {
+	FlatList,
+	Image,
+	Modal,
+	Text,
+	TouchableOpacity,
+	View,
+	Dimensions
+} from "react-native";
 import styles from "./style";
 import appCss from "../../../app.css";
 import logo from "../../assets/images/logo_bigger.png";
@@ -22,6 +30,7 @@ import MessagePopup from "../MessagePopup";
 import loading from "../../assets/loading.gif";
 
 import sortChatList from "../../util/sortChatList";
+const { height, width } = Dimensions.get('window');
 const COLORS = CONFIG.colors;
 // const timeZoneOffsetByMilliSeconds = new Date().getTimezoneOffset() * 60 * 60;
 const _ = require("lodash");
@@ -435,8 +444,14 @@ class Home extends Component {
 							showsVerticalScrollIndicator={false}
 						/>
 					)) || (
-						<EmptyList emptyIcon={emptyIcon} emptyText={'Nobody swirled you… Yet..'}/>
-
+						<EmptyList
+							emptyIcon={emptyIcon}
+							emptyText={'Nobody swirled you… Yet..'}
+							textStyle={{fontFamily: 'MuseoSansRounded-1000'}}
+							containerStyle={{
+								marginTop: height * -0.15
+							}}
+						/>
 					)}
 				</View>
 				<View style={styles.homeBottomBox}>
