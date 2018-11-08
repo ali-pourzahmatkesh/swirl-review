@@ -6,10 +6,13 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
-	View
+	View,
+	Animated,
+	Keyboard
 } from "react-native";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import logo from "../../assets/images/logo_bigger.png";
-import passwordIcon from "../../assets/images/icons/Lock.png";
+import passwordIcon from "../../assets/images/icons/password3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import { CONFIG } from "../../../config";
@@ -26,8 +29,35 @@ export default class ChangePasswordFromProfile extends Component {
 			newPassword: "",
 			retypeNewPassword: ""
 		};
+
+		this.formHeight = new Animated.Value(height * 0.7);
+		this.formTopPadding = new Animated.Value(height * 0.1);
 	}
 
+	componentWillMount() {
+		this.attachKeyboardListeners();
+	}
+
+	componentWillUnmount() {
+		this.removeKeyboardListeners();
+	}
+
+	attachKeyboardListeners = () => {
+		this.keyboardWillShowSub = Keyboard.addListener(
+			"keyboardWillShow",
+			this.keyboardWillShow
+		);
+		this.keyboardWillHideSub = Keyboard.addListener(
+			"keyboardWillHide",
+			this.keyboardWillHide
+		);
+	}
+
+	removeKeyboardListeners = () => {
+		this.keyboardWillShowSub.remove();
+		this.keyboardWillHideSub.remove();
+	}
+	
 	handleSubmit = () => {
 		console.log("handleSubmit id", this.props.id);
 
@@ -37,6 +67,33 @@ export default class ChangePasswordFromProfile extends Component {
 			oldPassword: this.state.oldPassword,
 			navigation: this.props.navigation
 		});
+	};
+
+	keyboardWillShow = event => {
+		console.log('end height', event.endCoordinates.height)
+		Animated.parallel([
+			Animated.timing(this.formHeight, {
+				duration: event.duration,
+				toValue: height * 0.8
+			}),
+			Animated.timing(this.formTopPadding, {
+				duration: event.duration,
+				toValue: 0
+			}),
+		]).start();
+	};
+
+	keyboardWillHide = event => {
+		Animated.parallel([
+			Animated.timing(this.formHeight, {
+				duration: event.duration,
+				toValue: height * 0.7
+			}),
+			Animated.timing(this.formTopPadding, {
+				duration: event.duration,
+				toValue: height * 0.1
+			}),
+		]).start();
 	};
 
 	render() {
@@ -53,22 +110,21 @@ export default class ChangePasswordFromProfile extends Component {
 
 		return (
 			<View style={styles.container}>
-				<KeyboardAvoidingView
-					keyboardVerticalOffset={height === 812 ? 85 : 65}
-					style={{ flex: 1 }}
-					behavior="padding"
-				>
+				{/* <KeyboardAvoidingView keyboardVerticalOffset={height === 812? 85: 65} style={{ flex: 1}} behavior="padding"> */}
+				{/* <KeyboardAvoidingView keyboardVerticalOffset={height * 0.08 + 100} style={{ flex: 1}} behavior="padding"> */}
+				<View style={{flex: 1}}>
 					<View style={styles.imageContainer}>
 						<View style={styles.imagesContent}>
 							<Image style={styles.imageItem} source={logo} />
 						</View>
 					</View>
-					<View style={[appCss.formInputContainer]}>
+					{/* <Animated.View style={[ appCss.formInputContainer, {borderWidth: 1, transform: [{translateY: height * 0.0}]} ]}> */}
+					<Animated.View style={[styles.formInputContainer, {height: this.formHeight, paddingTop: this.formTopPadding}]}>
 						<View style={appCss.iconFormInput}>
 							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								placeholder="Old Password"
-								placeholderTextColor={colors.combinatorialColor}
+								placeholderTextColor={colors.highlightColorTwo}
 								secureTextEntry={true}
 								style={appCss.textInput}
 								onChangeText={text => this.setState({ oldPassword: text })}
@@ -78,7 +134,7 @@ export default class ChangePasswordFromProfile extends Component {
 							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								placeholder="New Password"
-								placeholderTextColor={colors.combinatorialColor}
+								placeholderTextColor={colors.highlightColorTwo}
 								secureTextEntry={true}
 								style={appCss.textInput}
 								onChangeText={text => this.setState({ newPassword: text })}
@@ -89,7 +145,7 @@ export default class ChangePasswordFromProfile extends Component {
 							<Image style={appCss.formInputIcon} source={passwordIcon} />
 							<TextInput
 								placeholder="Re-enter Password"
-								placeholderTextColor={colors.combinatorialColor}
+								placeholderTextColor={colors.highlightColorTwo}
 								secureTextEntry={true}
 								style={appCss.textInput}
 								onChangeText={text =>
@@ -97,23 +153,15 @@ export default class ChangePasswordFromProfile extends Component {
 								}
 							/>
 						</View>
-					</View>
-					<TouchableOpacity
-						style={[styles.nextButton]}
+					</Animated.View>
+					<KeyboardAwareButton
+						title='Save'
 						onPress={this.handleSubmit}
 						disabled={nextDisabled}
-					>
-						{this.props.isLoadingFetch ? (
-							<LoadingCircles3 />
-						) : (
-							<Text
-								style={[styles.nextText, !nextDisabled && { opacity: 0.5 }]}
-							>
-								save
-							</Text>
-						)}
-					</TouchableOpacity>
-				</KeyboardAvoidingView>
+						beginOnPage={true}
+					/>
+				</View>
+				{/* </KeyboardAvoidingView> */}
 			</View>
 		);
 	}

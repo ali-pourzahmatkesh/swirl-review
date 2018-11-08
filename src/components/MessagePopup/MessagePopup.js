@@ -10,6 +10,7 @@ import {
 	View
 } from "react-native";
 import styles from "./style";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import close from "../../assets/images/icons/close_red.png";
 import closeWhite from "../../assets/images/icons/close.png";
@@ -22,7 +23,7 @@ import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
 // import background from "../../assets/images/logo_bigger.png";
 import logo from "../../assets/images/logo_bigger.png";
-import next from "../../assets/images/icons/next.png";
+import next from "../../assets/images/icons/next1.png";
 import { CONFIG } from "../../../config";
 import SendTo from "../SendTo";
 import TimePicker from "../TimePicker/TimePicker";
@@ -250,7 +251,6 @@ export default class MessagePopup extends Component {
 								}}
 								style={[
 									styles.nextButton,
-									{ backgroundColor: colors.combinatorialColor }
 								]}
 							>
 								<Image style={styles.iconButton} source={next} />
@@ -294,7 +294,7 @@ export default class MessagePopup extends Component {
 				{/*<View style={styles.cameraActionBox}>*/}
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity onPress={this.props.closeMessageModal}>
-						<Image style={styles.closeIcon} source={close} />
+						<Image style={styles.closeIcon} source={closeWhite} />
 					</TouchableOpacity>
 					<View />
 					<View />
@@ -329,7 +329,7 @@ export default class MessagePopup extends Component {
 					<TouchableOpacity
 						onPress={() => this.setState({ tabSelected: "camera" })}
 					>
-						<Image style={styles.closeIcon} source={close} />
+						<Image style={styles.closeIcon} source={closeWhite} />
 					</TouchableOpacity>
 					<View />
 					<View />
@@ -369,12 +369,12 @@ export default class MessagePopup extends Component {
 				<View style={[appCss.header, { width }]}>
 					<TouchableOpacity
 						onPress={() => this.setState({ tabSelected: "timePicker" })}
-						style={appCss.otherHeaderIconBox}
+						style={[appCss.otherHeaderIconBox, { height: 33, width: 33 }]}
 					>
-						<Image
-							style={appCss.headerIcon}
-							resizeMode={"contain"}
-							source={closeWhite}
+						<Ionicons
+							size={30}
+							color={colors.bodyColor}
+							name="ios-arrow-back"
 						/>
 					</TouchableOpacity>
 					<View>
@@ -428,13 +428,25 @@ export default class MessagePopup extends Component {
 			<View style={styles.containerOtherPage}>
 				<View style={[appCss.header, { width }]}>
 					<TouchableOpacity
-						onPress={() => this.setState({ tabSelected: messageType })}
-						style={appCss.otherHeaderIconBox}
+						onPress={() => {
+							let tabSelected = '';
+							if(messageType === 'chat'){
+								tabSelected = 'chat';
+							}
+							else if(messageType === 'camera'){
+								tabSelected = 'image'
+							}
+
+							this.setState({
+								tabSelected
+							})
+						}}
+						style={[appCss.otherHeaderIconBox, {height: 33, width: 33}]}
 					>
-						<Image
-							style={appCss.headerIcon}
-							resizeMode={"contain"}
-							source={closeWhite}
+						<Ionicons
+							size={30}
+							color={colors.bodyColor}
+							name="ios-arrow-back"
 						/>
 					</TouchableOpacity>
 					<TouchableOpacity style={appCss.headerLogoBox}>
@@ -449,8 +461,8 @@ export default class MessagePopup extends Component {
 						onPress={this.handleSubmit}
 					/>
 				</View>
-				<Text style={styles.pickerText}>Time until unswirl... </Text>
-				<View style={{ backgroundColor: "yellow", height: "70%" }}>
+				<Text style={styles.pickerText}>⏳   Time until unswirl... </Text>
+				<View style={{ flex: 1, borderWidth: 0 }}>
 					<TimePicker
 						selectedHours={selectedHours}
 						selectedMinutes={selectedMinutes}
@@ -482,7 +494,6 @@ export default class MessagePopup extends Component {
 								onPress={() => this.setState({ tabSelected: "contacts" })}
 								style={[
 									styles.nextButton,
-									{ backgroundColor: colors.combinatorialColor }
 								]}
 							>
 								<Image style={styles.iconButton} source={next} />

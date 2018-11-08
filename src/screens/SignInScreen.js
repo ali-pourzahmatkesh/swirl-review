@@ -12,9 +12,12 @@ export default class SignInScreen extends Component {
 		return {
 			headerTitle: (
 				<CustomHeader
-					middle={navigation.getParam("curScreen", "")}
-					right={navigation.getParam("nextScreen", "")}
-					rightNav={navigation.getParam("rightNav")}
+					middle='Login'
+					right='Signup'
+					rightNav='SignUpScreen'
+					rightNavProps={{
+						leftTitle: 'Login'
+					}}
 					nav={navigation}
 				/>
 			),

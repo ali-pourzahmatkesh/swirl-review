@@ -246,39 +246,44 @@ const appCss = StyleSheet.create({
 
     iconFormInput: {
         flexDirection: 'row',
-        marginTop: 15,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingBottom: 12,
+        marginTop: 25,
+        // paddingTop: 10,
+        paddingLeft: 20,
+        // paddingBottom: 12,
         borderBottomWidth: 1.5,
         borderBottomColor: colors.formInputUnderline,
         backgroundColor: colors.bodyColor,
-        borderRadius: 20
+        borderRadius: 50,
+        height: height * 0.06
     },
 
     formInputIcon: {
-        height: "110%",
+        // height: "110%",
+        height: height * 0.035,
         width: "10%",
-        resizeMode: "contain"
+        resizeMode: "contain",
+        marginTop: 10
     },
 
 
     formInputContainer: {
         alignItems: "center",
-        width: 300,
-        flex:3,
+        width: '90%',
+        flex: 3,
         alignSelf: "center"
     },
 
     textInput: {
-        ...defaultFontApp,
+        // ...defaultFontApp,
+        fontFamily: "MuseoSansRounded-900",
         flex: 1,
-        // fontWeight: "bold",
-        fontSize: 12,
+        fontSize: 18,
         width: "100%",
         paddingRight: 20,
         paddingLeft: 18,
-        color: colors.combinatorialColor
+        color: colors.highlightColorTwo,
+        marginTop: 2,
+        height: '100%',
     },
 
     countryCodeBox: {
@@ -289,8 +294,8 @@ const appCss = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        marginTop: 3,
-        marginLeft: 3,
+        // marginTop: 3,
+        marginLeft: 8,
         paddingRight: 3,
         borderRadius: 20,
         borderWidth: 2,
@@ -299,6 +304,8 @@ const appCss = StyleSheet.create({
     countryCodeImageBox: {
         height: 24,
         width: 24,
+        // height: 30,
+        // width: 30,
         display: "flex",
         borderWidth: 1,
         overflow: "hidden",
@@ -339,43 +346,55 @@ const appCss = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 40,
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         borderColor: colors.bodyColor
     },
 
     countryCodeSearch: {
         color: colors.bodyColor,
-        flexBasis: "15%",
+        flexBasis: "19%",
         marginLeft: 10,
-        textAlign: "right"
+        textAlign: "right",
+        fontFamily: 'MuseoSansRounded-900',
+        fontSize: 17,
     },
 
     countryNameSearch: {
         color: colors.bodyColor,
         fontSize:17,
-        marginLeft: 20
+        marginLeft: 20,
+        fontFamily: 'MuseoSansRounded-900',
+        fontSize: 17
     },
     sectionHeader: {
-        flex: 1,
         flexDirection: "row",
         backgroundColor: colors.bodyColor,
-        justifyContent: "flex-start",
+        justifyContent: "flex-end",
         alignItems: "center",
         paddingLeft: 20,
-        paddingRight: 20,
-        height: 30
+        paddingRight: 18,
+        height: 20,
+        width: width * 0.15,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        shadowOffset: {
+            height: 1
+        },
+        shadowOpacity: .2,
+        shadowRadius: 1
     },
     sectionHeaderTitle: {
         color: colors.appColor,
-        fontWeight: "bold",
+        fontFamily: 'MuseoSansRounded-1000',
         fontSize: 15
     },
     modalOptions: {
-        flex: 1
+        flex: 1,
+        paddingLeft: 20
     },
 
     searchContainer: {
-        flex: 1,
+        flex: 2,
         alignItems: "center",
         justifyContent: "center"
     },
@@ -394,7 +413,9 @@ const appCss = StyleSheet.create({
         alignItems: "center"
     },
     searchTextInput: {
-        ...defaultFontApp,
+        // ...defaultFontApp,
+        fontFamily: 'MuseoSansRounded-900',
+        fontSize: 19,
         color: "#fff",
         height: "100%",
         width: "80%"
@@ -404,27 +425,25 @@ const appCss = StyleSheet.create({
     },
 
 
-    emptyList:{
-        flex:1,
-        minHeight:height/4,
-        alignItems:'center',
-        justifyContent:'center'
+    emptyList: {
+        flex: 1,
+        minHeight: height * 0.25,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     emptyIcon: {
         width: 30,
         height: 30,
         resizeMode: 'contain'
     },
-    emptyListText:{
-        fontSize:20,
-        textAlign:'center',
-        width:width/4*3,
-        marginTop:20,
-        color:colors.bodyColor
+    emptyListText: {
+        fontSize: 20,
+        fontFamily: 'MuseoSansRounded-700',
+        textAlign: 'center',
+        width: width * 0.75,
+        marginTop: 20,
+        color: colors.bodyColor,
     },
-
-
-
 
 
 });

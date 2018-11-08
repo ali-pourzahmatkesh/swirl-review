@@ -6,7 +6,7 @@ import { showToast } from "../../store/toast";
 
 const mapStateToProps = state => ({
 	loading: state.app.member.loading,
-	isLoadingFetch: state.app.member.isLoadingFetch,
+	isLoadingFetch: state.app.member.loading,
 	ipData: state.app.member.ipData,
 	countries: state.app.member.countries
 });

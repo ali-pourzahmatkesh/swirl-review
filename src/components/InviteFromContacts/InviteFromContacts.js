@@ -27,14 +27,12 @@ export default class InviteFromContacts extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		console.log("IN componentWillReceiveProps", nextProps);
-		if (
-			nextProps.membersFromContactsAreNotFriend &&
-			this.state.list.length != nextProps.membersFromContactsAreNotFriend.length
-		) {
-			console.log(
-				"membersFromContactsAreNotFriend",
-				nextProps.membersFromContactsAreNotFriend
-			);
+		if(nextProps.id && !this.props.id){
+			this.getPhoneNumbersFromContactList();
+		}
+		if(nextProps.membersFromContactsAreNotFriend &&
+			nextProps.membersFromContactsAreNotFriend.length !== 0 &&
+			this.props.membersFromContactsAreNotFriend.length === 0){
 			this.setState({
 				list: nextProps.membersFromContactsAreNotFriend,
 				finalList: this.generateSectionList(
@@ -46,7 +44,7 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentDidMount() {
-		this.getPhoneNumbersFromContactList();
+		
 	}
 
 	getPhoneNumbersFromContactList = function() {
@@ -57,6 +55,7 @@ export default class InviteFromContacts extends Component {
 			pg.getContactsCount().then(count => {
 				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
 					contacts => {
+						console.log('contacts: ', contacts)
 						this.setState({ contacts });
 						if (contacts.length > 0) {
 							this.getAllPhoneNumbers(contacts);
@@ -149,35 +148,53 @@ export default class InviteFromContacts extends Component {
 	};
 
 
-	emptyList = ()=>{
-        if(this.props.screenProps && this.props.screenProps.searchText){
+	// emptyList = ()=>{
+    //     if(this.props.screenProps && this.props.screenProps.searchText){
 
-        	return (
-			<View style={{flex:1 , alignItems:'center'}}>
-				<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
-				<View style={styles.boxEmptySearch}>
-					<View style={styles.boxEmptySearchFaq}>
-						<Image style={appCss.emptyIcon} source={faq}/>
+    //     	return (
+	// 		<View style={{flex:1 , alignItems:'center'}}>
+	// 			<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
+	// 			<View style={styles.boxEmptySearch}>
+	// 				<View style={styles.boxEmptySearchFaq}>
+	// 					<Image style={appCss.emptyIcon} source={faq}/>
 
-					</View>
-					<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText}"</Text>
-				</View>
-			</View>
-			)
-		}else{
-        	return (
-				<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
-			)
-		}
-	}
+	// 				</View>
+	// 				<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText}"</Text>
+	// 			</View>
+	// 		</View>
+	// 		)
+	// 	}else{
+    //     	return (
+	// 			<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
+	// 		)
+	// 	}
+	// }
 	render() {
+		console.log(this.props, 'alsjdf;akjsf;lkajs;dflja;dsfj;adj;akljdf;kajds')
 		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
 					sections={this.state.finalList}
 					extraData={this.state.finalList}
 					keyExtractor={(item, index) => index}
-					ListEmptyComponent={() =>this.emptyList() }
+					// ListEmptyComponent={() =>this.emptyList() }
+					// this keeps the function form being invoked on each render/onChange of the search bar
+					// which keeps us from having to reload the empty list icon and faq icon
+					ListEmptyComponent={
+						this.props.screenProps && this.props.screenProps.searchText ?
+						<View style={{flex:1 , alignItems:'center'}}>
+							<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
+							<View style={styles.boxEmptySearch}>
+								<View style={styles.boxEmptySearchFaq}>
+									<Image style={appCss.emptyIcon} source={faq}/>
+			
+								</View>
+								<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText.toUpperCase()}"</Text>
+							</View>
+						</View>
+						:
+						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
+					}
 					renderItem={({ item }) => (
 						<View style={styles.sectionItems}>
 							<View

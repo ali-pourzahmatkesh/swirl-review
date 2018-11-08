@@ -7,6 +7,7 @@ import {
 	View,
 	KeyboardAvoidingView
 } from "react-native";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
@@ -95,26 +96,18 @@ export default class Feedback extends Component {
 							onChangeText={message => this.setState({ message })}
 						/>
 					</View>
-					<View style={styles.actionButton}>
-						<TouchableOpacity
-							disabled={disabled}
-							style={styles.buttonItem}
-							onPress={() =>
-								this.props.callSendFeedBack({
-									message: this.state.message,
-									memberOwner: this.props.memberOwner,
-									navigation: this.props.navigation
-								})
-							}
-							underlayColor={colors.tapeWhite}
-						>
-							{this.props.loading ? (
-								<LoadingCircles3 />
-							) : (
-								<Text style={styles.buttonText}>Submit</Text>
-							)}
-						</TouchableOpacity>
-					</View>
+					<KeyboardAwareButton
+						title='Submit'
+						disabled={disabled}
+						onPress={() =>
+							this.props.callSendFeedBack({
+								message: this.state.message,
+								memberOwner: this.props.memberOwner,
+								navigation: this.props.navigation
+							})
+						}
+						beginOnPage={true}
+					/>
 				</KeyboardAvoidingView>
 			</View>
 		);

@@ -1,78 +1,32 @@
 import React, {Component} from "react";
 import {
     Image,
-    Keyboard,
     KeyboardAvoidingView,
-    LayoutAnimation,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+	View,
+	Dimensions
 } from "react-native";
 
 import {NavigationActions, SafeAreaView} from "react-navigation";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+import BubbleInput from "../_common/BubbleInput";
 
-import passwordIcon from "../../assets/images/icons/Lock.png";
+import passwordIcon from "../../assets/images/icons/password3.png";
 import logo from "../../assets/images/logo_bigger.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
 
 const colors = CONFIG.colors;
+const {width, height} = Dimensions.get('window');
 
 export default class ChangePassword extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bottom: 0,
 			password: "",
-			retypePassword: ""
+			reEnterPassword: ""
 		};
 	}
-
-	componentWillMount() {
-		this.keyboardWillShowSub = Keyboard.addListener(
-			"keyboardWillShow",
-			this.keyboardWillShow
-		);
-		this.keyboardWillHideSub = Keyboard.addListener(
-			"keyboardWillHide",
-			this.keyboardWillHide
-		);
-	}
-
-	componentWillUnmount() {
-		this.keyboardWillShowSub.remove();
-		this.keyboardWillHideSub.remove();
-	}
-
-	keyboardWillShow = event => {
-        LayoutAnimation.configureNext({
-            duration: event.duration,
-            create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: { type: LayoutAnimation.Types.easeInEaseOut },
-        });
-		this.setState({
-			bottom: event.endCoordinates.height
-		});
-	};
-
-	keyboardWillHide = event => {
-        LayoutAnimation.configureNext({
-            duration: event.duration,
-            create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: { type: LayoutAnimation.Types.easeInEaseOut },
-        });
-		this.setState({
-			bottom: 0
-		});
-	};
 
 	handleSubmit = () => {
 		const resetAction = NavigationActions.reset({
@@ -92,11 +46,13 @@ export default class ChangePassword extends Component {
 	};
 
 	render() {
-		console.log(this.state, this.props.navigation.state.params);
+		let {
+			isLoadingFetch
+		} = this.props;
 
 		let nextDisabled = true;
 		if (
-			this.state.password === this.state.retypePassword &&
+			this.state.password === this.state.reEnterPassword &&
 			this.state.password.length >= 7
 		) {
 			nextDisabled = false;
@@ -104,56 +60,37 @@ export default class ChangePassword extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<View
-						style={
-                            styles.imageContainer
-                        }
-					>
-						<View style={styles.imagesContent}>
-							<Image style={styles.imageItem} source={logo}/>
-						</View>
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={height * 0.09 + 45}>
+					<View style={ styles.imageContainer }>
+						<Image style={styles.imageItem} source={logo}/>
 					</View>
 					<View style={appCss.formInputContainer}>
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon}/>
-							<TextInput
-								placeholder="New Password"
-								placeholderTextColor={colors.combinatorialColor}
-								secureTextEntry={true}
-								style={appCss.textInput}
-								onChangeText={text => this.setState({ password: text })}
-							/>
-						</View>
-						{/*<Text style={styles.minLengthText}>min 7 characters</Text>*/}
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: "Password",
+								secureTextEntry: true,
+								onChangeText: password => this.setState({ password })
+							}}
+						/>
 
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon}/>
-							<TextInput
-								placeholder="Re-enter Password"
-								placeholderTextColor={colors.combinatorialColor}
-								secureTextEntry={true}
-								style={appCss.textInput}
-								onChangeText={text => this.setState({ retypePassword: text })}
-							/>
-						</View>
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: "Re-enter Password",
+								secureTextEntry: true,
+								onChangeText: reEnterPassword => this.setState({ reEnterPassword })
+							}}
+						/>
 					</View>
 				</KeyboardAvoidingView>
-				<TouchableOpacity
-					style={[styles.nextButton, { bottom: this.state.bottom }]}
-					disabled={nextDisabled}
+				<KeyboardAwareButton
+					title='Login'
 					onPress={this.handleSubmit}
-				>
-					<Text
-						style={[
-							appCss.defaultFontApp,
-							styles.nextText,
-							nextDisabled && { opacity: 0.5 }
-						]}
-					>
-						Next
-					</Text>
-				</TouchableOpacity>
+					disabled={nextDisabled}
+					beginOnPage={true}
+					loading={isLoadingFetch}
+				/>
 			</SafeAreaView>
 		);
 	}

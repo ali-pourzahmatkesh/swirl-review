@@ -30,28 +30,46 @@ export default class CustomHeader extends Component {
 			<View style={styles.container}>
 				<TouchableOpacity
 					style={styles.headerSections}
-					onPress={() =>
-						this.props.back
+					onPress={
+						() => {
+							this.props.back
 							? this.props.nav.goBack()
-							: this.props.nav.navigate(this.props.leftNav)
+							: this.props.nav.navigate(this.props.leftNav, this.props.leftNavProps);
+							if(this.props.attachKeyboardListeners){
+								this.props.attachKeyboardListeners();
+								console.log('asdf;aksdjf;aj*****', this.props.attachKeyboardListeners)
+							}
+						}
 					}
 				>
-					<Text style={[styles.headerText, { color: colors.tapeWhite }]}>
+					<Text style={[styles.headerText, {
+						color: colors.tapeWhite,
+						fontFamily: 'MuseoSansRounded-500',
+						fontSize: 14					
+					}]}>
 						{this.props.left}
 					</Text>
 				</TouchableOpacity>
 				<View style={styles.headerSections}>
 					<Text
-						style={[styles.headerText, { color: colors.highlightColorTwo }]}
+						style={[styles.headerText, {
+							color: colors.tapeWhite,
+							fontFamily: "MuseoSansRounded-900",
+							fontSize: 17
+						}]}
 					>
 						{this.props.middle}
 					</Text>
 				</View>
 				<TouchableOpacity
 					style={styles.headerSections}
-					onPress={() => this.props.nav.navigate(this.props.rightNav)}
+					onPress={() => this.props.nav.navigate(this.props.rightNav, this.props.rightNavProps)}
 				>
-					<Text style={[styles.headerText, { color: colors.tapeWhite }]}>
+					<Text style={[styles.headerText, {
+						color: colors.tapeWhite,
+						fontFamily: 'MuseoSansRounded-500',
+						fontSize: 14				
+					}]}>
 						{this.props.right}
 					</Text>
 				</TouchableOpacity>

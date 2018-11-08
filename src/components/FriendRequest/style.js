@@ -9,29 +9,31 @@ const styles = StyleSheet.create({
 
     actionBox: {
         alignItems: 'center',
-        justifyContent:'center',
-        flexDirection:'row',
-        marginRight:10
+        justifyContent: 'center',
+        flexDirection: 'row',
+        marginRight: 10
     },
 
     actionBtn:{
-        width:45,
-        height:45,
-        borderRadius:22.5,
-        alignItems:'center',
-        justifyContent:'center',
-        marginRight:10,
-        marginLeft:10
+        width: 45,
+        height: 45,
+        borderRadius: 22.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+        marginLeft: 10
     },
     verify:{
-        backgroundColor:"#4cd964",
+        backgroundColor: "#4CD964",
     },
     cancel:{
-        backgroundColor:colors.combinatorialColor,
+        backgroundColor: colors.highlightColorTwo,
     },
     actionIcon:{
-        width:25,
-        height:25
+        width: 20,
+        height: 20
+        // height: '100%',
+        // width: '100%'
     }
 });
 

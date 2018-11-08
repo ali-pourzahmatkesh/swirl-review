@@ -17,67 +17,68 @@ import { SafeAreaView, NavigationActions } from "react-navigation";
 import CodeInput from "react-native-confirmation-code-input";
 
 import logo from "../../assets/images/logo_bigger.png";
-
+import styles from "./style";
 import appCss from "../../../app.css";
-
-const styles = StyleSheet.create({
-	almostText: {
-		fontSize: 26,
-		color: "#f8e71c",
-		marginBottom: "8%"
-	},
-	container: {
-		backgroundColor: "#fc003e",
-		flex: 1
-	},
-	contentContainer: {
-		flex: 1,
-		alignItems: "center"
-	},
-	imagesContent: {
-		height: "10%",
-		alignItems: "center",
-		marginBottom: "3%"
-	},
-	imageItem: {
-		flex: 1,
-		aspectRatio: 1,
-		resizeMode: "contain"
-	},
-	nextButtonContainer: {
-		backgroundColor: "#faec22",
-		// backgroundColor: 'blue',
-		height: "20%",
-		width: "100%",
-		position: "absolute"
-	},
-	nextButton: {
-		backgroundColor: "#faec22",
-		height: "50%",
-		justifyContent: "center"
-	},
-	nextText: {
-		color: "#fc003e",
-		textAlign: "center",
-		fontSize: 20
-	},
-	resendButton: {
-		alignSelf: "flex-end",
-		marginRight: "12%"
-	},
-	resendText: {
-		color: "#fff",
-		fontSize: 14,
-		fontFamily: "MuseoSansRounded-300"
-	},
-	promptText: {
-		color: "#fff",
-		fontSize: 18,
-		textAlign: "center",
-		width: "80%",
-		marginBottom: "5%"
-	}
-});
+import { CONFIG } from "../../../config";
+const colors = CONFIG.colors;
+// const styles = StyleSheet.create({
+// 	almostText: {
+// 		fontSize: 26,
+// 		color: "#f8e71c",
+// 		marginBottom: "8%"
+// 	},
+// 	container: {
+// 		backgroundColor: "#fc003e",
+// 		flex: 1
+// 	},
+// 	contentContainer: {
+// 		flex: 1,
+// 		alignItems: "center"
+// 	},
+// 	imagesContent: {
+// 		height: "10%",
+// 		alignItems: "center",
+// 		marginBottom: "3%"
+// 	},
+// 	imageItem: {
+// 		flex: 1,
+// 		aspectRatio: 1,
+// 		resizeMode: "contain"
+// 	},
+// 	nextButtonContainer: {
+// 		backgroundColor: "#faec22",
+// 		// backgroundColor: 'blue',
+// 		height: "20%",
+// 		width: "100%",
+// 		position: "absolute"
+// 	},
+// 	nextButton: {
+// 		backgroundColor: "#faec22",
+// 		height: "50%",
+// 		justifyContent: "center"
+// 	},
+// 	nextText: {
+// 		color: "#fc003e",
+// 		textAlign: "center",
+// 		fontSize: 20
+// 	},
+// 	resendButton: {
+// 		alignSelf: "flex-end",
+// 		marginRight: "12%"
+// 	},
+// 	resendText: {
+// 		color: "#fff",
+// 		fontSize: 14,
+// 		fontFamily: "MuseoSansRounded-300"
+// 	},
+// 	promptText: {
+// 		color: "#fff",
+// 		fontSize: 18,
+// 		textAlign: "center",
+// 		width: "80%",
+// 		marginBottom: "5%"
+// 	}
+// });
 
 export default class SignUpConfirm extends Component {
 	constructor(props) {
@@ -200,35 +201,29 @@ export default class SignUpConfirm extends Component {
 		return (
 			<SafeAreaView style={styles.container}>
 				<View style={[styles.contentContainer]}>
-					<View style={styles.imagesContent}>
+					<View style={styles.imageContainer}>
 						<Image style={styles.imageItem} source={logo} />
 					</View>
-					<Text style={[appCss.defaultFontApp, styles.almostText]}>
-						Almost there!
-					</Text>
 					<Text style={[appCss.defaultFontApp, styles.promptText]}>
 						Please enter verification code
 					</Text>
-					<View style={{ height: "18%" }}>
+					<View style={styles.formInputContainer}>
 						<CodeInput
 							ref="vcode"
 							className="border-b"
-							codeInputStyle={[appCss.defaultFontApp]}
+							codeInputStyle={[appCss.defaultFontApp, styles.codeInput]}
 							codeLength={4}
 							keyboardType="numeric"
 							onFulfill={(isMatching, code) => {
-								// isMatching = true;
-								// if(isMatching){
-								//     // this.toConfirm();
-								// }
+								isMatching = true;
+								if (isMatching) {
+									// this.toConfirm();
+								}
 							}}
 							returnKeyType={null}
 							// The CodeInput has a returnKeyType automatically set to 'done'.
 							// Setting it to null here to keep a consistent look.
 							size={65}
-							containerStyle={{ height: "100%", marginTop: 0 }}
-							//cancelling out some default container style to position the resend button
-
 							onContentSizeChange={() =>
 								this.setState({ code: this.refs.vcode.state.codeArr.join("") })
 							}
@@ -254,7 +249,7 @@ export default class SignUpConfirm extends Component {
 							style={[
 								appCss.defaultFontApp,
 								styles.nextText,
-								nextDisabled && { opacity: 0.5 }
+								nextDisabled && { color: colors.inactiveButtonText }
 							]}
 						>
 							Next

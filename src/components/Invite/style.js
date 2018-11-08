@@ -26,22 +26,23 @@ const STYLES = StyleSheet.create({
         flex: 1
     },
     search: {
-        flex: 2,
+        flex: 5,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        borderWidth: 0
     },
-    SectionStyle: {
+    sectionStyle: {
         flexDirection: "row",
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        borderWidth: 0,
+        // marginLeft: 20
     },
-    ImageStyle: {
-        padding: 5,
-        margin: 5,
-        height: 25,
-        width: 25,
-        alignItems: "center"
+    imageStyle: {
+        height: 20,
+        width: 20,
+        marginRight: 10
     },
 });
 

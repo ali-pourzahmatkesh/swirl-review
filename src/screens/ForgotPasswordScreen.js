@@ -9,9 +9,7 @@ export default class ForgotPasswordScreen extends Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
 			headerTitle: (
-				<Text
-					style={[appCss.defaultFontApp, { color: colors.combinatorialColor, fontSize: 16 }]}
-				>
+				<Text style={{ color: colors.tapeWhite, fontSize: 17, fontFamily: 'MuseoSansRounded-900' }}>
 					Forgot Password
 				</Text>
 			),

@@ -5,7 +5,8 @@ import { showToast } from "../../store/toast";
 import { updateCodeGetUser } from "../../store/member";
 
 const mapStateToProps = state => ({
-	loading: state.app.member.loading
+	isLoadingFetch: state.app.member.isLoadingFetch,
+	hasError: state.app.member.hasError
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -14,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 
 export default withNavigation(
 	connect(
-		null,
+		mapStateToProps,
 		mapDispatchToProps
 	)(ForgotPasswordVerify)
 );

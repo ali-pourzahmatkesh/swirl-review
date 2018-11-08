@@ -8,90 +8,70 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.appColor,
 		flex: 1
 	},
-	iconFormInput: {
-		flexDirection: "row",
-		marginTop: 12,
-		paddingTop: 10,
-		paddingLeft: 10,
-		paddingBottom: 12,
-		borderBottomWidth: 1.5,
-		borderBottomColor: colors.formInputUnderline
-	},
-	formInputIcon: {
-		height: "110%",
-		width: "10%",
-		resizeMode: "contain"
-	},
     imageContainer: {
-        flex:2,
+        flex: 1,
         justifyContent: "center",
-        alignItems: "center",
-    },
-    imagesContent: {
-        height: '35%',
-
+		alignItems: "center",
     },
     imageItem: {
-        flex: 1,
+		height: 80,
+		width: 80,
         aspectRatio: 1,
-        resizeMode: "contain"
+		resizeMode: "contain",
+		// position: 'absolute',
+		// top: 10
     },
     formInputContainer: {
         alignItems: "flex-start",
-        width: 300,
-        flex:3,
-        alignSelf: "center"
-    },
-	minLengthText: StyleSheet.flatten([
-		appCss.thinDefaultFontApp,
-		{
-			alignSelf: "flex-end",
-			color: colors.tapeWhite,
-			fontSize: 10,
-			marginTop: 3,
-			marginBottom: -15
-		}
-	]),
+		width: '90%',
+		alignSelf: "center",
+	},
+	bottomContainer: {
+		borderWidth: 0,
+		borderColor: 'blue',
+		width: '100%', 
+		paddingBottom: height * 0.1,
+		height: height * 0.3,
+	},
 	signUpButton: {
 		alignSelf: "center",
 		backgroundColor: colors.highlightColorTwo,
 		borderRadius: 30,
-		// height: "35%",
 		width: "80%",
-        paddingTop:10,
-		paddingBottom:10,
+        paddingTop: 10,
+		paddingBottom: 10,
 		justifyContent: "center"
 	},
-	signUpText: StyleSheet.flatten([
+	signUpText: {
+		color: colors.bodyColor,
+		textAlign: "center",
+		fontSize: 24,
+		fontFamily: 'MuseoSansRounded-1000'
+	},
+    textSignup: {
+		fontSize: 14,
+		fontFamily: 'MuseoSansRounded-300',
+		paddingBottom: 20,
+		color: colors.tapeWhite,
+		alignSelf: 'center'
+	},
+	bolderSignup: {
+		fontFamily: 'MuseoSansRounded-1000'
+	},
+
+
+	headerContainer: {
+		backgroundColor: colors.appColor,
+		flexDirection: "row",
+		justifyContent: "space-between"
+	},
+	headerSections: {
+		flex: 1
+	},
+	headerText: StyleSheet.flatten([
 		appCss.defaultFontApp,
 		{
-			color: colors.bodyColor,
-			textAlign: "center",
-			fontSize: 20
-		}
-	]),
-	textInput: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			flex: 1,
-			fontWeight: "bold",
-			fontSize: 16,
-			width: "100%",
-			paddingRight: 30,
-			paddingLeft: 18,
-			paddingBottom:10,
-			color: colors.tapeWhite
-		}
-	]),
-    textSignup: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			flex: 1,
-			// fontWeight: "bold",
-			fontSize: 13,
-			// paddingTop:20,
-			paddingBottom:20,
-			color: colors.tapeWhite
+			textAlign: "center"
 		}
 	])
 });

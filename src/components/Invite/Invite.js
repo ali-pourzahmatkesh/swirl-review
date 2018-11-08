@@ -1,10 +1,16 @@
 import React, {Component} from "react";
-import {TextInput, TouchableOpacity, View} from "react-native";
+import {
+    TextInput,
+    TouchableOpacity,
+    View,
+    Image
+} from "react-native";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import InviteTabs from "../InviteTabs";
 import appCss from "../../../app.css";
+import search from "../../assets/images/icons/search3.png";
 import { CONFIG } from "../../../config";
 const COLORS = CONFIG.colors;
 
@@ -45,15 +51,20 @@ export default class Invite extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.search}>
-                        <View style={styles.SectionStyle}>
-                            <Feather
+                        <View style={styles.sectionStyle}>
+                            {/* <Feather
                                 style={styles.ImageStyle}
                                 size={15}
                                 color={COLORS.bodyColor}
                                 name="search"
+                            /> */}
+                            <Image
+                                source={search}
+                                style={styles.imageStyle}
+                                resizeMode='contain'
                             />
                             <TextInput
-                                style={{ flex: 1, color:COLORS.bodyColor }}
+                                style={{ color:COLORS.bodyColor, fontFamily: 'MuseoSansRounded-900', fontSize: 19, borderWidth: 0 }}
                                 placeholderTextColor={COLORS.bodyColor}
                                 placeholder="Search By Username"
                                 onChangeText={text => this.search(text)}

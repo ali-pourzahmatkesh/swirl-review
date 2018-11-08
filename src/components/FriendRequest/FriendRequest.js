@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import EmptyList from "../EmptyList";
 import Avatar from "../../components/Avatar";
-import check from "../../assets/images/icons/check_white.png";
-import cancel from "../../assets/images/icons/close.png";
+import check from "../../assets/images/icons/check4.png";
+import cancel from "../../assets/images/icons/close2.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import emptyIcon from "../../assets/images/icons/messageEmpty.png";
@@ -90,7 +90,7 @@ export default class FriendRequest extends Component {
 					<Text
 						numberOfLines={1}
 						ellipsizeMode="tail"
-						style={appCss.titleBoxSubject}
+						style={[appCss.titleBoxSubject, {fontFamily: 'MuseoSansRounded-900'}]}
 					>
 						{this.Capitalize(item.senderMemberId.username)}
 					</Text>
@@ -118,29 +118,22 @@ export default class FriendRequest extends Component {
 					}}
 					style={[styles.actionBtn, styles.cancel]}
 				>
-					{this.props.loading ? (
-						<LoadingCircles3 />
-					) : (
-						<Image
-							source={cancel}
-							resizeMode={"contain"}
-							style={styles.actionIcon}
-						/>
-					)}
+					<Image
+						source={cancel}
+						// source={decline}
+						resizeMode={"contain"}
+						style={styles.actionIcon}
+					/>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => this.approve(item.id)}
 					style={[styles.actionBtn, styles.verify]}
 				>
-					{this.props.loading ? (
-						<LoadingCircles3 />
-					) : (
-						<Image
-							source={check}
-							resizeMode={"contain"}
-							style={styles.actionIcon}
-						/>
-					)}
+					<Image
+						source={check}
+						resizeMode={"contain"}
+						style={[styles.actionIcon, {height: 25, width: 25}]}
+					/>
 				</TouchableOpacity>
 			</View>
 		);
@@ -161,7 +154,8 @@ export default class FriendRequest extends Component {
 					style={{ flex: 1 }}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
-					ListEmptyComponent={() =><EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
+					// empty list component no longer function. keeps icon from reloading
+					ListEmptyComponent={<EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
 					onEndReachedThreshold={0.5}
 				/>
 			</View>

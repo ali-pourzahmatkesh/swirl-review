@@ -8,66 +8,35 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.appColor,
 		flex: 1
 	},
-	connectText: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			opacity: 100,
-			color: colors.highlightColor,
-			alignSelf: "center",
-			marginTop: "5%"
-		}
-	]),
-
-	forgotPassword: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			color: colors.tapeWhite,
-			textDecorationLine: "underline",
-			fontSize: 12,
-			marginTop: "23%"
-		}
-	]),
-
-    imageContainer: {
-        flex:2,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    imagesContent: {
-        height: '35%',
-
-    },
-	imageItem: {
-		flex: 1,
-		aspectRatio: 1,
-		resizeMode: "contain"
+	forgotPassword: {
+		color: colors.tapeWhite,
+		textDecorationLine: "underline",
+		fontSize: 14,
+		marginTop: 50,
+		fontFamily: 'Avenir',
+		fontSize: 14,
+		fontWeight: '500'
 	},
 
-    loginButton: {
-        backgroundColor: colors.highlightColorTwo,
-        height: '10%',
-        width: '100%',
-        justifyContent: 'center',
-        position: 'absolute',
+    imageContainer: {
+        flex: 2,
+        justifyContent: "center",
+		alignItems: "center",
+		marginBottom: 50,
+		paddingTop: 15
     },
-	loginText: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			color: colors.tapeBlack,
-			textAlign: "center",
-			fontSize: 20
-		}
-	]),
-	signUpText: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			color: colors.tapeWhite,
-			textAlign: "center",
-			marginBottom: 25,
-			fontSize: 12
-		}
-	]),
-
+	imageItem: {
+		height: 80,
+		width: 80,
+		aspectRatio: 1,
+		resizeMode: "contain",
+	},
+	signUpText: {
+		color: colors.tapeWhite,
+		textAlign: "center",
+		fontFamily: 'MuseoSansRounded-700',
+		fontSize: 14
+	},
 });
 
 export default styles;

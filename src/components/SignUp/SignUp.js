@@ -1,35 +1,26 @@
 import React, { Component } from "react";
 import {
-	ActivityIndicator,
-	Image,
-	KeyboardAvoidingView,
-	Modal,
-	SectionList,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View
+    Text,
+    TouchableOpacity,
+	View,
+	Animated,
+	Keyboard,
+	Dimensions,
 } from "react-native";
-import { NavigationActions, SafeAreaView } from "react-navigation";
+import {SafeAreaView} from "react-navigation";
+import { getBottomSpace } from 'react-native-iphone-x-helper'
+import BubbleInput from "../_common/BubbleInput";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 
 import logo from "../../assets/images/logo_bigger.png";
-import passwordIcon from "../../assets/images/icons/Lock.png";
-import phoneIcon from "../../assets/images/icons/phone.png";
-import usernameIcon from "../../assets/images/icons/Mask.png";
-
-import EmptyList from "../EmptyList";
-import emptyIcon from "../../assets/images/icons/emptyCountry.png";
-import Feather from "react-native-vector-icons/Feather";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import SVGImage from "react-native-svg-image";
-import appCss from "../../../app.css";
+import usernameIcon from "../../assets/images/icons/profile3.png";
+import passwordIcon from "../../assets/images/icons/password3.png";
 import styles from "./style";
 import { CONFIG } from "../../../config";
 import LoadingCircles3 from "../../components/LoadingCircles3";
 
-// import moment from "moment";
-
 const colors = CONFIG.colors;
+const { width, height } = Dimensions.get("window");
 
 export default class SignUp extends Component {
 	constructor(props) {
@@ -40,175 +31,20 @@ export default class SignUp extends Component {
 			reEnterPassword: "",
 
 			//for country code modal
-			cellphoneCountryCode: "",
+			cellphoneCountryCode: 1,
 			cellphone: "",
-			modalVisible: false,
-			countryCodeVisible: false,
-			flagCountry: "",
-			countries: [],
 			flag: "",
-			searchValue: ""
 		};
+
+		this.logoSize = new Animated.Value(80);
+		this.bottomPadding = new Animated.Value(0);
+		this.buttonAndTextOpacity = new Animated.Value(1);
+		this.marginTop = new Animated.Value(0);
+		this.logoY = new  Animated.Value(0);
 	}
-
-	componentDidMount() {
-		this.props.getIpData();
-	}
-
-	/* ************************************************************************************************************************* */
-	componentWillReceiveProps(nextProps) {
-		if (
-			(nextProps.ipData["calling_code"] &&
-				this.state.cellphoneCountryCode !== nextProps.ipData["calling_code"]) ||
-			(nextProps.ipData["flag"] &&
-				this.state.flagCountry !== nextProps.ipData["flag"]) ||
-			(nextProps.countries &&
-				nextProps.countries.length !== this.state.countries.length)
-		) {
-			let countryCodeGroup = [];
-			if (nextProps.countries.length > 0) {
-				countryCodeGroup = this.generateSectionList(nextProps.countries);
-			}
-			let cellphoneCountryCode = this.state.cellphoneCountryCode;
-			if (cellphoneCountryCode.length === 0) {
-				cellphoneCountryCode = nextProps.ipData["calling_code"];
-			}
-			this.setState({
-				cellphoneCountryCode,
-				flagCountry: nextProps.ipData["flag"],
-				countries: nextProps.countries,
-				countryCodeGroup
-			});
-		}
-	}
-
-	generateSectionList = array => {
-		let list = { letters: [] };
-		array.forEach(item => {
-			let itLetter = item["alpha2Code"].substring(0, 1).toUpperCase();
-			if (!(itLetter in list)) {
-				list[itLetter] = [];
-				list.letters.push(itLetter);
-			}
-			list[itLetter].push(item);
-		});
-		list.letters = list.letters.sort();
-		let countryCodeGroup = [];
-
-		list.letters.forEach(item => {
-			countryCodeGroup.push({
-				title: item,
-				data: list[item]
-			});
-		});
-		return countryCodeGroup;
-	};
-
-	openModal() {
-		this.setState({ modalVisible: true }, () => {
-			if (this.state.countries.length) return;
-			this.props.getCountries();
-		});
-	}
-
-	closeModal = () => {
-		this.setState({ modalVisible: false });
-	};
-
-	searchCountry = text => {
-		let countries = [...this.state.countries];
-		let filterCountry = countries.filter(item => {
-			if (item && item["name"].includes(text)) {
-				return item;
-			}
-		});
-		let countryCodeGroup = this.generateSectionList(filterCountry);
-		this.setState({ countryCodeGroup, searchValue: text });
-	};
-
-	handlePhoneFieldFocus = () => {
-		this.setState({
-			countryCodeVisible: true
-		});
-	};
-
-	handlePhoneFieldBlur = () => {
-		this.setState({
-			countryCodeVisible: false
-		});
-	};
-
-	renderCountryCodes = () => {
-		let { cellphoneCountryCode, flagCountry, flag } = this.state;
-		if (cellphoneCountryCode.length === 0 || flagCountry.length === 0) {
-			return (
-				<ActivityIndicator
-					size={1}
-					style={appCss.countryCodeBox}
-					color={colors.combinatorialColor}
-				/>
-			);
-		} else {
-			return (
-				<TouchableOpacity
-					style={appCss.countryCodeBox}
-					onPress={() => this.openModal()}
-				>
-					<View style={appCss.countryCodeImageBox}>
-						{flag.length > 0 ? (
-							<SVGImage
-								style={appCss.countryFlagSvg}
-								source={{ uri: flag }}
-								originWhitelist={["*"]}
-							/>
-						) : (
-							<Image
-								source={{ uri: flagCountry }}
-								style={appCss.countryCodeFlag}
-							/>
-						)}
-					</View>
-					<Text style={[appCss.defaultFontApp, appCss.countryCode]}>
-						+ {cellphoneCountryCode}
-					</Text>
-				</TouchableOpacity>
-			);
-		}
-	};
-
-	/* ************************************************************************************************************************* */
-
-	// handleDateChange = birthdate => {
-	//     this.setState({
-	//         birthdate,
-	//         age: moment().diff(birthdate, 'years')
-	//     })
-	// }
-
-	handlePressItemCountry = item => {
-		this.setState({
-			cellphoneCountryCode: item.callingCodes[0],
-			modalVisible: false,
-			flag: item.flag
-		});
-	};
 
 	handleSubmit = () => {
-		// if(this.state.age < 18){
-		//     this.props.showToast('You must be 18 or older.')
-		// }else{
-		// }
-		// const resetAction = NavigationActions.reset({
-		// 	index: 0,
-		// 	actions: [
-		// 		NavigationActions.navigate({
-		// 			routeName: "HomeStack",
-		// 			params: { signUp: true }
-		// 		})
-		// 	],
-		// 	key: null
-		// });
-		const resetAction = this.props.navigation.navigate("SignUpAddFriendScreen");
+        const resetAction =  this.props.navigation.navigate('SignUpAddFriendScreen');
 		this.props.sendUser({
 			user: {
 				username: this.state.username,
@@ -221,6 +57,79 @@ export default class SignUp extends Component {
 		});
 	};
 
+	componentWillMount() {
+		this.keyboardWillShowSub = Keyboard.addListener(
+			"keyboardWillShow",
+			this.keyboardWillShow
+		);
+		this.keyboardWillHideSub = Keyboard.addListener(
+			"keyboardWillHide",
+			this.keyboardWillHide
+		);
+		console.log(getBottomSpace(), 'bottooooooooom')
+	}
+
+	keyboardWillShow = e => {
+		if(e.startCoordinates.screenY !== e.endCoordinates.screenY){
+			Animated.parallel([
+				Animated.timing(this.logoSize, {
+					duration: e.duration,
+					toValue: 30
+				}),
+				Animated.timing(this.bottomPadding, {
+					duration: e.duration,
+					toValue: e.endCoordinates.height + (height * 0.08) + 150
+				}),
+				Animated.timing(this.buttonAndTextOpacity, {
+					duration: e.duration,
+					toValue: 0
+				}),
+				Animated.timing(this.marginTop, {
+					duration: e.duration,
+					// this is the height of the obscuring item (keyboard + button)
+					// minus the item already under the form (bottom container, terms of use text + signup button)
+					// minus the potential bottom space. should be 34 for iPhone X line and 0 for other ios devices
+					// plus the usual top margin associated with form inputs
+					toValue: (e.endCoordinates.height + (height * 0.08)) - (height * 0.3) - getBottomSpace() + 25
+				}),
+				Animated.timing(this.logoY, {
+					duration: e.duration,
+					toValue: 0
+				})
+			]).start();
+		}
+	}
+
+	keyboardWillHide = e => {
+		Animated.parallel([
+			Animated.timing(this.logoSize, {
+				duration: e.duration,
+				toValue: 80
+			}),
+			Animated.timing(this.bottomPadding, {
+				duration: e.duration,
+				toValue: 0
+			}),
+			Animated.timing(this.buttonAndTextOpacity, {
+				duration: e.duration,
+				toValue: 1
+			}),
+			Animated.timing(this.marginTop, {
+				duration: e.duration,
+				toValue: 0
+			}),
+			Animated.timing(this.logoY, {
+				duration: e.duration,
+				toValue: 45
+			})
+		]).start();
+	}
+
+	componentWillUnmount() {
+		this.keyboardWillShowSub.remove();
+		this.keyboardWillHideSub.remove();
+	}
+
 	render() {
 		let {
 			username,
@@ -228,8 +137,6 @@ export default class SignUp extends Component {
 			reEnterPassword,
 			cellphoneCountryCode,
 			cellphone,
-			countryCodeGroup,
-			searchValue
 		} = this.state;
 
 		let { isLoadingFetch } = this.props;
@@ -247,201 +154,111 @@ export default class SignUp extends Component {
 		}
 		return (
 			<SafeAreaView style={styles.container}>
-				<Modal
-					visible={this.state.modalVisible}
-					animationType={"fade"}
-					transparent={false}
-					onRequestClose={() => this.closeModal()}
-				>
-					<SafeAreaView style={appCss.modalContainer}>
-						<View style={appCss.modalHeader}>
-							<TouchableOpacity
-								style={appCss.modalOptions}
-								onPress={() => this.closeModal("SignInPassword")}
-							>
-								<MaterialCommunityIcons
-									style={styles.backButton}
-									size={20}
-									color="#fff"
-									name="window-close"
-								/>
-							</TouchableOpacity>
-							<View style={appCss.searchContainer}>
-								<View style={appCss.SectionStyle}>
-									<Feather
-										style={appCss.imageStyle}
-										size={15}
-										color="#fff"
-										name="search"
-									/>
-									<TextInput
-										style={appCss.searchTextInput}
-										placeholderTextColor="#fff"
-										placeholder="Country Name"
-										value={searchValue}
-										onChangeText={text => this.searchCountry(text)}
-										underlineColorAndroid="transparent"
-										autoCorrect={false}
-									/>
-								</View>
-							</View>
-							<View style={appCss.modalOptions} />
-						</View>
-						<View style={{ flex: 1 }}>
-							<SectionList
-								sections={countryCodeGroup}
-								extraData={countryCodeGroup}
-								keyExtractor={(item, index) => index}
-								ListEmptyComponent={() => <EmptyList emptyIcon={emptyIcon} emptyText={`Imaginary Countries don't count. ${this.state.searchValue && '"'+this.state.searchValue+'"'}`}/>}
-								renderItem={({ item }) => (
-									<TouchableOpacity
-										style={appCss.sectionItems}
-										onPress={() => this.handlePressItemCountry(item)}
-									>
-										<View style={appCss.countryCodeImageBox}>
-											<SVGImage
-												style={appCss.countryFlagSvg}
-												source={{ uri: item.flag }}
-												originWhitelist={["*"]}
-											/>
-										</View>
-										<Text
-											style={[appCss.defaultFontApp, appCss.countryCodeSearch]}
-										>
-											+ {item.callingCodes[0]}
-										</Text>
-										<Text
-											style={[appCss.defaultFontApp, appCss.countryNameSearch]}
-											numberOfLines={1}
-											ellipsizeMode="tail"
-										>
-											{item.name}
-										</Text>
-									</TouchableOpacity>
-								)}
-								renderSectionHeader={({ section }) => (
-									<View style={appCss.sectionHeader}>
-										<Text
-											style={[appCss.defaultFontApp, appCss.sectionHeaderTitle]}
-										>
-											{section.title}
-										</Text>
-									</View>
-								)}
-							/>
-						</View>
-					</SafeAreaView>
-				</Modal>
-
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<View style={styles.imageContainer}>
-						<View style={styles.imagesContent}>
-							<Image style={styles.imageItem} source={logo} />
-						</View>
-					</View>
-					<View style={[styles.formInputContainer]}>
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={usernameIcon} />
-							<TextInput
-								style={[appCss.textInput]}
-								placeholder="User Name"
-								placeholderTextColor={colors.combinatorialColor}
-								autoCorrect={false}
-								onChangeText={username => this.setState({ username })}
-							/>
-						</View>
-
-						<View
-							style={[
-								appCss.iconFormInput,
-								{ paddingLeft: 0, paddingBottom: 0, paddingTop: 0 }
-							]}
+				<View style={styles.headerContainer}>
+					<TouchableOpacity
+						style={styles.headerSections}
+						onPress={() => {this.props.navigation.goBack()}}>
+						<Text style={[styles.headerText, {
+							color: colors.tapeWhite,
+							fontFamily: 'MuseoSansRounded-500',
+							fontSize: 14					
+						}]}>
+							Login
+						</Text>
+					</TouchableOpacity>
+					<View style={styles.headerSections}>
+						<Animated.Text
+							style={[styles.headerText, {
+								color: colors.tapeWhite,
+								fontFamily: "MuseoSansRounded-900",
+								fontSize: 17,
+								opacity: this.buttonAndTextOpacity
+							}]}
 						>
-							{this.state.countryCodeVisible ? (
-								this.renderCountryCodes()
-							) : (
-								<Image
-									style={[
-										appCss.formInputIcon,
-										{ marginLeft: 10, marginTop: 8, height: "60%" }
-									]}
-									source={phoneIcon}
-								/>
-							)}
-							<TextInput
-								style={[
-									appCss.defaultFontApp,
-									appCss.textInput,
-									{ marginBottom: 12, marginTop: 10 }
-								]}
-								placeholder="Phone Number"
-								placeholderTextColor={colors.combinatorialColor}
-								keyboardType="number-pad"
-								onChangeText={cellphone => this.setState({ cellphone })}
-								onFocus={this.handlePhoneFieldFocus}
-								// onPress={this.handlePhoneFieldFocus}
-								onBlur={this.handlePhoneFieldBlur}
-							/>
-						</View>
-
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon} />
-							<TextInput
-								style={[appCss.textInput]}
-								placeholder="Password"
-								placeholderTextColor={colors.combinatorialColor}
-								secureTextEntry={true}
-								onChangeText={password => this.setState({ password })}
-							/>
-						</View>
-						<Text style={styles.minLengthText}>min 7 characters</Text>
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon} />
-							<TextInput
-								style={[appCss.textInput]}
-								placeholder="Re-enter Password"
-								placeholderTextColor={colors.combinatorialColor}
-								secureTextEntry={true}
-								onChangeText={reEnterPassword =>
-									this.setState({ reEnterPassword })
-								}
-							/>
-						</View>
-						<View
-							style={{
-								width: "100%",
-								alignItems: "center",
-								paddingTop: 30,
-								paddingBottom: 30
+							Signup
+						</Animated.Text>
+					</View>
+					<View style={{flex: 1}}/>
+				</View>
+				
+				<Animated.View style={{ flex: 1, borderWidth: 0 }}>
+					<View style={[styles.imageContainer, {borderWidth: 0}]}>
+						<Animated.Image style={[styles.imageItem, {
+							height: this.logoSize,
+							// transform: [
+							// 	{
+							// 		translateY: this.logoY
+							// 	}
+							// ],
+							borderWidth: 0
+						}]} source={logo}/>
+					</View>
+					<Animated.View style={[styles.formInputContainer, { borderWidth: 0}]}>
+						<BubbleInput
+							icon={usernameIcon}
+							inputProps={{
+								autoFocus:true,
+								placeholder: "Username",
+								onChangeText: username => this.setState({ username })
 							}}
+						/>
+
+						<BubbleInput
+							phoneNumber={true}
+							defaultCountryCode={this.state.cellphoneCountryCode}
+							defaultFlag={this.state.flag}
+							setCountryCode={
+								countryCodeData=> {
+									this.setState(countryCodeData)
+								}
+							}
+							inputProps={{
+								onChangeText: cellphone => this.setState({ cellphone })
+							}}
+						/>
+
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: "Password",
+								secureTextEntry: true,
+								onChangeText: password => this.setState({ password })
+							}}
+						/>
+
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: "Re-enter Password",
+								secureTextEntry: true,
+								onChangeText: reEnterPassword => this.setState({ reEnterPassword })
+							}}
+						/>
+					</Animated.View>
+					<Animated.View style={[styles.bottomContainer, { opacity: this.buttonAndTextOpacity, marginTop: this.marginTop }]}>
+						<TouchableOpacity
+							style={{ width: '100%', alignItems: 'center', paddingTop: 30, paddingBottom: 30}}
+							onPress={() => this.props.navigation.navigate('TermsAndConditionsScreen')}
 						>
-							<Text style={styles.textSignup}>
-								By signing up you agree to the terms of use
+							<Text style={styles.textSignup}>By signing up you agree to the <Text style={styles.bolderSignup}>terms of use</Text></Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={[styles.signUpButton]}
+							onPress={this.handleSubmit}
+							disabled={signUpDisabled}
+						>
+							<Text style={[ styles.signUpText, signUpDisabled && { opacity: 0.8 } ]}>
+								Sign Up
 							</Text>
-						</View>
-						<View style={{ width: "100%" }}>
-							<TouchableOpacity
-								style={[styles.signUpButton]}
-								onPress={this.handleSubmit}
-								disabled={signUpDisabled}
-							>
-								{this.props.loading ? (
-									<LoadingCircles3 />
-								) : (
-									<Text
-										style={[
-											styles.signUpText,
-											signUpDisabled && { opacity: 0.5 }
-										]}
-									>
-										Sign Up
-									</Text>
-								)}
-							</TouchableOpacity>
-						</View>
-					</View>
-				</KeyboardAvoidingView>
-				{/* Sign up button */}
+						</TouchableOpacity>
+					</Animated.View>
+				</Animated.View>
+				<KeyboardAwareButton
+					title='Sign Up'
+					onPress={this.handleSubmit}
+					disabled={signUpDisabled}
+					loading={isLoadingFetch}
+				/>
 			</SafeAreaView>
 		);
 	}

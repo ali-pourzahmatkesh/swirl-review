@@ -8,8 +8,11 @@ import {
 	View,
 	Dimensions
 } from "react-native";
+import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+
 import logo from "../../assets/images/logo_bigger.png";
-import usernameIcon from "../../assets/images/icons/Mask.png";
+// import usernameIcon from "../../assets/images/icons/Mask.png";
+import usernameIcon from "../../assets/images/icons/profile3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import { CONFIG } from "../../../config";
@@ -17,20 +20,17 @@ const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 import LoadingCircles3 from "../../components/LoadingCircles3";
 
-// import moment from "moment";
-
 export default class ChangeInfo extends Component {
-	state = {
-		username: ""
-	};
-
-	onPressButton = () => {
-		this.props.updateMember({
-			id: this.props.id,
-			username: this.state.username,
-			navigation: this.props.navigation
-		});
-	};
+    state = {
+        username: this.props.username
+    };
+    onPressButton = () => {
+        this.props.updateMember({
+            id: this.props.id,
+            username: this.state.username,
+            navigation: this.props.navigation
+        });
+    };
 
 	render() {
 		let { username } = this.state;
@@ -53,35 +53,23 @@ export default class ChangeInfo extends Component {
 						<View style={appCss.iconFormInput}>
 							<Image style={appCss.formInputIcon} source={usernameIcon} />
 							<TextInput
-								style={[appCss.textInput]}
-								placeholder={this.props.username}
-								placeholderTextColor={colors.combinatorialColor}
+								style={[ appCss.textInput ]}
+								placeholder='Username here'
+								placeholderTextColor={colors.highlightColorTwo + '66'}
 								autoCorrect={false}
-								value={username}
+								value={this.props.username}
 								blurOnSubmit={true}
 								autoFocus={true}
 								onChangeText={username => this.setState({ username })}
 							/>
 						</View>
 					</View>
-					<TouchableOpacity
-						style={[styles.nextButton]}
+					<KeyboardAwareButton
+						title='Save'
 						onPress={this.onPressButton}
-						disabled={!this.props.username}
-					>
-						{this.props.isLoadingFetch ? (
-							<LoadingCircles3 />
-						) : (
-							<Text
-								style={[
-									styles.nextText,
-									!this.props.username && { opacity: 0.5 }
-								]}
-							>
-								Save
-							</Text>
-						)}
-					</TouchableOpacity>
+						disabled={disabledBtn}
+						beginOnPage={true}
+					/>
 				</KeyboardAvoidingView>
 			</View>
 		);
