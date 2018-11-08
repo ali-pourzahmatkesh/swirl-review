@@ -4,7 +4,7 @@ import appCss from "../../../app.css";
 
 const colors = CONFIG.colors;
 const  {height, width} = Dimensions.get('window');
-
+const BOX_HEIGT = 30 + (height * 0.06);
 const STYLES = StyleSheet.create({
     container: {
         flex: 1,
@@ -17,7 +17,7 @@ const STYLES = StyleSheet.create({
     },
     chatListBox: {
         width: width * 0.9,
-        height: height * 0.09,
+        height: BOX_HEIGT,
         backgroundColor: colors.bodyColor,
         borderRadius: 20,
         flexDirection: 'row',
@@ -45,43 +45,51 @@ const STYLES = StyleSheet.create({
     chatListSubjectBox: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 0
     },
     messageInfoBox: {
         width: '50%',
-        borderWidth: 0
+        borderWidth: 0,
+        height: BOX_HEIGT * 0.8,
     },
     otherInfo: {
         flexDirection:'row',
         justifyContent: 'flex-end',
-        height: height * 0.09,
+        height: BOX_HEIGT * 0.9,
         paddingRight: width * 0.05,
         paddingTop: 5,
         width: '25%',
         borderWidth: 0
     },
     otherInfoLogo: {
-        width: 43,
-        height: 43,
-        alignSelf: 'center'
+        height: BOX_HEIGT * 0.6,
+        width: BOX_HEIGT * 0.6,
+        alignSelf: 'center',
+        marginTop: height * 0.01
     },
 
     chatSubject: {
-        fontSize: 16,
+        fontSize: 8 + (height * 0.0103),
         fontFamily: 'MuseoSansRounded-900',
+        borderWidth: 0
+    },
+    messageHintContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
     },
     chatDesc: {
-        fontSize: 14,
+        fontSize: 6 + (height * 0.0103),
         fontFamily: 'MuseoSansRounded-300',
-        borderWidth: 0,
+        marginBottom: BOX_HEIGT * 0.2,
+        borderWidth: 0
     },
     chatTime: {
         fontSize: 12,
         fontFamily: 'MuseoSansRounded-300',
         position: 'absolute',
         alignSelf: 'flex-start',
-        right: width * 0.02,
-        top: 3
+        right: width * 0.025,
     },
 
 
@@ -133,11 +141,12 @@ const STYLES = StyleSheet.create({
         color: colors.bodyColor
     },
 
-    TimerCountdown:{
-        flexDirection:"row",
-        alignItems:'center',
-        justifyContent:'flex-start',
-        marginTop: 16,
+    timerCountdown: {
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        borderWidth: 0,
+        marginBottom: BOX_HEIGT * 0.12
     }
 });
 

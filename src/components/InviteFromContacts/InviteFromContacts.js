@@ -193,7 +193,7 @@ export default class InviteFromContacts extends Component {
 							</View>
 						</View>
 						:
-						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
+						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... Yet.'}/>
 					}
 					renderItem={({ item }) => (
 						<View style={styles.sectionItems}>

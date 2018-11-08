@@ -14,6 +14,7 @@ import cancel from "../../assets/images/icons/close2.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import emptyIcon from "../../assets/images/icons/messageEmpty.png";
+import LoadingSpinner from "../../components/_common/LoadingSpinner";
 import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class FriendRequest extends Component {
@@ -117,23 +118,37 @@ export default class FriendRequest extends Component {
 						this.cancel(item.id);
 					}}
 					style={[styles.actionBtn, styles.cancel]}
-				>
+				>	
+				{this.props.loading ? 
+					<LoadingSpinner
+						maxRadius={22}
+						lineWidth={1.5}
+					/>
+					:
 					<Image
 						source={cancel}
 						// source={decline}
 						resizeMode={"contain"}
 						style={styles.actionIcon}
 					/>
+				}
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => this.approve(item.id)}
 					style={[styles.actionBtn, styles.verify]}
 				>
+				{this.props.loading ? 
+					<LoadingSpinner
+						maxRadius={22}
+						lineWidth={1.5}
+					/>
+					:
 					<Image
 						source={check}
 						resizeMode={"contain"}
 						style={[styles.actionIcon, {height: 25, width: 25}]}
 					/>
+				}
 				</TouchableOpacity>
 			</View>
 		);
@@ -155,7 +170,7 @@ export default class FriendRequest extends Component {
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
 					// empty list component no longer function. keeps icon from reloading
-					ListEmptyComponent={<EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
+					ListEmptyComponent={<EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests... Here\'s a lollipop. '}/>}
 					onEndReachedThreshold={0.5}
 				/>
 			</View>

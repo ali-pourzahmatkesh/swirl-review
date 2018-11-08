@@ -9,6 +9,7 @@ import {
 	SectionList,
 	ActivityIndicator,
 	Image,
+	Dimensions,
 	Keyboard
 } from "react-native";
 import EmptyList from "../../EmptyList";
@@ -21,7 +22,7 @@ import appCss from "../../../../app.css";
 
 import styles from "./style";
 import {CONFIG} from "../../../../config";
-
+const { width, height } = Dimensions.get("window");
 const colors = CONFIG.colors;
 export default class CountryCodeModal extends Component {
     constructor(props){
@@ -121,8 +122,8 @@ export default class CountryCodeModal extends Component {
 	};
 
 	openModal() {
-		console.log(this.props.blur, 'blluuururuururua')
-		this.props.blur()
+		// console.log(this.props.blur, 'blluuururuururua')
+		// this.props.blur()
         this.setState({ modalVisible: true }, () => {
             if( this.state.countries.length ) return;
             this.props.getCountries();
@@ -132,7 +133,7 @@ export default class CountryCodeModal extends Component {
 
 	closeModal = () => {
 		this.setState({ modalVisible: false }, this.props.updateModalVisible(false));
-		this.props.focus();
+		// this.props.focus();
 	};
 
 	searchCountry = text => {
@@ -159,10 +160,16 @@ export default class CountryCodeModal extends Component {
 		} else {
 			return (
 				<TouchableOpacity
-					style={[appCss.countryCodeBox, cellphoneCountryCode.length > 3 && {width: 75}]}
+					style={[
+						appCss.countryCodeBox,
+						// starting with the base length (can find another explanation for the in the style.js)
+						// then increasing my a diminishing amount for each extra country code digit
+						// probably going to come back and try something a bit cleaner for this later
+						flag.length > 0 && {width: ((height * 0.09) + ((800 / height) * 9)) + ((2500 / height) * (cellphoneCountryCode.length - 1))}
+					]}
 					onPress={() => this.openModal()}
 				>
-					<View style={appCss.countryCodeImageBox}>
+					<View style={[appCss.countryCodeImageBox, flag.length > 0 && {marginLeft: height * 0.00}]}>
 
 
 						{flag.length > 0 ? (
@@ -188,7 +195,7 @@ export default class CountryCodeModal extends Component {
 
 	handlePressItemCountry = item => {
 		console.log('item ********************************************************************************************************************************************', item)
-		console.log('focuusuususuusus', this.props.focus)
+		// console.log('focuusuususuusus', this.props.focus)
 		// this.props.focus()
 		this.setState({
 			cellphoneCountryCode: item.callingCodes[0],
@@ -197,7 +204,7 @@ export default class CountryCodeModal extends Component {
 		}, () => {
 			this.props.setCountryCode({cellphoneCountryCode: item.callingCodes[0], flag: item.flag});
 			this.props.updateModalVisible(false);
-			this.props.focus();
+			// this.props.focus();
 		});
 	};
 

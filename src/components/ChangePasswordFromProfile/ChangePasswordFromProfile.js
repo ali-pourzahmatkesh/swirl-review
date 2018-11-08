@@ -159,6 +159,7 @@ export default class ChangePasswordFromProfile extends Component {
 						onPress={this.handleSubmit}
 						disabled={nextDisabled}
 						beginOnPage={true}
+						loading={this.props.isLoadingFetch}
 					/>
 				</View>
 				{/* </KeyboardAvoidingView> */}

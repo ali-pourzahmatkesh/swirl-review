@@ -3,7 +3,6 @@ import {
     Animated,
     Image,
     Keyboard,
-    KeyboardAvoidingView,
     Text,
     TouchableOpacity,
 	View,
@@ -35,7 +34,8 @@ export default class SignIn extends Component {
         this.forgotPassMarginInterpolate = this.forgotPassMargin.interpolate({
             inputRange: [0, 100],
             outputRange: ["5%", "27%"]
-        });
+		});
+		this.bottomPadding = new Animated.Value(0);
 	}
 
 	componentDidMount() {
@@ -83,6 +83,10 @@ export default class SignIn extends Component {
 			Animated.timing(this.forgotPassMargin, {
 				duration: event.duration,
 				toValue: 0
+			}),
+			Animated.timing(this.bottomPadding, {
+				duration: event.duration,
+				toValue: event.endCoordinates.height + height * 0.10
 			})
 		]).start();
 	};
@@ -92,6 +96,10 @@ export default class SignIn extends Component {
 			Animated.timing(this.forgotPassMargin, {
 				duration: event.duration,
 				toValue: 100
+			}),
+			Animated.timing(this.bottomPadding, {
+				duration: event.duration,
+				toValue: 0
 			})
 		]).start();
 	};
@@ -114,7 +122,7 @@ export default class SignIn extends Component {
 	render() {
 		return (
 			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={(height * 0.08 + 120 + (this.state.passwordFocused && 50))}>
+				<Animated.View style={{flex: 1, paddingBottom: this.bottomPadding}}>
 					<View style={styles.imageContainer}>
 						<Image style={styles.imageItem} source={logo} />
 					</View>
@@ -159,11 +167,12 @@ export default class SignIn extends Component {
 							</Animated.Text>
 						</TouchableOpacity>
 					</View>
-				</KeyboardAvoidingView>
+				</Animated.View>
 				<TouchableOpacity
 					onPress={() => {
 						this.props.navigation.navigate("SignUpScreen", {leftTitle: 'Login'})
 					}}
+					style={styles.signUpButtonBottom}
 				>
 					<Text style={styles.signUpText}>Don't have an account? Signup</Text>
 				</TouchableOpacity>

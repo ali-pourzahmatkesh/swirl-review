@@ -107,6 +107,7 @@ export default class Feedback extends Component {
 							})
 						}
 						beginOnPage={true}
+						loading={this.props.loading}
 					/>
 				</KeyboardAvoidingView>
 			</View>

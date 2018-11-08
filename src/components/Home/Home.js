@@ -14,7 +14,7 @@ import logo from "../../assets/images/logo_bigger.png";
 import logoOther from "../../assets/images/logo_bigger_other.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
-import twoPeople from "../../assets/images/icons/twoPeople.png"
+import addFriend from "../../assets/images/icons/addFriend1.png"
 import noSwirl from "../../assets/images/icons/noSwirl.png";
 // import noSwirl from "../../assets/images/icons/noSwirl.png";
 import emptyIcon from "../../assets/images/icons/messageEmpty.png";
@@ -189,7 +189,6 @@ class Home extends Component {
 	}
 
 	handleSubmit = () => {
-		console.log('a;lshf;klajsdf;lkaj')
 		this.props.navigation.push("ProfileScreen", {
 			userId: 1, //item.memberId,
 			x: 1
@@ -210,7 +209,7 @@ class Home extends Component {
 					<Image
 						style={[appCss.headerIcon, {height: 50, width: 50}]}
 						resizeMode={"contain"}
-						source={twoPeople}
+						source={addFriend}
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity style={appCss.headerLogoBox}>
@@ -240,6 +239,7 @@ class Home extends Component {
 		let messageHint = "";
 		let messageOnpress;
 		let messageStyle;
+		const BOX_HEIGT = 30 + (height * 0.06);
 		console.log(item, 'itemmmmmmmmmm *********************************************************************************')
 		if (isAvailable) {
 			if (item.isSeen) {
@@ -273,7 +273,7 @@ class Home extends Component {
 				// onTick={secondsRemaining => console.log("tick", secondsRemaining)}
 				// onTimeElapsed={() => console.log("complete")}
 				return (
-					<View style={styles.TimerCountdown}>
+					<View style={styles.timerCountdown}>
 						<Text>⏳ </Text>
 						<View>
 							<TimerCountdown
@@ -313,7 +313,7 @@ class Home extends Component {
 					style={styles.chatListSubjectBox}
 				>
 					<View style={styles.avatarBox}>
-						<Avatar userId={item.senderMemberId} size={57} position="profile" />
+						<Avatar userId={item.senderMemberId} size={BOX_HEIGT * 0.8} position="profile" />
 					</View>
 					<View style={styles.messageInfoBox}>
 						<Text
@@ -324,15 +324,22 @@ class Home extends Component {
 						>
 							{item.senderName}
 						</Text>
-						<Text
-							style={[
-								styles.chatDesc,
-								messageStyle == "Ready" && { color: COLORS.bodyColor },
-								messageStyle !== "Ready" && { lineHeight: 24 }
-							]}
-						>
-							{messageHint()}
-						</Text>
+						<View style={styles.messageHintContainer}>
+					{isAvailable ?
+							<Text
+								style={[
+									styles.chatDesc,
+									messageStyle == "Ready" && { color: COLORS.bodyColor },
+									// messageStyle !== "Ready" && { lineHeight: 24 },
+									// {borderWidth: 0}
+								]}
+							>
+								{messageHint()}
+							</Text>
+						:
+						messageHint()
+					}
+						</View>
 					</View>
 					<View style={styles.otherInfo}>
 						<Text
@@ -341,7 +348,7 @@ class Home extends Component {
 								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
 						>
-							{moment(item["createdAt"], "YYYYMMDD").fromNow(true)}
+							{moment(item["createdAt"], "YYYYMMDD").fromNow(true)} {styles.chatDesc.fontSize}
 						</Text>
 						{(messageStyle == "Ready" || messageStyle == "Waiting") && (
 							<Image
@@ -363,6 +370,7 @@ class Home extends Component {
 	};
 
 	loadPostTypeEmoji = postType => {
+		// return ''
 		if(postType === 'text'){
 			return '✉️';
 		}

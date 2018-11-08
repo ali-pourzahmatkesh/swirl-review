@@ -27,8 +27,8 @@ const STYLES = StyleSheet.create({
         shadowOffset: {
             height: 1
         },
-        shadowOpacity: 0.6,
-        shadowRadius: 2.5,
+        shadowOpacity: 0.4,
+        shadowRadius: 1.7,
         backgroundColor: COLORS.tapeWhite
     },
     optionIconContainer: {
