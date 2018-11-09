@@ -17,7 +17,13 @@ const styles = StyleSheet.create({
         height: '100%',
         width: width * 0.9,
         height: '60%',
-        borderRadius: 30
+        borderRadius: 30,
+
+        shadowOffset: {
+            height: .75
+        },
+        shadowOpacity: .35,
+        shadowRadius: 1.5,
     },
     backPicker: {
         height: 88,
@@ -67,7 +73,13 @@ const styles = StyleSheet.create({
         width: '47%',
         height: '80%',
         // borderWidth: 1,
-        borderRadius: 20
+        borderRadius: 20,
+
+        shadowOffset: {
+            height: .75
+        },
+        shadowOpacity: .35,
+        shadowRadius: 1.5,
     },
     quickTimeButtonText: {
         color: colors.appColor,
