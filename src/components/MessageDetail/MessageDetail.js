@@ -56,7 +56,7 @@ export default class MessageDetail extends Component {
 						</TouchableOpacity>
 					</View>
 					<View style={styles.textInputBox}>
-						<Text>{data.textContent}</Text>
+						<Text style={styles.messageText}>{data.textContent}</Text>
 					</View>
 				</View>
 			</View>

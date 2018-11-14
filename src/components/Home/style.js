@@ -28,6 +28,7 @@ const STYLES = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: 1.5,
+        borderWidth: 0
     },
 
     chatListBlockBox: {
@@ -52,6 +53,8 @@ const STYLES = StyleSheet.create({
         width: '50%',
         borderWidth: 0,
         height: BOX_HEIGT * 0.8,
+        paddingTop: BOX_HEIGT * 0.1,
+        paddingBottom: BOX_HEIGT * 0.1
     },
     otherInfo: {
         flexDirection:'row',
@@ -66,7 +69,10 @@ const STYLES = StyleSheet.create({
         height: BOX_HEIGT * 0.6,
         width: BOX_HEIGT * 0.6,
         alignSelf: 'center',
-        marginTop: height * 0.01
+        marginTop: height * 0.01,
+        position: 'absolute', 
+        right: BOX_HEIGT * 0.15,
+        top: BOX_HEIGT * 0.1
     },
 
     chatSubject: {
@@ -81,7 +87,7 @@ const STYLES = StyleSheet.create({
     chatDesc: {
         fontSize: 6 + (height * 0.0103),
         fontFamily: 'MuseoSansRounded-300',
-        marginBottom: BOX_HEIGT * 0.2,
+        // marginBottom: BOX_HEIGT * 0.2,
         borderWidth: 0
     },
     chatTime: {
@@ -146,7 +152,7 @@ const STYLES = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         borderWidth: 0,
-        marginBottom: BOX_HEIGT * 0.12
+        // marginBottom: BOX_HEIGT * 0.12
     }
 });
 

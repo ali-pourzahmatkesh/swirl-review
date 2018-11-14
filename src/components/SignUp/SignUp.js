@@ -8,7 +8,7 @@ import {
 	Dimensions,
 } from "react-native";
 import {SafeAreaView} from "react-navigation";
-import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 
@@ -69,12 +69,21 @@ export default class SignUp extends Component {
 		console.log(getBottomSpace(), 'bottooooooooom')
 	}
 
+	getEndHeight = () => {
+		// basically there's a 'baseline size' of 35
+		// we subtract ~580 to set the iphone SE as sort of the low end
+		// then subtract a little extra from the iphone X line
+		// result is multiplied to get an increasingly larger size 
+		// on top of 35 as a function of height
+		return ((height - 580 - (isIphoneX() ? 130 : 0)) * 0.4) + 35;
+	}
+
 	keyboardWillShow = e => {
 		if(e.startCoordinates.screenY !== e.endCoordinates.screenY){
 			Animated.parallel([
 				Animated.timing(this.logoSize, {
 					duration: e.duration,
-					toValue: 30
+					toValue: this.getEndHeight(height)
 				}),
 				Animated.timing(this.bottomPadding, {
 					duration: e.duration,

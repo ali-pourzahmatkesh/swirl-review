@@ -67,8 +67,13 @@ export default class Profile extends Component {
 	}
 
 	renderOptionTitle = ({ section: { title } }) => {
+		if(title === null){
+			return <View style={{
+				height: height * 0.05,
+				width: '100%'
+			}}/>
+		}
 		return <Text style={[styles.sectionHeaderText]}>{title}</Text>;
-		// return <Text>{title}</Text>
 	};
 
 	renderOption = ({ item, index }) => {
@@ -95,11 +100,6 @@ export default class Profile extends Component {
 				</TouchableOpacity>
 			</View>
 		);
-		// return (
-		// 	<View>
-		// 		<Text>{item.name}</Text>
-		// 	</View>
-		// )
 	};
 
 	handleSignOut = flag => {
@@ -264,24 +264,29 @@ export default class Profile extends Component {
 						clickHandler: () => this.handleSignOut()
 					}
 				]
+			},
+			{
+				title: null,
+				data: []
 			}
 		];
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.imageContainer}>
-					<View style={[appCss.header, { marginBottom: 0 }]}>
-						<TouchableOpacity
-							style={appCss.headerIconBox}
-							onPress={() => this.props.navigation.goBack()}
-						>
-							<Ionicons
-								size={30}
-								color={COLORS.bodyColor}
-								name="ios-arrow-back"
-							/>
-						</TouchableOpacity>
-					</View>
+				<View style={[appCss.header, { borderWidth: 0, position: 'absolute', zIndex: 2 }]}>
+					<TouchableOpacity
+						style={appCss.headerIconBox}
+						onPress={() => this.props.navigation.goBack()}
+					>
+						<Ionicons
+							size={30}
+							color={COLORS.bodyColor}
+							name="ios-arrow-back"
+						/>
+					</TouchableOpacity>
+				</View>
+				<View style={[styles.imageContainer, {borderWidth: 0, paddingTop: 0}]}>
+					<View style={{flex: 1, borderWidth: 0}}/>
 					<View
 						style={{
 							borderWidth: 0,
@@ -316,7 +321,9 @@ export default class Profile extends Component {
 							/>
 						</TouchableOpacity>
 					</View>
-					<Text style={styles.nameText}>{userProfile.username}</Text>
+					<View style={{borderWidth: 0, justifyContent: 'center', flex: 1}}>
+						<Text style={styles.nameText}>{userProfile.username}</Text>
+					</View>
 				</View>
 				<SectionList
 					renderItem={this.renderOption}
@@ -326,7 +333,7 @@ export default class Profile extends Component {
 					style={{
 						height: '100%',
 						paddingLeft: '5%',
-						paddingRight: '5%'
+						paddingRight: '5%',
 					}}
 					contentContainerStyle={{
 						alignItems: 'center'

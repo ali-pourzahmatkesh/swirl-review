@@ -490,16 +490,21 @@ export default class MessagePopup extends Component {
 								selectedHours: hours,
 								selectedMinutes: minutes
 							})
+							// this.setState({
+							// 	selectedHours: 0,
+							// 	selectedMinutes: .3
+							// })
 						}
 					/>
 				</View>
 
 				<View
 					style={{
-						height: 100,
+						height: height * 0.15,
 						width,
 						flexDirection: "row",
-						justifyContent: "flex-end"
+						justifyContent: "flex-end",
+						borderWidth: 0
 					}}
 				>
 					<View style={styles.footer}>

@@ -53,7 +53,7 @@ const appCss = StyleSheet.create({
         paddingRight: 16,
         marginBottom: 10,
         height: 44,
-        borderBottomWidth:0,
+        borderBottomWidth: 0,
         marginTop: height === 812 ? 43 : 20
     },
     headerTitle: {

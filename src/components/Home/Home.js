@@ -3,7 +3,6 @@ import {
 	FlatList,
 	Image,
 	Modal,
-	Text,
 	TouchableOpacity,
 	View,
 	Dimensions
@@ -11,28 +10,15 @@ import {
 import styles from "./style";
 import appCss from "../../../app.css";
 import logo from "../../assets/images/logo_bigger.png";
-import logoOther from "../../assets/images/logo_bigger_other.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
 import addFriend from "../../assets/images/icons/addFriend1.png"
-import noSwirl from "../../assets/images/icons/noSwirl.png";
-// import noSwirl from "../../assets/images/icons/noSwirl.png";
-import emptyIcon from "../../assets/images/icons/messageEmpty.png";
-import Avatar from "../Avatar";
-import {CONFIG} from "../../../config";
+import emptyIcon from "../../assets/images/icons/messageEmpty.png";;
 import EmptyList from "../EmptyList";
-// import defaultMoment from "moment";
-import moment from "moment-timezone";
-// import ReactMomentCountDown from "react-moment-countdown";
-import TimerCountdown from "react-native-timer-countdown";
+import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
-
-import loading from "../../assets/loading.gif";
-
 import sortChatList from "../../util/sortChatList";
 const { height, width } = Dimensions.get('window');
-const COLORS = CONFIG.colors;
-// const timeZoneOffsetByMilliSeconds = new Date().getTimezoneOffset() * 60 * 60;
 const _ = require("lodash");
 
 class Home extends Component {
@@ -186,6 +172,8 @@ class Home extends Component {
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
 			this.setState({ refreshing: nextProps.chatListRefreshing });
 		}
+
+		console.log('timers from hooooooome', this.state.timers)
 	}
 
 	handleSubmit = () => {
@@ -233,169 +221,12 @@ class Home extends Component {
 		);
 	};
 
-	loadContentItem = ({ item }) => {
-		const isAvailable =
-			new Date(item["availableAt"]).getTime() <= new Date().getTime();
-		let messageHint = "";
-		let messageOnpress;
-		let messageStyle;
-		const BOX_HEIGT = 30 + (height * 0.06);
-		console.log(item, 'itemmmmmmmmmm *********************************************************************************')
-		if (isAvailable) {
-			if (item.isSeen) {
-				messageHint = () => {
-					return (
-						"Unswirled " +
-						moment(item["availableAt"], "YYYYMMDD")
-							.startOf("hour")
-							.fromNow(true) +
-						" ago"
-					);
-				};
-				messageOnpress = () => {
-					this.setState({ newMessageModalVisible: true });
-				};
-				messageStyle = "Archived";
-			} else {
-				messageHint = () => {
-					return "Tap to unswirl! " + this.loadPostTypeEmoji(item.postType);
-				};
-				messageOnpress = () => {
-					this.loadDetail(item);
-				};
-				messageStyle = "Ready";
-			}
-		} else {
-			const remainingSeconds =
-				new Date(item["availableAt"]).getTime() - new Date().getTime();
-
-			messageHint = () => {
-				// onTick={secondsRemaining => console.log("tick", secondsRemaining)}
-				// onTimeElapsed={() => console.log("complete")}
-				return (
-					<View style={styles.timerCountdown}>
-						<Text>⏳ </Text>
-						<View>
-							<TimerCountdown
-								initialSecondsRemaining={remainingSeconds}
-								allowFontScaling={true}
-								style={[appCss.defaultFontApp,{ fontSize: 14, fontFamily: 'MuseoSansRounded-500' }]}
-								formatSecondsRemaining={
-									(milliseconds) => {
-										const remainingSec = Math.round(milliseconds / 1000);
-										const minutes = parseInt(((remainingSec / 60) % 60).toString(), 10);
-										const hours = parseInt((remainingSec / 3600).toString(), 10);
-										return `${hours < 10 ? 0 : ''}${hours}:${minutes < 10 ? 0 : ''}${minutes}`;
-									}
-								}
-							/>{" "}
-						</View>
-						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)}</Text>
-					</View>
-				);
-			};
-
-			messageOnpress = () => {};
-			messageStyle = "Waiting";
-		}
-
-		return (
-			<View
-				style={[
-					styles.chatListBox,
-					isAvailable && !item.isSeen && styles.chatListBlockBox
-				]}
-			>
-				<TouchableOpacity
-					onPress={() => {
-						messageOnpress();
-					}}
-					style={styles.chatListSubjectBox}
-				>
-					<View style={styles.avatarBox}>
-						<Avatar userId={item.senderMemberId} size={BOX_HEIGT * 0.8} position="profile" />
-					</View>
-					<View style={styles.messageInfoBox}>
-						<Text
-							style={[
-								styles.chatSubject,
-								messageStyle == "Ready" && { color: COLORS.bodyColor }
-							]}
-						>
-							{item.senderName}
-						</Text>
-						<View style={styles.messageHintContainer}>
-					{isAvailable ?
-							<Text
-								style={[
-									styles.chatDesc,
-									messageStyle == "Ready" && { color: COLORS.bodyColor },
-									// messageStyle !== "Ready" && { lineHeight: 24 },
-									// {borderWidth: 0}
-								]}
-							>
-								{messageHint()}
-							</Text>
-						:
-						messageHint()
-					}
-						</View>
-					</View>
-					<View style={styles.otherInfo}>
-						<Text
-							style={[
-								styles.chatTime,
-								messageStyle == "Ready" && { color: COLORS.bodyColor }
-							]}
-						>
-							{moment(item["createdAt"], "YYYYMMDD").fromNow(true)} {styles.chatDesc.fontSize}
-						</Text>
-						{(messageStyle == "Ready" || messageStyle == "Waiting") && (
-							<Image
-								source={(messageStyle == "Waiting" && logoOther) || logo}
-								style={styles.otherInfoLogo}
-							/>
-						)}
-					</View>
-				</TouchableOpacity>
-			</View>
-		);
-	};
-
 	onRefresh = () => {
 		this.props.chatGetList({
 			id: this.props.id,
 			refreshing: true // load a new list of updated messages
 		});
 	};
-
-	loadPostTypeEmoji = postType => {
-		// return ''
-		if(postType === 'text'){
-			return '✉️';
-		}
-		else if(postType === 'image'){
-			return '📷';
-		}
-		else if(postType === 'video'){ // is it called video?
-			return '🎥';
-		}
-	}
-
-	loadDetail = data => {
-		console.log("start showing a message detail", data);
-		this.props.navigation.push("MessageDetailScreen", { data });
-		if (data.isSeen === false) {
-			console.log("this message need to update with new status isSeen");
-			this.props.visitMessage({
-				listOfId: [data.id]
-			});
-			//let localList = sortChatList(this.state.list);
-			//console.log("+++++++++++++ sort again", localList);
-			//this.setState({ list: localList });
-		}
-	};
-
 	handleLoadMore = () => {
 		console.log("handleLoadMore", this.state.list.length);
 		if (this.state.list.length) {
@@ -438,7 +269,16 @@ class Home extends Component {
 						<FlatList
 							data={list}
 							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
-							renderItem={({ item }) => this.loadContentItem({ item })}
+							renderItem={
+								({item}) => <ChatInfo
+												item={{item}}
+												navigation={this.props.navigation}
+												visitMessage={this.props.visitMessage}
+												setHomeState={(state)=>{
+													this.setState(state);
+												}}
+											/>
+							}
 							ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
 							onRefresh={() => {
 								this.onRefresh();

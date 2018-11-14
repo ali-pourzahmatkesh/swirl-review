@@ -184,13 +184,13 @@ export default class InviteFromContacts extends Component {
 						this.props.screenProps && this.props.screenProps.searchText ?
 						<View style={{flex:1 , alignItems:'center'}}>
 							<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
-							<View style={styles.boxEmptySearch}>
+							{/* <View style={styles.boxEmptySearch}>
 								<View style={styles.boxEmptySearchFaq}>
 									<Image style={appCss.emptyIcon} source={faq}/>
 			
 								</View>
 								<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText.toUpperCase()}"</Text>
-							</View>
+							</View> */}
 						</View>
 						:
 						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... Yet.'}/>

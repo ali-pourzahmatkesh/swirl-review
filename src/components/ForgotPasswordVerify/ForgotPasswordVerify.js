@@ -3,7 +3,8 @@ import {
 	Image,
 	Text,
 	View,
-    KeyboardAvoidingView,
+	Keyboard,
+	Animated
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
@@ -22,6 +23,7 @@ export default class ForgotPasswordVerify extends Component {
 		this.state = {
 			code: ""
 		};
+		this.bottomPadding = new Animated.Value(0);
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -58,6 +60,40 @@ export default class ForgotPasswordVerify extends Component {
 		});
 	};
 
+	componentWillMount(){
+		this.keyboardWillShowSub = Keyboard.addListener(
+			"keyboardWillShow",
+			this.keyboardWillShow
+		);
+		this.keyboardWillHideSub = Keyboard.addListener(
+			"keyboardWillHide",
+			this.keyboardWillHide
+		);
+	}
+
+	componentWillUnmount(){
+		this.keyboardWillShowSub.remove();
+		this.keyboardWillHideSub.remove();
+    }
+
+	keyboardWillShow = event => {
+		Animated.parallel([
+			Animated.timing(this.bottomPadding, {
+				duration: event.duration,
+				toValue: event.endCoordinates.height
+			}),
+		]).start();
+	};
+
+	keyboardWillHide = event => {
+		Animated.parallel([
+			Animated.timing(this.bottomPadding, {
+				duration: event.duration,
+				toValue: 0
+			}),
+		]).start();
+	};
+
 	render() {
 		let {
 			isLoadingFetch
@@ -70,7 +106,7 @@ export default class ForgotPasswordVerify extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+				<Animated.View style={{ flex: 1,  paddingBottom: this.bottomPadding}}>
 					<View style={ styles.imageContainer }>
 						<Image style={styles.imageItem} source={logo}/>
 					</View>
@@ -90,7 +126,7 @@ export default class ForgotPasswordVerify extends Component {
 							onChangeCode={code => this.setState({code})}
 						/>
 					</View>
-				</KeyboardAvoidingView>
+				</Animated.View>
 				<KeyboardAwareButton
 					title='Next'
 					onPress={this.handleSubmit}

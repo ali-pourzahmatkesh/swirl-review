@@ -47,6 +47,11 @@ const styles = StyleSheet.flatten({
 
     },
 
+    textInput: {
+        fontFamily: 'MuseoSansRounded-900',
+        fontSize: 18
+    },
+
 
 
     footer:{
@@ -65,7 +70,8 @@ const styles = StyleSheet.flatten({
     footerActions:{
         flexDirection:'row',
         justifyContent:'space-between',
-        alignItems:'center'
+        alignItems:'center',
+        borderWidth: 0
     },
     actionBox:{
         width: 40,
@@ -85,7 +91,7 @@ const styles = StyleSheet.flatten({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 25
+        borderRadius: 25,
     },
 
     iconButton: {
