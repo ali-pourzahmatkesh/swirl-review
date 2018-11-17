@@ -55,8 +55,6 @@ export default class BubbleInput extends Component {
                         })
                     }
                 }
-                blur={this.phoneInput.blur}
-                focus={this.phoneInput.focus}
             />
                 :
                 <Image style={styles.formInputIcon} source={phoneIcon}/>

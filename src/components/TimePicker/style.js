@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
-const {  width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 import {CONFIG} from '../../../config';
 const colors = CONFIG.colors;
 const styles = StyleSheet.create({
@@ -17,7 +17,13 @@ const styles = StyleSheet.create({
         height: '100%',
         width: width * 0.9,
         height: '60%',
-        borderRadius: 30
+        borderRadius: 30,
+
+        shadowOffset: {
+            height: .75
+        },
+        shadowOpacity: .35,
+        shadowRadius: 1.5,
     },
     backPicker: {
         height: 88,
@@ -47,27 +53,35 @@ const styles = StyleSheet.create({
 
 
     buttonContainer: {
-        // flex: 1,
-        height: '30%',
+        flex: 1,
+        // height: '35%',
         width,
         alignItems: 'center',
+        borderWidth: 0,
+        marginBottom: height * 0.02
     },
     buttonRow: {
         flex: 1,
         flexDirection: 'row',
         width: width * 0.9,
-        // borderWidth: 1,
+        borderWidth: 0,
         justifyContent: 'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     quickTimeButton: {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.tapeWhite,
         width: '47%',
-        height: '80%',
-        // borderWidth: 1,
-        borderRadius: 20
+        height: '85%',
+        borderWidth: 0,
+        borderRadius: 20,
+
+        shadowOffset: {
+            height: .75
+        },
+        shadowOpacity: .35,
+        shadowRadius: 1.5,
     },
     quickTimeButtonText: {
         color: colors.appColor,

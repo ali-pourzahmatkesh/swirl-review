@@ -4,11 +4,22 @@ import appCss from "../../../app.css";
 
 const colors = CONFIG.colors;
 const  {height, width} = Dimensions.get('window');
-
+const BOX_HEIGT = 30 + (height * 0.06);
+const BUTTON_HEIGHT = ((height - 545 - (height === 812 ? 100 : 0)) * 0.1) + 46;
 const STYLES = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.appColor
+    },
+    headerIconBox: {
+        height: 40,
+        width: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerIcon: {
+        height: 32,
+        width: 32,
     },
 
     chatList: {
@@ -17,7 +28,7 @@ const STYLES = StyleSheet.create({
     },
     chatListBox: {
         width: width * 0.9,
-        height: height * 0.09,
+        height: BOX_HEIGT,
         backgroundColor: colors.bodyColor,
         borderRadius: 20,
         flexDirection: 'row',
@@ -28,11 +39,11 @@ const STYLES = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: 1.5,
+        borderWidth: 0
     },
 
     chatListBlockBox: {
         backgroundColor: colors.highlightColorTwo,
-        // borderColor: colors.selectedBoxBorder,
     },
 
     avatarBox: {
@@ -45,43 +56,56 @@ const STYLES = StyleSheet.create({
     chatListSubjectBox: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 0
     },
     messageInfoBox: {
         width: '50%',
-        borderWidth: 0
+        borderWidth: 0,
+        height: BOX_HEIGT * 0.8,
+        paddingTop: BOX_HEIGT * 0.1,
+        paddingBottom: BOX_HEIGT * 0.1
     },
     otherInfo: {
         flexDirection:'row',
         justifyContent: 'flex-end',
-        height: height * 0.09,
+        height: BOX_HEIGT * 0.9,
         paddingRight: width * 0.05,
         paddingTop: 5,
         width: '25%',
         borderWidth: 0
     },
     otherInfoLogo: {
-        width: 43,
-        height: 43,
-        alignSelf: 'center'
+        height: BOX_HEIGT * 0.6,
+        width: BOX_HEIGT * 0.6,
+        alignSelf: 'center',
+        marginTop: height * 0.01,
+        position: 'absolute', 
+        right: BOX_HEIGT * 0.15,
+        top: BOX_HEIGT * 0.1
     },
 
     chatSubject: {
-        fontSize: 16,
+        fontSize: 8 + (height * 0.0103),
         fontFamily: 'MuseoSansRounded-900',
+        borderWidth: 0
+    },
+    messageHintContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
     },
     chatDesc: {
-        fontSize: 14,
+        fontSize: 6 + (height * 0.0103),
         fontFamily: 'MuseoSansRounded-300',
-        borderWidth: 0,
+        // marginBottom: BOX_HEIGT * 0.2,
+        borderWidth: 0
     },
     chatTime: {
         fontSize: 12,
         fontFamily: 'MuseoSansRounded-300',
         position: 'absolute',
         alignSelf: 'flex-start',
-        right: width * 0.02,
-        top: 3
+        right: width * 0.025,
     },
 
 
@@ -107,20 +131,29 @@ const STYLES = StyleSheet.create({
     },
 
     iconBottomBox: {
-        width: 50,
-        height: 50,
+        width: BUTTON_HEIGHT,
+        height: BUTTON_HEIGHT,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.highlightColorTwo,
-        borderRadius: 50
+        borderRadius: BUTTON_HEIGHT * 0.5
     },
 
     iconBottom: {
-        width: 30,
-        height: 30,
+        width: BUTTON_HEIGHT * 0.6,
+        height: BUTTON_HEIGHT * 0.6,
         resizeMode: 'contain'
     },
+    iconBottomBackground: {
+        height: BUTTON_HEIGHT,
+        width: BUTTON_HEIGHT,
+        borderRadius: BUTTON_HEIGHT * 0.5,
+        backgroundColor: '#ff88bb',
+        position: 'absolute',
+        zIndex: -1
+    },
+
     chatListEmpty:{
         flex: 1,
         alignItems: 'center',
@@ -133,11 +166,12 @@ const STYLES = StyleSheet.create({
         color: colors.bodyColor
     },
 
-    TimerCountdown:{
-        flexDirection:"row",
-        alignItems:'center',
-        justifyContent:'flex-start',
-        marginTop: 16,
+    timerCountdown: {
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        borderWidth: 0,
+        // marginBottom: BOX_HEIGT * 0.12
     }
 });
 

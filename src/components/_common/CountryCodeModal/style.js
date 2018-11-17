@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
         width: 20,
         marginRight: 10
     },
+    exitIcon: {
+        height: 18,
+        width: 18,
+    }
 });
 
 export default styles;

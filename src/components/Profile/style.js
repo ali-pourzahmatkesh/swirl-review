@@ -27,8 +27,8 @@ const STYLES = StyleSheet.create({
         shadowOffset: {
             height: 1
         },
-        shadowOpacity: 0.6,
-        shadowRadius: 2.5,
+        shadowOpacity: 0.4,
+        shadowRadius: 1.7,
         backgroundColor: COLORS.tapeWhite
     },
     optionIconContainer: {
@@ -61,17 +61,21 @@ const STYLES = StyleSheet.create({
         fontSize: 24,
         color: COLORS.tapeWhite,
         alignSelf: 'center',
-        marginBottom: '5%'
+        // marginBottom: '3%',
+        // marginTop: '3%',
+        borderWidth: 0
     }]),
 
     imageContainer: {
         width: "100%",
-        backgroundColor:COLORS.appColor,
+        height: height * 0.3,
+        justifyContent: 'center',
+        backgroundColor: COLORS.appColor,
         shadowOffset: {
             height: 1
         },
-        shadowOpacity: 0.4,
-        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
     },
     editButton: {
         height: 26,

@@ -14,7 +14,8 @@ import cancel from "../../assets/images/icons/close2.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import emptyIcon from "../../assets/images/icons/messageEmpty.png";
-import LoadingCircles3 from "../../components/LoadingCircles3";
+import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
+import LoadingSpinner from "../../components/_common/LoadingSpinner";
 
 export default class FriendRequest extends Component {
 	state = {
@@ -110,6 +111,12 @@ export default class FriendRequest extends Component {
 	};
 
 	actionFunc = item => {
+		let {
+			loading,
+			loadType,
+			actionTarget
+		} = this.props
+
 		return (
 			<View style={styles.actionBox}>
 				<TouchableOpacity
@@ -117,23 +124,37 @@ export default class FriendRequest extends Component {
 						this.cancel(item.id);
 					}}
 					style={[styles.actionBtn, styles.cancel]}
-				>
+				>	
+				{(loading && loadType === 'cancel' && actionTarget === item.id) ? 
+					<LoadingSpinner
+						maxRadius={20}
+						lineWidth={2.5}
+					/>
+					:
 					<Image
 						source={cancel}
 						// source={decline}
 						resizeMode={"contain"}
 						style={styles.actionIcon}
 					/>
+				}
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => this.approve(item.id)}
 					style={[styles.actionBtn, styles.verify]}
 				>
+				{(loading && loadType === 'approve' && actionTarget === item.id) ? 
+					<LoadingSpinner
+						maxRadius={20}
+						lineWidth={2.5}
+					/>
+					:
 					<Image
 						source={check}
 						resizeMode={"contain"}
 						style={[styles.actionIcon, {height: 25, width: 25}]}
 					/>
+				}
 				</TouchableOpacity>
 			</View>
 		);
@@ -147,6 +168,10 @@ export default class FriendRequest extends Component {
 	};
 
 	render() {
+		let {
+			screenProps
+		} = this.props;
+
 		return (
 			<View style={styles.container}>
 				<FlatList
@@ -155,7 +180,14 @@ export default class FriendRequest extends Component {
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => this.loadList({ item })}
 					// empty list component no longer function. keeps icon from reloading
-					ListEmptyComponent={<EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests...here\'s a lollipop. '}/>}
+					ListEmptyComponent={
+						screenProps && screenProps.searchText ?
+						<View style={{flex:1 , alignItems:'center'}}>
+							<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"' + screenProps.searchText + '"'}`}/>
+						</View>
+						:
+						<EmptyList emptyIcon={emptyIcon} emptyText={'No new Friend Requests... Here\'s a lollipop. '}/>
+					}
 					onEndReachedThreshold={0.5}
 				/>
 			</View>

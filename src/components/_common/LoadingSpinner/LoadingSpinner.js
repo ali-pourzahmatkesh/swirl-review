@@ -9,7 +9,8 @@ const {width, height} = Dimensions.get('window');
 export default class LoadingSpinner extends Component{
     render(){
         let buttonHeight = height * 0.08;
-        let maxRadius = buttonHeight / 2;
+        let maxRadius = this.props.maxRadius || buttonHeight / 2;
+        let lineWidth = this.props.lineWidth || 2
         return(
             <View style={{
                 justifyContent: 'center',
@@ -17,24 +18,27 @@ export default class LoadingSpinner extends Component{
                 alignSelf: 'center',
                 flex: 1
             }}>
-                <Circle
+                {/* <Circle
                     radius={maxRadius * 0.35}
-                    border={2}
+                    border={lineWidth}
                     initialRotationOffset={-120}
                     degreesPastHalf={40}
                     speed={2.4}
                 />
                 <Circle
                     radius={maxRadius * 0.55}
-                    border={2}
+                    border={lineWidth}
                     initialRotationOffset={-80}
                     speed={1.2}                  
-                />
+                /> */}
                 <Circle
-                    radius={maxRadius * 0.75}
-                    border={2}
+                    // radius={maxRadius * 0.75}
+                    radius={maxRadius * 0.60}
+                    border={lineWidth}
+                    // border={2.5}
                     initialRotationOffset={-130}
-                    degreesPastHalf={50}
+                    degreesPastHalf={0}
+                    // degreesPastHalf={50}
                     speed={1.8}
                 />
             </View>

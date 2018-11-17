@@ -65,7 +65,9 @@ const friendRequest = (
 		refreshingAddFriend: false,
 		loadingAddFriend: false,
 		countAddFriend: 0,
-		friendshipRequestStatus: "connect"
+		friendshipRequestStatus: "connect",
+		loadType: '',
+		actionTarget: ''
 	},
 	action
 ) => {
@@ -114,8 +116,9 @@ const friendRequest = (
 		// ---------------------------------------------------------------------------
 
 		case CALL_ADD_FRIEND: {
+			console.log('call add friend *****************************************************************************', action.payload)
 			return loop(
-				{ ...state, loading: true },
+				{ ...state, loading: true, loadType: 'sendRequest', actionTarget: action.payload.receiverMemberId },
 				Cmd.run(fetchAddFriend, {
 					successActionCreator: fetchAddFriendSuccess,
 					failActionCreator: fetchAddFriendFailed,
@@ -125,11 +128,14 @@ const friendRequest = (
 		}
 
 		case CALL_ADD_FRIEND_SUCCESS: {
+			console.log('call add friend success *****************************************************************************', action.payload)
 			return {
 				...state,
 				errorMessage: "",
 				hasError: false,
-				loading: false
+				loading: false,
+				loadType: '',
+				actionTarget: ''
 			};
 		}
 
@@ -139,7 +145,9 @@ const friendRequest = (
 					...state,
 					errorMessage: action.payload.message,
 					hasError: true,
-					loading: false
+					loading: false,
+					loadType: '',
+					actionTarget: ''
 				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
@@ -228,8 +236,9 @@ const friendRequest = (
 		// ---------------------------------------------------------------------------
 
 		case CALL_APPROVE: {
+			console.log('approve payload ********************************************', action.payload)
 			return loop(
-				{ ...state, loading: true },
+				{ ...state, loading: true, loadType: 'approve', actionTarget: action.payload },
 				Cmd.run(fetchApprove, {
 					successActionCreator: fetchApproveSuccess,
 					failActionCreator: fetchApproveFailed,
@@ -247,7 +256,9 @@ const friendRequest = (
 				errorMessage: "",
 				hasError: false,
 				list,
-				loading: false
+				loading: false,
+				loadType: '',
+				actionTarget: ''
 			};
 		}
 
@@ -257,7 +268,9 @@ const friendRequest = (
 					...state,
 					errorMessage: action.payload.message,
 					hasError: true,
-					loading: false
+					loading: false,
+					loadType: '',
+					actionTarget: ''
 				},
 				Cmd.action(showToast(true, action.payload.message))
 			);
@@ -267,7 +280,7 @@ const friendRequest = (
 
 		case CALL_CANCEL: {
 			return loop(
-				{ ...state, loading: true },
+				{ ...state, loading: true, loadType: 'cancel', actionTarget: action.payload },
 				Cmd.run(fetchCancel, {
 					successActionCreator: fetchCancelSuccess,
 					failActionCreator: fetchCancelFailed,
@@ -283,7 +296,9 @@ const friendRequest = (
 				errorMessage: "",
 				hasError: false,
 				list,
-				loading: false
+				loading: false,
+				loadType: '',
+				actionTarget: ''
 			};
 		}
 
@@ -293,7 +308,9 @@ const friendRequest = (
 					...state,
 					errorMessage: action.payload.message,
 					hasError: true,
-					loading: false
+					loading: false,
+					loadType: '',
+					actionTarget: ''
 				},
 				Cmd.action(showToast(true, action.payload.message))
 			);

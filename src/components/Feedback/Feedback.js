@@ -11,7 +11,6 @@ import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
-import LoadingCircles3 from "../../components/LoadingCircles3";
 
 const styles = StyleSheet.create({
 	container: {
@@ -107,6 +106,7 @@ export default class Feedback extends Component {
 							})
 						}
 						beginOnPage={true}
+						loading={this.props.loading}
 					/>
 				</KeyboardAvoidingView>
 			</View>

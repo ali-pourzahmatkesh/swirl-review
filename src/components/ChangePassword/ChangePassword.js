@@ -31,7 +31,8 @@ export default class ChangePassword extends Component {
 	handleSubmit = () => {
 		const resetAction = NavigationActions.reset({
 			index: 0,
-			actions: [NavigationActions.navigate({ routeName: "WelcomeStack" })],
+			// actions: [NavigationActions.navigate({ routeName: "WelcomeStack" })],
+			actions: [NavigationActions.navigate({ routeName: "HomeStack" })],
 			key: null
 		});
 		this.props.changePassword({
@@ -88,7 +89,7 @@ export default class ChangePassword extends Component {
 					title='Login'
 					onPress={this.handleSubmit}
 					disabled={nextDisabled}
-					beginOnPage={true}
+					// beginOnPage={true}
 					loading={isLoadingFetch}
 				/>
 			</SafeAreaView>

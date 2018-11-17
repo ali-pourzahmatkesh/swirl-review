@@ -10,6 +10,7 @@ import {
 	Animated,
 	Keyboard
 } from "react-native";
+import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import logo from "../../assets/images/logo_bigger.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
@@ -18,7 +19,6 @@ import styles from "./style";
 import { CONFIG } from "../../../config";
 const { height } = Dimensions.get("window");
 const colors = CONFIG.colors;
-import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ChangePasswordFromProfile extends Component {
 	constructor(props) {
@@ -120,45 +120,38 @@ export default class ChangePasswordFromProfile extends Component {
 					</View>
 					{/* <Animated.View style={[ appCss.formInputContainer, {borderWidth: 1, transform: [{translateY: height * 0.0}]} ]}> */}
 					<Animated.View style={[styles.formInputContainer, {height: this.formHeight, paddingTop: this.formTopPadding}]}>
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon} />
-							<TextInput
-								placeholder="Old Password"
-								placeholderTextColor={colors.highlightColorTwo}
-								secureTextEntry={true}
-								style={appCss.textInput}
-								onChangeText={text => this.setState({ oldPassword: text })}
-							/>
-						</View>
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon} />
-							<TextInput
-								placeholder="New Password"
-								placeholderTextColor={colors.highlightColorTwo}
-								secureTextEntry={true}
-								style={appCss.textInput}
-								onChangeText={text => this.setState({ newPassword: text })}
-							/>
-						</View>
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: 'Old Password',
+								secureTextEntry: true,
+								onChangeText: text => this.setState({ oldPassword: text })
+							}}
+						/>
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: 'New Password',
+								secureTextEntry: true,
+								onChangeText: text => this.setState({ newPassword: text })
+							}}
+						/>
 						<Text style={styles.minLengthText}>min 7 characters</Text>
-						<View style={appCss.iconFormInput}>
-							<Image style={appCss.formInputIcon} source={passwordIcon} />
-							<TextInput
-								placeholder="Re-enter Password"
-								placeholderTextColor={colors.highlightColorTwo}
-								secureTextEntry={true}
-								style={appCss.textInput}
-								onChangeText={text =>
-									this.setState({ retypeNewPassword: text })
-								}
-							/>
-						</View>
+						<BubbleInput
+							icon={passwordIcon}
+							inputProps={{
+								placeholder: 'Re-enter Password',
+								secureTextEntry: true,
+								onChangeText: text => this.setState({ retypeNewPassword: text })
+							}}
+						/>
 					</Animated.View>
 					<KeyboardAwareButton
 						title='Save'
 						onPress={this.handleSubmit}
 						disabled={nextDisabled}
 						beginOnPage={true}
+						loading={this.props.isLoadingFetch}
 					/>
 				</View>
 				{/* </KeyboardAvoidingView> */}

@@ -10,11 +10,10 @@ import {
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
 	list: state.app.friendRequest.list,
-	// deleteChat: state.app.chat.deleteChat,
-	// isLoadingFetch: state.app.friendRequest.isLoadingFetch,
-	// refreshing: state.app.friendRequest.refreshing,
-	loading: state.app.friendRequest.loading
-	// count: state.app.friendRequest.count
+	loading: state.app.friendRequest.loading,
+	loadType: state.app.friendRequest.loadType,
+	actionTarget: state.app.friendRequest.actionTarget,
+	hasError: state.app.friendRequest.hasError
 });
 
 const mapDispatchToProps = dispatch => ({

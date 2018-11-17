@@ -32,6 +32,7 @@
 		"react-native-timer-countdown": "^2.0.3",
 		"react-native-vector-icons": "*",
 		"react-navigation": "^1.0.3",
+		"react-navigation-stack": "^1.0.0-alpha.34",
 		"react-redux": "5.0.7",
 		"redux": "3.7.2",
 		"redux-loop": "4.2.4",

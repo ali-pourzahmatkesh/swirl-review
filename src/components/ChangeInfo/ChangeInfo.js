@@ -8,6 +8,7 @@ import {
 	View,
 	Dimensions
 } from "react-native";
+import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 
 import logo from "../../assets/images/logo_bigger.png";
@@ -18,7 +19,6 @@ import styles from "./style";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
-import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ChangeInfo extends Component {
     state = {
@@ -50,7 +50,7 @@ export default class ChangeInfo extends Component {
 						</View>
 					</View>
 					<View style={[appCss.formInputContainer]}>
-						<View style={appCss.iconFormInput}>
+						{/* <View style={appCss.iconFormInput}>
 							<Image style={appCss.formInputIcon} source={usernameIcon} />
 							<TextInput
 								style={[ appCss.textInput ]}
@@ -62,13 +62,22 @@ export default class ChangeInfo extends Component {
 								autoFocus={true}
 								onChangeText={username => this.setState({ username })}
 							/>
-						</View>
+						</View> */}
+						<BubbleInput
+							icon={usernameIcon}
+							inputProps={{
+								placeholder: "Username here",
+								value: this.props.username,
+								onChangeText: username => this.setState({ username })
+							}}
+						/>
 					</View>
 					<KeyboardAwareButton
 						title='Save'
 						onPress={this.onPressButton}
 						disabled={disabledBtn}
 						beginOnPage={true}
+						loading={this.props.isLoadingFetch}
 					/>
 				</KeyboardAvoidingView>
 			</View>

@@ -15,6 +15,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import close from "../../assets/images/icons/close_red.png";
 import closeWhite from "../../assets/images/icons/close.png";
 import chat from "../../assets/images/icons/chat.png";
+import chatToggleFromCamera from "../../assets/images/icons/chat1.png";
 import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
 import cameraDisable from "../../assets/images/icons/cameraDisable.png";
@@ -31,6 +32,8 @@ import appCss from "../../../app.css";
 import Camera from "react-native-camera";
 import moment from "moment-timezone";
 import Toast from "../Toast";
+
+import accessCam from "../../assets/images/icons/accessCam1.png";
 const colors = CONFIG.colors;
 const { height, width } = Dimensions.get("window");
 var CryptoJS = require("crypto-js");
@@ -302,7 +305,15 @@ export default class MessagePopup extends Component {
 
 				<View style={styles.cameraActions}>
 					<TouchableOpacity onPress={() => this.tabSelectedFunction("camera")}>
-						<Entypo size={35} color="#fff" name="image" />
+						{/* <Entypo size={35} color="#fff" name="image" /> */}
+						<Image
+							source={accessCam}
+							resizeMode='contain'
+							style={{
+								height: 35,
+								width: 35
+							}}
+						/>
 					</TouchableOpacity>
 					<TouchableOpacity onPress={this.takePicture.bind(this)}>
 						<Image
@@ -312,7 +323,15 @@ export default class MessagePopup extends Component {
 						/>
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.tabSelectedFunction("chat")}>
-						<Feather size={35} color="#fff" name="message-circle" />
+						{/* <Feather size={35} color="#fff" name="message-circle" /> */}
+						<Image
+							source={chatToggleFromCamera}
+							resizeMode='contain'
+							style={{
+								height: 35,
+								width: 35
+							}}
+						/>
 					</TouchableOpacity>
 				</View>
 			</Camera>
@@ -471,16 +490,21 @@ export default class MessagePopup extends Component {
 								selectedHours: hours,
 								selectedMinutes: minutes
 							})
+							// this.setState({
+							// 	selectedHours: 0,
+							// 	selectedMinutes: .3
+							// })
 						}
 					/>
 				</View>
 
 				<View
 					style={{
-						height: 100,
+						height: height * 0.15,
 						width,
 						flexDirection: "row",
-						justifyContent: "flex-end"
+						justifyContent: "flex-end",
+						borderWidth: 0
 					}}
 				>
 					<View style={styles.footer}>

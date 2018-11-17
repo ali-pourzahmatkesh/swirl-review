@@ -53,7 +53,7 @@ const appCss = StyleSheet.create({
         paddingRight: 16,
         marginBottom: 10,
         height: 44,
-        borderBottomWidth:0,
+        borderBottomWidth: 0,
         marginTop: height === 812 ? 43 : 20
     },
     headerTitle: {
@@ -236,14 +236,6 @@ const appCss = StyleSheet.create({
         height: (widthFilter/2)-21,
     },
 
-    countryFlagSvg: {
-        height: 27,
-        width: 35,
-        position: 'absolute',
-        top: -5,
-        left: -6
-    },
-
     iconFormInput: {
         flexDirection: 'row',
         marginTop: 25,
@@ -287,8 +279,11 @@ const appCss = StyleSheet.create({
     },
 
     countryCodeBox: {
-        width: 64,
-        height: 35,
+        height: height * 0.05,
+        // the idea here is that there's a base width that increase with height but
+        // each jump will be slightly less because of the division on the right
+        // will revisit for a cleaner looking solution/formula
+        width: (height * 0.09) + ((800 / height) * 9),
         backgroundColor: "transparent",
         display: "flex",
         flexDirection: "row",
@@ -302,19 +297,25 @@ const appCss = StyleSheet.create({
         borderColor: colors.appColor
     },
     countryCodeImageBox: {
-        height: 24,
-        width: 24,
-        // height: 30,
-        // width: 30,
-        display: "flex",
+        height: height * 0.04,
+        width: height * 0.04,
         borderWidth: 1,
         overflow: "hidden",
         borderColor: "#ddd",
         borderRadius: 50
     },
+    countryFlagSvg: {
+        position: 'absolute',
+        // these svg's are still just not great to work with.
+        // maybe need to just download them all and convert to a png or something?
+        top: height * -0.01,
+        left: height * -0.01,
+        height: height * 0.055,
+        width: height * 0.055,
+    },
     countryCodeFlag: {
-        height: 24,
-        width: 24,
+        height: height * 0.04,
+        width: height * 0.04,
         resizeMode: "cover"
     },
     countryCode: {

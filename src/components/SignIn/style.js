@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
 		color: colors.tapeWhite,
 		textDecorationLine: "underline",
 		fontSize: 14,
-		marginTop: 50,
+		// marginTop: 50,
+		marginTop: '27%',
 		fontFamily: 'Avenir',
 		fontSize: 14,
 		fontWeight: '500'
@@ -30,6 +31,9 @@ const styles = StyleSheet.create({
 		width: 80,
 		aspectRatio: 1,
 		resizeMode: "contain",
+	},
+	signUpButtonBottom: {
+		marginBottom: height * 0.05
 	},
 	signUpText: {
 		color: colors.tapeWhite,
