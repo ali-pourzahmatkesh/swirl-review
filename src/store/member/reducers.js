@@ -190,7 +190,8 @@ import {
 	GET_FRIENDS_FAILED,
 	serverGetFriends,
 	serverGetFriendsSuccess,
-	serverGetFriendsFailed
+	serverGetFriendsFailed,
+	sendPassword
 } from "./";
 
 import { showToast } from "../toast";
@@ -1151,15 +1152,18 @@ const chat = (state = initialState, action) => {
 			);
 		}
 		case CONFIRM_PASSWORD_SUCCESS: {
-			// action.payload.navigation.navigate('ConfirmPasswordScreen');
 			console.log(action.payload, "in pass success **************");
-			action.payload.navigation.dispatch(action.payload.resetAction);
-			return {
-				...state,
-				isLoadingFetch: false,
-				errorMessage: "",
-				hasError: false
-			};
+			return loop(
+				{
+					...state,
+					isLoadingFetch: false,
+					errorMessage: "",
+					hasError: false
+				},
+				Cmd.action(sendPassword({
+					...action.payload
+				}))
+			);
 		}
 		case CONFIRM_PASSWORD_FAILED: {
 			return loop(

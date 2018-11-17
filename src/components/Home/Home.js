@@ -192,10 +192,10 @@ class Home extends Component {
 			<View style={appCss.header}>
 				<TouchableOpacity
 					onPress={this.handleInviteSubmit}
-					style={appCss.headerIconBox}
+					style={styles.headerIconBox}
 				>
 					<Image
-						style={[appCss.headerIcon, {height: 50, width: 50}]}
+						style={styles.headerIcon}
 						resizeMode={"contain"}
 						source={addFriend}
 					/>
@@ -208,11 +208,11 @@ class Home extends Component {
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity
-					style={appCss.headerIconBox}
+					style={styles.headerIconBox}
 					onPress={this.handleSubmit}
 				>
 					<Image
-						style={appCss.headerIcon}
+						style={styles.headerIcon}
 						resizeMode={"contain"}
 						source={profile}
 					/>
@@ -310,10 +310,11 @@ class Home extends Component {
 							<Image style={styles.iconBottom} source={addMessage} />
 						</View>
 					</TouchableOpacity>
+					<View style={styles.iconBottomBackground}/>
 				</View>
 			</View>
 		);
 	}
 }
 
-export default Home;
+export default Home; 

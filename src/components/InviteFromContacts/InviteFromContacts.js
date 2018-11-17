@@ -11,7 +11,7 @@ import faq from "../../assets/images/icons/faq.png";
 import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
 import logo from "../../assets/images/logo_bigger.png";
 // import checkedImage from "../../assets/images/checked.png";
-import LoadingCircles3 from "../../components/LoadingCircles3";
+import LoadingSpinner from "../../components/_common/LoadingSpinner";
 
 let pg = new PagedContacts();
 
@@ -26,7 +26,7 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("IN componentWillReceiveProps", nextProps);
+		// console.log("IN componentWillReceiveProps", nextProps);
 		if(nextProps.id && !this.props.id){
 			this.getPhoneNumbersFromContactList();
 		}
@@ -41,10 +41,42 @@ export default class InviteFromContacts extends Component {
 				)
 			});
 		}
+
+
+
+
+		if(
+			nextProps.loading === false &&
+			nextProps.hasError === false &&
+			this.props.loadType === 'sendRequest'
+		){
+			let filteredList = this.state.list.filter(member => member.id != this.props.actionTarget);
+			this.setState(
+				{
+					list: filteredList
+				},
+				() => {
+					let searchPhrase =
+						(this.props.screenProps && this.props.screenProps.searchText) || "";
+					this.filterContact(filteredList, searchPhrase);
+				}
+			);
+		}
 	}
 
 	componentDidMount() {
-		
+		// console.log('mounting ************************************************')
+		if(this.props.id){
+			this.getPhoneNumbersFromContactList();
+			// console.log('from the tab paaaaaaaaaaaaaaaage')
+			this.setState({
+				list: this.props.membersFromContactsAreNotFriend,
+				finalList: this.generateSectionList(
+					this.props.membersFromContactsAreNotFriend,
+					"username"
+				)
+			});
+		}
 	}
 
 	getPhoneNumbersFromContactList = function() {
@@ -55,7 +87,7 @@ export default class InviteFromContacts extends Component {
 			pg.getContactsCount().then(count => {
 				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
 					contacts => {
-						console.log('contacts: ', contacts)
+						// console.log('contacts: ', contacts)
 						this.setState({ contacts });
 						if (contacts.length > 0) {
 							this.getAllPhoneNumbers(contacts);
@@ -75,7 +107,7 @@ export default class InviteFromContacts extends Component {
 				//}
 			});
 		});
-		console.log("getAllPhoneNumbers", numberList, this.props);
+		// console.log("getAllPhoneNumbers", numberList, this.props);
 		this.props.getMembersAreInMyContactsThatNotFriend({
 			memberOwner: this.props.id,
 			numberList: numberList
@@ -93,7 +125,7 @@ export default class InviteFromContacts extends Component {
 	}
 
 	filterContact = (contacts, search) => {
-		console.log("invite from filterContact", contacts);
+		// console.log("invite from filterContact", contacts);
 		if (search && contacts.length > 0) {
 			contacts = contacts.filter(
 				item => item["username"].toLowerCase().search(search.toLowerCase()) > -1
@@ -129,22 +161,10 @@ export default class InviteFromContacts extends Component {
 	};
 
 	addFriend = item => {
-		console.log(item);
 		this.props.callAddFriend({
 			senderMemberId: this.props.id,
 			receiverMemberId: item.id
 		});
-		let filteredList = this.state.list.filter(member => member.id != item.id);
-		this.setState(
-			{
-				list: filteredList
-			},
-			() => {
-				let searchPhrase =
-					(this.props.screenProps && this.props.screenProps.searchText) || "";
-				this.filterContact(filteredList, searchPhrase);
-			}
-		);
 	};
 
 
@@ -170,7 +190,15 @@ export default class InviteFromContacts extends Component {
 	// 	}
 	// }
 	render() {
-		console.log(this.props, 'alsjdf;akjsf;lkajs;dflja;dsfj;adj;akljdf;kajds')
+		let {
+			loading,
+			loadType,
+			actionTarget,
+			screenProps,
+
+		} = this.props;
+
+		// console.log(this.props, 'alsjdf;akjsf;lkajs;dflja;dsfj;adj;akljdf;kajds')
 		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
@@ -181,16 +209,9 @@ export default class InviteFromContacts extends Component {
 					// this keeps the function form being invoked on each render/onChange of the search bar
 					// which keeps us from having to reload the empty list icon and faq icon
 					ListEmptyComponent={
-						this.props.screenProps && this.props.screenProps.searchText ?
+						screenProps && screenProps.searchText ?
 						<View style={{flex:1 , alignItems:'center'}}>
-							<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
-							{/* <View style={styles.boxEmptySearch}>
-								<View style={styles.boxEmptySearchFaq}>
-									<Image style={appCss.emptyIcon} source={faq}/>
-			
-								</View>
-								<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText.toUpperCase()}"</Text>
-							</View> */}
+							<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"' + screenProps.searchText + '"'}`}/>
 						</View>
 						:
 						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... Yet.'}/>
@@ -206,8 +227,8 @@ export default class InviteFromContacts extends Component {
 							>
 								<TouchableOpacity
 									onPress={() =>
-										(this.props.screenProps &&
-											this.props.screenProps.profileNavigate(item)) ||
+										(screenProps &&
+											screenProps.profileNavigate(item)) ||
 										null
 									}
 									style={appCss.avatarBox}
@@ -226,8 +247,11 @@ export default class InviteFromContacts extends Component {
 								style={styles.addBtn}
 								onPress={() => this.addFriend(item)}
 							>
-								{this.props.loading ? (
-									<LoadingCircles3 />
+								{(loading && loadType === 'sendRequest' && actionTarget === item.id) ? (
+									<LoadingSpinner
+										maxRadius={10}
+										lineWidth={2}
+									/>
 								) : (
 									<Text style={styles.addBtnText}> Add </Text>
 								)}

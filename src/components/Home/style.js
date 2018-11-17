@@ -5,10 +5,21 @@ import appCss from "../../../app.css";
 const colors = CONFIG.colors;
 const  {height, width} = Dimensions.get('window');
 const BOX_HEIGT = 30 + (height * 0.06);
+const BUTTON_HEIGHT = ((height - 545 - (height === 812 ? 100 : 0)) * 0.1) + 46;
 const STYLES = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.appColor
+    },
+    headerIconBox: {
+        height: 40,
+        width: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerIcon: {
+        height: 32,
+        width: 32,
     },
 
     chatList: {
@@ -33,7 +44,6 @@ const STYLES = StyleSheet.create({
 
     chatListBlockBox: {
         backgroundColor: colors.highlightColorTwo,
-        // borderColor: colors.selectedBoxBorder,
     },
 
     avatarBox: {
@@ -121,20 +131,29 @@ const STYLES = StyleSheet.create({
     },
 
     iconBottomBox: {
-        width: 50,
-        height: 50,
+        width: BUTTON_HEIGHT,
+        height: BUTTON_HEIGHT,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.highlightColorTwo,
-        borderRadius: 50
+        borderRadius: BUTTON_HEIGHT * 0.5
     },
 
     iconBottom: {
-        width: 30,
-        height: 30,
+        width: BUTTON_HEIGHT * 0.6,
+        height: BUTTON_HEIGHT * 0.6,
         resizeMode: 'contain'
     },
+    iconBottomBackground: {
+        height: BUTTON_HEIGHT,
+        width: BUTTON_HEIGHT,
+        borderRadius: BUTTON_HEIGHT * 0.5,
+        backgroundColor: '#ff88bb',
+        position: 'absolute',
+        zIndex: -1
+    },
+
     chatListEmpty:{
         flex: 1,
         alignItems: 'center',

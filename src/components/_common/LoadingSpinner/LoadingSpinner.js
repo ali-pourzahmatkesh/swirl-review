@@ -18,7 +18,7 @@ export default class LoadingSpinner extends Component{
                 alignSelf: 'center',
                 flex: 1
             }}>
-                <Circle
+                {/* <Circle
                     radius={maxRadius * 0.35}
                     border={lineWidth}
                     initialRotationOffset={-120}
@@ -30,12 +30,15 @@ export default class LoadingSpinner extends Component{
                     border={lineWidth}
                     initialRotationOffset={-80}
                     speed={1.2}                  
-                />
+                /> */}
                 <Circle
-                    radius={maxRadius * 0.75}
+                    // radius={maxRadius * 0.75}
+                    radius={maxRadius * 0.60}
                     border={lineWidth}
+                    // border={2.5}
                     initialRotationOffset={-130}
-                    degreesPastHalf={50}
+                    degreesPastHalf={0}
+                    // degreesPastHalf={50}
                     speed={1.8}
                 />
             </View>

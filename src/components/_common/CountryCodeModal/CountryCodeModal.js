@@ -13,9 +13,8 @@ import {
 	Keyboard
 } from "react-native";
 import EmptyList from "../../EmptyList";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SVGImage from "react-native-svg-image";
-import Feather from "react-native-vector-icons/Feather";
+import exitIcon from "../../../assets/images/icons/exit3.png";
 import emptyIcon from "../../../assets/images/icons/emptyCountry.png";
 import search from "../../../assets/images/icons/search3.png";
 import appCss from "../../../../app.css";
@@ -228,21 +227,14 @@ export default class CountryCodeModal extends Component {
 								style={appCss.modalOptions}
 								onPress={() => this.closeModal("SignInPassword")}
 							>
-								<MaterialCommunityIcons
-									style={styles.backButton}
-									size={20}
-									color="#fff"
-									name="window-close"
+								<Image
+									style={styles.exitIcon}
+									source={exitIcon}
+									resizeMode='contain'
 								/>
 							</TouchableOpacity>
 							<View style={appCss.searchContainer}>
 								<View style={appCss.SectionStyle}>
-									{/* <Feather
-										style={appCss.imageStyle}
-										size={15}
-										color="#fff"
-										name="search"
-									/> */}
 									<Image
 										source={search}
 										style={styles.searchIcon}

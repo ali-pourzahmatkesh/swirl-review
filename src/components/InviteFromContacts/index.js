@@ -9,7 +9,10 @@ const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
 	membersFromContactsAreNotFriend:
 		state.app.member.membersFromContactsAreNotFriend,
-	loading: state.app.friendRequest.loading
+	loading: state.app.friendRequest.loading,
+	loadType: state.app.friendRequest.loadType,
+	actionTarget: state.app.friendRequest.actionTarget,
+	hasError: state.app.friendRequest.hasError
 });
 
 const mapDispatchToProps = dispatch => ({

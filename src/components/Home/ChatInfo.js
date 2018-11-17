@@ -14,9 +14,7 @@ import Avatar from "../Avatar";
 import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
-// import logo from "../../assets/images/logo_bigger.png";
 
-import logo from "../../assets/images/logo/fullSat.png"
 import logo1 from "../../assets/images/logo/deSat.png";
 import logo2 from "../../assets/images/logo/sat1.png";
 import logo3 from "../../assets/images/logo/sat2.png";
@@ -252,7 +250,7 @@ export default class ChatInfo extends Component {
 					style={styles.chatListSubjectBox}
 				>
 					<View style={styles.avatarBox}>
-						<Avatar userId={item.senderMemberId} size={BOX_HEIGT * 0.8} position="profile" />
+						<Avatar userId={item.senderMemberId} size={BOX_HEIGT * 0.8} position='image'/>
 					</View>
 					<View style={[styles.messageInfoBox, !isAvailable && {paddingTop: BOX_HEIGT * 0.05, paddingBottom: BOX_HEIGT * 0.05}]}>
 						<Text

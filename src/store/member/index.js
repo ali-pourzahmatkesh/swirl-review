@@ -157,13 +157,15 @@ export const getMembersAreInMyContactsThatNotFriend = data => ({
 
 export const serverGetMemberFromContacts = data => {
 	return new Promise((resolve, reject) => {
+		// console.log('sending to not-friend finder', data)
 		post("/api/v1/member/action/not-friend", data)
 			.then(resp => {
 				console.log(
 					"serverGetMemberFromContacts >> receive from server",
-					resp.data
+					resp.data,
+					resp
 				);
-				resolve(resp.data);
+				resolve(resp.data)
 			})
 			.catch(err => {
 				reject(err);
@@ -989,7 +991,8 @@ export const fetchChangePassword = data => {
 				resolve({
 					...resp,
 					navigation: data.navigation,
-					resetAction: data.resetAction
+					resetAction: data.resetAction,
+					...data
 				});
 			})
 			.catch(err => {

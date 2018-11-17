@@ -77,7 +77,7 @@ const styles = StyleSheet.flatten({
 
 
     footer: {
-        backgroundColor: colors.combinatorialColor ,
+        backgroundColor: colors.highlightColorTwo ,
         alignItems: 'center',
         justifyContent: 'center',
 
@@ -94,21 +94,17 @@ const styles = StyleSheet.flatten({
         height: '100%'
 
     },
-    footerCounter: {
-        alignItems: 'flex-end',
-        marginBottom: 20
-    },
-    footerCounterText: {
-        color: colors.combinatorialColor,
-        fontSize: 12
-    },
 
-
-    footerActions: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
+    nextButtonRow: {
+        height: height * 0.15,
+        width,
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        bottom: 0,
+        paddingRight: 15
+    }
 
 });
 export default styles;

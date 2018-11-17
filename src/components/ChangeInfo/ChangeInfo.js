@@ -19,7 +19,6 @@ import styles from "./style";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
-import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ChangeInfo extends Component {
     state = {

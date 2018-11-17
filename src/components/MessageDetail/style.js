@@ -67,7 +67,8 @@ const styles = StyleSheet.flatten({
 
     messageText: {
         fontFamily: 'MuseoSansRounded-900',
-        fontSize: 18
+        fontSize: 18,
+        color: '#4a4a4a'
     }
 });
 export default styles

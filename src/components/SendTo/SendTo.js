@@ -15,10 +15,10 @@ import { SafeAreaView } from "react-navigation";
 import checkedImage from "../../assets/images/icons/check4.png";
 import { CONFIG } from "../../../config";
 import next from "../../assets/images/icons/next1.png";
-import LoadingCircles3 from "../../components/LoadingCircles3";
+import LoadingSpinner from "../_common/LoadingSpinner";
 import emptyIcon from "../../assets/images/icons/emptyInviteContact.png";
 const colors = CONFIG.colors;
-const { width } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 export default class SendTo extends Component {
 	constructor(props) {
@@ -163,7 +163,10 @@ export default class SendTo extends Component {
 		const { list, loadingSendMessage } = this.state;
 		var sendButton = loadingSendMessage ? (
 			<TouchableOpacity style={styles.footer}>
-				<LoadingCircles3 />
+				<LoadingSpinner
+					maxRadius={24}
+					lineWidth={2.5}
+				/>
 			</TouchableOpacity>
 		) : (
 			<TouchableOpacity
@@ -189,15 +192,7 @@ export default class SendTo extends Component {
 						</View>
 					)}
 				/>
-				<View
-					style={{
-						height: 50,
-						width: 50,
-						position: "absolute",
-						bottom: 50,
-						right: 15
-					}}
-				>
+				<View style={styles.nextButtonRow}>
 					{sendButton}
 				</View>
 			</SafeAreaView>

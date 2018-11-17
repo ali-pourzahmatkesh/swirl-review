@@ -19,7 +19,6 @@ import styles from "./style";
 import { CONFIG } from "../../../config";
 const { height } = Dimensions.get("window");
 const colors = CONFIG.colors;
-import LoadingCircles3 from "../../components/LoadingCircles3";
 
 export default class ChangePasswordFromProfile extends Component {
 	constructor(props) {
