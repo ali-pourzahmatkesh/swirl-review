@@ -16,7 +16,7 @@ import {
 import { SafeAreaView, NavigationActions } from "react-navigation";
 import CodeInput from "react-native-confirmation-code-input";
 
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 import styles from "./style";
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";

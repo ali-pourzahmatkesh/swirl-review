@@ -2,7 +2,7 @@ console.log("SplashScreen");
 import React, { Component } from "react";
 import { NavigationActions, SafeAreaView } from "react-navigation";
 import { Image, StyleSheet, View, Dimensions } from "react-native";
-import logoPic from "../assets/images/logo_bigger.png";
+import logoPic from "../assets/images/logo1.png";
 import { checkIsLogin } from "../store/member";
 import { connect } from "react-redux";
 const { height } = Dimensions.get("window");

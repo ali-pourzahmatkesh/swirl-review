@@ -15,16 +15,14 @@ import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
 
-import logo1 from "../../assets/images/logo/deSat.png";
-import logo2 from "../../assets/images/logo/sat1.png";
-import logo3 from "../../assets/images/logo/sat2.png";
-import logo4 from "../../assets/images/logo/sat3.png";
-import logo5 from "../../assets/images/logo/sat4.png";
-import logo6 from "../../assets/images/logo/sat5.png";
-import logo7 from "../../assets/images/logo/fullSat.png";
+import logo1 from "../../assets/images/logo2/deSat.png";
+import logo2 from "../../assets/images/logo2/sat1.png";
+import logo3 from "../../assets/images/logo2/sat2.png";
+import logo4 from "../../assets/images/logo2/sat3.png";
+import logo5 from "../../assets/images/logo2/sat4.png";
+import logo6 from "../../assets/images/logo2/sat5.png";
+import logo7 from "../../assets/images/logo2/fullSat.png";
 
-
-import logoOther from "../../assets/images/logo_bigger_other.png";
 const LOGOS = [logo1, logo2, logo3, logo4, logo5, logo6, logo7];
 const COLORS = CONFIG.colors;
 const { height, width } = Dimensions.get('window');

@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-navigation";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import CodeField from "react-native-confirmation-code-field";
 
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 
 import appCss from "../../../app.css";
 import styles from "./style";
