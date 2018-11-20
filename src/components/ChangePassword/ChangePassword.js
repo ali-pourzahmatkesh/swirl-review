@@ -11,7 +11,7 @@ import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import BubbleInput from "../_common/BubbleInput";
 
 import passwordIcon from "../../assets/images/icons/password3.png";
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";

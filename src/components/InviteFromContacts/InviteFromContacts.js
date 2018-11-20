@@ -9,7 +9,7 @@ import { PagedContacts } from "react-native-paged-contacts";
 import emptyIcon from "../../assets/images/icons/emptyInviteContact.png";
 import faq from "../../assets/images/icons/faq.png";
 import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 // import checkedImage from "../../assets/images/checked.png";
 import LoadingSpinner from "../../components/_common/LoadingSpinner";
 
