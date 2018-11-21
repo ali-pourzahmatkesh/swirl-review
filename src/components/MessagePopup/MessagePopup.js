@@ -7,14 +7,16 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
-	View
+	View,
+	Keyboard,
+	Animated
 } from "react-native";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import close from "../../assets/images/icons/close_red.png";
 import closeWhite from "../../assets/images/icons/close.png";
-import chat from "../../assets/images/icons/chat.png";
+import chat from "../../assets/images/icons/chat2.png";
 import chatToggleFromCamera from "../../assets/images/icons/chat1.png";
 import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
@@ -22,8 +24,8 @@ import cameraDisable from "../../assets/images/icons/cameraDisable.png";
 import cameraBtn from "../../assets/images/icons/cameraBtn.png";
 import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
-// import background from "../../assets/images/logo_bigger.png";
-import logo from "../../assets/images/logo_bigger.png";
+import background from "../../assets/images/swirlBackground.png";
+import logo from "../../assets/images/logo1.png";
 import next from "../../assets/images/icons/next1.png";
 import { CONFIG } from "../../../config";
 import SendTo from "../SendTo";
@@ -48,20 +50,19 @@ const options = {
 };
 
 export default class MessagePopup extends Component {
-	state = {
-		message: "",
-		tabSelected: "chat",
-		selectedHours: 0,
-		selectedMinutes: 0,
-		messageType: "",
-		memberListId: [],
-		messageImageSource: {},
-		loadingSendMessage: false
-	};
-
 	constructor(props) {
 		super(props);
-		console.log("MessagePopup props", props);
+		this.state = {
+			message: "",
+			tabSelected: "chat",
+			selectedHours: 0,
+			selectedMinutes: 0,
+			messageType: "",
+			memberListId: [],
+			messageImageSource: {},
+			loadingSendMessage: false
+		};
+		this.bodyHeight = new Animated.Value(height * 0.88);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -168,12 +169,46 @@ export default class MessagePopup extends Component {
 		}
 	};
 
+	componentWillMount() {
+		this.keyboardWillShowSub = Keyboard.addListener(
+			"keyboardWillShow",
+			this.keyboardWillShow
+		);
+		this.keyboardWillHideSub = Keyboard.addListener(
+			"keyboardWillHide",
+			this.keyboardWillHide
+		);
+	}
+
+	componentWillUnmount() {
+		this.keyboardWillShowSub.remove();
+		this.keyboardWillHideSub.remove();
+	}
+	
+	keyboardWillShow = e => {
+		Animated.parallel([
+			Animated.timing(this.bodyHeight, {
+				duration: e.duration,
+				toValue: (height * 0.91) - e.endCoordinates.height
+			})
+		]).start();
+	}
+
+	keyboardWillHide = e => {
+		Animated.parallel([
+			Animated.timing(this.bodyHeight, {
+				duration: e.duration,
+				toValue: height * 0.91
+			})
+		]).start();
+	}
+
 	loadMessageContent = () => {
 		const { message, tabSelected, messageImageSource } = this.state;
 		console.log("this.state.messageImageSource", this.state.messageImageSource);
 		const count = message.length;
 		return (
-			<KeyboardAvoidingView style={styles.messageBox} behavior="padding">
+			<Animated.View style={[styles.messageBox, {height: this.bodyHeight}]}>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity onPress={this.props.closeMessageModal}>
 						<Image style={styles.closeIcon} source={close} />
@@ -184,7 +219,8 @@ export default class MessagePopup extends Component {
 						style={styles.subjectBox}
 					>
 						<MaterialCommunityIcons
-							size={17}
+							size={27}
+							style={{marginTop: 3}}
 							color={colors.combinatorialColor}
 							name="playlist-edit"
 						/>
@@ -201,19 +237,19 @@ export default class MessagePopup extends Component {
 						autoFocus={true}
 						blurOnSubmit={true}
 						returnKeyType="next"
-						maxLength={120}
+						maxLength={250}
 						numberOfLines={10}
 						multiline={true}
 						ref={ref => {
 							this.myTextInput = ref;
 						}}
 						onChangeText={message => {
-							this.setState({ message: message.slice(0, 120) });
+							this.setState({ message: message.slice(0, 250) });
 						}}
 					/>
 					<View style={styles.footer}>
 						<View style={styles.footerCounter}>
-							<Text style={styles.footerCounterText}>{count} / 120</Text>
+							<Text style={styles.footerCounterText}>{count} / 250</Text>
 						</View>
 						<View style={styles.footerActions}>
 							<View style={styles.nextButton} />
@@ -261,7 +297,7 @@ export default class MessagePopup extends Component {
 						</View>
 					</View>
 				</View>
-			</KeyboardAvoidingView>
+			</Animated.View>
 		);
 	};
 
@@ -385,21 +421,23 @@ export default class MessagePopup extends Component {
 
 		return (
 			<View style={styles.containerOtherPage}>
-				<View style={[appCss.header, { width }]}>
-					<TouchableOpacity
-						onPress={() => this.setState({ tabSelected: "timePicker" })}
-						style={[appCss.otherHeaderIconBox, { height: 33, width: 33 }]}
-					>
-						<Ionicons
-							size={30}
-							color={colors.bodyColor}
-							name="ios-arrow-back"
-						/>
-					</TouchableOpacity>
-					<View>
+				<View style={[appCss.header, { width, borderWidth: 0 }]}>
+					<View style={{borderWidth: 0, flex: 1}}>
+						<TouchableOpacity
+							onPress={() => this.setState({ tabSelected: "timePicker" })}
+							style={[appCss.otherHeaderIconBox, { height: 33, width: 33, borderWidth: 0 }]}
+						>
+							<Ionicons
+								size={30}
+								color={colors.bodyColor}
+								name="ios-arrow-back"
+							/>
+						</TouchableOpacity>
+					</View>
+					<View style={{borderWidth: 0}}>
 						<Text style={appCss.headerTitle}>Send To</Text>
 					</View>
-					<View />
+					<View style={{borderWidth: 0, flex: 1}}/>
 				</View>
 				<Toast />
 				<SendTo
@@ -549,6 +587,18 @@ export default class MessagePopup extends Component {
 				contentLoader = this.loadTimePicker();
 				break;
 		}
-		return <View style={styles.container}>{contentLoader}</View>;
+		return (
+			<ImageBackground style={styles.container} source={background}>
+				{/* <Image
+					source={background}
+					style={{
+						height,
+						width,
+						position: 'absolute'
+					}}
+				/> */}
+				{contentLoader}
+			</ImageBackground>
+		);
 	}
 }
