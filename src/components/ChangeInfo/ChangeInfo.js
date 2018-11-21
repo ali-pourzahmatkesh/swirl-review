@@ -76,7 +76,7 @@ export default class ChangeInfo extends Component {
 						title='Save'
 						onPress={this.onPressButton}
 						disabled={disabledBtn}
-						beginOnPage={true}
+						// beginOnPage={true}
 						loading={this.props.isLoadingFetch}
 					/>
 				</KeyboardAvoidingView>

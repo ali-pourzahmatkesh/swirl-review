@@ -150,7 +150,7 @@ export default class ChangePasswordFromProfile extends Component {
 						title='Save'
 						onPress={this.handleSubmit}
 						disabled={nextDisabled}
-						beginOnPage={true}
+						// beginOnPage={true}
 						loading={this.props.isLoadingFetch}
 					/>
 				</View>
