@@ -1,7 +1,7 @@
 const CONFIG = {
 	//serverUrl: "http://159.65.99.108:7000",
 	// serverUrl: "http://192.168.1.104:5000",
-	serverUrl: "http://127.0.0.1:5000",
+	serverUrl: "http://192.168.1.104:5000",
 	// serverUrl: "https://tape-api.herokuapp.com/",
 	oneSignalAppId: "611ce4fc-3c05-4484-b409-3d70bb387706",
 	animationDuration: 1000,
