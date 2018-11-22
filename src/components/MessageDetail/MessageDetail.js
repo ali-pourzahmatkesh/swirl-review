@@ -9,7 +9,7 @@ import {
 import styles from "./style";
 import close from "../../assets/images/icons/close_red.png";
 import { CONFIG } from "../../../config";
-import background from "../../assets/images/logo_bigger.png";
+import background from "../../assets/images/logo1.png";
 const colors = CONFIG.colors;
 export default class MessageDetail extends Component {
 	loadContent = () => {

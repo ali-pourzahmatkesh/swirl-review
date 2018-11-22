@@ -11,7 +11,7 @@ import {
 import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 // import usernameIcon from "../../assets/images/icons/Mask.png";
 import usernameIcon from "../../assets/images/icons/profile3.png";
 import appCss from "../../../app.css";
@@ -76,7 +76,7 @@ export default class ChangeInfo extends Component {
 						title='Save'
 						onPress={this.onPressButton}
 						disabled={disabledBtn}
-						beginOnPage={true}
+						// beginOnPage={true}
 						loading={this.props.isLoadingFetch}
 					/>
 				</KeyboardAvoidingView>

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
@@ -150,7 +150,7 @@ export default class ChangePasswordFromProfile extends Component {
 						title='Save'
 						onPress={this.handleSubmit}
 						disabled={nextDisabled}
-						beginOnPage={true}
+						// beginOnPage={true}
 						loading={this.props.isLoadingFetch}
 					/>
 				</View>

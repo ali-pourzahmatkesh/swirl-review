@@ -1,15 +1,18 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
 	FlatList,
 	Image,
 	Modal,
 	TouchableOpacity,
 	View,
-	Dimensions
+	Dimensions,
+	Animated,
+	Easing,
+	RefreshControl
 } from "react-native";
 import styles from "./style";
 import appCss from "../../../app.css";
-import logo from "../../assets/images/logo_bigger.png";
+import logo from "../../assets/images/logo1.png";
 import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
 import addFriend from "../../assets/images/icons/addFriend1.png"
@@ -18,6 +21,7 @@ import EmptyList from "../EmptyList";
 import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
 import sortChatList from "../../util/sortChatList";
+
 const { height, width } = Dimensions.get('window');
 const _ = require("lodash");
 
@@ -32,15 +36,80 @@ class Home extends Component {
 			timers: {},
 			timersFunctions: {},
 			isNewMessage: false,
-			resorted: false
+			resorted: false,
+			fullSpin: false
 		};
+
+		const MAX_DEPTH = height * -0.14
+
+		this.scrollY = new Animated.Value(0);
+		this.translateY = new Animated.Value(0);
+		this.rotate = new Animated.Value(0);
+		this.translateYInter = this.translateY.interpolate({
+			// inputRange: [-200, 0],
+			// outputRange: [200, 0],
+			inputRange: [-200, 0],
+			outputRange: [130, 0],
+			// easing: Easing.bezier(.76,.63,.68,.94)
+		});
+		this.rotateInter= this.rotate.interpolate({
+			inputRange: [-360, 0],
+			outputRange: ['360deg', '0deg']
+		});
+
+
+		this.scrollY.addListener(({value}) => {
+			this.translateY.setValue(value);
+
+			if(this.rotate._value < MAX_DEPTH && value > MAX_DEPTH){
+				this.setState({
+					fullSpin: false
+				}, () => {
+					this.rotate.setValue(value);
+				})
+			}
+			else if(this.rotate._value > MAX_DEPTH){
+				this.rotate.setValue(value);
+			}
+			
+		});
+		this.translateY.addListener(({value}) => {
+			if(value > 0){
+				this.translateY.setValue(0);
+			}
+			if(value < MAX_DEPTH){
+				this.translateY.setValue(MAX_DEPTH);
+			}
+		});
+		this.rotate.addListener(({value}) => {
+			if(value > 0){
+				this.rotate.setValue(0);
+			}
+			if(value < MAX_DEPTH && !this.state.fullSpin){
+				this.setState({
+					fullSpin: true
+				}, () => this.startFullSpin())
+			}
+		})
+	}
+
+	startFullSpin = () => {
+		console.log('running animation', this.rotate._value)
+		Animated.timing(this.rotate, {
+			toValue: this.rotate._value - 75,
+			duration: 100,
+		}).start(() => {
+			if(this.state.fullSpin){
+				this.startFullSpin();
+			}
+		})
 	}
 
 	componentDidMount() {
 		setTimeout(() => {
 			this.props.chatGetList({
 				id: this.props.id,
-				refreshing: true // load a new list of updated messages
+				// refreshing: true // load a new list of updated messages
 			});
 		}, 1);
 	}
@@ -174,6 +243,16 @@ class Home extends Component {
 		}
 
 		console.log('timers from hooooooome', this.state.timers)
+
+		if(
+			!nextProps.chatListRefreshing &&
+			this.props.chatListRefreshing &&
+			this.state.firstChatRetrievalStage === 'in progress'
+		){
+			this.setState({
+				firstChatRetrievalStage: 'finished'
+			})
+		}
 	}
 
 	handleSubmit = () => {
@@ -201,8 +280,13 @@ class Home extends Component {
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity style={appCss.headerLogoBox}>
-					<Image
-						style={appCss.headerIcon}
+					<Animated.Image
+						style={[appCss.headerIcon, {
+							transform: [
+								{translateY: this.scrollY._value <= 0 ? this.translateYInter : 0},
+								{rotate: this.rotateInter}
+							]
+						}]}
 						resizeMode={"contain"}
 						source={logo}
 					/>
@@ -227,6 +311,7 @@ class Home extends Component {
 			refreshing: true // load a new list of updated messages
 		});
 	};
+
 	handleLoadMore = () => {
 		console.log("handleLoadMore", this.state.list.length);
 		if (this.state.list.length) {
@@ -245,9 +330,23 @@ class Home extends Component {
 			// }
 		}
 	};
+	
+	componentWillUnmount() {
+		this.scrollY.removeAllListeners()
+	}
 
 	render() {
 		const { list, refreshing } = this.state;
+		const scrollEvent = Animated.event([
+			{
+				nativeEvent: {
+					contentOffset: {
+						y: this.scrollY
+					}
+				}
+			},
+		]);
+		
 		return (
 			<View style={styles.container}>
 				<Modal
@@ -270,37 +369,44 @@ class Home extends Component {
 							data={list}
 							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
 							renderItem={
-								({item}) => <ChatInfo
-												item={{item}}
-												navigation={this.props.navigation}
-												visitMessage={this.props.visitMessage}
-												setHomeState={(state)=>{
-													this.setState(state);
-												}}
-											/>
+								({ item }) => <ChatInfo
+									item={{ item }}
+									navigation={this.props.navigation}
+									visitMessage={this.props.visitMessage}
+									setHomeState={(state) => {
+										this.setState(state);
+									}}
+								/>
 							}
 							ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
-							onRefresh={() => {
-								this.onRefresh();
-							}}
-							refreshing={refreshing}
+							refreshControl={
+								<RefreshControl
+									refreshing={refreshing}
+									onRefresh={() => {
+										this.onRefresh();
+									}}
+									tintColor="transparent"
+								/>
+							}
 							onEndReachedThreshold={0.3}
 							onEndReached={() => {
 								this.handleLoadMore();
 							}}
 							showsHorizontalScrollIndicator={false}
 							showsVerticalScrollIndicator={false}
+							onScroll={scrollEvent}
+							scrollEventThrottle={30}
 						/>
 					)) || (
-						<EmptyList
-							emptyIcon={emptyIcon}
-							emptyText={'Nobody swirled you… Yet..'}
-							textStyle={{fontFamily: 'MuseoSansRounded-1000'}}
-							containerStyle={{
-								marginTop: height * -0.15
-							}}
-						/>
-					)}
+							<EmptyList
+								emptyIcon={emptyIcon}
+								emptyText={'Nobody swirled you… Yet..'}
+								textStyle={{ fontFamily: 'MuseoSansRounded-1000' }}
+								containerStyle={{
+									marginTop: height * -0.15
+								}}
+							/>
+						)}
 				</View>
 				<View style={styles.homeBottomBox}>
 					<TouchableOpacity
@@ -310,7 +416,7 @@ class Home extends Component {
 							<Image style={styles.iconBottom} source={addMessage} />
 						</View>
 					</TouchableOpacity>
-					<View style={styles.iconBottomBackground}/>
+					<View style={styles.iconBottomBackground} />
 				</View>
 			</View>
 		);

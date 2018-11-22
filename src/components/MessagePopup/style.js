@@ -4,85 +4,86 @@ import appCss from "../../../app.css";
 const {height, width} = Dimensions.get('window');
 const colors = CONFIG.colors;
 const styles = StyleSheet.flatten({
-    container:{
-        flex:1,
-        backgroundColor:colors.combinatorialColor,
-        alignItems:'center',
-        justifyContent:'center'
+    container: {
+        flex: 1,
+        backgroundColor: colors.tapeWhite,
+        alignItems: 'center',
     },
     messageBox:{
-        width: width-30,
-        height:height-100,
-        backgroundColor:colors.bodyColor,
+        width: width * .85,
+        height: height * 0.91,
+        backgroundColor: colors.bodyColor,
+        marginTop: height * 0.06,
 
-        borderRadius:20,
+        borderRadius: 20,
     },
-    messageBoxHeader:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'space-between',
-        height:44,
-        marginLeft:15,
-        marginRight:15
+    messageBoxHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: 44,
+        marginLeft: 15,
+        marginRight: 15
     },
-    closeIcon:{
-        width:15,
-        height:15
+    closeIcon: {
+        width: 15,
+        height: 15
     },
 
-    subjectBox:{
-      flexDirection:'row',
-        alignItems:'center',
-        justifyContent:"center"
+    subjectBox: {
+      flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "center"
     },
-    headerSubject:StyleSheet.flatten([appCss.defaultFontApp,{
-        color:colors.combinatorialColor,
-        fontSize:17
+    headerSubject: StyleSheet.flatten([appCss.defaultFontApp,{
+        color: colors.combinatorialColor,
+        fontSize: 17
     }]),
 
-    textInputBox:{
-        padding:15,
-        flex:1,
-        justifyContent:"space-between"
+    textInputBox: {
+        padding: 15,
+        flex: 1,
+        justifyContent: "space-between"
 
     },
 
     textInput: {
         fontFamily: 'MuseoSansRounded-900',
         fontSize: 18,
-        color: '#4a4a4a'
+        color: '#4a4a4a',
+        flex: 1
     },
 
 
 
-    footer:{
+    footer: {
 
     },
-    footerCounter:{
-        alignItems:'flex-end',
-        marginBottom:20
+    footerCounter: {
+        alignItems: 'flex-end',
+        marginBottom: 20
     },
-    footerCounterText:StyleSheet.flatten([appCss.defaultFontApp,{
-        color:colors.combinatorialColor,
-        fontSize:12
+    footerCounterText: StyleSheet.flatten([appCss.defaultFontApp,{
+        color: colors.combinatorialColor,
+        fontSize: 12
     }]),
 
 
-    footerActions:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
+    footerActions: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         borderWidth: 0
     },
-    actionBox:{
+    actionBox: {
         width: 40,
         height: 30,
-        margin:5
+        margin: 5
     },
-    actionBoxIcon:{
-        width:undefined,
-        height:undefined,
-        flex:1
+    actionBoxIcon: {
+        width: undefined,
+        height: undefined,
+        flex: 1
     },
 
 
@@ -106,24 +107,24 @@ const styles = StyleSheet.flatten({
     cameraBtn: {
         width: 60,
         height: 60,
-        paddingRight:50,
+        paddingRight: 50,
         resizeMode: 'contain'
     },
 
 
 
 
-    cameraActionBox:{
-        backgroundColor:"transparent",
-        flex:1,
-        position:'absolute',
+    cameraActionBox: {
+        backgroundColor: "transparent",
+        flex: 1,
+        position: 'absolute',
         width,
         height,
-        justifyContent:"space-between",
-        paddingTop:height === 812 ? 50 : 40,
-        paddingBottom:height === 812 ? 70 : 65,
-        paddingLeft:15,
-        paddingRight:15
+        justifyContent: "space-between",
+        paddingTop: height === 812 ? 50 : 40,
+        paddingBottom: height === 812 ? 70 : 65,
+        paddingLeft: 15,
+        paddingRight :15
     },
     cameraActions: {
         // backgroundColor:"yellow",
