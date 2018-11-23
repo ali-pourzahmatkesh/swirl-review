@@ -34,6 +34,8 @@ import appCss from "../../../app.css";
 import Camera from "react-native-camera";
 import moment from "moment-timezone";
 import Toast from "../Toast";
+import ImageCropPicker from "react-native-image-crop-picker";
+import ImagePicker from "react-native-image-picker";
 
 import accessCam from "../../assets/images/icons/accessCam1.png";
 const colors = CONFIG.colors;
@@ -60,7 +62,9 @@ export default class MessagePopup extends Component {
 			messageType: "",
 			memberListId: [],
 			messageImageSource: {},
-			loadingSendMessage: false
+			loadingSendMessage: false,
+			cameraType: Camera.constants.Type.front,
+			cameraZoom: 0
 		};
 		this.bodyHeight = new Animated.Value(height * 0.88);
 	}
@@ -184,15 +188,15 @@ export default class MessagePopup extends Component {
 		this.keyboardWillShowSub.remove();
 		this.keyboardWillHideSub.remove();
 	}
-	
+
 	keyboardWillShow = e => {
 		Animated.parallel([
 			Animated.timing(this.bodyHeight, {
 				duration: e.duration,
-				toValue: (height * 0.91) - e.endCoordinates.height
+				toValue: height * 0.91 - e.endCoordinates.height
 			})
 		]).start();
-	}
+	};
 
 	keyboardWillHide = e => {
 		Animated.parallel([
@@ -201,14 +205,14 @@ export default class MessagePopup extends Component {
 				toValue: height * 0.91
 			})
 		]).start();
-	}
+	};
 
 	loadMessageContent = () => {
 		const { message, tabSelected, messageImageSource } = this.state;
 		console.log("this.state.messageImageSource", this.state.messageImageSource);
 		const count = message.length;
 		return (
-			<Animated.View style={[styles.messageBox, {height: this.bodyHeight}]}>
+			<Animated.View style={[styles.messageBox, { height: this.bodyHeight }]}>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity onPress={this.props.closeMessageModal}>
 						<Image style={styles.closeIcon} source={close} />
@@ -220,7 +224,7 @@ export default class MessagePopup extends Component {
 					>
 						<MaterialCommunityIcons
 							size={27}
-							style={{marginTop: 3}}
+							style={{ marginTop: 3 }}
 							color={colors.combinatorialColor}
 							name="playlist-edit"
 						/>
@@ -288,9 +292,7 @@ export default class MessagePopup extends Component {
 										});
 									}
 								}}
-								style={[
-									styles.nextButton,
-								]}
+								style={[styles.nextButton]}
 							>
 								<Image style={styles.iconButton} source={next} />
 							</TouchableOpacity>
@@ -319,8 +321,77 @@ export default class MessagePopup extends Component {
 			.catch(err => console.error(err));
 	}
 
+	selectPictureFromGallery() {
+		let option = {
+			mediaType: "photo",
+			allowsEditing: true
+		};
+		/**
+		 * The first arg is the options object for customization (it can also be null or omitted for default options),
+		 * The second arg is the callback which sends object: response (more info in the API Reference)
+		 */
+		ImagePicker.launchImageLibrary(options, response => {
+			// console.log("Response = ", response);
+
+			if (response.didCancel) {
+				console.log("User cancelled image picker");
+			} else if (response.error) {
+				console.log("ImagePicker Error: ", response.error);
+			} else if (response.customButton) {
+				console.log("User tapped custom button: ", response.customButton);
+			} else {
+				this.setState({
+					tabSelected: "image",
+					messageImageSource: {
+						pathUri: { uri: response.uri },
+						mediaUri: { uri: response.uri, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
+					}
+				});
+
+				/*
+				// activate cropping image
+				// ------------------------------
+
+				ImageCropPicker.openCropper({
+					cropping: true,
+					path: response,
+					mediaType: "photo",
+					loadingLabelText: "Processing..."
+					// cropperChooseText: this.state.loadingUpdateAvatar
+					// 	? "Loading..."
+					// 	: "Choose" // it is IOS only
+				}).then(image => {
+					if (image && image.path) {
+						this.setState({
+							tabSelected: "image",
+							messageImageSource: {
+								pathUri: { uri: "file://" + image.path },
+								mediaUri: { uri: "file://" + image.path, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
+							}
+						});
+					}
+				});
+
+				// ------------------------------
+						*/
+				// You can also display the image using data:
+				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+				// this.uploadImageToCloud(response.uri);
+			}
+		});
+	}
+
+	changeCamera = () => {
+		this.setState({
+			cameraType:
+				this.state.cameraType == Camera.constants.Type.front
+					? Camera.constants.Type.back
+					: Camera.constants.Type.front
+		});
+	};
+
 	loadCameraContent = () => {
-		const { tabSelected } = this.state;
+		const { tabSelected, cameraType } = this.state;
 		return (
 			<Camera
 				ref={cam => {
@@ -329,6 +400,8 @@ export default class MessagePopup extends Component {
 				style={styles.cameraActionBox}
 				aspect={Camera.constants.Aspect.fill}
 				captureTarget={Camera.constants.CaptureTarget.disk}
+				type={cameraType}
+				zoom={cameraZoom /* between 0 to 1 */}
 			>
 				{/*<View style={styles.cameraActionBox}>*/}
 				<View style={styles.messageBoxHeader}>
@@ -340,11 +413,22 @@ export default class MessagePopup extends Component {
 				</View>
 
 				<View style={styles.cameraActions}>
-					<TouchableOpacity onPress={() => this.tabSelectedFunction("camera")}>
+					<TouchableOpacity onPress={this.selectPictureFromGallery.bind(this)}>
 						{/* <Entypo size={35} color="#fff" name="image" /> */}
 						<Image
 							source={accessCam}
-							resizeMode='contain'
+							resizeMode="contain"
+							style={{
+								height: 35,
+								width: 35
+							}}
+						/>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={this.changeCamera.bind(this)}>
+						{/* <Entypo size={35} color="#fff" name="image" /> */}
+						<Image
+							source={accessCam}
+							resizeMode="contain"
 							style={{
 								height: 35,
 								width: 35
@@ -362,7 +446,7 @@ export default class MessagePopup extends Component {
 						{/* <Feather size={35} color="#fff" name="message-circle" /> */}
 						<Image
 							source={chatToggleFromCamera}
-							resizeMode='contain'
+							resizeMode="contain"
 							style={{
 								height: 35,
 								width: 35
@@ -376,10 +460,13 @@ export default class MessagePopup extends Component {
 
 	loadImageContent = () => {
 		return (
-			<ImageBackground
-				style={styles.cameraActionBox}
-				source={this.state.messageImageSource.mediaUri}
-			>
+			<View style={styles.cameraActionBox}>
+				<View style={styles.selectedPhotoAsBackgroundContainer}>
+					<ImageBackground
+						style={styles.selectedPhotoAsBackground}
+						source={this.state.messageImageSource.mediaUri}
+					/>
+				</View>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity
 						onPress={() => this.setState({ tabSelected: "camera" })}
@@ -412,7 +499,7 @@ export default class MessagePopup extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-			</ImageBackground>
+			</View>
 		);
 	};
 
@@ -422,10 +509,13 @@ export default class MessagePopup extends Component {
 		return (
 			<View style={styles.containerOtherPage}>
 				<View style={[appCss.header, { width, borderWidth: 0 }]}>
-					<View style={{borderWidth: 0, flex: 1}}>
+					<View style={{ borderWidth: 0, flex: 1 }}>
 						<TouchableOpacity
 							onPress={() => this.setState({ tabSelected: "timePicker" })}
-							style={[appCss.otherHeaderIconBox, { height: 33, width: 33, borderWidth: 0 }]}
+							style={[
+								appCss.otherHeaderIconBox,
+								{ height: 33, width: 33, borderWidth: 0 }
+							]}
 						>
 							<Ionicons
 								size={30}
@@ -434,10 +524,10 @@ export default class MessagePopup extends Component {
 							/>
 						</TouchableOpacity>
 					</View>
-					<View style={{borderWidth: 0}}>
+					<View style={{ borderWidth: 0 }}>
 						<Text style={appCss.headerTitle}>Send To</Text>
 					</View>
-					<View style={{borderWidth: 0, flex: 1}}/>
+					<View style={{ borderWidth: 0, flex: 1 }} />
 				</View>
 				<Toast />
 				<SendTo
@@ -486,19 +576,18 @@ export default class MessagePopup extends Component {
 				<View style={[appCss.header, { width }]}>
 					<TouchableOpacity
 						onPress={() => {
-							let tabSelected = '';
-							if(messageType === 'chat'){
-								tabSelected = 'chat';
-							}
-							else if(messageType === 'camera'){
-								tabSelected = 'image'
+							let tabSelected = "";
+							if (messageType === "chat") {
+								tabSelected = "chat";
+							} else if (messageType === "camera") {
+								tabSelected = "image";
 							}
 
 							this.setState({
 								tabSelected
-							})
+							});
 						}}
-						style={[appCss.otherHeaderIconBox, {height: 33, width: 33}]}
+						style={[appCss.otherHeaderIconBox, { height: 33, width: 33 }]}
 					>
 						<Ionicons
 							size={30}
@@ -518,16 +607,17 @@ export default class MessagePopup extends Component {
 						onPress={this.handleSubmit}
 					/>
 				</View>
-				<Text style={styles.pickerText}>⏳   Time until unswirl... </Text>
+				<Text style={styles.pickerText}>⏳ Time until unswirl... </Text>
 				<View style={{ flex: 1, borderWidth: 0 }}>
 					<TimePicker
 						selectedHours={selectedHours}
 						selectedMinutes={selectedMinutes}
-						onChange={(hours, minutes) =>
-							this.setState({
-								selectedHours: hours,
-								selectedMinutes: minutes
-							})
+						onChange={
+							(hours, minutes) =>
+								this.setState({
+									selectedHours: hours,
+									selectedMinutes: minutes
+								})
 							// this.setState({
 							// 	selectedHours: 0,
 							// 	selectedMinutes: .3
@@ -554,9 +644,7 @@ export default class MessagePopup extends Component {
 						>
 							<TouchableOpacity
 								onPress={() => this.setState({ tabSelected: "contacts" })}
-								style={[
-									styles.nextButton,
-								]}
+								style={[styles.nextButton]}
 							>
 								<Image style={styles.iconButton} source={next} />
 							</TouchableOpacity>
@@ -587,8 +675,13 @@ export default class MessagePopup extends Component {
 				contentLoader = this.loadTimePicker();
 				break;
 		}
+
+		// if we are in Text mode we active background image and if not we set the background source param with null
 		return (
-			<ImageBackground style={styles.container} source={background}>
+			<ImageBackground
+				style={styles.container}
+				source={tabSelected != "image" ? background : ""}
+			>
 				{/* <Image
 					source={background}
 					style={{
