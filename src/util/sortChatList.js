@@ -61,10 +61,10 @@ export default function(list) {
 			return new Date(messageA.availableAt) - new Date(messageB.availableAt);
 		});
 
-		// sort seen list in ascending oder
-		// latest to be available at the front
+		// sort seen list in descending order
+		// latest to be sent at the front
 		seen.sort((messageA, messageB) => {
-			return new Date(messageA.availableAt) - new Date(messageB.availableAt);
+			return new Date(messageB.createdAt) - new Date(messageA.createdAt);
 		});
 
 		if(ready.length > 0){
@@ -92,11 +92,11 @@ export default function(list) {
 		return new Date(messageListA[0].availableAt) - new Date(messageListB[0].availableAt);
 	});
 
-	// sort ready list in ascending order
-	// most recent to be available at the front
-	// most recently 'unswirled' message
+	// sort ready list in descending order
+	// most recent to be sent at the front
+	// most recently 'unswirled' message -- not ture if going off createdAt
 	seenOnTop.sort((messageListA, messageListB) => {
-		return new Date(messageListB[0].availableAt) - new Date(messageListA[0].availableAt);
+		return new Date(messageListB[0].createdAt) - new Date(messageListA[0].createdAt);
 	});
 
 	console.log('readyOnTop', readyOnTop);

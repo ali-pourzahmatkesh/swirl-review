@@ -15,13 +15,13 @@ import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
 
-import logo1 from "../../assets/images/_logo2/deSat.png";
-import logo2 from "../../assets/images/_logo2/sat1.png";
-import logo3 from "../../assets/images/_logo2/sat2.png";
-import logo4 from "../../assets/images/_logo2/sat3.png";
-import logo5 from "../../assets/images/_logo2/sat4.png";
-import logo6 from "../../assets/images/_logo2/sat5.png";
-import logo7 from "../../assets/images/_logo2/fullSat.png";
+import logo1 from "../../assets/images/logo3/deSat.png";
+import logo2 from "../../assets/images/logo3/sat1.png";
+import logo3 from "../../assets/images/logo3/sat2.png";
+import logo4 from "../../assets/images/logo3/sat3.png";
+import logo5 from "../../assets/images/logo3/sat4.png";
+import logo6 from "../../assets/images/logo3/sat5.png";
+import logo7 from "../../assets/images/logo3/fullSat.png";
 
 const LOGOS = [logo1, logo2, logo3, logo4, logo5, logo6, logo7];
 const COLORS = CONFIG.colors;
@@ -218,9 +218,10 @@ export default class ChatInfo extends Component {
 				messageHint = () => {
 					return (
 						"Unswirled " +
-						momentTz(item["availableAt"], "YYYYMMDD")
-							.startOf("hour")
-							.fromNow(true) +
+						// momentTz(item["availableAt"], "YYYYMMDD")
+						// 	.startOf("hour")
+                        // 	.fromNow(true) +
+                        momentTz(item["createdAt"]).fromNow(true) +
 						" ago"
 					);
 				};
@@ -318,7 +319,8 @@ export default class ChatInfo extends Component {
 								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
 						>
-							{momentTz(item["createdAt"], "YYYYMMDD").fromNow(true)} {styles.chatDesc.fontSize}
+                            {/* {momentTz(item["createdAt"], "YYYYMMDD").fromNow(true)} */}
+                            {momentTz(item["createdAt"]).fromNow(true)}
 						</Text>
 						{(messageStyle == "Ready" || messageStyle == "Waiting") && (
 							// <Image

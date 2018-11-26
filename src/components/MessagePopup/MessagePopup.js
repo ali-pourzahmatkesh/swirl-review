@@ -9,7 +9,8 @@ import {
 	TouchableOpacity,
 	View,
 	Keyboard,
-	Animated
+	Animated,
+	TouchableWithoutFeedback
 } from "react-native";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -65,7 +66,8 @@ export default class MessagePopup extends Component {
 			messageImageSource: {},
 			loadingSendMessage: false,
 			cameraType: Camera.constants.Type.front,
-			cameraZoom: 0
+			cameraZoom: 0,
+			lastTap: null
 		};
 		this.bodyHeight = new Animated.Value(height * 0.88);
 	}
@@ -391,72 +393,83 @@ export default class MessagePopup extends Component {
 		});
 	};
 
+	handleDoubleTap = () => {
+		const NOW = Date.now();
+		const DOUBLE_TAP_DELAY = 300;
+		if (this.state.lastTap && (NOW - this.state.lastTap) < DOUBLE_TAP_DELAY) {
+			this.changeCamera();
+		}
+		else {
+			this.setState({
+				lastTap: NOW
+			})
+		}
+	}
+
 	loadCameraContent = () => {
 		const { tabSelected, cameraType, cameraZoom } = this.state;
 		return (
-			<Camera
-				ref={cam => {
-					this.camera = cam;
-				}}
-				style={styles.cameraActionBox}
-				aspect={Camera.constants.Aspect.fill}
-				captureTarget={Camera.constants.CaptureTarget.disk}
-				type={cameraType}
-				zoom={cameraZoom /* between 0 to 1 */}
-			>
-				{/*<View style={styles.cameraActionBox}>*/}
-				<View style={styles.messageBoxHeader}>
-					<TouchableOpacity onPress={this.props.closeMessageModal}>
-						<Image style={styles.closeIcon} source={closeWhite} />
-					</TouchableOpacity>
-					<View />
-					{/* <View /> */}
-					<TouchableOpacity onPress={this.changeCamera.bind(this)}>
-						{/* <Entypo size={35} color="#fff" name="image" /> */}
-						<Image
-							source={changeCamera}
-							resizeMode="contain"
-							style={{
-								height: 35,
-								width: 35
-							}}
-						/>
-					</TouchableOpacity>
-				</View>
+			<TouchableWithoutFeedback onPress={this.handleDoubleTap}>
+				<Camera
+					ref={cam => {
+						this.camera = cam;
+					}}
+					style={styles.cameraActionBox}
+					aspect={Camera.constants.Aspect.fill}
+					captureTarget={Camera.constants.CaptureTarget.disk}
+					type={cameraType}
+					zoom={cameraZoom /* between 0 to 1 */}
+				>
+					<View style={styles.messageBoxHeader}>
+						<TouchableOpacity onPress={this.props.closeMessageModal}>
+							<Image style={styles.closeIcon} source={closeWhite} />
+						</TouchableOpacity>
+						<View />
+						{/* <View /> */}
+						<TouchableOpacity onPress={this.changeCamera.bind(this)}>
+							<Image
+								source={changeCamera}
+								resizeMode="contain"
+								style={{
+									height: 35,
+									width: 35
+								}}
+							/>
+						</TouchableOpacity>
+					</View>
 
-				<View style={styles.cameraActions}>
-					<TouchableOpacity onPress={this.selectPictureFromGallery.bind(this)}>
-						{/* <Entypo size={35} color="#fff" name="image" /> */}
-						<Image
-							source={accessCam}
-							resizeMode="contain"
-							style={{
-								height: 35,
-								width: 35
-							}}
-						/>
-					</TouchableOpacity>
-					
-					<TouchableOpacity onPress={this.takePicture.bind(this)}>
-						<Image
-							resizeMode="contain"
-							style={styles.cameraBtn}
-							source={cameraBtn}
-						/>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => this.tabSelectedFunction("chat")}>
-						{/* <Feather size={35} color="#fff" name="message-circle" /> */}
-						<Image
-							source={chatToggleFromCamera}
-							resizeMode="contain"
-							style={{
-								height: 35,
-								width: 35
-							}}
-						/>
-					</TouchableOpacity>
-				</View>
-			</Camera>
+					<View style={styles.cameraActions}>
+						<TouchableOpacity onPress={this.selectPictureFromGallery.bind(this)}>
+							<Image
+								source={accessCam}
+								resizeMode="contain"
+								style={{
+									height: 35,
+									width: 35
+								}}
+							/>
+						</TouchableOpacity>
+						
+						<TouchableOpacity onPress={this.takePicture.bind(this)}>
+							<Image
+								resizeMode="contain"
+								style={styles.cameraBtn}
+								source={cameraBtn}
+							/>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => this.tabSelectedFunction("chat")}>
+							<Image
+								source={chatToggleFromCamera}
+								resizeMode="contain"
+								style={{
+									height: 35,
+									width: 35
+								}}
+							/>
+						</TouchableOpacity>
+					</View>
+				</Camera>
+			</TouchableWithoutFeedback>
 		);
 	};
 
@@ -616,14 +629,14 @@ export default class MessagePopup extends Component {
 						selectedMinutes={selectedMinutes}
 						onChange={
 							(hours, minutes) =>
-								this.setState({
-									selectedHours: hours,
-									selectedMinutes: minutes
-								})
-							// this.setState({
-							// 	selectedHours: 0,
-							// 	selectedMinutes: .3
-							// })
+								// this.setState({
+								// 	selectedHours: hours,
+								// 	selectedMinutes: minutes
+								// })
+							this.setState({
+								selectedHours: 0,
+								selectedMinutes: .2
+							})
 						}
 					/>
 				</View>

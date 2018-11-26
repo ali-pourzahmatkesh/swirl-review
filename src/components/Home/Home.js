@@ -33,8 +33,7 @@ class Home extends Component {
 			newMessageModalVisible: false,
 			list: [],
 			lastIdentifier: null,
-			timers: {},
-			timersFunctions: {},
+			timerFunctions: {},
 			isNewMessage: false,
 			resorted: false,
 			fullSpin: false
@@ -109,7 +108,6 @@ class Home extends Component {
 		setTimeout(() => {
 			this.props.chatGetList({
 				id: this.props.id,
-				// refreshing: true // load a new list of updated messages
 			});
 		}, 1);
 	}
@@ -120,21 +118,16 @@ class Home extends Component {
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
 			this.state.list.length != nextProps.chatList.length
-			// (this.state.list.length != nextProps.chatList.length ||
-			// 	nextProps.resorted === true ||
-			// 	this.state.refreshing === true ||
-			// 	nextProps.isNewMessage === true)
 		) {
 			if (
 				this.state.refreshing === true ||
-				nextProps.isNewMessage === true ||
-				nextProps.resorted === true // we should probably break this out and just resort it
+				nextProps.isNewMessage === true
 			) {
 				// remove all old timers
-				for (message in this.state.timers) {
-					clearTimeout(this.state.timersFunctions[`${message.id}`]);
+				for (message in this.state.timerFunctions) {
+					clearTimeout(this.state.timerFunctions[`${message.id}`]);
 				}
-				this.setState({ timers: {}, timersFunctions: {} });
+				this.setState({ timers: {}, timerFunctions: {} });
 
 				// set the new timers
 				if (nextProps.chatList.length) {
@@ -154,46 +147,32 @@ class Home extends Component {
 
 								let intervalByMiliSeconds = availableAtByMS - nowByMS;
 								if (intervalByMiliSeconds > 0) {
-									// why do we care what the timer(functions) are
-									// right here if we set it to an empty object up top?
-									let localTimers = this.state.timers; // I don't think we're even using this???
-									let localTimersFunctions = this.state.timersFunctions;
+									let localTimerFunctions = this.state.timerFunctions;
+									localTimerFunctions[`${message.id}`] = setTimeout(() => {
+										// once the interval is over, the message is ready
+										// we should show an in app notification here
+										this.props.showToast(`Open ${message.senderName}'s swirl now!`);
 
-									// again, I feel like this will always run because localTimers'
-									// data source is this.state.timers which we previously set 
-									// to an empty object (has no keys)
-									if (!localTimers[`${message.id}`]) {
-										localTimers[`${message.id}`] = message;
-										localTimersFunctions[`${message.id}`] = setTimeout(() => {
-											// once the interval is over, the message is ready
-											// we should show an in app notification here
-											this.props.showToast(`Open ${message.senderName}'s swirl now!`);
+										// this needs to happen because we're not sure of the state
+										// at the time of the interval's end
+										let localTimerFunctions = this.state.timerFunctions;
 
-											// this needs to happen because we're not sure of the state
-											// at the time of the interval's end
-											let localTimers = this.state.timers;
-											let localTimersFunctions = this.state.timersFunctions;
+										// clears timers and removes them from list
+										clearTimeout(localTimerFunctions[`${message.id}`]);
+										delete localTimerFunctions[`${message.id}`];
 
-											// clears timers and removes them from list
-											clearTimeout(localTimersFunctions[`${message.id}`]);
-											delete localTimers[`${message.id}`];
-											delete localTimersFunctions[`${message.id}`];
-
-											// resorting 
-											let localList = sortChatList([].concat.apply([], this.state.list));
-											this.setState({
-												timers: localTimers,
-												timersFunctions: localTimersFunctions,
-												list: localList
-											});
-										}, intervalByMiliSeconds);
-
-
+										// resorting 
+										let localList = sortChatList([].concat.apply([], this.state.list));
 										this.setState({
-											timers: localTimers,
-											timersFunctions: localTimersFunctions
+											timerFunctions: localTimerFunctions,
+											list: localList
 										});
-									}
+									}, intervalByMiliSeconds);
+
+
+									this.setState({
+										timerFunctions: localTimerFunctions
+									});
 								}
 							}
 						});
@@ -202,7 +181,7 @@ class Home extends Component {
 				let orderedChatList = sortChatList(nextProps.chatList);
 				this.setState({ list: orderedChatList });
 
-				// trn off isNewMessage flag
+				// turn off isNewMessage flag
 				this.props.chatSetStore({
 					isNewMessage: false,
 					resorted: false
@@ -217,8 +196,6 @@ class Home extends Component {
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
 			this.setState({ refreshing: nextProps.chatListRefreshing });
 		}
-
-		console.log('timers from hooooooome', this.state.timers)
 	}
 
 	handleSubmit = () => {
