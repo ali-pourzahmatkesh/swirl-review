@@ -20,6 +20,7 @@ import chat from "../../assets/images/icons/chat2.png";
 import chatToggleFromCamera from "../../assets/images/icons/chat1.png";
 import chatDisable from "../../assets/images/icons/chatDisable.png";
 import camera from "../../assets/images/icons/camera.png";
+import changeCamera from "../../assets/images/icons/changeCamera.png";
 import cameraDisable from "../../assets/images/icons/cameraDisable.png";
 import cameraBtn from "../../assets/images/icons/cameraBtn.png";
 import Feather from "react-native-vector-icons/Feather";
@@ -391,7 +392,7 @@ export default class MessagePopup extends Component {
 	};
 
 	loadCameraContent = () => {
-		const { tabSelected, cameraType } = this.state;
+		const { tabSelected, cameraType, cameraZoom } = this.state;
 		return (
 			<Camera
 				ref={cam => {
@@ -409,7 +410,18 @@ export default class MessagePopup extends Component {
 						<Image style={styles.closeIcon} source={closeWhite} />
 					</TouchableOpacity>
 					<View />
-					<View />
+					{/* <View /> */}
+					<TouchableOpacity onPress={this.changeCamera.bind(this)}>
+						{/* <Entypo size={35} color="#fff" name="image" /> */}
+						<Image
+							source={changeCamera}
+							resizeMode="contain"
+							style={{
+								height: 35,
+								width: 35
+							}}
+						/>
+					</TouchableOpacity>
 				</View>
 
 				<View style={styles.cameraActions}>
@@ -424,17 +436,7 @@ export default class MessagePopup extends Component {
 							}}
 						/>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={this.changeCamera.bind(this)}>
-						{/* <Entypo size={35} color="#fff" name="image" /> */}
-						<Image
-							source={accessCam}
-							resizeMode="contain"
-							style={{
-								height: 35,
-								width: 35
-							}}
-						/>
-					</TouchableOpacity>
+					
 					<TouchableOpacity onPress={this.takePicture.bind(this)}>
 						<Image
 							resizeMode="contain"

@@ -22,8 +22,11 @@ const styles = StyleSheet.flatten({
 		alignItems: "center",
 		justifyContent: "space-between",
 		height: 44,
-		marginLeft: 15,
-		marginRight: 15
+		width: '100%',
+		borderColor: 'white',
+		borderWidth: 0,
+		paddingLeft: '6%',
+		paddingRight: '6%',
 	},
 	closeIcon: {
 		width: 15,
@@ -119,8 +122,8 @@ const styles = StyleSheet.flatten({
 		justifyContent: "space-between",
 		paddingTop: height === 812 ? 50 : 40,
 		paddingBottom: height === 812 ? 70 : 65,
-		paddingLeft: 15,
-		paddingRight: 15
+		// paddingLeft: 15,
+		// paddingRight: 15
 	},
 
 	selectedPhotoAsBackgroundContainer: {
@@ -154,11 +157,14 @@ const styles = StyleSheet.flatten({
 	// },
 
 	cameraActions: {
-		// backgroundColor:"yellow",
 		alignItems: "center",
 		justifyContent: "space-between",
-		flexDirection: "row"
-		// height:110
+		flexDirection: "row",
+		width,
+		borderWidth: 0,
+		borderColor: 'white',
+		paddingLeft: '6%',
+		paddingRight: '6%',
 	},
 	cameraBtnBox: {
 		alignItems: "center",
