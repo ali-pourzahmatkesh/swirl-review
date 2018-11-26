@@ -15,13 +15,13 @@ import appCss from "../../../app.css";
 import styles from "./style";
 import {CONFIG} from "../../../config";
 
-import logo1 from "../../assets/images/logo2/deSat.png";
-import logo2 from "../../assets/images/logo2/sat1.png";
-import logo3 from "../../assets/images/logo2/sat2.png";
-import logo4 from "../../assets/images/logo2/sat3.png";
-import logo5 from "../../assets/images/logo2/sat4.png";
-import logo6 from "../../assets/images/logo2/sat5.png";
-import logo7 from "../../assets/images/logo2/fullSat.png";
+import logo1 from "../../assets/images/_logo2/deSat.png";
+import logo2 from "../../assets/images/_logo2/sat1.png";
+import logo3 from "../../assets/images/_logo2/sat2.png";
+import logo4 from "../../assets/images/_logo2/sat3.png";
+import logo5 from "../../assets/images/_logo2/sat4.png";
+import logo6 from "../../assets/images/_logo2/sat5.png";
+import logo7 from "../../assets/images/_logo2/fullSat.png";
 
 const LOGOS = [logo1, logo2, logo3, logo4, logo5, logo6, logo7];
 const COLORS = CONFIG.colors;
@@ -45,9 +45,10 @@ export default class ChatInfo extends Component {
     }
 
     componentDidMount(){
-        let {
-            item
-        } = this.props.item;
+        // let {
+        //     item
+        // } = this.props;
+        let item = this.props.messageList.item[0];
 
 
 
@@ -81,12 +82,25 @@ export default class ChatInfo extends Component {
             }, secondsLeftCurrentStep);
     
             for(let i = 1; i <= stepsLeft; i++){
+                console.log('times for each timeout ', (step * i) + secondsLeftCurrentStep);
                 setTimeout(() => {
+                    console.log(i, 'is the timeout running');
                     Animated.timing(this.logoAnimations[defaultAnimationStep + i], {
                         duration: 500,
                         toValue: 1
                     }).start();
                 }, (step * i) + secondsLeftCurrentStep);
+
+                // console.log('times for each timeout ', (step * i) + secondsLeftCurrentStep);
+                // ((additionalStep) => {
+                //     setTimeout(() => {
+                //         console.log(additionalStep, 'is the timeout running');
+                //         Animated.timing(this.logoAnimations[defaultAnimationStep + additionalStep], {
+                //             duration: 500,
+                //             toValue: 1
+                //         }).start();
+                //     }, (step * additionalStep) + secondsLeftCurrentStep);
+                // })(i);
             }
         }
         // with gradual animations
@@ -113,29 +127,49 @@ export default class ChatInfo extends Component {
         }, () => console.log(this.state.defaultAnimationStep, 'default animmmmmmmmmmmmm'));
     }
 
-    // componentWillReceiveProps(nextProps){
-    //     // need to repeat the final animation step b/c the item prop
-    //     // updates when we hit the available time, triggering a rerender
-    //     // which erases the existing animation timeouts/image elements
-    //     console.log(this.state.defaultAnimationStep, 'anim step in will receive')
-    //     console.log(new Date(nextProps.item.item['availableAt']) - new Date(), 'timeLeft');
-    //     console.log(nextProps)
-    //     // if(new Date(nextProps.item.item['availableAt']) - new Date() < 0 && this.state.defaultAnimationStep < 6){
-    //     //     console.log(this.nextProps.item, 'running last anim')
-    //     //     this.setState({
-    //     //         defaultAnimationStep: 5
-    //     //     }, () => {
-    //     //         Animated.timing(this.logoAnimations[defaultAnimationStep], {
-    //     //             duration: 500,
-    //     //             toValue: 1
-    //     //         }).start(() => {
-    //     //             this.setState({
-    //     //                 defaultAnimationStep: 6
-    //     //             })
-    //     //         });
-    //     //     })
-    //     // }
-    // }
+    componentWillReceiveProps(nextProps){
+        if(this.props.messageList.item[0] !== nextProps.messageList.item[0]){
+            let item = nextProps.messageList.item[0];
+
+            // for time elapsed logo animation
+            //shortening to separate the final part of the fade from the jump when reordering
+            let fullTime = (new Date(item['availableAt']) - new Date(item['createdAt'])) - (1 * 1000);
+            let step = fullTime / 6;
+            //shortening to separate the final part of the fade from the jump when reordering
+            let timeLeft = (new Date(item['availableAt']) - new Date()) - (1 * 1000);
+            let stepsLeft = timeLeft / step;
+            let defaultAnimationStep = timeLeft < 0 ? 6 : 7 - (Math.ceil(stepsLeft) + 1);
+            stepsLeft = Math.floor(stepsLeft);
+            let secondsLeftCurrentStep = timeLeft - (step * stepsLeft);
+    
+    
+            // shorter animations on step
+            if(defaultAnimationStep < 6){
+                console.log(item.textContent, 'setting timeouts from did mount')
+                setTimeout(() => {
+                    Animated.timing(this.logoAnimations[defaultAnimationStep], {
+                        duration: 500,
+                        toValue: 1
+                    }).start();
+                }, secondsLeftCurrentStep);
+        
+                for(let i = 1; i <= stepsLeft; i++){
+                    console.log('times for each timeout ', (step * i) + secondsLeftCurrentStep);
+                    setTimeout(() => {
+                        console.log(i, 'is the timeout running');
+                        Animated.timing(this.logoAnimations[defaultAnimationStep + i], {
+                            duration: 500,
+                            toValue: 1
+                        }).start();
+                    }, (step * i) + secondsLeftCurrentStep);
+                }
+            }
+    
+            this.setState({
+                defaultAnimationStep
+            }, () => console.log(this.state.defaultAnimationStep, 'default animmmmmmmmmmmmm'));
+        }
+    }
 
     loadPostTypeEmoji = postType => {
 		if(postType === 'text'){
@@ -161,9 +195,12 @@ export default class ChatInfo extends Component {
     };
 
     render(){
-        let {
-            item
-        } = this.props.item;
+        // let {
+        //     item
+        // } = this.props;
+        let item = this.props.messageList.item[0];
+        console.log('message list ****************************************', this.props.messageList)
+        console.log('item')
 
         let {
             defaultAnimationStep

@@ -2,7 +2,7 @@ import SignIn from "./SignIn";
 import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { sendPassword, getIpData, getCountries } from "../../store/member";
-import { showToast } from "../../store/toast";
+// import { showToast } from "../../store/toast";
 
 const mapStateToProps = state => ({
 	loading: state.app.member.loading,
@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => ({
 			dispatch(getIpData());
 		}, 1),
 	getCountries: () => dispatch(getCountries()),
-	showToast: message => dispatch(showToast(true, message))
+	// showToast: message => dispatch(showToast(true, message))
 });
 
 export default withNavigation(

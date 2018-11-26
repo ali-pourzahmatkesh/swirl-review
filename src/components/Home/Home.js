@@ -119,23 +119,19 @@ class Home extends Component {
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
-			(this.state.list.length != nextProps.chatList.length ||
-				nextProps.resorted === true ||
-				this.state.refreshing === true ||
-				nextProps.isNewMessage === true)
+			this.state.list.length != nextProps.chatList.length
+			// (this.state.list.length != nextProps.chatList.length ||
+			// 	nextProps.resorted === true ||
+			// 	this.state.refreshing === true ||
+			// 	nextProps.isNewMessage === true)
 		) {
-			// console.log("----------------------new refresh the list of chats");
 			if (
 				this.state.refreshing === true ||
 				nextProps.isNewMessage === true ||
-				nextProps.resorted === true
+				nextProps.resorted === true // we should probably break this out and just resort it
 			) {
-				// console.log("refreshing list ....", this.state.refreshing);
-				// console.log("check new message ....", nextProps.isNewMessage);
-
 				// remove all old timers
 				for (message in this.state.timers) {
-					// console.log("a message from timer cycle", message);
 					clearTimeout(this.state.timersFunctions[`${message.id}`]);
 				}
 				this.setState({ timers: {}, timersFunctions: {} });
@@ -147,6 +143,8 @@ class Home extends Component {
 					nextProps.chatList &&
 						nextProps.chatList.length &&
 						nextProps.chatList.map(message => {
+							// don't need to set a timer if it hasn't been seen
+							// or if there's no chat list to begin with
 							if (message.isSeen === false) {
 								let availableAtByMS = new Date(
 									message["availableAt"]
@@ -156,67 +154,45 @@ class Home extends Component {
 
 								let intervalByMiliSeconds = availableAtByMS - nowByMS;
 								if (intervalByMiliSeconds > 0) {
-									let localTimers = this.state.timers;
+									// why do we care what the timer(functions) are
+									// right here if we set it to an empty object up top?
+									let localTimers = this.state.timers; // I don't think we're even using this???
 									let localTimersFunctions = this.state.timersFunctions;
 
+									// again, I feel like this will always run because localTimers'
+									// data source is this.state.timers which we previously set 
+									// to an empty object (has no keys)
 									if (!localTimers[`${message.id}`]) {
-										// console.log(
-										// 	"*********************** create timer for message ",
-										// 	message.id
-										// );
-
 										localTimers[`${message.id}`] = message;
 										localTimersFunctions[`${message.id}`] = setTimeout(() => {
-											// console.log(
-											// 	"ready to remove interval for message ",
-											// 	message.id
-											// );
+											// once the interval is over, the message is ready
+											// we should show an in app notification here
+											this.props.showToast(`Open ${message.senderName}'s swirl now!`);
 
+											// this needs to happen because we're not sure of the state
+											// at the time of the interval's end
 											let localTimers = this.state.timers;
 											let localTimersFunctions = this.state.timersFunctions;
 
-											// update the message client side for correct design
-											// let localList = this.state.list.filter(message => {
-											// 	return message.id != message.id;
-											// });
-											// console.log("remove item from list", localList);
-											// localList.unshift(message);
-											// console.log("add to top of list", localList);
-
+											// clears timers and removes them from list
 											clearTimeout(localTimersFunctions[`${message.id}`]);
 											delete localTimers[`${message.id}`];
 											delete localTimersFunctions[`${message.id}`];
-											// console.log(
-											// 	"------ SET REMOVE ----- timers",
-											// 	localTimers,
-											// 	"timers func",
-											// 	localTimersFunctions
-											// );
-											//
-											// console.log("list", this.state.list);
-											let localList = sortChatList(this.state.list);
+
+											// resorting 
+											let localList = sortChatList([].concat.apply([], this.state.list));
 											this.setState({
 												timers: localTimers,
 												timersFunctions: localTimersFunctions,
 												list: localList
 											});
 										}, intervalByMiliSeconds);
-										// console.log(
-										// 	"------ SET ----- timers",
-										// 	localTimers,
-										// 	"timers func",
-										// 	localTimersFunctions
-										// );
+
+
 										this.setState({
 											timers: localTimers,
 											timersFunctions: localTimersFunctions
 										});
-
-										// console.log(
-										// 	"new timer set for next ",
-										// 	intervalByMiliSeconds,
-										// 	" Miliseconds"
-										// );
 									}
 								}
 							}
@@ -243,16 +219,6 @@ class Home extends Component {
 		}
 
 		console.log('timers from hooooooome', this.state.timers)
-
-		if(
-			!nextProps.chatListRefreshing &&
-			this.props.chatListRefreshing &&
-			this.state.firstChatRetrievalStage === 'in progress'
-		){
-			this.setState({
-				firstChatRetrievalStage: 'finished'
-			})
-		}
 	}
 
 	handleSubmit = () => {
@@ -314,21 +280,22 @@ class Home extends Component {
 
 	handleLoadMore = () => {
 		console.log("handleLoadMore", this.state.list.length);
-		if (this.state.list.length) {
-			let lastMessage = _.minBy(this.state.list, "identifier");
-			let lastIdentifier = lastMessage.identifier;
-			console.log("lastIdentifier", lastIdentifier);
-			// if (this.state.lastIdentifier != lastIdentifier) {
-			this.setState({ lastIdentifier: lastIdentifier }, () => {
-				console.log("call more page", lastIdentifier);
-				this.props.chatGetList({
-					id: this.props.id,
-					identifier: lastIdentifier,
-					refreshing: false
-				});
-			});
-			// }
-		}
+		// todo
+		// if (this.state.list.length) {
+		// 	let lastMessage = _.minBy(this.state.list, "identifier");
+		// 	let lastIdentifier = lastMessage.identifier;
+		// 	console.log("lastIdentifier", lastIdentifier);
+		// 	// if (this.state.lastIdentifier != lastIdentifier) {
+		// 	this.setState({ lastIdentifier: lastIdentifier }, () => {
+		// 		console.log("call more page", lastIdentifier);
+		// 		this.props.chatGetList({
+		// 			id: this.props.id,
+		// 			identifier: lastIdentifier,
+		// 			refreshing: false
+		// 		});
+		// 	});
+		// 	// }
+		// }
 	};
 	
 	componentWillUnmount() {
@@ -367,10 +334,12 @@ class Home extends Component {
 					{(list.length && (
 						<FlatList
 							data={list}
-							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+							// item is an array here
+							// keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+							keyExtractor={(item, index) => "msg_" + item[item.length - 1].id}
 							renderItem={
 								({ item }) => <ChatInfo
-									item={{ item }}
+									messageList={{ item }}
 									navigation={this.props.navigation}
 									visitMessage={this.props.visitMessage}
 									setHomeState={(state) => {

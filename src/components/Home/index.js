@@ -2,6 +2,7 @@ import Home from "./Home";
 import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { chatGetList, visitMessage, chatSetStore } from "../../store/chat";
+import { showToast } from "../../store/toast";
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
@@ -16,7 +17,8 @@ const mapDispatchToProps = dispatch => {
 		chatGetList: data => dispatch(chatGetList(data)),
 		visitMessage: data => dispatch(visitMessage(data)),
 		chatSetStore: data => dispatch(chatSetStore(data)),
-		visitMessage: data => dispatch(visitMessage(data))
+		visitMessage: data => dispatch(visitMessage(data)),
+		showToast: message => dispatch(showToast(true, message))
 	};
 };
 
