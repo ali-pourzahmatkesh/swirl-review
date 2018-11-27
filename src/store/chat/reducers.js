@@ -241,12 +241,10 @@ const chat = (state = initialState, action) => {
 					return item;
 				});
 			}
-			console.log("new list", list);
-			let localList = sortChatList(list);
 
 			return {
 				...state,
-				list: localList,
+				list,
 				loading: false,
 				resorted: true
 			};

@@ -1,34 +1,35 @@
 import {StyleSheet, Dimensions} from "react-native";
-const {height} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 import {CONFIG} from "../../../config";
 const colors = CONFIG.colors;
 const styles = StyleSheet.flatten({
     container: {
         position: "absolute",
-        // marginTop: "8%",
-        top:height === 812 ? 43 : 20,
-        height: 60,
-        width: "100%",
-        borderWidth: 2,
-        overflow:'hidden',
-        borderColor: colors.bodyColor,
-        backgroundColor: colors.appColor,
-        borderRadius: 15
-    },
-
-    toastBox:{
-        width:'100%',
-        height:'100%',
-        display: "flex",
+        top: height === 812 ? 43 : 20,
+		// height: height * 0.065,
+		height: 35 + (height * 0.02),
+        width: width * 0.90,
+        backgroundColor: colors.highlightColorTwo,
+		borderRadius: 15,
+		alignSelf: 'center',
         alignItems: "center",
-        justifyContent: "center",
-
-        backgroundColor:colors.combinatorialColor
+		justifyContent: "space-between",
+		flexDirection: 'row',
+		paddingLeft: width * 0.04,
+		paddingRight: width * 0.04,
+		
+        shadowOffset: {
+            height: 1.5
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 2
     },
     text: {
-        fontSize: 15,
+		fontSize: 16,
+		fontFamily: 'MuseoSansRounded-700',
         color: colors.bodyColor,
-        textAlign: "center"
+		textAlign: "center",
+		flex: 1,
     }
 });
 

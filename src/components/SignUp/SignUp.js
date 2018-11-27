@@ -43,7 +43,9 @@ export default class SignUp extends Component {
 	}
 
 	handleSubmit = () => {
-        const resetAction =  this.props.navigation.navigate('SignUpAddFriendScreen');
+		// const resetAction =  this.props.navigation.navigate('SignUpAddFriendScreen');
+		// todo: get rid of the resetAction stuff in this flow
+		const resetAction = {};
 		this.props.sendUser({
 			user: {
 				username: this.state.username,
@@ -66,6 +68,16 @@ export default class SignUp extends Component {
 			this.keyboardWillHide
 		);
 		console.log(getBottomSpace(), 'bottooooooooom')
+	}
+
+	componentWillReceiveProps(nextProps){
+		console.log('current props', this.props, 'next props', nextProps);
+		if(
+			Object.keys(this.props.userData).length === 0 &&
+			Object.keys(nextProps.userData).length !== 0
+		){
+			this.props.navigation.navigate('SignUpAddFriendScreen');
+		}
 	}
 
 	getEndHeight = () => {

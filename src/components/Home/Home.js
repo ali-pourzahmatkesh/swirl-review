@@ -33,8 +33,7 @@ class Home extends Component {
 			newMessageModalVisible: false,
 			list: [],
 			lastIdentifier: null,
-			timers: {},
-			timersFunctions: {},
+			timerFunctions: {},
 			isNewMessage: false,
 			resorted: false,
 			fullSpin: false
@@ -109,7 +108,6 @@ class Home extends Component {
 		setTimeout(() => {
 			this.props.chatGetList({
 				id: this.props.id,
-				// refreshing: true // load a new list of updated messages
 			});
 		}, 1);
 	}
@@ -119,26 +117,17 @@ class Home extends Component {
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
-			(this.state.list.length != nextProps.chatList.length ||
-				nextProps.resorted === true ||
-				this.state.refreshing === true ||
-				nextProps.isNewMessage === true)
+			this.state.list.length != nextProps.chatList.length
 		) {
-			// console.log("----------------------new refresh the list of chats");
 			if (
 				this.state.refreshing === true ||
-				nextProps.isNewMessage === true ||
-				nextProps.resorted === true
+				nextProps.isNewMessage === true
 			) {
-				// console.log("refreshing list ....", this.state.refreshing);
-				// console.log("check new message ....", nextProps.isNewMessage);
-
 				// remove all old timers
-				for (message in this.state.timers) {
-					// console.log("a message from timer cycle", message);
-					clearTimeout(this.state.timersFunctions[`${message.id}`]);
+				for (message in this.state.timerFunctions) {
+					clearTimeout(this.state.timerFunctions[`${message.id}`]);
 				}
-				this.setState({ timers: {}, timersFunctions: {} });
+				this.setState({ timers: {}, timerFunctions: {} });
 
 				// set the new timers
 				if (nextProps.chatList.length) {
@@ -147,6 +136,8 @@ class Home extends Component {
 					nextProps.chatList &&
 						nextProps.chatList.length &&
 						nextProps.chatList.map(message => {
+							// don't need to set a timer if it hasn't been seen
+							// or if there's no chat list to begin with
 							if (message.isSeen === false) {
 								let availableAtByMS = new Date(
 									message["availableAt"]
@@ -156,68 +147,32 @@ class Home extends Component {
 
 								let intervalByMiliSeconds = availableAtByMS - nowByMS;
 								if (intervalByMiliSeconds > 0) {
-									let localTimers = this.state.timers;
-									let localTimersFunctions = this.state.timersFunctions;
+									let localTimerFunctions = this.state.timerFunctions;
+									localTimerFunctions[`${message.id}`] = setTimeout(() => {
+										// once the interval is over, the message is ready
+										// we should show an in app notification here
+										this.props.showToast(`Open ${message.senderName}'s swirl now!`);
 
-									if (!localTimers[`${message.id}`]) {
-										// console.log(
-										// 	"*********************** create timer for message ",
-										// 	message.id
-										// );
+										// this needs to happen because we're not sure of the state
+										// at the time of the interval's end
+										let localTimerFunctions = this.state.timerFunctions;
 
-										localTimers[`${message.id}`] = message;
-										localTimersFunctions[`${message.id}`] = setTimeout(() => {
-											// console.log(
-											// 	"ready to remove interval for message ",
-											// 	message.id
-											// );
+										// clears timers and removes them from list
+										clearTimeout(localTimerFunctions[`${message.id}`]);
+										delete localTimerFunctions[`${message.id}`];
 
-											let localTimers = this.state.timers;
-											let localTimersFunctions = this.state.timersFunctions;
-
-											// update the message client side for correct design
-											// let localList = this.state.list.filter(message => {
-											// 	return message.id != message.id;
-											// });
-											// console.log("remove item from list", localList);
-											// localList.unshift(message);
-											// console.log("add to top of list", localList);
-
-											clearTimeout(localTimersFunctions[`${message.id}`]);
-											delete localTimers[`${message.id}`];
-											delete localTimersFunctions[`${message.id}`];
-											// console.log(
-											// 	"------ SET REMOVE ----- timers",
-											// 	localTimers,
-											// 	"timers func",
-											// 	localTimersFunctions
-											// );
-											//
-											// console.log("list", this.state.list);
-											let localList = sortChatList(this.state.list);
-											this.setState({
-												timers: localTimers,
-												timersFunctions: localTimersFunctions,
-												list: localList
-											});
-										}, intervalByMiliSeconds);
-										// console.log(
-										// 	"------ SET ----- timers",
-										// 	localTimers,
-										// 	"timers func",
-										// 	localTimersFunctions
-										// );
+										// resorting 
+										let localList = sortChatList([].concat.apply([], this.state.list));
 										this.setState({
-											timers: localTimers,
-											timersFunctions: localTimersFunctions
+											timerFunctions: localTimerFunctions,
+											list: localList
 										});
+									}, intervalByMiliSeconds);
 
-										// console.log(
-										// 	"new timer set for next ",
-										// 	intervalByMiliSeconds,
-										// 	" Miliseconds"
-										// );
-									}
+
+									this.setState({
+										timerFunctions: localTimerFunctions
+									});
 								}
 							}
 						});
@@ -226,7 +181,7 @@ class Home extends Component {
 				let orderedChatList = sortChatList(nextProps.chatList);
 				this.setState({ list: orderedChatList });
 
-				// trn off isNewMessage flag
+				// turn off isNewMessage flag
 				this.props.chatSetStore({
 					isNewMessage: false,
 					resorted: false
@@ -240,18 +195,6 @@ class Home extends Component {
 
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
 			this.setState({ refreshing: nextProps.chatListRefreshing });
-		}
-
-		console.log('timers from hooooooome', this.state.timers)
-
-		if(
-			!nextProps.chatListRefreshing &&
-			this.props.chatListRefreshing &&
-			this.state.firstChatRetrievalStage === 'in progress'
-		){
-			this.setState({
-				firstChatRetrievalStage: 'finished'
-			})
 		}
 	}
 
@@ -314,21 +257,22 @@ class Home extends Component {
 
 	handleLoadMore = () => {
 		console.log("handleLoadMore", this.state.list.length);
-		if (this.state.list.length) {
-			let lastMessage = _.minBy(this.state.list, "identifier");
-			let lastIdentifier = lastMessage.identifier;
-			console.log("lastIdentifier", lastIdentifier);
-			// if (this.state.lastIdentifier != lastIdentifier) {
-			this.setState({ lastIdentifier: lastIdentifier }, () => {
-				console.log("call more page", lastIdentifier);
-				this.props.chatGetList({
-					id: this.props.id,
-					identifier: lastIdentifier,
-					refreshing: false
-				});
-			});
-			// }
-		}
+		// todo
+		// if (this.state.list.length) {
+		// 	let lastMessage = _.minBy(this.state.list, "identifier");
+		// 	let lastIdentifier = lastMessage.identifier;
+		// 	console.log("lastIdentifier", lastIdentifier);
+		// 	// if (this.state.lastIdentifier != lastIdentifier) {
+		// 	this.setState({ lastIdentifier: lastIdentifier }, () => {
+		// 		console.log("call more page", lastIdentifier);
+		// 		this.props.chatGetList({
+		// 			id: this.props.id,
+		// 			identifier: lastIdentifier,
+		// 			refreshing: false
+		// 		});
+		// 	});
+		// 	// }
+		// }
 	};
 	
 	componentWillUnmount() {
@@ -367,10 +311,12 @@ class Home extends Component {
 					{(list.length && (
 						<FlatList
 							data={list}
-							keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+							// item is an array here
+							// keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+							keyExtractor={(item, index) => "msg_" + item[item.length - 1].id}
 							renderItem={
 								({ item }) => <ChatInfo
-									item={{ item }}
+									messageList={{ item }}
 									navigation={this.props.navigation}
 									visitMessage={this.props.visitMessage}
 									setHomeState={(state) => {

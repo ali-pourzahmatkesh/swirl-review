@@ -7,6 +7,7 @@ import {
 	// callGetStatus,
 	chatReceiveNewMessage
 } from "../../store/chat";
+import { showToast } from "../../store/toast";
 // import { socketVisitCount } from "../../store/profile";
 // import { updatePersonNearMe, addNotificationToStack } from "../../store/home";
 // import { chatReceiveNewMessage } from "../../store/Discussion";
@@ -29,12 +30,13 @@ const mapDispatchToProps = dispatch => ({
 	// hasFriendShipRequest: () => dispatch(hasFriendShipRequest()),
 	// socketVisitCount: data => dispatch(socketVisitCount(data)),
 	// updatePersonNearMe: data => dispatch(updatePersonNearMe(data)),
-	chatReceiveNewMessage: data => dispatch(chatReceiveNewMessage(data))
+	chatReceiveNewMessage: data => dispatch(chatReceiveNewMessage(data)),
 	// getListData: (data, tab) => dispatch(getListData(data, tab)),
 	// callGetStatus: userId => dispatch(callGetStatus(userId)),
 	// getListOfFriendRequests: data => dispatch(getListOfFriendRequests(data)),
 	// getFriendshipStatus: data => dispatch(getFriendshipStatus(data)),
 	// addNotificationToStack: data => dispatch(addNotificationToStack(data))
+	showToast: message => dispatch(showToast(true, message))
 });
 
 export default connect(
