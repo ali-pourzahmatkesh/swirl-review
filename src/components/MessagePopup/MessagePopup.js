@@ -629,14 +629,14 @@ export default class MessagePopup extends Component {
 						selectedMinutes={selectedMinutes}
 						onChange={
 							(hours, minutes) =>
-								// this.setState({
-								// 	selectedHours: hours,
-								// 	selectedMinutes: minutes
-								// })
-							this.setState({
-								selectedHours: 0,
-								selectedMinutes: .2
-							})
+								this.setState({
+									selectedHours: hours,
+									selectedMinutes: minutes
+								})
+							// this.setState({
+							// 	selectedHours: 0,
+							// 	selectedMinutes: .2
+							// })
 						}
 					/>
 				</View>
