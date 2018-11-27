@@ -697,14 +697,6 @@ export default class MessagePopup extends Component {
 				style={styles.container}
 				source={tabSelected != "image" ? background : ""}
 			>
-				{/* <Image
-					source={background}
-					style={{
-						height,
-						width,
-						position: 'absolute'
-					}}
-				/> */}
 				{contentLoader}
 			</ImageBackground>
 		);
