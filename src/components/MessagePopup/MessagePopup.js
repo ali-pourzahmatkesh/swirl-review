@@ -217,14 +217,14 @@ export default class MessagePopup extends Component {
 		return (
 			<Animated.View style={[styles.messageBox, { height: this.bodyHeight }]}>
 				<View style={styles.messageBoxHeader}>
-					<TouchableOpacity onPress={this.props.closeMessageModal}>
+					<TouchableOpacity
+						onPress={this.props.closeMessageModal}
+						style={styles.closeButton}
+					>
 						<Image style={styles.closeIcon} source={close} />
 					</TouchableOpacity>
 
-					<TouchableOpacity
-						onPress={() => this.myTextInput.focus()}
-						style={styles.subjectBox}
-					>
+					<View style={styles.subjectBox}>
 						<MaterialCommunityIcons
 							size={27}
 							style={{ marginTop: 3 }}
@@ -232,8 +232,11 @@ export default class MessagePopup extends Component {
 							name="playlist-edit"
 						/>
 						<Text style={styles.headerSubject}>Type here…</Text>
-					</TouchableOpacity>
-					<View />
+					</View>
+
+					<View
+						style={{borderWidth: 0, width: 50, marginRight: -20}}
+					/>
 				</View>
 				<View style={styles.textInputBox}>
 					<TextInput
@@ -307,7 +310,10 @@ export default class MessagePopup extends Component {
 	};
 
 	takePicture() {
-		const options = {};
+		const options = {
+			mirrorImage: this.state.cameraType === Camera.constants.Type.front,
+			mirrorVideo: this.state.cameraType === Camera.constants.Type.front
+		};
 		this.camera
 			.capture({ metadata: options })
 			.then(data => {
@@ -421,8 +427,14 @@ export default class MessagePopup extends Component {
 					zoom={cameraZoom /* between 0 to 1 */}
 				>
 					<View style={styles.messageBoxHeader}>
-						<TouchableOpacity onPress={this.props.closeMessageModal}>
-							<Image style={styles.closeIcon} source={closeWhite} />
+						<TouchableOpacity
+							onPress={this.props.closeMessageModal}
+							style={styles.closeButton}
+						>
+							<Image
+								style={styles.closeIcon}
+								source={closeWhite}
+							/>
 						</TouchableOpacity>
 						<View />
 						{/* <View /> */}
@@ -485,6 +497,7 @@ export default class MessagePopup extends Component {
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity
 						onPress={() => this.setState({ tabSelected: "camera" })}
+						style={styles.closeButton}
 					>
 						<Image style={styles.closeIcon} source={closeWhite} />
 					</TouchableOpacity>
@@ -523,16 +536,17 @@ export default class MessagePopup extends Component {
 
 		return (
 			<View style={styles.containerOtherPage}>
-				<View style={[appCss.header, { width, borderWidth: 0 }]}>
+				<View style={[appCss.header, { width, paddingLeft: 0, borderWidth: 0 }]}>
 					<View style={{ borderWidth: 0, flex: 1 }}>
 						<TouchableOpacity
 							onPress={() => this.setState({ tabSelected: "timePicker" })}
 							style={[
 								appCss.otherHeaderIconBox,
-								{ height: 33, width: 33, borderWidth: 0 }
+								styles.backButton
 							]}
 						>
 							<Ionicons
+								style={{textAlign: 'center'}}
 								size={30}
 								color={colors.bodyColor}
 								name="ios-arrow-back"
@@ -588,7 +602,7 @@ export default class MessagePopup extends Component {
 		const { selectedHours, selectedMinutes, messageType } = this.state;
 		return (
 			<View style={styles.containerOtherPage}>
-				<View style={[appCss.header, { width }]}>
+				<View style={[appCss.header, { width, paddingLeft: 0 }]}>
 					<TouchableOpacity
 						onPress={() => {
 							let tabSelected = "";
@@ -602,9 +616,10 @@ export default class MessagePopup extends Component {
 								tabSelected
 							});
 						}}
-						style={[appCss.otherHeaderIconBox, { height: 33, width: 33 }]}
+						style={[appCss.otherHeaderIconBox, styles.backButton]}
 					>
 						<Ionicons
+							style={{textAlign: 'center'}}
 							size={30}
 							color={colors.bodyColor}
 							name="ios-arrow-back"
@@ -691,20 +706,11 @@ export default class MessagePopup extends Component {
 				break;
 		}
 
-		// if we are in Text mode we active background image and if not we set the background source param with null
 		return (
 			<ImageBackground
 				style={styles.container}
-				source={tabSelected != "image" ? background : ""}
+				source={background}
 			>
-				{/* <Image
-					source={background}
-					style={{
-						height,
-						width,
-						position: 'absolute'
-					}}
-				/> */}
 				{contentLoader}
 			</ImageBackground>
 		);

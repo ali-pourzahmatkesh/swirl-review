@@ -9,7 +9,7 @@ import {
 import styles from "./style";
 import close from "../../assets/images/icons/close_red.png";
 import { CONFIG } from "../../../config";
-import background from "../../assets/images/logo1.png";
+import background from "../../assets/images/swirlBackground.png";
 const colors = CONFIG.colors;
 export default class MessageDetail extends Component {
 	loadContent = () => {
@@ -48,7 +48,7 @@ export default class MessageDetail extends Component {
 
 	loadTextContent = data => {
 		return (
-			<View style={styles.container}>
+			<ImageBackground style={styles.container} source={background}>
 				<View style={styles.messageBox}>
 					<View style={styles.messageBoxHeader}>
 						<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
@@ -59,7 +59,7 @@ export default class MessageDetail extends Component {
 						<Text style={styles.messageText}>{data.textContent}</Text>
 					</View>
 				</View>
-			</View>
+			</ImageBackground>
 		);
 	};
 

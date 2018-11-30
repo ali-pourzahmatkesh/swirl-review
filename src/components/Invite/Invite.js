@@ -36,14 +36,14 @@ export default class Invite extends Component {
         const {searchText} = this.state;
         return (
             <View style={styles.container}>
-                <View style={appCss.header}>
+                <View style={[appCss.header, {paddingLeft: 0, paddingRight: 0, borderWidth: 0}]}>
                     <View style={styles.headerAction}>
                         <TouchableOpacity
-                            style={appCss.headerIconBox}
+                            style={[appCss.headerIconBox, styles.backButton]}
                             onPress={() => this.props.navigation.goBack()}
                         >
                             <Ionicons
-                                style={styles.backButton}
+                                style={{textAlign: 'center'}}
                                 size={30}
                                 color={COLORS.bodyColor}
                                 name="ios-arrow-back"

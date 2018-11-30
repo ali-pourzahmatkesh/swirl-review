@@ -6,7 +6,8 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
-	Modal
+	Modal,
+	ScrollView
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 import Avatar from "../Avatar";
@@ -82,7 +83,7 @@ export default class Profile extends Component {
 				<View style={styles.optionIconContainer}>
 					<Image
 						source={item.icon}
-						style={styles.optionIcon}
+						style={[styles.optionIcon, {borderWidth: 0}, item.name === 'Logout' && {marginRight: width * -0.025}]}
 						resizeMode="contain"
 					/>
 				</View>
@@ -273,73 +274,80 @@ export default class Profile extends Component {
 
 		return (
 			<View style={styles.container}>
-				<View style={[appCss.header, { borderWidth: 0, position: 'absolute', zIndex: 2 }]}>
+				<View style={[appCss.header, { borderWidth: 0, position: 'absolute', zIndex: 2, paddingLeft: 0 }]}>
 					<TouchableOpacity
-						style={appCss.headerIconBox}
+						style={styles.backButton}
 						onPress={() => this.props.navigation.goBack()}
 					>
 						<Ionicons
+							style={{textAlign: 'center'}}
 							size={30}
 							color={COLORS.bodyColor}
 							name="ios-arrow-back"
 						/>
 					</TouchableOpacity>
 				</View>
-				<View style={[styles.imageContainer, {borderWidth: 0, paddingTop: 0}]}>
-					<View style={{flex: 1, borderWidth: 0}}/>
-					<View
-						style={{
-							borderWidth: 0,
-							height: height * 0.15,
-							alignSelf: "center",
-							position: "relative"
-						}}
-					>
-						{(this.state.avatarSource && (
-							<Avatar
-								userId={this.state.avatarSource}
-								imageType="data"
-								size={height * 0.15}
-								position="profile"
-							/>
-						)) || (
-							<Avatar
-								userId={this.props.id}
-								size={height * 0.15}
-								position="profile"
-							/>
-						)}
-
-						<TouchableOpacity
-							onPress={() => this.uploadImage()}
-							style={styles.editButton}
+				<ScrollView
+					overScrollMode='never' // works on android
+					bounces={false} // works on ios
+				>
+					<View style={[styles.imageContainer, {borderWidth: 0, paddingTop: 0}]}>
+						<View style={{flex: 1, borderWidth: 0}}/>
+						<View
+							style={{
+								borderWidth: 0,
+								height: height * 0.15,
+								alignSelf: "center",
+								position: "relative"
+							}}
 						>
-							<Image
-								style={styles.editIcon}
-								resizeMode={"contain"}
-								source={editIcon}
-							/>
-						</TouchableOpacity>
+							{(this.state.avatarSource && (
+								<Avatar
+									userId={this.state.avatarSource}
+									imageType="data"
+									size={height * 0.15}
+									position="profile"
+								/>
+							)) || (
+								<Avatar
+									userId={this.props.id}
+									size={height * 0.15}
+									position="profile"
+								/>
+							)}
+
+							<TouchableOpacity
+								onPress={() => this.uploadImage()}
+								style={styles.editButton}
+							>
+								<Image
+									style={styles.editIcon}
+									resizeMode={"contain"}
+									source={editIcon}
+								/>
+							</TouchableOpacity>
+						</View>
+						<View style={{borderWidth: 0, justifyContent: 'center', flex: 1}}>
+							<Text style={styles.nameText}>{userProfile.username}</Text>
+						</View>
 					</View>
-					<View style={{borderWidth: 0, justifyContent: 'center', flex: 1}}>
-						<Text style={styles.nameText}>{userProfile.username}</Text>
-					</View>
-				</View>
-				<SectionList
-					renderItem={this.renderOption}
-					renderSectionHeader={this.renderOptionTitle}
-					keyExtractor={(item, index) => item + index}
-					sections={options}
-					style={{
-						height: '100%',
-						paddingLeft: '5%',
-						paddingRight: '5%',
-					}}
-					contentContainerStyle={{
-						alignItems: 'center'
-					}}
-					stickySectionHeadersEnabled={false}
-				/>
+					<SectionList
+						renderItem={this.renderOption}
+						renderSectionHeader={this.renderOptionTitle}
+						keyExtractor={(item, index) => item + index}
+						sections={options}
+						style={{
+							height: '100%',
+							paddingLeft: '5%',
+							paddingRight: '5%',
+						}}
+						contentContainerStyle={{
+							alignItems: 'center'
+						}}
+						stickySectionHeadersEnabled={false}
+						scrollEnabled={false}
+					/>
+				</ScrollView>
 			</View>
 		);
 	}

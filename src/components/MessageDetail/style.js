@@ -10,11 +10,11 @@ const styles = StyleSheet.flatten({
         justifyContent:'center'
     },
     messageBox:{
-        width: width-30,
-        height:height-100,
-        backgroundColor:colors.bodyColor,
-
-        borderRadius:20,
+        width: width * 0.85,
+		height: height * 0.90,
+        backgroundColor: colors.bodyColor,
+		marginTop: height * 0.02,
+        borderRadius: 20,
     },
     messageBoxHeader:{
         flexDirection:'row',

@@ -23,10 +23,25 @@ const styles = StyleSheet.flatten({
 		justifyContent: "space-between",
 		height: 44,
 		width: '100%',
-		borderColor: 'white',
+		// borderColor: 'white',
 		borderWidth: 0,
 		paddingLeft: '6%',
 		paddingRight: '6%',
+		borderWidth: 0
+	},
+	backButton: {
+        height: height * 0.05,
+        width: width * 0.12,
+        justifyContent: 'center',
+        borderWidth: 0
+    },
+	closeButton: {
+		height: 30,
+		width: 50,
+		marginLeft: -20,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderWidth: 0,
 	},
 	closeIcon: {
 		width: 15,
@@ -79,14 +94,15 @@ const styles = StyleSheet.flatten({
 		borderWidth: 0
 	},
 	actionBox: {
-		width: 40,
-		height: 30,
-		margin: 5
+		width: 50,
+		height: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderWidth: 0
 	},
 	actionBoxIcon: {
-		width: undefined,
-		height: undefined,
-		flex: 1
+		height: 30,
+		width: 50,
 	},
 
 	nextButton: {
@@ -143,7 +159,6 @@ const styles = StyleSheet.flatten({
 		flex: 1,
 		width: null,
 		height: null,
-		resizeMode: "contain",
 		padding: "auto",
 		margin: "auto"
 	},

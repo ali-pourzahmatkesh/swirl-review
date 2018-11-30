@@ -155,8 +155,7 @@ const chat = (state = initialState, action) => {
 					isLoadingFetch: true,
 					errorMessage: "",
 					hasError: false,
-					refreshing: action.payload.refreshing || false
-					// loading: action.payload.loading
+					refreshing: true
 				},
 				Cmd.run(serverChatGetList, {
 					successActionCreator: serverChatGetListSuccess,
@@ -167,7 +166,6 @@ const chat = (state = initialState, action) => {
 		}
 
 		case GET_LIST_SUCCESS: {
-			// sortChatList([]);
 			let list = state.list;
 			if (action.payload.refreshing) {
 				list = [];
@@ -187,7 +185,7 @@ const chat = (state = initialState, action) => {
 				...state,
 				isLoadingFetch: false,
 				list: updateList,
-				refreshing: action.payload.refreshing || false
+				refreshing: false
 			};
 		}
 
@@ -195,7 +193,7 @@ const chat = (state = initialState, action) => {
 			console.log("RELOAD_CHAT_LIST");
 			return {
 				...state,
-				list: [...state.list]
+				list: [...state.list],
 			};
 		}
 

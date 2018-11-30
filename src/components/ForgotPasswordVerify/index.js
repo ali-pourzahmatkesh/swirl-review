@@ -2,7 +2,7 @@ import ForgotPasswordVerify from "./ForgotPasswordVerify";
 import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { showToast } from "../../store/toast";
-import { updateCodeGetUser } from "../../store/member";
+import { updateCodeGetUser, sendUser } from "../../store/member";
 
 const mapStateToProps = state => ({
 	isLoadingFetch: state.app.member.isLoadingFetch,
@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	updateCodeGetUser: data => dispatch(updateCodeGetUser(data))
+	updateCodeGetUser: data => dispatch(updateCodeGetUser(data)),
+	sendUser: data => dispatch(sendUser(data)),
 });
 
 export default withNavigation(

@@ -20,6 +20,7 @@ export default class ProfileOptionHeader extends Component{
                 <View style={{flex: 1}}>
                     <TouchableOpacity style={styles.backButton} onPress={() => nav.goBack()}>
                         <Ionicons
+                            style={{textAlign: 'center'}}
                             size={30}
                             color='white'
                             name="ios-arrow-back"

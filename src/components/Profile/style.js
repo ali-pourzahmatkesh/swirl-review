@@ -9,6 +9,12 @@ const STYLES = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.tapeWhite
     },
+    backButton: {
+        height: height * 0.05,
+        width: width * 0.12,
+        justifyContent: 'center',
+        borderWidth: 0
+    },
     sectionHeaderText: {
         fontFamily: 'MuseoSansRounded-700',
         fontSize: 15,
@@ -71,11 +77,11 @@ const STYLES = StyleSheet.create({
         height: height * 0.3,
         justifyContent: 'center',
         backgroundColor: COLORS.appColor,
-        shadowOffset: {
-            height: 1
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
+        // shadowOffset: {
+        //     height: 1
+        // },
+        // shadowOpacity: 0.3,
+        // shadowRadius: 3,
     },
     editButton: {
         height: 26,

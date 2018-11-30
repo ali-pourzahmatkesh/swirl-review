@@ -18,6 +18,8 @@ import passwordIcon from "../../assets/images/icons/password3.png";
 import styles from "./style";
 import { CONFIG } from "../../../config";
 
+import { post } from "../../store/appService";
+
 const colors = CONFIG.colors;
 const { width, height } = Dimensions.get("window");
 
@@ -46,15 +48,33 @@ export default class SignUp extends Component {
 		// const resetAction =  this.props.navigation.navigate('SignUpAddFriendScreen');
 		// todo: get rid of the resetAction stuff in this flow
 		const resetAction = {};
-		this.props.sendUser({
-			user: {
-				username: this.state.username,
-				cellphone: this.state.cellphone,
-				cellphoneCountryCode: this.state.cellphoneCountryCode,
-				password: this.state.password
-			},
-			navigation: this.props.navigation,
-			resetAction: resetAction
+		const verifyCode = Math.floor(Math.random() * 9000) + 1000;
+		const verifyCodeExpireAt = new Date(
+			new Date().setMinutes(new Date().getMinutes() + 2)
+		);
+		post('/api/v1/member/action/send-verify-code', {
+			cellphone: this.state.cellphone,
+			cellphoneCountryCode: this.state.cellphoneCountryCode,
+			verifyCode
+		}).then(resp => {
+			console.log('resp from verify code', resp);
+			this.props.navigation.navigate('ForgotPasswordVerifyScreen', {
+				sendUserProps: {
+					user: {
+						username: this.state.username,
+						cellphone: this.state.cellphone,
+						cellphoneCountryCode: this.state.cellphoneCountryCode,
+						password: this.state.password
+					},
+					navigation: this.props.navigation,
+					resetAction: resetAction
+				},
+				verifyCode,
+				verifyCodeExpireAt
+			})
+		})
+		.catch(err => {
+			console.log('err from verify code', err);
 		});
 	};
 
@@ -168,7 +188,7 @@ export default class SignUp extends Component {
 			reEnterPassword !== password ||
 			isLoadingFetch ||
 			cellphoneCountryCode.length === 0 ||
-			cellphone.length !== 10
+			cellphone.length === 0
 		) {
 			signUpDisabled = true;
 		}
