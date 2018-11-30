@@ -26,7 +26,6 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// console.log("IN componentWillReceiveProps", nextProps);
 		if(nextProps.id && !this.props.id){
 			this.getPhoneNumbersFromContactList();
 		}
@@ -65,17 +64,8 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentDidMount() {
-		// console.log('mounting ************************************************')
 		if(this.props.id){
 			this.getPhoneNumbersFromContactList();
-			// console.log('from the tab paaaaaaaaaaaaaaaage')
-			this.setState({
-				list: this.props.membersFromContactsAreNotFriend,
-				finalList: this.generateSectionList(
-					this.props.membersFromContactsAreNotFriend,
-					"username"
-				)
-			});
 		}
 	}
 
@@ -87,7 +77,6 @@ export default class InviteFromContacts extends Component {
 			pg.getContactsCount().then(count => {
 				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
 					contacts => {
-						// console.log('contacts: ', contacts)
 						this.setState({ contacts });
 						if (contacts.length > 0) {
 							this.getAllPhoneNumbers(contacts);
@@ -101,13 +90,13 @@ export default class InviteFromContacts extends Component {
 	getAllPhoneNumbers = contacts => {
 		let numberList = [];
 		contacts.forEach(item => {
-			item["phoneNumbers"].forEach(itemNumber => {
+			// some contact entries are empty/don't have numbers
+			item["phoneNumbers"] && item["phoneNumbers"].forEach(itemNumber => {
 				//if (itemNumber.label === "mobile") {
 				numberList.push(itemNumber["value"]);
 				//}
 			});
 		});
-		// console.log("getAllPhoneNumbers", numberList, this.props);
 		this.props.getMembersAreInMyContactsThatNotFriend({
 			memberOwner: this.props.id,
 			numberList: numberList
@@ -125,7 +114,6 @@ export default class InviteFromContacts extends Component {
 	}
 
 	filterContact = (contacts, search) => {
-		// console.log("invite from filterContact", contacts);
 		if (search && contacts.length > 0) {
 			contacts = contacts.filter(
 				item => item["username"].toLowerCase().search(search.toLowerCase()) > -1
@@ -198,13 +186,14 @@ export default class InviteFromContacts extends Component {
 
 		} = this.props;
 
-		// console.log(this.props, 'alsjdf;akjsf;lkajs;dflja;dsfj;adj;akljdf;kajds')
 		return (
 			<SafeAreaView style={styles.container}>
 				<SectionList
 					sections={this.state.finalList}
 					extraData={this.state.finalList}
-					keyExtractor={(item, index) => index}
+					keyExtractor={(item, index) => {
+						return index + item.id;
+					}}
 					// ListEmptyComponent={() =>this.emptyList() }
 					// this keeps the function form being invoked on each render/onChange of the search bar
 					// which keeps us from having to reload the empty list icon and faq icon

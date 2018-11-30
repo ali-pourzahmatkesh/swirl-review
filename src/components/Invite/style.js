@@ -23,7 +23,14 @@ const STYLES = StyleSheet.create({
     },
 
     headerAction: {
-        flex: 1
+        flex: 1,
+        borderWidth: 0
+    },
+    backButton: {
+        height: height * 0.05,
+        width: width * 0.12,
+        justifyContent: 'center',
+        borderWidth: 0
     },
     search: {
         flex: 5,

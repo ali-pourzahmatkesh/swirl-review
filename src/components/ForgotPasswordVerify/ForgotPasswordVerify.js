@@ -27,8 +27,13 @@ export default class ForgotPasswordVerify extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		if(this.props.isLoadingFetch !== nextProps.isLoadingFetch && nextProps.hasError){
-			this.refs.vcode.clear()
+		if(
+			!this.props.navigation.getParam('sendUserProps') &&
+			this.props.isLoadingFetch !== nextProps.isLoadingFetch &&
+			nextProps.hasError
+		)
+		{
+			this.refs.vcode.clear();
 		}
 	}
 
@@ -51,13 +56,36 @@ export default class ForgotPasswordVerify extends Component {
 	}
 
 	handleSubmit = () => {
-		this.props.updateCodeGetUser({
-			cellphoneCountryCode: this.props.navigation.state.params
-				.cellphoneCountryCode,
-			cellphone: this.props.navigation.state.params.cellphone,
-			navigation: this.props.navigation,
-			verifyCode: parseInt(this.state.code)
-		});
+		let {
+			navigation,
+			sendUser
+		} = this.props;
+		let {
+			code
+		} = this.state;
+		code = parseInt(code);
+		if(navigation.getParam('sendUserProps')){
+			if(
+				code === navigation.getParam('verifyCode') &&
+				new Date() < navigation.getParam('verifyCodeExpireAt')
+			){
+				sendUser(navigation.getParam('sendUserProps'));
+			}
+			else{
+				setTimeout(()=>{
+					this.refs.vcode.clear();
+				}, 0);
+			}
+		}
+		else{
+			this.props.updateCodeGetUser({
+				cellphoneCountryCode: this.props.navigation.state.params
+					.cellphoneCountryCode,
+				cellphone: this.props.navigation.state.params.cellphone,
+				navigation: this.props.navigation,
+				verifyCode: code
+			});
+		}
 	};
 
 	componentWillMount(){

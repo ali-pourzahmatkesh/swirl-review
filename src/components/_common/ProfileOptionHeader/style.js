@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingLeft: 16,
+        // paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: height === 812 ? 10 : 6,
         height: 44 + (height === 812 ? 43 + 10 : 20 + 6),
@@ -17,9 +17,10 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.appColor,
     },
     backButton: {
-        height: 30,
-        width: 30,
-        alignItems: 'center',
+        height: height * 0.05,
+        width: width * 0.12,
+        justifyContent: 'center',
+        borderWidth: 0
     },
     titleText: {
         fontFamily: 'MuseoSansRounded-900',

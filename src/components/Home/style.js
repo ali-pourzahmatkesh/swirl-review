@@ -5,6 +5,7 @@ import appCss from "../../../app.css";
 const colors = CONFIG.colors;
 const  {height, width} = Dimensions.get('window');
 const BOX_HEIGT = 30 + (height * 0.06);
+// larger for larger screens
 const BUTTON_HEIGHT = ((height - 545 - (height === 812 ? 100 : 0)) * 0.1) + 46;
 const STYLES = StyleSheet.create({
     container: {
@@ -12,10 +13,11 @@ const STYLES = StyleSheet.create({
         backgroundColor: colors.appColor
     },
     headerIconBox: {
-        height: 40,
-        width: 40,
+        height: 47,
+        width: 47,
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth: 0
     },
     headerIcon: {
         height: 32,
@@ -111,16 +113,12 @@ const STYLES = StyleSheet.create({
 
 
     homeBottomBox: {
-        display: 'flex',
         position: 'absolute',
-        width:50,
+        width,
         bottom: 0,
-        left: width/2-25,
-        right: 0,
         margin: 'auto',
-        flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         backgroundColor: 'transparent',
         marginBottom: height === 812 ? 34 : 20,
         shadowOffset: {
@@ -128,6 +126,16 @@ const STYLES = StyleSheet.create({
         },
         shadowOpacity: 0.6,
         shadowRadius: 2.5,
+        borderWidth: 0
+    },
+
+    iconBottomButton: {
+        borderWidth: 0,
+        height: BUTTON_HEIGHT + 25,
+        width: BUTTON_HEIGHT + 25,
+        borderRadius: (BUTTON_HEIGHT + 25) * 0.5,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     iconBottomBox: {

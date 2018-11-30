@@ -44,23 +44,8 @@ export default class CountryCodeModal extends Component {
         }
 	}
 
-	componentWillMount(){
-		console.log('asjfakls;js;djfa;lskdjf;alksjdf;lkajs setf;lkfja;skdfaksdfj a;ksld fj;als')
-		// this.props.getIpData();
-		// this.props.getCountries();
-	}
-
 	componentDidMount() {
-		console.log('asljdfl;asjd;fkajsd;kfjas;dkfja;sdf;asdf;aksjd;fkajd;fkajs;dfkj;')
 		this.props.getIpData();
-		// this.props.getCountries();
-	}
-	componentWillUnmount(){
-		// this.props.focus();
-		// console.log('unmounting ************************************************************************************************************************')
-	}
-	componentWillMount(){
-		// console.log('mounting ************************************************************************************************************************')
 	}
 	
 	componentWillReceiveProps(nextProps) {
@@ -81,13 +66,11 @@ export default class CountryCodeModal extends Component {
 					countryCodeGroup
 				});
 			}
-			console.log('default country code', nextProps.defaultCountryCode)
 			let cellphoneCountryCode = nextProps.defaultCountryCode || this.state.cellphoneCountryCode;
 			// let cellphoneCountryCode = this.state.cellphoneCountryCode;
 			if (nextProps.ipData["calling_code"] && cellphoneCountryCode.length === 0) {
 				cellphoneCountryCode = nextProps.ipData["calling_code"];
 			}
-			console.log('default flaalgalsjl;ajfklnas;fna;ds', nextProps.defaultFlag)
 			this.setState({
 				cellphoneCountryCode,
 				flagCountry: nextProps.ipData["flag"] || [],
@@ -101,7 +84,7 @@ export default class CountryCodeModal extends Component {
 	generateSectionList = array => {
 		let list = { letters: [] };
 		array.forEach(item => {
-			let itLetter = item["alpha2Code"].substring(0, 1).toUpperCase();
+			let itLetter = item.name.substring(0, 1).toUpperCase();
 			if (!(itLetter in list)) {
 				list[itLetter] = [];
 				list.letters.push(itLetter);

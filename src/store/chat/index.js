@@ -105,7 +105,7 @@ export const serverChatGetList = data => {
 				// resolve(resp.data);
 				resolve({
 					data: resp.data,
-					refreshing: data.refreshing || false
+					// refreshing: data.refreshing || false
 				});
 			})
 			.catch(err => {

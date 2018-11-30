@@ -22,6 +22,8 @@ import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
 import sortChatList from "../../util/sortChatList";
 
+import openingGif from "../../assets/anim/opening5.gif";
+
 const { height, width } = Dimensions.get('window');
 const _ = require("lodash");
 
@@ -93,7 +95,6 @@ class Home extends Component {
 	}
 
 	startFullSpin = () => {
-		console.log('running animation', this.rotate._value)
 		Animated.timing(this.rotate, {
 			toValue: this.rotate._value - 75,
 			duration: 100,
@@ -222,7 +223,7 @@ class Home extends Component {
 						source={addFriend}
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity style={appCss.headerLogoBox}>
+				<View style={appCss.headerLogoBox}>
 					<Animated.Image
 						style={[appCss.headerIcon, {
 							transform: [
@@ -233,7 +234,7 @@ class Home extends Component {
 						resizeMode={"contain"}
 						source={logo}
 					/>
-				</TouchableOpacity>
+				</View>
 				<TouchableOpacity
 					style={styles.headerIconBox}
 					onPress={this.handleSubmit}
@@ -276,7 +277,9 @@ class Home extends Component {
 	};
 	
 	componentWillUnmount() {
-		this.scrollY.removeAllListeners()
+		this.scrollY.removeAllListeners();
+		this.translateY.removeAllListeners();
+		this.rotate.removeAllListeners();
 	}
 
 	render() {
@@ -290,6 +293,8 @@ class Home extends Component {
 				}
 			},
 		]);
+		let gifHeight = height * 1.0;
+		let gifWidth = width * 1.0;
 		
 		return (
 			<View style={styles.container}>
@@ -307,6 +312,20 @@ class Home extends Component {
 					/>
 				</Modal>
 				{this.loadHeader()}
+				{/* <Image
+					source={openingGif}
+					// source={chatOpening}
+					style={{
+						height: gifHeight,
+						width: gifWidth,
+						// borderWidth: 10,
+						position: 'absolute',
+						zIndex: 2,
+						margin: 'auto',
+						top: ((gifHeight * 0.5) - (height * 0.5)) * -1,
+						left: ((gifWidth * 0.5) - (width * 0.5)) * -1,
+					}}
+				/> */}
 				<View style={styles.chatList}>
 					{(list.length && (
 						<FlatList
@@ -357,6 +376,7 @@ class Home extends Component {
 				<View style={styles.homeBottomBox}>
 					<TouchableOpacity
 						onPress={() => this.setState({ newMessageModalVisible: true })}
+						style={styles.iconBottomButton}
 					>
 						<View style={styles.iconBottomBox}>
 							<Image style={styles.iconBottom} source={addMessage} />
