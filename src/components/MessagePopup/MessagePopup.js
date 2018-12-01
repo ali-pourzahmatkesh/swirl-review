@@ -716,14 +716,14 @@ export default class MessagePopup extends Component {
 		// it allow to set no background when we are in camera
 		let renderOutput;
 		if (tabSelected != "image" && tabSelected != "camera") {
-			console.log("CCCCCCCCCCCC in chat mode ...");
+			// console.log("CCCCCCCCCCCC in chat mode ...");
 			renderOutput = (
 				<ImageBackground style={styles.container} source={background}>
 					{contentLoader}
 				</ImageBackground>
 			);
 		} else {
-			console.log("CAM CAM CAM CAM CAM CAM CAM CAM in camera mode ...");
+			// console.log("CAM CAM CAM CAM CAM CAM CAM CAM in camera mode ...");
 			renderOutput = (
 				<View style={styles.containerCamera}>{contentLoader}</View>
 			);
