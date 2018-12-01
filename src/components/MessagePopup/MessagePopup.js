@@ -68,7 +68,7 @@ export default class MessagePopup extends Component {
 			cameraType: Camera.constants.Type.front,
 			cameraZoom: 0,
 			lastTap: null,
-            imageType : ''
+			imageType: ""
 		};
 		this.bodyHeight = new Animated.Value(height * 0.88);
 	}
@@ -235,9 +235,7 @@ export default class MessagePopup extends Component {
 						<Text style={styles.headerSubject}>Type here…</Text>
 					</View>
 
-					<View
-						style={{borderWidth: 0, width: 50, marginRight: -20}}
-					/>
+					<View style={{ borderWidth: 0, width: 50, marginRight: -20 }} />
 				</View>
 				<View style={styles.textInputBox}>
 					<TextInput
@@ -321,7 +319,7 @@ export default class MessagePopup extends Component {
 				// this.uploadImageToCloud(data['mediaUri'])
 				this.setState({
 					tabSelected: "image",
-                    imageType : 'camera',
+					imageType: "camera",
 					messageImageSource: {
 						pathUri: { uri: data.path },
 						mediaUri: { uri: data.path, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
@@ -353,7 +351,7 @@ export default class MessagePopup extends Component {
 			} else {
 				this.setState({
 					tabSelected: "image",
-					imageType : 'gallery',
+					imageType: "gallery",
 					messageImageSource: {
 						pathUri: { uri: response.uri },
 						mediaUri: { uri: response.uri, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
@@ -405,15 +403,14 @@ export default class MessagePopup extends Component {
 	handleDoubleTap = () => {
 		const NOW = Date.now();
 		const DOUBLE_TAP_DELAY = 300;
-		if (this.state.lastTap && (NOW - this.state.lastTap) < DOUBLE_TAP_DELAY) {
+		if (this.state.lastTap && NOW - this.state.lastTap < DOUBLE_TAP_DELAY) {
 			this.changeCamera();
-		}
-		else {
+		} else {
 			this.setState({
 				lastTap: NOW
-			})
+			});
 		}
-	}
+	};
 
 	loadCameraContent = () => {
 		const { tabSelected, cameraType, cameraZoom } = this.state;
@@ -434,10 +431,7 @@ export default class MessagePopup extends Component {
 							onPress={this.props.closeMessageModal}
 							style={styles.closeButton}
 						>
-							<Image
-								style={styles.closeIcon}
-								source={closeWhite}
-							/>
+							<Image style={styles.closeIcon} source={closeWhite} />
 						</TouchableOpacity>
 						<View />
 						{/* <View /> */}
@@ -454,7 +448,9 @@ export default class MessagePopup extends Component {
 					</View>
 
 					<View style={styles.cameraActions}>
-						<TouchableOpacity onPress={this.selectPictureFromGallery.bind(this)}>
+						<TouchableOpacity
+							onPress={this.selectPictureFromGallery.bind(this)}
+						>
 							<Image
 								source={accessCam}
 								resizeMode="contain"
@@ -464,7 +460,7 @@ export default class MessagePopup extends Component {
 								}}
 							/>
 						</TouchableOpacity>
-						
+
 						<TouchableOpacity onPress={this.takePicture.bind(this)}>
 							<Image
 								resizeMode="contain"
@@ -492,21 +488,18 @@ export default class MessagePopup extends Component {
 		return (
 			<View style={styles.cameraActionBox}>
 				<View style={styles.selectedPhotoAsBackgroundContainer}>
-					{
-                        this.state.imageType === 'gallery' ? (
-							<Image
-								style={styles.selectedPhotoAsBackgroundGallery}
-								resizeMode={'contain'}
-								source={this.state.messageImageSource.mediaUri}
-							/>
-						) : (
-							<ImageBackground
-								style={styles.selectedPhotoAsBackground}
-								source={this.state.messageImageSource.mediaUri}
-							/>
-						)
-					}
-
+					{this.state.imageType === "gallery" ? (
+						<Image
+							style={styles.selectedPhotoAsBackgroundGallery}
+							resizeMode={"contain"}
+							source={this.state.messageImageSource.mediaUri}
+						/>
+					) : (
+						<ImageBackground
+							style={styles.selectedPhotoAsBackground}
+							source={this.state.messageImageSource.mediaUri}
+						/>
+					)}
 				</View>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity
@@ -550,17 +543,16 @@ export default class MessagePopup extends Component {
 
 		return (
 			<View style={styles.containerOtherPage}>
-				<View style={[appCss.header, { width, paddingLeft: 0, borderWidth: 0 }]}>
+				<View
+					style={[appCss.header, { width, paddingLeft: 0, borderWidth: 0 }]}
+				>
 					<View style={{ borderWidth: 0, flex: 1 }}>
 						<TouchableOpacity
 							onPress={() => this.setState({ tabSelected: "timePicker" })}
-							style={[
-								appCss.otherHeaderIconBox,
-								styles.backButton
-							]}
+							style={[appCss.otherHeaderIconBox, styles.backButton]}
 						>
 							<Ionicons
-								style={{textAlign: 'center'}}
+								style={{ textAlign: "center" }}
 								size={30}
 								color={colors.bodyColor}
 								name="ios-arrow-back"
@@ -633,7 +625,7 @@ export default class MessagePopup extends Component {
 						style={[appCss.otherHeaderIconBox, styles.backButton]}
 					>
 						<Ionicons
-							style={{textAlign: 'center'}}
+							style={{ textAlign: "center" }}
 							size={30}
 							color={colors.bodyColor}
 							name="ios-arrow-back"
@@ -720,13 +712,23 @@ export default class MessagePopup extends Component {
 				break;
 		}
 
-		return (
-			<ImageBackground
-				style={styles.container}
-				source={background}
-			>
-				{contentLoader}
-			</ImageBackground>
-		);
+		// please dont remove this condition on source
+		// it allow to set no background when we are in camera
+		let renderOutput;
+		if (tabSelected != "image" && tabSelected != "camera") {
+			console.log("CCCCCCCCCCCC in chat mode ...");
+			renderOutput = (
+				<ImageBackground style={styles.container} source={background}>
+					{contentLoader}
+				</ImageBackground>
+			);
+		} else {
+			console.log("CAM CAM CAM CAM CAM CAM CAM CAM in camera mode ...");
+			renderOutput = (
+				<View style={styles.containerCamera}>{contentLoader}</View>
+			);
+		}
+
+		return renderOutput;
 	}
 }

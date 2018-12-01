@@ -9,6 +9,11 @@ const styles = StyleSheet.flatten({
 		backgroundColor: colors.tapeWhite,
 		alignItems: "center"
 	},
+	containerCamera: {
+		flex: 1,
+		backgroundColor: "black",
+		alignItems: "center"
+	},
 	messageBox: {
 		width: width * 0.85,
 		height: height * 0.91,
@@ -22,25 +27,25 @@ const styles = StyleSheet.flatten({
 		alignItems: "center",
 		justifyContent: "space-between",
 		height: 44,
-		width: '100%',
+		width: "100%",
 		// borderColor: 'white',
-		paddingLeft: '6%',
-		paddingRight: '6%',
+		paddingLeft: "6%",
+		paddingRight: "6%",
 		borderWidth: 0
 	},
 	backButton: {
-        height: height * 0.05,
-        width: width * 0.12,
-        justifyContent: 'center',
-        borderWidth: 0
-    },
+		height: height * 0.05,
+		width: width * 0.12,
+		justifyContent: "center",
+		borderWidth: 0
+	},
 	closeButton: {
 		height: 30,
 		width: 50,
 		marginLeft: -20,
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderWidth: 0,
+		alignItems: "center",
+		justifyContent: "center",
+		borderWidth: 0
 	},
 	closeIcon: {
 		width: 15,
@@ -95,13 +100,13 @@ const styles = StyleSheet.flatten({
 	actionBox: {
 		width: 50,
 		height: 50,
-		alignItems: 'center',
-		justifyContent: 'center',
+		alignItems: "center",
+		justifyContent: "center",
 		borderWidth: 0
 	},
 	actionBoxIcon: {
 		height: 30,
-		width: 50,
+		width: 50
 	},
 
 	nextButton: {
@@ -136,7 +141,7 @@ const styles = StyleSheet.flatten({
 		height,
 		justifyContent: "space-between",
 		paddingTop: height === 812 ? 50 : 40,
-		paddingBottom: height === 812 ? 70 : 65,
+		paddingBottom: height === 812 ? 70 : 65
 		// paddingLeft: 15,
 		// paddingRight: 15
 	},
@@ -148,7 +153,7 @@ const styles = StyleSheet.flatten({
 		width,
 		height,
 		justifyContent: "center",
-		backgroundColor: colors.appColor,
+		backgroundColor: "black",
 		padding: 0,
 		margin: 0,
 		position: "absolute"
@@ -164,7 +169,7 @@ const styles = StyleSheet.flatten({
 
 	selectedPhotoAsBackgroundGallery: {
 		// flex: 1,
-		width,
+		width
 		// height: 'auto',
 		// padding: "auto",
 		// margin: "auto"
@@ -184,9 +189,9 @@ const styles = StyleSheet.flatten({
 		flexDirection: "row",
 		width,
 		borderWidth: 0,
-		borderColor: 'white',
-		paddingLeft: '6%',
-		paddingRight: '6%',
+		borderColor: "white",
+		paddingLeft: "6%",
+		paddingRight: "6%"
 	},
 	cameraBtnBox: {
 		alignItems: "center",
