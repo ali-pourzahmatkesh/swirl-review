@@ -67,7 +67,8 @@ export default class MessagePopup extends Component {
 			loadingSendMessage: false,
 			cameraType: Camera.constants.Type.front,
 			cameraZoom: 0,
-			lastTap: null
+			lastTap: null,
+            imageType : ''
 		};
 		this.bodyHeight = new Animated.Value(height * 0.88);
 	}
@@ -320,6 +321,7 @@ export default class MessagePopup extends Component {
 				// this.uploadImageToCloud(data['mediaUri'])
 				this.setState({
 					tabSelected: "image",
+                    imageType : 'camera',
 					messageImageSource: {
 						pathUri: { uri: data.path },
 						mediaUri: { uri: data.path, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
@@ -351,6 +353,7 @@ export default class MessagePopup extends Component {
 			} else {
 				this.setState({
 					tabSelected: "image",
+					imageType : 'gallery',
 					messageImageSource: {
 						pathUri: { uri: response.uri },
 						mediaUri: { uri: response.uri, isStatic: true } //uri: "data:image/jpeg;base64," + data.mediaUri
@@ -489,10 +492,21 @@ export default class MessagePopup extends Component {
 		return (
 			<View style={styles.cameraActionBox}>
 				<View style={styles.selectedPhotoAsBackgroundContainer}>
-					<ImageBackground
-						style={styles.selectedPhotoAsBackground}
-						source={this.state.messageImageSource.mediaUri}
-					/>
+					{
+                        this.state.imageType === 'gallery' ? (
+							<Image
+								style={styles.selectedPhotoAsBackgroundGallery}
+								resizeMode={'contain'}
+								source={this.state.messageImageSource.mediaUri}
+							/>
+						) : (
+							<ImageBackground
+								style={styles.selectedPhotoAsBackground}
+								source={this.state.messageImageSource.mediaUri}
+							/>
+						)
+					}
+
 				</View>
 				<View style={styles.messageBoxHeader}>
 					<TouchableOpacity

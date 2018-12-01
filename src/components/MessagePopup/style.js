@@ -24,7 +24,6 @@ const styles = StyleSheet.flatten({
 		height: 44,
 		width: '100%',
 		// borderColor: 'white',
-		borderWidth: 0,
 		paddingLeft: '6%',
 		paddingRight: '6%',
 		borderWidth: 0
@@ -149,7 +148,7 @@ const styles = StyleSheet.flatten({
 		width,
 		height,
 		justifyContent: "center",
-		backgroundColor: "yellow",
+		backgroundColor: colors.appColor,
 		padding: 0,
 		margin: 0,
 		position: "absolute"
@@ -161,6 +160,14 @@ const styles = StyleSheet.flatten({
 		height: null,
 		padding: "auto",
 		margin: "auto"
+	},
+
+	selectedPhotoAsBackgroundGallery: {
+		// flex: 1,
+		width,
+		// height: 'auto',
+		// padding: "auto",
+		// margin: "auto"
 	},
 
 	//
