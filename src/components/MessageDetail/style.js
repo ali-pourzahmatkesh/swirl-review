@@ -1,8 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { CONFIG } from "../../../config";
-import appCss from "../../../app.css";
-const { height, width } = Dimensions.get("window");
 const colors = CONFIG.colors;
+const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.flatten({
 	container: {
 		flex: 1,
@@ -18,27 +17,43 @@ const styles = StyleSheet.flatten({
 		borderRadius: 20
 	},
 	messageBoxHeader: {
+		// flexDirection:'row',
+		// alignItems:'center',
+		// justifyContent:'space-between',
+		height: 44,
+		// marginLeft:15,
+		// marginRight:15,
+		position: "absolute",
+		width: "100%",
+		top: 44,
+		zIndex: 2
+		// backgroundColor:'red'
+	},
+	messageBoxHeaderActions: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		height: 44,
-		width: "100%",
-		// borderColor: 'white',
-		paddingLeft: "6%",
-		paddingRight: "6%",
-		borderWidth: 0
+		// width
+		// height:44,
+		marginLeft: 15,
+		marginRight: 15
+		// position:'absolute',
+		// width:'100%',
+		// top:44,
+		// zIndex:2,
+		// backgroundColor:'red'
 	},
-	closeButton: {
-		height: 30,
-		width: 50,
-		marginLeft: -20,
-		alignItems: "center",
-		justifyContent: "center",
-		borderWidth: 0
-	},
+
 	closeIcon: {
 		width: 15,
 		height: 15
+	},
+	closeIconText: {
+		width: 15,
+		height: 15,
+		marginLeft: 15,
+		marginRight: 15,
+		top: -30
 	},
 	textInputBox: {
 		padding: 15,
@@ -46,30 +61,17 @@ const styles = StyleSheet.flatten({
 		justifyContent: "space-between"
 	},
 
-	containerCamera: {
-		flex: 1,
-		backgroundColor: "black",
-		alignItems: "center"
-	},
-
-	selectedPhotoAsBackground: {
-		flex: 1,
-		width: null,
-		height: null,
-		padding: "auto",
-		margin: "auto"
-	},
 	cameraActionBox: {
 		backgroundColor: "transparent",
 		flex: 1,
-		position: "absolute",
+		// position:'absolute',
 		width,
-		height,
-		justifyContent: "space-between",
+		// height,
+		// justifyContent:"space-between",
 		paddingTop: height === 812 ? 50 : 40,
-		paddingBottom: height === 812 ? 70 : 65
-		// paddingLeft: 15,
-		// paddingRight: 15
+		paddingBottom: height === 812 ? 70 : 65,
+		paddingLeft: 15,
+		paddingRight: 15
 	},
 	cameraActions: {
 		// backgroundColor:"yellow",
@@ -89,28 +91,8 @@ const styles = StyleSheet.flatten({
 	messageText: {
 		fontFamily: "MuseoSansRounded-900",
 		fontSize: 18,
-		color: "#4a4a4a"
-	},
-
-	selectedPhotoAsBackgroundContainer: {
-		flex: 1,
-		flexDirection: "row",
-		alignItems: "stretch",
-		width,
-		height,
-		justifyContent: "center",
-		backgroundColor: "black",
-		padding: 0,
-		margin: 0,
-		position: "absolute"
-	},
-
-	selectedPhotoAsBackgroundGallery: {
-		// flex: 1,
-		width
-		// height: 'auto',
-		// padding: "auto",
-		// margin: "auto"
+		color: "#4a4a4a",
+		top: 30
 	}
 });
 export default styles;
