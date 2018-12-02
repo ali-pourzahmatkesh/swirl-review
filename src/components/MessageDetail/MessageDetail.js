@@ -11,6 +11,7 @@ import close from "../../assets/images/icons/close_red.png";
 import { CONFIG } from "../../../config";
 import background from "../../assets/images/swirlBackground.png";
 const colors = CONFIG.colors;
+
 export default class MessageDetail extends Component {
 	loadContent = () => {
 		const { navigation } = this.props;
@@ -28,34 +29,39 @@ export default class MessageDetail extends Component {
 		}/image/upload/${CONFIG.cloudinary.resource_url_params_message}${
 			data["imageContentName"]
 		}.${data["imageContentExtension"]}`;
-		console.log("data.imageContentName", imageSource);
+		// console.log("data.imageContentName", imageSource);
+		// return (
+		// 	<ImageBackground
+		// 		style={styles.cameraActionBox}
+		// 		resizeMode="cover"
+		// 		// source={{ uri: imageSource }}
+		// 		source={image2}
+		// 	>
+		// 		<View style={styles.messageBoxHeader}>
+		// 			<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+		// 				<Image style={styles.closeIcon} source={close} />
+		// 			</TouchableOpacity>
+		// 			<View />
+		// 			<View />
+		// 		</View>
+		// 	</ImageBackground>
+		// );
 		return (
-			<View style={styles.containerCamera}>
-				<View style={styles.cameraActionBox}>
-					<View style={styles.selectedPhotoAsBackgroundContainer}>
-						{"gallery" === "gallery" ? (
-							<Image
-								style={styles.selectedPhotoAsBackgroundGallery}
-								resizeMode={"contain"}
-								source={{ uri: imageSource }}
-							/>
-						) : (
-							<ImageBackground
-								style={styles.selectedPhotoAsBackground}
-								source={{ uri: imageSource }}
-							/>
-						)}
-					</View>
-
-					<View style={styles.messageBoxHeader}>
-						<TouchableOpacity
-							onPress={() => this.props.navigation.goBack()}
-							style={styles.closeButton}
-						>
+			<View style={{ backgroundColor: "#000", flex: 1 }}>
+				<View style={styles.messageBoxHeader}>
+					<View style={styles.messageBoxHeaderActions}>
+						<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
 							<Image style={styles.closeIcon} source={close} />
 						</TouchableOpacity>
+						<View />
+						<View />
 					</View>
 				</View>
+				<Image
+					style={{ width: "100%", height: "100%" }}
+					resizeMode={"contain"}
+					source={{ uri: imageSource }}
+				/>
 			</View>
 		);
 	};
@@ -66,7 +72,7 @@ export default class MessageDetail extends Component {
 				<View style={styles.messageBox}>
 					<View style={styles.messageBoxHeader}>
 						<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-							<Image style={styles.closeIcon} source={close} />
+							<Image style={styles.closeIconText} source={close} />
 						</TouchableOpacity>
 					</View>
 					<View style={styles.textInputBox}>
