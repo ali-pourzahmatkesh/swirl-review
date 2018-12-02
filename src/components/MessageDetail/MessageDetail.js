@@ -30,19 +30,33 @@ export default class MessageDetail extends Component {
 		}.${data["imageContentExtension"]}`;
 		console.log("data.imageContentName", imageSource);
 		return (
-			<ImageBackground
-				style={styles.cameraActionBox}
-				resizeMode="cover"
-				source={{ uri: imageSource }}
-			>
-				<View style={styles.messageBoxHeader}>
-					<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-						<Image style={styles.closeIcon} source={close} />
-					</TouchableOpacity>
-					<View />
-					<View />
+			<View style={styles.containerCamera}>
+				<View style={styles.cameraActionBox}>
+					<View style={styles.selectedPhotoAsBackgroundContainer}>
+						{"gallery" === "gallery" ? (
+							<Image
+								style={styles.selectedPhotoAsBackgroundGallery}
+								resizeMode={"contain"}
+								source={{ uri: imageSource }}
+							/>
+						) : (
+							<ImageBackground
+								style={styles.selectedPhotoAsBackground}
+								source={{ uri: imageSource }}
+							/>
+						)}
+					</View>
+
+					<View style={styles.messageBoxHeader}>
+						<TouchableOpacity
+							onPress={() => this.props.navigation.goBack()}
+							style={styles.closeButton}
+						>
+							<Image style={styles.closeIcon} source={close} />
+						</TouchableOpacity>
+					</View>
 				</View>
-			</ImageBackground>
+			</View>
 		);
 	};
 
