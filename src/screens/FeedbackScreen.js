@@ -7,10 +7,10 @@ import ProfileOptionHeader from "../components/_common/ProfileOptionHeader";
 export default class FeedbackScreen extends Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
-			header: <ProfileOptionHeader nav={navigation} title='Feedback'/>
+			header: <ProfileOptionHeader nav={navigation} title='Support'/>
 		};
 	};
 	render() {
-		return <Feedback />;
+		return <Support />;
 	}
 }

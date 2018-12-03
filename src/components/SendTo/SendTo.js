@@ -97,8 +97,12 @@ export default class SendTo extends Component {
 	avatarFunc = item => {
 		return (
 			<TouchableOpacity
-				onPress={() => this.props.screenProps.profileNavigate(item)}
 				style={appCss.avatarBox}
+				activeOpacity={1}
+                onPress={() => {
+                    this.onChange(item);
+                }}
+                style={appCss.avatarBox}
 			>
 				<Avatar userId={item.id} position="image" size={45} />
 			</TouchableOpacity>
