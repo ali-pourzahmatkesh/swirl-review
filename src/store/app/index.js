@@ -1,6 +1,7 @@
 // export const UPDATE_GPS_STATUS = "APP_UPDATE_GPS_STATUS";
 export const UPDATE_APP_STATUS = "APP_UPDATE_APP_STATUS";
 export const SET_CURRENT_PAGE = "APP_SET_CURRENT_PAGE";
+export const FINISH_ENTRY = "APP_FINISH_ENTRY";
 
 export const setCurrentPage = pageName => {
 	return {
@@ -20,5 +21,11 @@ export const updateAppStatus = data => {
 	return {
 		type: UPDATE_APP_STATUS,
 		payload: data
+	};
+};
+
+export const finishEntry = () => {
+	return {
+		type: FINISH_ENTRY
 	};
 };

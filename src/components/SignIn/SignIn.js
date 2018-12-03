@@ -9,13 +9,19 @@ import {
 	Dimensions,
 } from "react-native";
 import {NavigationActions, SafeAreaView} from "react-navigation";
+import { isIphoneX } from 'react-native-iphone-x-helper';
+import SplashScreen from 'react-native-splash-screen';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import CustomHeader from "./CustomHeader";
 import BubbleInput from "../_common/BubbleInput";
 import KeyboardAwareButton from "../_common/KeyboardAwareButton";
 import logo from "../../assets/images/logo1.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
+import xOpeningGif from "../../assets/anim/opening5.gif";
 const { width, height } = Dimensions.get("window");
+const openingGif = isIphoneX() ? xOpeningGif : null;
 
 export default class SignIn extends Component {
 	constructor(props) {
@@ -24,6 +30,7 @@ export default class SignIn extends Component {
 			cellphone: "",
 			password: "",
 			passwordFocused: false,
+			animationRunning: true,
 			
 			// need to provide default for country code
 			cellphoneCountryCode: '1',
@@ -39,7 +46,12 @@ export default class SignIn extends Component {
 	}
 
 	componentDidMount() {
-		
+		SplashScreen.hide();
+		setTimeout(() => {
+			this.setState({
+				animationRunning: false
+			}, () => this.props.finishEntry())
+		}, 600); // removes image tag at about the time the animation finishes
 	}
 
 	componentWillMount() {
@@ -120,8 +132,47 @@ export default class SignIn extends Component {
 	};
 
 	render() {
+		let gifHeight = height * 1.0;
+		let gifWidth = width * 1.0;
+
+		let {
+			animationRunning
+		} = this.state;
 		return (
 			<SafeAreaView style={styles.container}>
+			{!this.props.finishedEntry &&  animationRunning && 
+				<Image
+					source={openingGif}
+					style={{
+						height: gifHeight,
+						width: gifWidth,
+						// borderWidth: 10,
+						position: 'absolute',
+						zIndex: 3,
+						margin: 'auto',
+						top: ((gifHeight * 0.5) - (height * 0.5)) * -1,
+						left: ((gifWidth * 0.5) - (width * 0.5)) * -1,
+					}}
+				/>
+			}
+				<CustomHeader
+					middle='Login'
+					right='Signup'
+					rightNav='SignUpScreen'
+					rightNavProps={{
+						leftTitle: 'Login'
+					}}
+					nav={this.props.navigation}
+					containerStyle={{
+						position: 'absolute',
+						top: getStatusBarHeight(),
+						zIndex: 2
+					}}
+				/>
+				{/* this view creates space now that the header is being positioned absoultely */}
+				<View style={{
+					height: getStatusBarHeight(),
+				}}/>
 				<Animated.View style={{flex: 1, paddingBottom: this.bottomPadding}}>
 					<View style={styles.imageContainer}>
 						<Image style={styles.imageItem} source={logo} />

@@ -10,6 +10,8 @@ import {
 	Easing,
 	RefreshControl
 } from "react-native";
+import SplashScreen from 'react-native-splash-screen';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import styles from "./style";
 import appCss from "../../../app.css";
 import logo from "../../assets/images/logo1.png";
@@ -22,8 +24,9 @@ import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
 import sortChatList from "../../util/sortChatList";
 
-import openingGif from "../../assets/anim/opening5.gif";
+import xOpeningGif from "../../assets/anim/opening5.gif";
 
+const openingGif = isIphoneX() ? xOpeningGif : null;
 const { height, width } = Dimensions.get('window');
 const _ = require("lodash");
 
@@ -38,7 +41,9 @@ class Home extends Component {
 			timerFunctions: {},
 			isNewMessage: false,
 			resorted: false,
-			fullSpin: false
+			fullSpin: false,
+			animCanRun: false,
+			animHasRun: false
 		};
 
 		const MAX_DEPTH = height * -0.14
@@ -115,6 +120,23 @@ class Home extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		console.log("componentWillReceiveProps", nextProps);
+		if (
+			!this.state.animHasRun &&
+			!nextProps.chatListRefreshing &&
+			this.props.chatListRefreshing
+		){
+			this.setState({
+				animCanRun: true
+			}, () => {
+				SplashScreen.hide();
+				setTimeout(() => {
+					this.setState({
+						animHasRun: true
+					}, () => this.props.finishEntry())
+				}, 600); // removes image tag at about the time the animation finishes
+			})
+		}
+
 		if (
 			nextProps.chatList &&
 			Array.isArray(nextProps.chatList) &&
@@ -283,7 +305,12 @@ class Home extends Component {
 	}
 
 	render() {
-		const { list, refreshing } = this.state;
+		const {
+			list,
+			refreshing,
+			animCanRun,
+			animHasRun
+		} = this.state;
 		const scrollEvent = Animated.event([
 			{
 				nativeEvent: {
@@ -312,9 +339,9 @@ class Home extends Component {
 					/>
 				</Modal>
 				{this.loadHeader()}
-				{/* <Image
+			{!this.props.finishedEntry && animCanRun && !animHasRun &&
+				<Image
 					source={openingGif}
-					// source={chatOpening}
 					style={{
 						height: gifHeight,
 						width: gifWidth,
@@ -325,7 +352,8 @@ class Home extends Component {
 						top: ((gifHeight * 0.5) - (height * 0.5)) * -1,
 						left: ((gifWidth * 0.5) - (width * 0.5)) * -1,
 					}}
-				/> */}
+				/>
+			}
 				<View style={styles.chatList}>
 					{(list.length && (
 						<FlatList
