@@ -26,8 +26,11 @@ const styles = StyleSheet.create({
 
 export default class CustomHeader extends Component {
 	render() {
+		let {
+			containerStyle
+		} = this.props;
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, containerStyle]}>
 				<TouchableOpacity
 					style={styles.headerSections}
 					onPress={
