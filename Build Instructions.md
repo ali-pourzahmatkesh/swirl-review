@@ -28,14 +28,13 @@ If you'd like to see the original threads for context, refer to the following:
 * https://github.com/facebook/react-native/issues/19569
   Thread pertaining to the `libfishhook.a` issue.
 
-## Upate
+## Update
 You also need to go in a change a line in a node_module file to prevent gifs
 from looping for the app entry animation.
 
 From the top directory of the project:
     cd node_modules/react-native/Libraries/Image
     
-Open `RCTGIFImageDecoder.m` and change: `animation.repeatCount = loopCount == 0 ? HUGE_VALF : loopCount;
-`
-to:
-`animation.repeatCount = loopCount == 0 ? 0 : loopCount;`
+Open `RCTGIFImageDecoder.m` and change: `animation.repeatCount = loopCount == 0 ? HUGE_VALF : loopCount;`
+
+to: `animation.repeatCount = loopCount == 0 ? 0 : loopCount;`
