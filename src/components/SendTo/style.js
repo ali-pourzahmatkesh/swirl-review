@@ -21,7 +21,7 @@ const styles = StyleSheet.flatten({
         marginBottom: 10
     },
     sectionHeaderTitle: {
-        color: colors.appColor
+        color: colors.appColor,
     },
     sectionItems: {
         height: 60,

@@ -418,14 +418,12 @@ const appCss = StyleSheet.create({
         fontFamily: 'MuseoSansRounded-900',
         fontSize: 19,
         color: "#fff",
-        height: "100%",
+        height: "120%",
         width: "80%"
     },
     backButton:{
         marginLeft:15
     },
-
-
     emptyList: {
         flex: 1,
         minHeight: height * 0.25,
