@@ -34,9 +34,8 @@ from looping for the app entry animation.
 
 From the top directory of the project:
     cd node_modules/react-native/Libraries/Image
-Open `RCTGIFImageDecoder.m` and change:
-
-`animation.repeatCount = loopCount == 0 ? HUGE_VALF : loopCount;
+    
+Open `RCTGIFImageDecoder.m` and change: `animation.repeatCount = loopCount == 0 ? HUGE_VALF : loopCount;
 `
 to:
 `animation.repeatCount = loopCount == 0 ? 0 : loopCount;`
