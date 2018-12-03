@@ -1,5 +1,5 @@
-# Build Instructions - Swirl - Nov, 21, 2018
-Commit a509a444c101b776151df35672846acd210b3920
+# Build Instructions - Swirl - Dec, 3, 2018
+Commit a2699a5c602ef552a19b41ef4de4eafdfb23453c
 
     git clone https://gitlab.com/swirl_app/swirl-mobile-app.git
     cd swirl-mobile-app/
@@ -27,3 +27,14 @@ If you'd like to see the original threads for context, refer to the following:
   Thread pertaining to the `third-party` issue.
 * https://github.com/facebook/react-native/issues/19569
   Thread pertaining to the `libfishhook.a` issue.
+
+## Upate
+You also need to go in a change a line in a node_module file to prevent gifs
+from looping for the app entry animation.
+
+From the top directory of the project:
+    cd node_modules/react-native/Libraries/Image
+Open `RCTGIFImageDecoder.m` and change:
+`animation.repeatCount = loopCount == 0 ? HUGE_VALF : loopCount;`
+to:
+`animation.repeatCount = loopCount == 0 ? 0 : loopCount;`
