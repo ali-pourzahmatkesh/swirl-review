@@ -1,14 +1,16 @@
 import React, {Component} from "react";
-import {NetInfo, StyleSheet, Text, View, Dimensions, Image} from "react-native";
+import {NetInfo, StyleSheet, Text, View, Dimensions, Image, TouchableOpacity} from "react-native";
 const {height, width} = Dimensions.get('window');
 import appCss from "../../../app.css";
 import {CONFIG} from "../../../config";
 import noInternet from "../../assets/images/toastIcons/noInternet.png"
+import exit from "../../assets/images/icons/exit3.png";
 const colors = CONFIG.colors;
 
 export default class NoConnection extends Component {
 	state = {
-		isConnected: true
+		isConnected: true,
+		hideToast:false
 	};
 
 	componentDidMount() {
@@ -32,9 +34,12 @@ export default class NoConnection extends Component {
 	handleFirstConnectivityChange = isConnected => {
 		this.setState({ isConnected });
 	};
+    closeToast = () => {
+        this.setState({hideToast: true});
+    }
 
 	render() {
-		if (this.state.isConnected) {
+		if (this.state.isConnected||this.state.hideToast)  {
 			return null;
 		} else {
 			return (
@@ -58,6 +63,24 @@ export default class NoConnection extends Component {
 							}}
 							resizeMode='contain'
 						/>
+                        <TouchableOpacity
+                            style={{
+                                height: 20,
+                                width: 15,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                            onPress={this.closeToast}
+                        >
+                            <Image
+                                source={exit}
+                                style={{
+                                    height: 15,
+                                    width: 15,
+                                }}
+                                resizeMode='contain'
+                            />
+                        </TouchableOpacity>
 					</View>
 			);
 		}
@@ -90,6 +113,9 @@ const styles = StyleSheet.flatten({
 		fontFamily: 'MuseoSansRounded-700',
         color: colors.bodyColor,
 		textAlign: "center",
+		flexDirection: 'column',
+		alignItem: "center",
 		flex: 1,
+
     }
 });

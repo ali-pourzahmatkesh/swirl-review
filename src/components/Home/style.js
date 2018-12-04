@@ -103,7 +103,7 @@ const STYLES = StyleSheet.create({
         borderWidth: 0
     },
     chatTime: {
-        fontSize: 12,
+        fontSize: 11,
         fontFamily: 'MuseoSansRounded-300',
         position: 'absolute',
         alignSelf: 'flex-start',
@@ -175,11 +175,15 @@ const STYLES = StyleSheet.create({
     },
 
     timerCountdown: {
+        flex:1,
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'flex-start',
-        borderWidth: 0,
+        paddingBottom: 1.3,
         textAlign: 'center',
+        marginRight: 100,
+        borderLeftWidth:0,
+
         // marginBottom: BOX_HEIGT * 0.12
     }
 });

@@ -265,7 +265,7 @@ export default class ChatInfo extends Component {
 								}
 							/>{" "}
 						</View>
-						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)}</Text>
+						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)} {this.openingTime} </Text>
 					</View>
 				);
 			};
@@ -288,7 +288,7 @@ export default class ChatInfo extends Component {
 					<View style={styles.avatarBox}>
 						<Avatar userId={item.senderMemberId} size={BOX_HEIGT * 0.8} position='image'/>
 					</View>
-					<View style={[styles.messageInfoBox, !isAvailable && {paddingTop: BOX_HEIGT * 0.05, paddingBottom: BOX_HEIGT * 0.05}]}>
+					<View style={[styles.messageInfoBox, !isAvailable && {paddingTop: BOX_HEIGT * 0.13, paddingBottom: BOX_HEIGT * 0.07}]}>
 						<Text
 							style={[
 								styles.chatSubject,
