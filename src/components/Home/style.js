@@ -179,6 +179,7 @@ const STYLES = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         borderWidth: 0,
+        textAlign: 'center',
         // marginBottom: BOX_HEIGT * 0.12
     }
 });

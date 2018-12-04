@@ -246,12 +246,12 @@ export default class ChatInfo extends Component {
 			messageHint = () => {
 				return (
 					<View style={styles.timerCountdown}>
-						<Text>⏳ </Text>
+						<Text>⏳</Text>
 						<View>
 							<TimerCountdown
 								initialSecondsRemaining={remainingSeconds}
 								allowFontScaling={true}
-								style={[appCss.defaultFontApp,{ fontSize: 14, fontFamily: 'MuseoSansRounded-500' }]}
+								style={[appCss.defaultFontApp,{marginTop: 3,fontSize: 14, fontFamily: 'MuseoSansRounded-700' }]}
 								formatSecondsRemaining={
 									(milliseconds) => {
                                         if(milliseconds > 0 && milliseconds < 60 * 1000){

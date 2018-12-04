@@ -112,15 +112,22 @@ const appCss = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'center',
+        width: 400,
+        height: 55
+
         // backgroundColor:'red'
         // flexDirection: 'column'
     },
     titleBoxSubject: {
         ...defaultFontApp,
         fontSize: 17,
-        color:colors.bodyColor
+        width:400,
+        color:colors.bodyColor,
+        height: 45,
+        paddingTop: 11,
+        // textAlignVertical: 'center',
         // fontWeight: 'bold',
-        // marginBottom: 5
+
     },
 
     titleBoxDetail: {

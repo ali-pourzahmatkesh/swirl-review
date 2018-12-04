@@ -246,7 +246,7 @@ export default class CountryCodeModal extends Component {
 									<EmptyList
 										emptyIcon={emptyIcon}
 										emptyText={
-											<Text>Imaginary Countries don't count. <Text style={{fontFamily: 'MuseoSansRounded-1000Italic'}}>{'"'+this.state.searchValue+'"'}</Text></Text>
+											<Text>Imaginary Countries don't count. <Text style={{fontFamily: 'MuseoSansRounded-1000Italic'}}>{'" '+this.state.searchValue+'"'}</Text></Text>
 										}
 									/>
 								}

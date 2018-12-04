@@ -11,7 +11,6 @@ export default class StyleSheetFactory {
                 borderColor: colors.borderColor,
                 borderRadius: avatarSize/2,
                 overflow: "hidden",
-
             },
 
             avatarImage: {

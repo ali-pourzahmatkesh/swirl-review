@@ -11,6 +11,6 @@ export default class FeedbackScreen extends Component {
 		};
 	};
 	render() {
-		return <Support />;
+		return <Feedback />;
 	}
 }

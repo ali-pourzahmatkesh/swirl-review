@@ -102,7 +102,6 @@ export default class SendTo extends Component {
                 onPress={() => {
                     this.onChange(item);
                 }}
-                style={appCss.avatarBox}
 			>
 				<Avatar userId={item.id} position="image" size={45} />
 			</TouchableOpacity>
@@ -117,6 +116,9 @@ export default class SendTo extends Component {
 						numberOfLines={1}
 						ellipsizeMode="tail"
 						style={appCss.titleBoxSubject}
+                        onPress={() => {
+                            this.onChange(item);
+                        }}
 					>
 						{this.Capitalize(item.username)}
 					</Text>
