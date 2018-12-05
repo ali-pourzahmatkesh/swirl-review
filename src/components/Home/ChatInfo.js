@@ -217,7 +217,7 @@ export default class ChatInfo extends Component {
 			if (item.isSeen) {
 				messageHint = () => {
 					return (
-						"Unswirled " +
+						" " + "Unswirled " +
 						// momentTz(item["availableAt"], "YYYYMMDD")
 						// 	.startOf("hour")
                         // 	.fromNow(true) +
@@ -232,7 +232,7 @@ export default class ChatInfo extends Component {
             } 
             else {
 				messageHint = () => {
-					return "Tap to unswirl! " + this.loadPostTypeEmoji(item.postType);
+					return " " + "Tap to unswirl! " + this.loadPostTypeEmoji(item.postType);
 				};
 				messageOnpress = () => {
 					this.loadDetail(item);
@@ -247,7 +247,6 @@ export default class ChatInfo extends Component {
 				return (
 					<View style={styles.timerCountdown}>
 						<Text>⏳</Text>
-						<View>
 							<TimerCountdown
 								initialSecondsRemaining={remainingSeconds}
 								allowFontScaling={true}
@@ -264,7 +263,6 @@ export default class ChatInfo extends Component {
 									}
 								}
 							/>{" "}
-						</View>
 						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)} {this.openingTime} </Text>
 					</View>
 				);
@@ -294,8 +292,7 @@ export default class ChatInfo extends Component {
 								styles.chatSubject,
 								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
-						>
-							{item.senderName}
+						> {item.senderName}
 						</Text>
 						<View style={styles.messageHintContainer}>
 					{isAvailable ?

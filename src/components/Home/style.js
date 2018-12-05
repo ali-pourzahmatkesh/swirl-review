@@ -101,6 +101,7 @@ const STYLES = StyleSheet.create({
         fontFamily: 'MuseoSansRounded-300',
         // marginBottom: BOX_HEIGT * 0.2,
         borderWidth: 0
+
     },
     chatTime: {
         fontSize: 11,
@@ -179,10 +180,7 @@ const STYLES = StyleSheet.create({
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingBottom: 1.3,
         textAlign: 'center',
-        marginRight: 100,
-        borderLeftWidth:0,
 
         // marginBottom: BOX_HEIGT * 0.12
     }
