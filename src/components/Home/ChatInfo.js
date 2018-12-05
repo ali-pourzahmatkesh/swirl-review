@@ -199,8 +199,7 @@ export default class ChatInfo extends Component {
         //     item
         // } = this.props;
         let item = this.props.messageList.item[0];
-        console.log('message list ****************************************', this.props.messageList)
-        console.log('item')
+        // console.log('message list ****************************************', this.props.messageList)
 
         let {
             defaultAnimationStep

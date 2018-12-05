@@ -4,11 +4,13 @@ import {
 	View,
 	Image,
 	Dimensions,
-	TouchableOpacity
+	TouchableOpacity,
+	NetInfo
 } from "react-native";
 import appCss from "../../../app.css";
 import styles from "./style";
 import exit from "../../assets/images/icons/exit3.png";
+import noInternet from "../../assets/images/toastIcons/noInternet.png"
 
 //different toast icons
 import wrongUsernameOrPassword from "../../assets/images/toastIcons/userPass.png";
@@ -23,26 +25,48 @@ export default class ToastContainer extends Component {
 		hasError: false,
 		errorMessage: "",
 		icon: null,
-
+		isConnected: true
 	};
 
 	timeOut = undefined;
+
+	componentDidMount(){
+		NetInfo.isConnected.fetch().then(isConnected => {
+			this.setState({ isConnected });
+		});
+
+		NetInfo.isConnected.addEventListener(
+			"connectionChange",
+			this.handleConnectivityChange
+		);
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.timeOut !== undefined) {
 			clearTimeout(this.timeOut);
 		}
 		if (nextProps.hasError !== this.state.hasError) {
-			// this.setState({
-			// 	hasError: nextProps.hasError,
-			// 	errorMessage: nextProps.errorMessage
-			// });
 			this.customizeToast(nextProps);
 		}
 		this.timeOut = setTimeout(() => {
 			this.props.hideToast();
 		}, 4000);
 	}
+
+	componentWillUnmount() {
+		NetInfo.isConnected.removeEventListener(
+			"connectionChange",
+			this.handleConnectivityChange
+		);
+	}
+
+	handleConnectivityChange = isConnected => {
+		this.setState({ isConnected }, () => {
+			if(!isConnected){
+				this.props.showToast(true, 'No Internet Connection')
+			}
+		});
+	};
 
 	closeToast = () => {
 		clearTimeout(this.timeOut);
@@ -54,12 +78,19 @@ export default class ToastContainer extends Component {
 			hasError,
 			errorMessage
 		} = nextProps;
+		let {
+			isConnected
+		} = this.state;
 		console.log('error message ***************************', errorMessage);
 		// probably should be an empty string but leaving it as the 
 		// original message for debugging right now
 		let newMessage = errorMessage;
 		let newIcon = null;
-		if(
+		if(!isConnected){
+			newIcon = noInternet;
+			newMessage = 'No Internet Connection';
+		}
+		else if(
 			errorMessage === 'Missing Parameter' ||
 			errorMessage === 'Wrong Password'
 		){
@@ -102,7 +133,7 @@ export default class ToastContainer extends Component {
 		let {
 			hasError,
 			errorMessage,
-			icon
+			icon,
 		} = this.state;
 
 
