@@ -121,7 +121,7 @@ export default class CountryCodeModal extends Component {
 	searchCountry = text => {
 		let countries = [...this.state.countries];
 		let filterCountry = countries.filter(item => {
-			if (item && item["name"].includes(text)) {
+			if (item && item["name"].toLowerCase().includes(text.toLowerCase())) {
 				return item;
 			}
 		});
@@ -244,7 +244,7 @@ export default class CountryCodeModal extends Component {
 									<EmptyList
 										emptyIcon={emptyIcon}
 										emptyText={
-											<Text>Imaginary Countries don't count. <Text style={{fontFamily: 'MuseoSansRounded-1000Italic'}}>{'"'+this.state.searchValue+'"'}</Text></Text>
+											<Text>Imaginary Countries don't count. <Text style={{fontFamily: 'MuseoSansRounded-1000Italic'}}>{'" '+this.state.searchValue+'"'}</Text></Text>
 										}
 									/>
 								}

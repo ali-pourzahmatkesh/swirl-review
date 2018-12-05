@@ -181,7 +181,7 @@ export default class InviteFromContacts extends Component {
 	// 		)
 	// 	}else{
     //     	return (
-	// 			<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
+	// 			<EmptyList emptyIcon={emptyIcon} emptyText={'None of your Friends are on Swirl... yet.'}/>
 	// 		)
 	// 	}
 	// }
@@ -211,7 +211,7 @@ export default class InviteFromContacts extends Component {
 							<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"' + screenProps.searchText + '"'}`}/>
 						</View>
 						:
-						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... Yet.'}/>
+						<EmptyList emptyIcon={emptyIcon} emptyText={'None of your Friends are on Swirl... Yet.'}/>
 					}
 					renderItem={({ item }) => (
 						<View style={styles.sectionItems}>
