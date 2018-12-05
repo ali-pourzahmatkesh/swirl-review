@@ -64,6 +64,14 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentDidMount() {
+		if(this.props.membersFromContactsAreNotFriend.length > 0){
+			this.setState({
+				finalList: this.generateSectionList(
+					this.props.membersFromContactsAreNotFriend,
+					"username"
+				)
+			})
+		}
 		if(this.props.id){
 			this.getPhoneNumbersFromContactList();
 		}

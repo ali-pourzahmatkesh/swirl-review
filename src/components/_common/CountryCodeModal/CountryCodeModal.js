@@ -176,8 +176,6 @@ export default class CountryCodeModal extends Component {
 	};
 
 	handlePressItemCountry = item => {
-		console.log('item ********************************************************************************************************************************************', item)
-		// console.log('focuusuususuusus', this.props.focus)
 		// this.props.focus()
 		this.setState({
 			cellphoneCountryCode: item.callingCodes[0],

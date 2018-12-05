@@ -36,6 +36,7 @@
 		"react-navigation-stack": "^1.0.0-alpha.34",
 		"react-redux": "5.0.7",
 		"redux": "3.7.2",
+		"redux-logger": "^3.0.6",
 		"redux-loop": "4.2.4",
 		"sails.io.js": "*",
 		"socket.io-client": "*"

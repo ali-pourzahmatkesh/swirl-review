@@ -111,6 +111,9 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
+		this.setState({
+			list: this.props.chatList
+		})
 		setTimeout(() => {
 			this.props.chatGetList({
 				id: this.props.id,

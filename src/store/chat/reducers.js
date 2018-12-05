@@ -24,7 +24,14 @@ import {
 	NEW_MESSAGE_FAILED,
 	serverNewMessage,
 	serverNewMessageSuccess,
-	serverNewMessageFailed
+	serverNewMessageFailed,
+	// ---------
+	SET_FROM_LOCAL,
+	SET_FROM_LOCAL_SUCCESS,
+	SET_FROM_LOCAL_FAILED,
+	performSetFromLocal,
+	setFromLocalSuccess,
+	setFromLocalFailed
 	// ADD_CHAT_COUNT,
 	// CALL_GET_STATUS,
 	// fetchGetListData,
@@ -48,6 +55,8 @@ import {
 	// deleteChatFailed,
 	// SET_TAB_OF_PAGE
 } from "./";
+
+import {FETCH_LOGOUT} from "../member";
 
 import { callGetProfile } from "../member";
 import { showToast } from "../toast";
@@ -83,6 +92,35 @@ let initialState = {
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		case SET_FROM_LOCAL: {
+			return loop(
+				{
+					...state
+				},
+				Cmd.run(performSetFromLocal, {
+					successActionCreator: setFromLocalSuccess,
+					failActionCreator: setFromLocalFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case SET_FROM_LOCAL_SUCCESS: {
+			console.log('finished setting from local successfully', action.payload)
+			return {
+				...state,
+				...action.payload
+			}
+		}
+
+		case SET_FROM_LOCAL_FAILED: {
+			console.log('failed setting from local')
+			return {
+				...state
+			}
+		}
+
+
 		case NEW_MESSAGE: {
 			return loop(
 				{
@@ -352,6 +390,11 @@ const chat = (state = initialState, action) => {
 		// 		count: 0
 		// 	};
 		// }
+
+		case FETCH_LOGOUT: {
+			console.log('fetching logout from member while inside chat');
+			return { ...state, ...initialState};
+		}
 
 		default: {
 			return { ...state };

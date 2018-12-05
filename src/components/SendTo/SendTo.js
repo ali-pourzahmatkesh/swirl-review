@@ -55,6 +55,9 @@ export default class SendTo extends Component {
 	}
 
 	componentDidMount() {
+		this.setState({
+			list: this.generateSectionList(this.props.membersThatAreFriends, "username")
+		})
 		this.props.getFriends({
 			id: this.props.id
 		});
@@ -177,7 +180,7 @@ export default class SendTo extends Component {
 			</TouchableOpacity>
 		);
 		return (
-			<SafeAreaView style={styles.container}>
+			<View style={styles.container}>
 				<SectionList
 					sections={list}
 					extraData={list}
@@ -195,7 +198,7 @@ export default class SendTo extends Component {
 				<View style={styles.nextButtonRow}>
 					{sendButton}
 				</View>
-			</SafeAreaView>
+			</View>
 		);
 	}
 }
