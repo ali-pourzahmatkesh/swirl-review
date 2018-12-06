@@ -183,10 +183,7 @@ const STYLES = StyleSheet.create({
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingBottom: 1.3,
         textAlign: 'center',
-        marginRight: 100,
-        borderLeftWidth:0,
 
         // marginBottom: BOX_HEIGT * 0.12
     }
