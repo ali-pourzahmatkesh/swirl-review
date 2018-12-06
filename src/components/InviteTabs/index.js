@@ -45,7 +45,7 @@ export default TabNavigator(
 								}
 							]}
 						>
-							Add friends
+							Add Friends
 						</Text>
 					</View>
 				)

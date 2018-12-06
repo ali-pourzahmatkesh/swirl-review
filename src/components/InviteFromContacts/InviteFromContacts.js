@@ -78,6 +78,14 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentDidMount() {
+		if (this.props.membersFromContactsAreNotFriend.length > 0) {
+			this.setState({
+				finalList: this.generateSectionList(
+					this.props.membersFromContactsAreNotFriend,
+					"username"
+				)
+			});
+		}
 		if (this.props.id) {
 			this.getPhoneNumbersFromContactList();
 		}
@@ -216,7 +224,7 @@ export default class InviteFromContacts extends Component {
 	// 		)
 	// 	}else{
 	//     	return (
-	// 			<EmptyList emptyIcon={emptyIcon} emptyText={'None of your friends are on swirl... yet.'}/>
+	// 			<EmptyList emptyIcon={emptyIcon} emptyText={'None of your Friends are on Swirl... yet.'}/>
 	// 		)
 	// 	}
 	// }
@@ -247,7 +255,7 @@ export default class InviteFromContacts extends Component {
 						) : (
 							<EmptyList
 								emptyIcon={emptyIcon}
-								emptyText={"None of your friends are on swirl... Yet."}
+								emptyText={"None of your Friends are on Swirl... Yet."}
 							/>
 						)
 					}

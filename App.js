@@ -2,11 +2,12 @@ import React, { Component, Fragment } from "react";
 import RootStack from "./src/stacks/RootStack";
 import { Provider } from "react-redux";
 import store from "./src/store/store";
-import NoConnection from "./src/components/NoConnection";
 import Toast from "./src/components/Toast";
 import SocketWatcher from "./src/components/SocketWatcher";
 import { AppState } from "react-native";
 import { updateAppStatus } from "./src/store/app";
+import { setMemberFromLocal } from "./src/store/member";
+import { setChatFromLocal } from "./src/store/chat";
 
 export default class App extends Component {
 	state = {
@@ -15,6 +16,9 @@ export default class App extends Component {
 
 	componentDidMount() {
 		AppState.addEventListener("change", this._handleAppStateChange);
+		
+		store.dispatch(setMemberFromLocal());
+		store.dispatch(setChatFromLocal())
 	}
 
 	_handleAppStateChange = nextAppState => {
@@ -37,7 +41,6 @@ export default class App extends Component {
 				<Fragment>
 					<SocketWatcher />
 					<RootStack />
-					<NoConnection />
 					<Toast />
 				</Fragment>
 			</Provider>

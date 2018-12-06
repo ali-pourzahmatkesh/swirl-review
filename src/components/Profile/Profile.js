@@ -252,11 +252,11 @@ export default class Profile extends Component {
 				]
 			},
 			{
-				title: "Things you would never do",
+				title: "Things you'll never need",
 				data: [
 					{
 						icon: feedback,
-						name: "Feedback",
+						name: "Support",
 						clickHandler: () => this.goTo("FeedbackScreen")
 					},
 					{

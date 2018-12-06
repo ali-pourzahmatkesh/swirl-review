@@ -7,9 +7,6 @@ import appCss from '../../app.css';
 export default class TermsAndConditionsScreen extends Component{
     static navigationOptions = ({ navigation }) => {
         return {
-            // headerTitle: (
-            //     <Text style={[appCss.defaultFontApp,appCss.navigationTitle]} numberOfLines={1} ellipsizeMode='tail'>Terms of Use</Text>
-            // )
             header: <ProfileOptionHeader nav={navigation} title='Terms of Use'/>
         }
     };

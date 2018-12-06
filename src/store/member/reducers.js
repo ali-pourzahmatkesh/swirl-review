@@ -198,7 +198,16 @@ import {
 	GET_MEMBER_BY_USERNAME_FAILED,
 	serverSearchInDB,
 	serverSearchInDBSuccess,
-	serverSearchInDBFailed
+	serverSearchInDBFailed,
+	// ---------
+	SET_FROM_LOCAL,
+	SET_FROM_LOCAL_SUCCESS,
+	SET_FROM_LOCAL_FAILED,
+	performSetFromLocal,
+	setFromLocalSuccess,
+	setFromLocalFailed,
+	// ---------
+	FETCH_LOGOUT
 } from "./";
 
 import { showToast } from "../toast";
@@ -290,6 +299,34 @@ const chat = (state = initialState, action) => {
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
+
+		case SET_FROM_LOCAL: {
+			return loop(
+				{
+					...state
+				},
+				Cmd.run(performSetFromLocal, {
+					successActionCreator: setFromLocalSuccess,
+					failActionCreator: setFromLocalFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case SET_FROM_LOCAL_SUCCESS: {
+			console.log("finished setting from local successfully", action.payload);
+			return {
+				...state,
+				...action.payload
+			};
+		}
+
+		case SET_FROM_LOCAL_FAILED: {
+			console.log("failed setting from local");
+			return {
+				...state
+			};
+		}
 
 		case GET_FRIENDS: {
 			return loop(
@@ -1360,6 +1397,11 @@ const chat = (state = initialState, action) => {
 					showToast(true, "get_members_from_contacts" + action.payload.message)
 				)
 			);
+		}
+
+		case FETCH_LOGOUT: {
+			console.log("fetching logout from member while inside member");
+			return { ...state, ...initialState };
 		}
 
 		default: {

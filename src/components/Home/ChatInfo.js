@@ -199,8 +199,7 @@ export default class ChatInfo extends Component {
         //     item
         // } = this.props;
         let item = this.props.messageList.item[0];
-        console.log('message list ****************************************', this.props.messageList)
-        console.log('item')
+        // console.log('message list ****************************************', this.props.messageList)
 
         let {
             defaultAnimationStep
@@ -217,7 +216,7 @@ export default class ChatInfo extends Component {
 			if (item.isSeen) {
 				messageHint = () => {
 					return (
-						"Unswirled " +
+						" " + "Unswirled " +
 						// momentTz(item["availableAt"], "YYYYMMDD")
 						// 	.startOf("hour")
                         // 	.fromNow(true) +
@@ -232,7 +231,7 @@ export default class ChatInfo extends Component {
             } 
             else {
 				messageHint = () => {
-					return "Tap to unswirl! " + this.loadPostTypeEmoji(item.postType);
+					return " " + "Tap to unswirl! " + this.loadPostTypeEmoji(item.postType);
 				};
 				messageOnpress = () => {
 					this.loadDetail(item);
@@ -246,12 +245,11 @@ export default class ChatInfo extends Component {
 			messageHint = () => {
 				return (
 					<View style={styles.timerCountdown}>
-						<Text>⏳ </Text>
-						<View>
+						<Text>⏳</Text>
 							<TimerCountdown
 								initialSecondsRemaining={remainingSeconds}
 								allowFontScaling={true}
-								style={[appCss.defaultFontApp,{ fontSize: 14, fontFamily: 'MuseoSansRounded-500' }]}
+								style={[appCss.defaultFontApp,{marginTop: 3,fontSize: 14, fontFamily: 'MuseoSansRounded-700' }]}
 								formatSecondsRemaining={
 									(milliseconds) => {
                                         if(milliseconds > 0 && milliseconds < 60 * 1000){
@@ -264,8 +262,7 @@ export default class ChatInfo extends Component {
 									}
 								}
 							/>{" "}
-						</View>
-						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)}</Text>
+						<Text style={appCss.defaultFontApp}> left {this.loadPostTypeEmoji(item.postType)} {this.openingTime} </Text>
 					</View>
 				);
 			};
@@ -288,14 +285,13 @@ export default class ChatInfo extends Component {
 					<View style={styles.avatarBox}>
 						<Avatar userId={item.senderMemberId} size={BOX_HEIGT * 0.8} position='image'/>
 					</View>
-					<View style={[styles.messageInfoBox, !isAvailable && {paddingTop: BOX_HEIGT * 0.05, paddingBottom: BOX_HEIGT * 0.05}]}>
+					<View style={[styles.messageInfoBox, !isAvailable && {paddingTop: BOX_HEIGT * 0.13, paddingBottom: BOX_HEIGT * 0.07}]}>
 						<Text
 							style={[
 								styles.chatSubject,
 								messageStyle == "Ready" && { color: COLORS.bodyColor }
 							]}
-						>
-							{item.senderName}
+						> {item.senderName}
 						</Text>
 						<View style={styles.messageHintContainer}>
 					{isAvailable ?

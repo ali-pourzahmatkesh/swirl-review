@@ -55,6 +55,9 @@ export default class SendTo extends Component {
 	}
 
 	componentDidMount() {
+		this.setState({
+			list: this.generateSectionList(this.props.membersThatAreFriends, "username")
+		})
 		this.props.getFriends({
 			id: this.props.id
 		});
@@ -97,8 +100,11 @@ export default class SendTo extends Component {
 	avatarFunc = item => {
 		return (
 			<TouchableOpacity
-				onPress={() => this.props.screenProps.profileNavigate(item)}
 				style={appCss.avatarBox}
+				activeOpacity={1}
+                onPress={() => {
+                    this.onChange(item);
+                }}
 			>
 				<Avatar userId={item.id} position="image" size={45} />
 			</TouchableOpacity>
@@ -113,6 +119,9 @@ export default class SendTo extends Component {
 						numberOfLines={1}
 						ellipsizeMode="tail"
 						style={appCss.titleBoxSubject}
+                        onPress={() => {
+                            this.onChange(item);
+                        }}
 					>
 						{this.Capitalize(item.username)}
 					</Text>
@@ -177,7 +186,7 @@ export default class SendTo extends Component {
 			</TouchableOpacity>
 		);
 		return (
-			<SafeAreaView style={styles.container}>
+			<View style={styles.container}>
 				<SectionList
 					sections={list}
 					extraData={list}
@@ -195,7 +204,7 @@ export default class SendTo extends Component {
 				<View style={styles.nextButtonRow}>
 					{sendButton}
 				</View>
-			</SafeAreaView>
+			</View>
 		);
 	}
 }

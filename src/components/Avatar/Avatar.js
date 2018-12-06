@@ -55,7 +55,6 @@ export default class Avatar extends Component {
 			}else{
                 return (
 					<TouchableOpacity
-						onPress={()=>this.prepareForRedirectToProfile()}
 						style={[myStyleSheet.avatarItem, avatarContainerStyle]}>
 						<Image
 							style={[myStyleSheet.avatarImage, avatarImageStyle]}

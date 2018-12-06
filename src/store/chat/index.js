@@ -9,7 +9,10 @@ export const GET_LIST = "CHAT_GET_LIST",
 	CHAT_SET_STORE = "CHAT_CHAT_SET_STORE",
 	NEW_MESSAGE = "CHAT_NEW_MESSAGE",
 	NEW_MESSAGE_SUCCESS = "CHAT_NEW_MESSAGE_SUCCESS",
-	NEW_MESSAGE_FAILED = "CHAT_NEW_MESSAGE_FAILED";
+	NEW_MESSAGE_FAILED = "CHAT_NEW_MESSAGE_FAILED",
+	SET_FROM_LOCAL = "CHAT_SET_FROM_LOCAL",
+	SET_FROM_LOCAL_SUCCESS = "CHAT_SET_FROM_LOCAL_SUCCESS",
+	SET_FROM_LOCAL_FAILED = "CHAT_SET_FROM_LOCAL_FAILED";
 
 // INITIAL_STATE = "CHAT_INITIAL_STATE",
 // CALL_GET_STATUS = "CHAT_CALL_GET_STATUS",
@@ -29,8 +32,44 @@ import {
 	// restDelete,
 	post
 } from "../appService";
+import { setItem, getItem, removeItem } from "../storage";
+import {AsyncStorage} from 'react-native';
 
 import { CONFIG } from "../../../config";
+
+export const setChatFromLocal = () => ({
+	type: SET_FROM_LOCAL
+});
+
+export const performSetFromLocal = () => {
+	return new Promise((resolve, reject) => {
+		Promise.all([
+			AsyncStorage.getItem('swirlChats')
+		]).then(([
+			list
+		]) => {
+			console.log('*************** performing local set in chaaaaaat', list)
+			const propsFromLocal = {
+				list: JSON.parse(list) ? JSON.parse(list) : []
+			};
+			resolve(propsFromLocal);
+		})
+		.catch(err => {
+			console.log('err setting', err)
+			reject(err);
+		})
+	})
+};
+
+export const setFromLocalSuccess = data => ({
+	type: SET_FROM_LOCAL_SUCCESS,
+	payload: data
+});
+
+export const setFromLocalFailed = err => ({
+	type: SET_FROM_LOCAL_FAILED,
+	payload: err
+});
 
 export const newMessage = data => ({
 	type: NEW_MESSAGE,
@@ -102,11 +141,13 @@ export const serverChatGetList = data => {
 		getData("/api/v1/chats", params)
 			.then(resp => {
 				console.log("serverChatGetList response", resp);
-				// resolve(resp.data);
-				resolve({
-					data: resp.data,
-					// refreshing: data.refreshing || false
-				});
+				setItem('swirlChats', JSON.stringify(resp.data))
+					.then(() => {
+						resolve({data: resp.data})
+					})
+					.catch(err => {
+						reject(err);
+					})
 			})
 			.catch(err => {
 				console.log("serverChatGetList EEEEEERRRORRRR", err);

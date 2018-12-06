@@ -26,6 +26,7 @@
 		"react-native-onesignal": "^3.2.4",
 		"react-native-paged-contacts": "^1.0.23",
 		"react-native-root-toast": "*",
+		"react-native-splash-screen": "^3.1.1",
 		"react-native-status-bar-height": "^2.0.0",
 		"react-native-svg-image": "*",
 		"react-native-swipe-gestures": "*",
@@ -35,6 +36,7 @@
 		"react-navigation-stack": "^1.0.0-alpha.34",
 		"react-redux": "5.0.7",
 		"redux": "3.7.2",
+		"redux-logger": "^3.0.6",
 		"redux-loop": "4.2.4",
 		"sails.io.js": "*",
 		"socket.io-client": "*"

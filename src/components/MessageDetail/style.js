@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.flatten({
 	container: {
 		flex: 1,
-		backgroundColor: colors.combinatorialColor,
+		// backgroundColor: colors.combinatorialColor,
 		alignItems: "center",
 		justifyContent: "center"
 	},
@@ -17,72 +17,62 @@ const styles = StyleSheet.flatten({
 		borderRadius: 20
 	},
 	messageBoxHeader: {
-		// flexDirection:'row',
-		// alignItems:'center',
-		// justifyContent:'space-between',
 		height: 44,
-		// marginLeft:15,
-		// marginRight:15,
 		position: "absolute",
 		width: "100%",
 		top: 44,
-		zIndex: 2
-		// backgroundColor:'red'
+		zIndex: 2,
+		borderWidth: 0
 	},
 	messageBoxHeaderActions: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		// width
-		// height:44,
 		marginLeft: 15,
 		marginRight: 15
-		// position:'absolute',
-		// width:'100%',
-		// top:44,
-		// zIndex:2,
-		// backgroundColor:'red'
+	},
+
+	closeButton: {
+		height: 20,
+		width: 20,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginLeft: 10,
+		marginTop: 10,
+		borderWidth: 0
 	},
 
 	closeIcon: {
+		height: 15,
 		width: 15,
-		height: 15
 	},
 	closeIconText: {
-		width: 15,
 		height: 15,
-		marginLeft: 15,
-		marginRight: 15,
-		top: -30
+		width: 15,
 	},
 	textInputBox: {
 		padding: 15,
 		flex: 1,
-		justifyContent: "space-between"
+		justifyContent: "space-between",
+		borderWidth: 0
 	},
 
 	cameraActionBox: {
 		backgroundColor: "transparent",
 		flex: 1,
-		// position:'absolute',
 		width,
-		// height,
-		// justifyContent:"space-between",
 		paddingTop: height === 812 ? 50 : 40,
 		paddingBottom: height === 812 ? 70 : 65,
 		paddingLeft: 15,
 		paddingRight: 15
 	},
 	cameraActions: {
-		// backgroundColor:"yellow",
 		alignItems: "center",
 		justifyContent: "space-between"
-		// height:110
 	},
 	cameraBtnBox: {
 		alignItems: "center",
 		justifyContent: "center",
-		// backgroundColor: "red",
 		width,
 		paddingRight: 20,
 		paddingBottom: 30
@@ -92,7 +82,6 @@ const styles = StyleSheet.flatten({
 		fontFamily: "MuseoSansRounded-900",
 		fontSize: 18,
 		color: "#4a4a4a",
-		top: 30
 	}
 });
 export default styles;
