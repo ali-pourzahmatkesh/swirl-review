@@ -1,7 +1,10 @@
 import InviteFromContacts from "./InviteFromContacts";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
-import { getMembersAreInMyContactsThatNotFriend } from "../../store/member";
+import {
+	getMembersAreInMyContactsThatNotFriend,
+	doSearchInDB
+} from "../../store/member";
 
 import { callAddFriend } from "../../store/friendRequest";
 
@@ -18,7 +21,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getMembersAreInMyContactsThatNotFriend: data =>
 		dispatch(getMembersAreInMyContactsThatNotFriend(data)),
-	callAddFriend: data => dispatch(callAddFriend(data))
+	callAddFriend: data => dispatch(callAddFriend(data)),
+	doSearchInDB: data => dispatch(doSearchInDB(data))
 });
 
 export default withNavigation(

@@ -104,7 +104,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	//--------
 	GET_FRIENDS = "MEMBER_GET_FRIENDS",
 	GET_FRIENDS_SUCCESS = "MEMBER_GET_FRIENDS_SUCCESS",
-	GET_FRIENDS_FAILED = " MEMBER_GET_FRIENDS_FAILED";
+	GET_FRIENDS_FAILED = " MEMBER_GET_FRIENDS_FAILED",
+	//--------
+	GET_MEMBER_BY_USERNAME = "MEMBER_GET_MEMBER_BY_USERNAME",
+	GET_MEMBER_BY_USERNAME_SUCCESS = "MEMBER_GET_MEMBER_BY_USERNAME_SUCCESS",
+	GET_MEMBER_BY_USERNAME_FAILED = " MEMBER_GET_MEMBER_BY_USERNAME_FAILED";
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -114,6 +118,41 @@ import {
 	restDelete,
 	post
 } from "../appService";
+
+// --------------------------------------------------------------------------
+
+export const doSearchInDB = data => ({
+	type: GET_MEMBER_BY_USERNAME,
+	payload: data
+});
+
+export const serverSearchInDB = data => {
+	return new Promise((resolve, reject) => {
+		post("/api/v1/members/action/searchByUsername", data)
+			.then(resp => {
+				console.log("--- serverSearchInDB SUCCESS", resp.data);
+				resolve(resp.data);
+			})
+			.catch(err => {
+				console.log("--- serverSearchInDB ERROR", err);
+				reject(err);
+			});
+	});
+};
+
+export const serverSearchInDBSuccess = data => {
+	return {
+		type: GET_MEMBER_BY_USERNAME_SUCCESS,
+		payload: data
+	};
+};
+
+export const serverSearchInDBFailed = err => {
+	return {
+		type: GET_MEMBER_BY_USERNAME_FAILED,
+		payload: err
+	};
+};
 
 // --------------------------------------------------------------------------
 
@@ -165,7 +204,7 @@ export const serverGetMemberFromContacts = data => {
 					resp.data,
 					resp
 				);
-				resolve(resp.data)
+				resolve(resp.data);
 			})
 			.catch(err => {
 				reject(err);
