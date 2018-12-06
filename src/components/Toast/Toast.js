@@ -10,12 +10,13 @@ import {
 import appCss from "../../../app.css";
 import styles from "./style";
 import exit from "../../assets/images/icons/exit3.png";
-import noInternet from "../../assets/images/toastIcons/noInternet.png"
 
 //different toast icons
+import noInternet from "../../assets/images/toastIcons/noInternet.png"
 import wrongUsernameOrPassword from "../../assets/images/toastIcons/userPass.png";
 import wrongPhone from "../../assets/images/toastIcons/wrongPhone.png";
 import logo from "../../assets/images/logo1.png";
+import friendRequest from "../../assets/images/toastIcons/friendRequest.png";
 
 
 const {height, width} = Dimensions.get('window');
@@ -120,6 +121,12 @@ export default class ToastContainer extends Component {
 			errorMessage.slice(-10) === 'swirl now!'
 		){
 			newIcon = logo;
+		}
+		else if(
+			errorMessage.slice(-10) === 'added you!' ||
+			errorMessage.slice(-15) === 'added you back!'
+		){
+			newIcon = friendRequest;
 		}
 
 		this.setState({

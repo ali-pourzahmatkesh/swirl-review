@@ -61,7 +61,26 @@ export default class SocketWatcher extends Component {
 		// 	this.props.addNotificationCount();
 		// });
 
-		// io.socket.on("new_friend", data => {
+		const {
+			showToast,
+			chatReceiveNewMessage,
+			id,
+			getListData
+		} = this.props;
+
+		io.socket.on('new_friend', data => {
+			showToast(`${data.username} added you!`);
+			if(id){
+				getListData({
+					receiverMemberId: id
+				})
+			}
+		});
+
+		io.socket.on('approve_friendship', data => {
+			console.log('friendship has been approved &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', data);
+			showToast(`${data.acceptorName} added you back!`);
+		})
 		// 	console.log("new friend data", data);
 		// 	this.props.hasFriendShipRequest();
 		// 	// this.props.getListOfFriendRequests({
@@ -77,34 +96,16 @@ export default class SocketWatcher extends Component {
 		// io.socket.on("new_visit", data => {
 		// 	this.props.socketVisitCount(data.profileViewCount);
 		// });
-		//
-		// io.socket.on("member_movement", data => {
-		// 	/*
-		// 		output format
-		// 		{
-		// 			memberId: '5b3a787a88f3df6708de2812',
-		// 			name: "test",
-		// 			distance: 43,
-		// 			location: {
-		// 				type: 'Point',
-		// 				coordinates: [ 51.521201, 35.749212 ],
-		// 				heading: 20
-		// 			}
-		// 		}
-		// 	 */
-		// 	console.log(" receive member_movement event::", data);
-		// 	this.props.updatePersonNearMe(data);
-		// });
 
-		io.socket.on("new_chat", data => {
-			console.log("receive new chat message", data);
-			this.props.chatReceiveNewMessage(data);
+		io.socket.on('new_chat', data => {
+			console.log('receive new chat message', data);
+			chatReceiveNewMessage(data);
 
 			if(new Date(data.createdAt) > new Date(data.availableAt)){
-				this.props.showToast(`Open ${data.senderName}'s swirl now!`);
+				showToast(`Open ${data.senderName}'s swirl now!`);
 			}
 			else if(!data.availableSoon){
-				this.props.showToast(`${data.senderName} just swirled you!`)
+				showToast(`${data.senderName} just swirled you!`)
 			}
 			// if are in Home page add this notification to list of notify them
 			//console.log("in page", this.props.currentPage);
