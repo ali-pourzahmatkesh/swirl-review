@@ -309,15 +309,16 @@ export default class ChatInfo extends Component {
 						</View>
 					</View>
 					<View style={styles.otherInfo}>
-						<Text
-							style={[
-								styles.chatTime,
-								messageStyle == "Ready" && { color: COLORS.bodyColor }
-							]}
-						>
+                        <Text
+                            style={[
+                                styles.chatTime,
+                                messageStyle == "Ready" && { color: COLORS.bodyColor }
+                            ]}
+                        >
                             {/* {momentTz(item["createdAt"], "YYYYMMDD").fromNow(true)} */}
                             {momentTz(item["createdAt"]).fromNow(true)}
-						</Text>
+                        </Text>
+
 						{(messageStyle == "Ready" || messageStyle == "Waiting") && (
 							// <Image
 							// 	source={(messageStyle == "Waiting" && logoOther) || logo}

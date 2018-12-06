@@ -200,7 +200,7 @@ export default class InviteFromContacts extends Component {
 			<SafeAreaView style={styles.container}>
                 headerIcon={Array.isArray(membersFromContactsAreNotFriend) &&
 			    membersFromContactsAreNotFriend.length===0 ? // empty array or length 0
-                <Text>Hello</Text>
+                <Text> </Text>
 				:
                 <View style={styles.addFromContactsContainer}>
                     <Image
