@@ -66,7 +66,8 @@ const STYLES = StyleSheet.create({
         borderWidth: 0,
         height: BOX_HEIGT * 0.8,
         paddingTop: BOX_HEIGT * 0.1,
-        paddingBottom: BOX_HEIGT * 0.1
+        paddingBottom: BOX_HEIGT * 0.1,
+        overflow: 'visible'
     },
     otherInfo: {
         flexDirection:'row',
@@ -95,13 +96,15 @@ const STYLES = StyleSheet.create({
     messageHintContainer: {
         flex: 1,
         justifyContent: 'flex-end',
+        overflow: 'visible',
     },
     chatDesc: {
         fontSize: 6 + (height * 0.0103),
         fontFamily: 'MuseoSansRounded-300',
         // marginBottom: BOX_HEIGT * 0.2,
-        borderWidth: 0
-
+        borderWidth: 0,
+        overflow: 'visible',
+        width: width * 0.9 * 0.75 // quarter of the entire width. basically goes until the right side
     },
     chatTime: {
         fontSize: 11,

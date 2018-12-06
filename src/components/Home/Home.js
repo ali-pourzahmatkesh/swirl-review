@@ -43,7 +43,8 @@ class Home extends Component {
 			resorted: false,
 			fullSpin: false,
 			animCanRun: false,
-			animHasRun: false
+			animHasRun: false,
+			timeOutRan: false
 		};
 
 		const MAX_DEPTH = height * -0.14
@@ -110,6 +111,18 @@ class Home extends Component {
 		})
 	}
 
+	handleSplashAnim = () => {
+		console.log('hiding the screen ************************', new Date())
+		SplashScreen.hide();
+		setTimeout(() => {
+			console.log('toggle off gif ****************************************************', new Date())
+			this.setState({
+				animHasRun: true,
+				animCanRun: false
+			}, () => this.props.finishEntry())
+		}, 600); // removes image tag at about the time the animation finishes
+	}
+
 	componentDidMount() {
 		this.setState({
 			list: this.props.chatList
@@ -119,6 +132,16 @@ class Home extends Component {
 				id: this.props.id,
 			});
 		}, 1);
+		console.log('mounted the home screen ****************', new Date())
+		if(!this.props.finishedEntry){
+			console.log('capping timeout ************')
+			this.capLoadingScreenTime = setTimeout(() => {
+				this.setState({
+					animCanRun: true,
+					timeOutRan: true
+				}, this.handleSplashAnim);
+			}, 500)
+		}	
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -126,18 +149,27 @@ class Home extends Component {
 		if (
 			!this.state.animHasRun &&
 			!nextProps.chatListRefreshing &&
-			this.props.chatListRefreshing
+			this.props.chatListRefreshing &&
+			!this.state.timeOutRan
 		){
+			if(this.capLoadingScreenTime){
+				clearTimeout(this.capLoadingScreenTime);
+			}
+			// this.setState({
+			// 	animCanRun: true
+			// }, () => {
+			// 	console.log('cleared the timeout and got a response instead ************************************************************************')
+			// 	SplashScreen.hide();
+			// 	setTimeout(() => {
+			// 		this.setState({
+			// 			animHasRun: true,
+			// 			animCanRun: false
+			// 		}, () => this.props.finishEntry())
+			// 	}, 600); // removes image tag at about the time the animation finishes
+			// })
 			this.setState({
 				animCanRun: true
-			}, () => {
-				SplashScreen.hide();
-				setTimeout(() => {
-					this.setState({
-						animHasRun: true
-					}, () => this.props.finishEntry())
-				}, 600); // removes image tag at about the time the animation finishes
-			})
+			}, this.handleSplashAnim)
 		}
 
 		if (
