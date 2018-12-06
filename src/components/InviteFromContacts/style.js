@@ -33,8 +33,8 @@ const styles = StyleSheet.flatten({
         paddingLeft: 15
     },
     addBtn:{
-        width: 53,
-        height: 23,
+        width: 57.24,
+        height: 24.84,
         backgroundColor: colors.highlightColorTwo,
         borderRadius: 11.5,
         alignItems: 'center',
@@ -43,7 +43,7 @@ const styles = StyleSheet.flatten({
     addBtnText:{
         color: colors.bodyColor,
         fontFamily: 'MuseoSansRounded-1000',
-        fontSize: 13
+        fontSize: 15
     },
     boxEmptySearch:{
         width:width/4*3,
@@ -75,6 +75,24 @@ const styles = StyleSheet.flatten({
         fontSize: 16,
         fontFamily: 'MuseoSansRounded-900'
     },
+    addFromContact: {
+        fontFamily: 'MuseoSansRounded-900',
+        color: colors.bodyColor,
+        fontSize:16,
+        alignSelf:'center'
+    },
+    importFromContactsIcon:{
+        height: 35,
+        width:50
+    },
+    addFromContactsContainer:{
+        alignItem:'center',
+        flexDirection: 'row',
+        paddingLeft:15,
+        paddingBottom:13,
+        paddingTop:13
+
+    }
 
 });
 export default styles;

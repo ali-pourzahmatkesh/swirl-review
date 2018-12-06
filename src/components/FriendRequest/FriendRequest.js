@@ -75,12 +75,7 @@ export default class FriendRequest extends Component {
 
 	avatarFunc = item => {
 		return (
-			<TouchableOpacity
-				onPress={() => this.props.screenProps.profileNavigate(item)}
-				style={appCss.avatarBox}
-			>
-				<Avatar userId={item.id} position="image" size={45} />
-			</TouchableOpacity>
+			<Avatar userId={item.id} position="image" size={45} />
 		);
 	};
 
