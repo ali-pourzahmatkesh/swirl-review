@@ -105,7 +105,11 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	GET_FRIENDS = "MEMBER_GET_FRIENDS",
 	GET_FRIENDS_SUCCESS = "MEMBER_GET_FRIENDS_SUCCESS",
 	GET_FRIENDS_FAILED = " MEMBER_GET_FRIENDS_FAILED",
-	// //--------
+	//--------
+	GET_MEMBER_BY_USERNAME = "MEMBER_GET_MEMBER_BY_USERNAME",
+	GET_MEMBER_BY_USERNAME_SUCCESS = "MEMBER_GET_MEMBER_BY_USERNAME_SUCCESS",
+	GET_MEMBER_BY_USERNAME_FAILED = " MEMBER_GET_MEMBER_BY_USERNAME_FAILED",
+	//--------
 	SET_FROM_LOCAL = "MEMBER_SET_FROM_LOCAL",
 	SET_FROM_LOCAL_SUCCESS = "MEMBER_SET_FROM_LOCAL_SUCCESS",
 	SET_FROM_LOCAL_FAILED = "MEMBER_SET_FROM_LOCAL_FAILED";
@@ -118,7 +122,7 @@ import {
 	restDelete,
 	post
 } from "../appService";
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from "react-native";
 
 export const setMemberFromLocal = () => ({
 	type: SET_FROM_LOCAL
@@ -127,25 +131,28 @@ export const setMemberFromLocal = () => ({
 export const performSetFromLocal = () => {
 	return new Promise((resolve, reject) => {
 		Promise.all([
-			AsyncStorage.getItem('swirlNonFriendContacts'),
-			AsyncStorage.getItem('swirlFriends')
-		]).then(([
-			membersFromContactsAreNotFriend,
-			membersThatAreFriends
-		]) => {
-			console.log('*************** performing local set')
-			const propsFromLocal = {
-				membersFromContactsAreNotFriend:
-					JSON.parse(membersFromContactsAreNotFriend) ? JSON.parse(membersFromContactsAreNotFriend) : [],
-				membersThatAreFriends: JSON.parse(membersThatAreFriends) ? JSON.parse(membersThatAreFriends) : []
-			};
-			resolve(propsFromLocal);
-		})
-		.catch(err => {
-			console.log('err setting', err)
-			reject(err);
-		})
-	})
+			AsyncStorage.getItem("swirlNonFriendContacts"),
+			AsyncStorage.getItem("swirlFriends")
+		])
+			.then(([membersFromContactsAreNotFriend, membersThatAreFriends]) => {
+				console.log("*************** performing local set");
+				const propsFromLocal = {
+					membersFromContactsAreNotFriend: JSON.parse(
+						membersFromContactsAreNotFriend
+					)
+						? JSON.parse(membersFromContactsAreNotFriend)
+						: [],
+					membersThatAreFriends: JSON.parse(membersThatAreFriends)
+						? JSON.parse(membersThatAreFriends)
+						: []
+				};
+				resolve(propsFromLocal);
+			})
+			.catch(err => {
+				console.log("err setting", err);
+				reject(err);
+			});
+	});
 };
 
 export const setFromLocalSuccess = data => ({
@@ -160,6 +167,41 @@ export const setFromLocalFailed = err => ({
 
 // --------------------------------------------------------------------------
 
+export const doSearchInDB = data => ({
+	type: GET_MEMBER_BY_USERNAME,
+	payload: data
+});
+
+export const serverSearchInDB = data => {
+	return new Promise((resolve, reject) => {
+		post("/api/v1/members/action/searchByUsername", data)
+			.then(resp => {
+				console.log("--- serverSearchInDB SUCCESS", resp.data);
+				resolve(resp.data);
+			})
+			.catch(err => {
+				console.log("--- serverSearchInDB ERROR", err);
+				reject(err);
+			});
+	});
+};
+
+export const serverSearchInDBSuccess = data => {
+	return {
+		type: GET_MEMBER_BY_USERNAME_SUCCESS,
+		payload: data
+	};
+};
+
+export const serverSearchInDBFailed = err => {
+	return {
+		type: GET_MEMBER_BY_USERNAME_FAILED,
+		payload: err
+	};
+};
+
+// --------------------------------------------------------------------------
+
 export const getFriends = data => ({
 	type: GET_FRIENDS,
 	payload: data
@@ -169,14 +211,14 @@ export const serverGetFriends = data => {
 	return new Promise((resolve, reject) => {
 		post("/api/v1/members/action/friends", data)
 			.then(resp => {
-				console.log('setting friiiiiiiiiiiiiieeeeendnnsnkanksdnfadsjf')
-				setItem('swirlFriends', JSON.stringify(resp.data))
+				console.log("setting friiiiiiiiiiiiiieeeeendnnsnkanksdnfadsjf");
+				setItem("swirlFriends", JSON.stringify(resp.data))
 					.then(() => {
-						resolve(resp.data)
+						resolve(resp.data);
 					})
 					.catch(err => {
 						reject(err);
-					})
+					});
 			})
 			.catch(err => {
 				reject(err);
@@ -209,13 +251,13 @@ export const serverGetMemberFromContacts = data => {
 	return new Promise((resolve, reject) => {
 		post("/api/v1/member/action/not-friend", data)
 			.then(resp => {
-				setItem('swirlNonFriendContacts', JSON.stringify(resp.data))
+				setItem("swirlNonFriendContacts", JSON.stringify(resp.data))
 					.then(() => {
-						resolve(resp.data)
+						resolve(resp.data);
 					})
 					.catch(err => {
 						reject(err);
-					})
+					});
 			})
 			.catch(err => {
 				reject(err);
@@ -243,7 +285,7 @@ export const storeLocalNonFriendContacts = data => {
 				reject(err);
 			});
 	});
-}
+};
 
 // export const storeLocalNonFriendContactsSuccess = data => {
 // 	return {
@@ -440,20 +482,20 @@ export const removeUserData = data => {
 		// 		reject(data);
 		// 	});
 		const keys = [
-			'AUTH:TAPE',
-			'swirlNonFriendContacts',
-			'swirlFriends',
-			'swirlChats'
-		]
+			"AUTH:TAPE",
+			"swirlNonFriendContacts",
+			"swirlFriends",
+			"swirlChats"
+		];
 		AsyncStorage.multiRemove(keys)
-		 .then(resp => {
-			 console.log('data from remove?', resp);
-			 resolve(data);
-		 })
-		 .catch(err => {
-			 console.log('error removing keys: ', keys, err);
-			 reject(data);
-		 })
+			.then(resp => {
+				console.log("data from remove?", resp);
+				resolve(data);
+			})
+			.catch(err => {
+				console.log("error removing keys: ", keys, err);
+				reject(data);
+			});
 	});
 };
 

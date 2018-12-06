@@ -193,6 +193,13 @@ import {
 	serverGetFriendsFailed,
 	sendPassword,
 	// ---------
+	GET_MEMBER_BY_USERNAME,
+	GET_MEMBER_BY_USERNAME_SUCCESS,
+	GET_MEMBER_BY_USERNAME_FAILED,
+	serverSearchInDB,
+	serverSearchInDBSuccess,
+	serverSearchInDBFailed,
+	// ---------
 	SET_FROM_LOCAL,
 	SET_FROM_LOCAL_SUCCESS,
 	SET_FROM_LOCAL_FAILED,
@@ -251,6 +258,48 @@ const chat = (state = initialState, action) => {
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
 
+		case GET_MEMBER_BY_USERNAME: {
+			return loop(
+				{
+					...state,
+					errorMessage: "",
+					hasError: false,
+					loading: true
+				},
+				Cmd.run(serverSearchInDB, {
+					successActionCreator: serverSearchInDBSuccess,
+					failActionCreator: serverSearchInDBFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case GET_MEMBER_BY_USERNAME_SUCCESS: {
+			return {
+				...state,
+				errorMessage: "",
+				hasError: false,
+				membersFromContactsAreNotFriend: action.payload,
+				loading: false
+			};
+		}
+
+		case GET_MEMBER_BY_USERNAME_FAILED: {
+			return loop(
+				{
+					...state,
+					loading: false,
+					errorMessage: action.payload.message,
+					hasError: true
+				},
+				Cmd.action(showToast(true, action.payload.message))
+			);
+		}
+
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
+
 		case SET_FROM_LOCAL: {
 			return loop(
 				{
@@ -265,18 +314,18 @@ const chat = (state = initialState, action) => {
 		}
 
 		case SET_FROM_LOCAL_SUCCESS: {
-			console.log('finished setting from local successfully', action.payload)
+			console.log("finished setting from local successfully", action.payload);
 			return {
 				...state,
 				...action.payload
-			}
+			};
 		}
 
 		case SET_FROM_LOCAL_FAILED: {
-			console.log('failed setting from local')
+			console.log("failed setting from local");
 			return {
 				...state
-			}
+			};
 		}
 
 		case GET_FRIENDS: {
@@ -313,7 +362,7 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, 'get_friends' + action.payload.message))
+				Cmd.action(showToast(true, "get_friends" + action.payload.message))
 			);
 		}
 
@@ -372,7 +421,7 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, 'delete_chat' + action.payload.message))
+				Cmd.action(showToast(true, "delete_chat" + action.payload.message))
 			);
 		}
 		case ADD_CHAT_COUNT: {
@@ -433,7 +482,7 @@ const chat = (state = initialState, action) => {
 		case DELETE_ACCOUNT_FAILED: {
 			return loop(
 				{ ...state },
-				Cmd.action(showToast(true, 'delete_account' + action.payload.message))
+				Cmd.action(showToast(true, "delete_account" + action.payload.message))
 			);
 		}
 
@@ -558,7 +607,7 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					userData: {}
 				},
-				Cmd.action(showToast(true, 'login_failed' + "error in storage"))
+				Cmd.action(showToast(true, "login_failed" + "error in storage"))
 			);
 		}
 
@@ -605,7 +654,9 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					loading: false
 				},
-				Cmd.action(showToast(true, "Error sending verifyCode.", 'send_verify_code'))
+				Cmd.action(
+					showToast(true, "Error sending verifyCode.", "send_verify_code")
+				)
 			);
 		}
 
@@ -651,7 +702,9 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					loading: false
 				},
-				Cmd.action(showToast(true, 'update_code_get_user' + action.payload.message))
+				Cmd.action(
+					showToast(true, "update_code_get_user" + action.payload.message)
+				)
 			);
 		}
 
@@ -710,7 +763,7 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, action.payload.message + ' from SEND_USER'))
+				Cmd.action(showToast(true, action.payload.message + " from SEND_USER"))
 			);
 		}
 
@@ -740,7 +793,7 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					errorMessage: "error in get ip data."
 				},
-				Cmd.action(showToast(true, 'ip_data_failed' + "error in get ip data."))
+				Cmd.action(showToast(true, "ip_data_failed" + "error in get ip data."))
 			);
 		}
 		case GET_COUNTRIES: {
@@ -768,7 +821,9 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					errorMessage: "error in get countries."
 				},
-				Cmd.action(showToast(true, 'countries_failed' + "error in get countries."))
+				Cmd.action(
+					showToast(true, "countries_failed" + "error in get countries.")
+				)
 			);
 		}
 
@@ -984,7 +1039,7 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					navigateInviteContact: false
 				},
-				Cmd.action(showToast(true, 'get_profile' + action.payload.message))
+				Cmd.action(showToast(true, "get_profile" + action.payload.message))
 			);
 		}
 
@@ -1034,7 +1089,7 @@ const chat = (state = initialState, action) => {
 					closeModal: false,
 					navigateInviteContact: false
 				},
-				Cmd.action(showToast(true, 'get_list_data' + action.payload.message))
+				Cmd.action(showToast(true, "get_list_data" + action.payload.message))
 			);
 		}
 		case INITIAL_STATE: {
@@ -1095,7 +1150,9 @@ const chat = (state = initialState, action) => {
 					hasError: true,
 					navigateInviteContact: false
 				},
-				Cmd.action(showToast(true, 'get_list_add_friend' + action.payload.message))
+				Cmd.action(
+					showToast(true, "get_list_add_friend" + action.payload.message)
+				)
 			);
 		}
 		case INITIAL_ADD_FRIEND_STATE: {
@@ -1171,7 +1228,7 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, action.payload.message, 'password_failed'))
+				Cmd.action(showToast(true, action.payload.message, "password_failed"))
 			);
 		}
 
@@ -1197,9 +1254,11 @@ const chat = (state = initialState, action) => {
 					errorMessage: "",
 					hasError: false
 				},
-				Cmd.action(sendPassword({
-					...action.payload
-				}))
+				Cmd.action(
+					sendPassword({
+						...action.payload
+					})
+				)
 			);
 		}
 		case CONFIRM_PASSWORD_FAILED: {
@@ -1210,7 +1269,9 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, 'confirm_password_failed' + action.payload.message))
+				Cmd.action(
+					showToast(true, "confirm_password_failed" + action.payload.message)
+				)
 			);
 		}
 
@@ -1244,7 +1305,9 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, 'update_member_password' + action.payload.message))
+				Cmd.action(
+					showToast(true, "update_member_password" + action.payload.message)
+				)
 			);
 		}
 
@@ -1293,7 +1356,9 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, 'update_member_failed' + action.payload.message))
+				Cmd.action(
+					showToast(true, "update_member_failed" + action.payload.message)
+				)
 			);
 		}
 
@@ -1328,13 +1393,15 @@ const chat = (state = initialState, action) => {
 					errorMessage: action.payload.message,
 					hasError: true
 				},
-				Cmd.action(showToast(true, 'get_members_from_contacts' + action.payload.message))
+				Cmd.action(
+					showToast(true, "get_members_from_contacts" + action.payload.message)
+				)
 			);
 		}
 
 		case FETCH_LOGOUT: {
-			console.log('fetching logout from member while inside member');
-			return { ...state, ...initialState};
+			console.log("fetching logout from member while inside member");
+			return { ...state, ...initialState };
 		}
 
 		default: {
