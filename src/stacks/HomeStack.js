@@ -30,7 +30,7 @@ const transitionConfig = () => {
 			// useNativeDriver: true
 		},
 		screenInterpolator: sceneProps => {  
-			console.log('scene props', sceneProps) 
+			// console.log('scene props', sceneProps) 
 			const { layout, position, scene, scenes, index } = sceneProps
 			if(
 				(index === 1 &&
