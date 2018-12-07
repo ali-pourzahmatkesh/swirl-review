@@ -40,10 +40,11 @@ export default class BubbleInput extends Component {
                     autoCorrect={false}
                     {...inputProps}
                 />
+
             </View>
             :
             <View style={styles.iconFormInput}>
-            {this.state.countryCodeVisible || this.state.modalVisible ?
+            {this.state.countryCodeVisible || this.state.modalVisible?
                 <CountryCodeModal
                 defaultCountryCode={this.props.defaultCountryCode}
                 defaultFlag={this.props.defaultFlag}
@@ -55,6 +56,14 @@ export default class BubbleInput extends Component {
                         })
                     }
                 }
+                updateModalVisible={
+                    modalVisible => {
+                        this.setState({
+                            modalVisible
+                        })
+                    }
+                }
+
             />
                 :
                 <Image style={styles.formInputIcon} source={phoneIcon}/>
@@ -67,7 +76,7 @@ export default class BubbleInput extends Component {
                     placeholderTextColor={COLORS.highlightColorTwo}
                     autoCorrect={false}
                     onFocus={()=>this.setState({countryCodeVisible: true})}
-                    onBlur={()=>this.setState({countryCodeVisible: false})}
+                    onBlur={()=>this.setState({countryCodeVisible: true})}
                     {...inputProps}
                 />
             </View>
