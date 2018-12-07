@@ -74,9 +74,8 @@ const STYLES = StyleSheet.create({
         justifyContent: 'flex-end',
         height: BOX_HEIGT * 0.9,
         paddingRight: width * 0.05,
-        paddingTop: 5,
+        paddingTop: 3,
         width: '25%',
-        borderWidth: 0
     },
     otherInfoLogo: {
         height: BOX_HEIGT * 0.6,
@@ -85,7 +84,7 @@ const STYLES = StyleSheet.create({
         marginTop: height * 0.01,
         position: 'absolute', 
         right: BOX_HEIGT * 0.15,
-        top: BOX_HEIGT * 0.1
+        top: BOX_HEIGT * 0.08
     },
 
     chatSubject: {
