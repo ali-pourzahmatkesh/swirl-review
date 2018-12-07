@@ -22,10 +22,22 @@ const styles = StyleSheet.create({
 		// top: 10
     },
     formInputContainer: {
-        alignItems: "flex-start",
 		width: '90%',
 		alignSelf: "center",
 	},
+
+	minLengthText: StyleSheet.flatten([
+		appCss.thinDefaultFontApp,
+		{
+			alignSelf: "flex-end",
+			color: colors.tapeWhite,
+			fontSize: 10,
+			marginTop: 3,
+			marginBottom: -15,
+			marginRight: 10
+		}
+	]),
+
 	bottomContainer: {
 		borderWidth: 0,
 		borderColor: 'blue',

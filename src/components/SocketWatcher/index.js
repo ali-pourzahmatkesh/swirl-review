@@ -1,12 +1,11 @@
 import SocketWatcher from "./SocketWatcher";
 import { connect } from "react-redux";
 import {
-	// addChatCount,
-	// hasFriendShipRequest,
-	// getListData,
-	// callGetStatus,
 	chatReceiveNewMessage
 } from "../../store/chat";
+import {
+	getListData
+} from "../../store/friendRequest";
 import { showToast } from "../../store/toast";
 // import { socketVisitCount } from "../../store/profile";
 // import { updatePersonNearMe, addNotificationToStack } from "../../store/home";
@@ -36,7 +35,8 @@ const mapDispatchToProps = dispatch => ({
 	// getListOfFriendRequests: data => dispatch(getListOfFriendRequests(data)),
 	// getFriendshipStatus: data => dispatch(getFriendshipStatus(data)),
 	// addNotificationToStack: data => dispatch(addNotificationToStack(data))
-	showToast: message => dispatch(showToast(true, message))
+	showToast: message => dispatch(showToast(true, message)),
+	getListData: data => dispatch(getListData(data)),
 });
 
 export default connect(
