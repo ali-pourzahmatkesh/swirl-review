@@ -6,10 +6,7 @@ import {
 	doSearchInDB
 } from "../../store/member";
 
-import {
-	callAddFriend,
-	resetAddedIds
-} from "../../store/friendRequest";
+import { callAddFriend } from "../../store/friendRequest";
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
@@ -18,16 +15,14 @@ const mapStateToProps = state => ({
 	loading: state.app.friendRequest.loading,
 	loadType: state.app.friendRequest.loadType,
 	actionTarget: state.app.friendRequest.actionTarget,
-	hasError: state.app.friendRequest.hasError,
-	successfullyAddedIds: state.app.friendRequest.successfullyAddedIds
+	hasError: state.app.friendRequest.hasError
 });
 
 const mapDispatchToProps = dispatch => ({
 	getMembersAreInMyContactsThatNotFriend: data =>
 		dispatch(getMembersAreInMyContactsThatNotFriend(data)),
 	callAddFriend: data => dispatch(callAddFriend(data)),
-	doSearchInDB: data => dispatch(doSearchInDB(data)),
-	resetAddedIds: () => dispatch(resetAddedIds())
+	doSearchInDB: data => dispatch(doSearchInDB(data))
 });
 
 export default withNavigation(

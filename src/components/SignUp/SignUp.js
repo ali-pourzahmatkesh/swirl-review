@@ -266,8 +266,6 @@ export default class SignUp extends Component {
 							}}
 						/>
 
-						<Text style={styles.minLengthText}>min 7 characters</Text>
-
 						<BubbleInput
 							icon={passwordIcon}
 							inputProps={{
