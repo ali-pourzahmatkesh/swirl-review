@@ -89,6 +89,8 @@ export default class InviteFromContacts extends Component {
 		if (this.props.id) {
 			this.getPhoneNumbersFromContactList();
 		}
+
+		this.props.resetAddedIds();
 	}
 
 	getPhoneNumbersFromContactList = function() {
@@ -229,7 +231,13 @@ export default class InviteFromContacts extends Component {
 	// 	}
 	// }
 	render() {
-		let { loading, loadType, actionTarget, screenProps } = this.props;
+		let {
+			loading,
+			loadType,
+			actionTarget,
+			screenProps,
+			successfullyAddedIds
+		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container}>
@@ -293,7 +301,14 @@ export default class InviteFromContacts extends Component {
 								actionTarget === item.id ? (
 									<LoadingSpinner maxRadius={10} lineWidth={2} />
 								) : (
-									<Text style={styles.addBtnText}> Add </Text>
+									<Text style={styles.addBtnText}>
+									{
+										successfullyAddedIds.indexOf(item.id) !== -1 ?
+										'Added'
+										:
+										'Add'
+									}
+									</Text>
 								)}
 							</TouchableOpacity>
 						</View>

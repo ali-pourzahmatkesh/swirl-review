@@ -78,7 +78,6 @@ export default class SocketWatcher extends Component {
 		});
 
 		io.socket.on('approve_friendship', data => {
-			console.log('friendship has been approved &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', data);
 			showToast(`${data.acceptorName} added you back!`);
 		})
 		// 	console.log("new friend data", data);
