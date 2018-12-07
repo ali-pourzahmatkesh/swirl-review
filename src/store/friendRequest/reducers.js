@@ -25,9 +25,8 @@ import {
 	CANCEL_FAILED,
 	fetchCancel,
 	fetchCancelSuccess,
-	fetchCancelFailed,
+	fetchCancelFailed
 	// -------------------------------------------------------------------------
-	RESET_ADDED_IDS
 	// INITIAL_STATE,
 	// GET_FRIENDSHIP_STATUS,
 	// GET_FRIENDSHIP_STATUS_SUCCESS,
@@ -68,19 +67,11 @@ const friendRequest = (
 		countAddFriend: 0,
 		friendshipRequestStatus: "connect",
 		loadType: '',
-		actionTarget: '',
-		successfullyAddedIds: []
+		actionTarget: ''
 	},
 	action
 ) => {
 	switch (action.type) {
-		case RESET_ADDED_IDS: {
-			return {
-				...state,
-				successfullyAddedIds: []
-			}
-		}
-
 		// ---------------------------------------------------------------------------
 
 		case GET_LIST_DATA: {
@@ -138,16 +129,13 @@ const friendRequest = (
 
 		case CALL_ADD_FRIEND_SUCCESS: {
 			console.log('call add friend success *****************************************************************************', action.payload)
-			let newSuccessfullyAddedIds = [...state.successfullyAddedIds];
-			newSuccessfullyAddedIds.push(action.payload[0].receiverMemberId)
 			return {
 				...state,
 				errorMessage: "",
 				hasError: false,
 				loading: false,
 				loadType: '',
-				actionTarget: '',
-				successfullyAddedIds: newSuccessfullyAddedIds
+				actionTarget: ''
 			};
 		}
 

@@ -12,9 +12,7 @@ export const GET_LIST_DATA = "FRIEND_REQUEST_GET_LIST_DATA",
 	// -------------------------------------------------------------------------
 	CALL_CANCEL = "FRIEND_REQUEST_CALL_CANCEL",
 	CANCEL_SUCCESS = "FRIEND_REQUEST_CANCEL_SUCCESS",
-	CANCEL_FAILED = "FRIEND_REQUEST_CANCEL_FAILED",
-	// -------------------------------------------------------------------------
-	RESET_ADDED_IDS = "FRIEND_RESET_ADDED_IDS";
+	CANCEL_FAILED = "FRIEND_REQUEST_CANCEL_FAILED";
 // -------------------------------------------------------------------------
 // INITIAL_STATE = "FRIEND_REQUEST_INITIAL_STATE",
 // GET_FRIENDSHIP_STATUS = "FRIEND_REQUEST_GET_FRIENDSHIP_STATUS",
@@ -31,12 +29,6 @@ export const GET_LIST_DATA = "FRIEND_REQUEST_GET_LIST_DATA",
 // 	"FRIEND_REQUEST_CANCEL_REQUESTED_FRIENDSHIP_FAILED";
 
 import { getData, put, post } from "../appService";
-
-export const resetAddedIds = () => {
-	return {
-		type: RESET_ADDED_IDS
-	}
-}
 
 // ---------------------------------------------------------------------------
 
