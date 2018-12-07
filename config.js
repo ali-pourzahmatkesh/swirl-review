@@ -59,14 +59,14 @@ const CONFIG = {
 	// 	resource_url_params_message: "h_2016,w_1512,q_auto:best/" // if it has value must end with /
 	// }
 	cloudinary: {
-		api_key: "217834353568179",
-		api_secret: "PrlxifCrJbQvhaB88DD_LwBqiPY",
-		cloud: "nncs",
-		upload_url_prefix: "https://api.cloudinary.com/v1_1/",
+		api_key: "146219712138947",
+		api_secret: "S6sKgJXAZxvKRq_2F7LGrtZpJpA",
+		cloud: "tape-inc",
+		upload_url_prefix: "https://api.cloudinary.com/v1_1/tape-inc",
 		upload_url_suffix: "/image/upload",
 		// ----------
-		resource_url_prefix: "https://res.cloudinary.com",
-		resource_url_params_message: "q_auto:best/" // if it has value must end with / , h_2016,w_1512,
+		resource_url_prefix: "https://res.cloudinary.com/tape-inc",
+		resource_url_params_message: "h_2016,w_1512,q_auto:best/" // if it has value must end with / , h_2016,w_1512,
 	}
 };
 
