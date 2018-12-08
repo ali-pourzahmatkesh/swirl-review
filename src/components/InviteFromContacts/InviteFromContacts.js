@@ -53,28 +53,28 @@ export default class InviteFromContacts extends Component {
 			});
 		}
 
-		if (
-			nextProps.loading === false &&
-			nextProps.hasError === false &&
-			this.props.loadType === "sendRequest"
-		) {
-			let filteredList = this.state.list.filter(
-				member => member.id != this.props.actionTarget
-			);
-			this.setState(
-				{
-					list: filteredList
-				},
-				() => {
-					let searchPhrase =
-						(this.props.screenProps && this.props.screenProps.searchText) || "";
-					// this.filterContact(filteredList, searchPhrase);
-					if (searchPhrase != "") {
-						this.searchInDB(searchPhrase);
-					}
-				}
-			);
-		}
+		// if (
+		// 	nextProps.loading === false &&
+		// 	nextProps.hasError === false &&
+		// 	this.props.loadType === "sendRequest"
+		// ) {
+		// 	let filteredList = this.state.list.filter(
+		// 		member => member.id != this.props.actionTarget
+		// 	);
+		// 	this.setState(
+		// 		{
+		// 			list: filteredList
+		// 		},
+		// 		() => {
+		// 			let searchPhrase =
+		// 				(this.props.screenProps && this.props.screenProps.searchText) || "";
+		// 			// this.filterContact(filteredList, searchPhrase);
+		// 			if (searchPhrase != "") {
+		// 				this.searchInDB(searchPhrase);
+		// 			}
+		// 		}
+		// 	);
+		// }
 	}
 
 	componentDidMount() {
@@ -89,6 +89,7 @@ export default class InviteFromContacts extends Component {
 		if (this.props.id) {
 			this.getPhoneNumbersFromContactList();
 		}
+		this.props.resetAddedIds();
 	}
 
 	getPhoneNumbersFromContactList = function() {
@@ -115,9 +116,7 @@ export default class InviteFromContacts extends Component {
 			// some contact entries are empty/don't have numbers
 			item["phoneNumbers"] &&
 				item["phoneNumbers"].forEach(itemNumber => {
-					//if (itemNumber.label === "mobile") {
 					numberList.push(itemNumber["value"]);
-					//}
 				});
 		});
 		this.props.getMembersAreInMyContactsThatNotFriend({
@@ -131,9 +130,6 @@ export default class InviteFromContacts extends Component {
 			if (
 				this.props.screenProps.searchText !== prevProps.screenProps.searchText
 			) {
-				// this function filter the current contact list
-				// this.filterContact(this.state.list, this.props.screenProps.searchText);
-
 				// this search through the server database by search phrase
 				if (this.props.screenProps.searchText != "") {
 					this.searchInDB(this.props.screenProps.searchText);
@@ -156,27 +152,7 @@ export default class InviteFromContacts extends Component {
 			memberId: this.props.id,
 			searchPhrase: searchPhrase
 		});
-
-		// comented temporally
-		// let sectionList = this.generateSectionList(contacts);
-		// this.setState({
-		// 	finalList: sectionList,
-		// 	loading: false
-		// });
 	};
-
-	// filterContact = (contacts, search) => {
-	// 	if (search && contacts.length > 0) {
-	// 		contacts = contacts.filter(
-	// 			item => item["username"].toLowerCase().search(search.toLowerCase()) > -1
-	// 		);
-	// 	}
-	// 	let sectionList = this.generateSectionList(contacts);
-	// 	this.setState({
-	// 		finalList: sectionList,
-	// 		loading: false
-	// 	});
-	// };
 
 	generateSectionList = array => {
 		let list = { letters: [] };
@@ -207,29 +183,14 @@ export default class InviteFromContacts extends Component {
 		});
 	};
 
-	// emptyList = ()=>{
-	//     if(this.props.screenProps && this.props.screenProps.searchText){
-
-	//     	return (
-	// 		<View style={{flex:1 , alignItems:'center'}}>
-	// 			<EmptyList emptyIcon={emptyIconSearch} emptyText={`We searched and searched but no ${'"'+this.props.screenProps.searchText+'"'}`}/>
-	// 			<View style={styles.boxEmptySearch}>
-	// 				<View style={styles.boxEmptySearchFaq}>
-	// 					<Image style={appCss.emptyIcon} source={faq}/>
-
-	// 				</View>
-	// 				<Text style={styles.boxEmptySearchText}>"{this.props.screenProps.searchText}"</Text>
-	// 			</View>
-	// 		</View>
-	// 		)
-	// 	}else{
-	//     	return (
-	// 			<EmptyList emptyIcon={emptyIcon} emptyText={'None of your Friends are on Swirl... yet.'}/>
-	// 		)
-	// 	}
-	// }
 	render() {
-		let { loading, loadType, actionTarget, screenProps } = this.props;
+		let {
+			loading,
+			loadType,
+			actionTarget,
+			screenProps,
+			successfullyAddedIds
+		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container}>
@@ -287,13 +248,21 @@ export default class InviteFromContacts extends Component {
 							<TouchableOpacity
 								style={styles.addBtn}
 								onPress={() => this.addFriend(item)}
+								disabled={successfullyAddedIds.indexOf(item.id) !== -1}
 							>
 								{loading &&
 								loadType === "sendRequest" &&
 								actionTarget === item.id ? (
 									<LoadingSpinner maxRadius={10} lineWidth={2} />
 								) : (
-									<Text style={styles.addBtnText}> Add </Text>
+									<Text style={styles.addBtnText}>
+									{
+										successfullyAddedIds.indexOf(item.id) !== -1 ?
+										'Added'
+										:
+										'Add'
+									}
+									</Text>
 								)}
 							</TouchableOpacity>
 						</View>

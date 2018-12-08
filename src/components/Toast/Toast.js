@@ -93,7 +93,8 @@ export default class ToastContainer extends Component {
 		}
 		else if(
 			errorMessage === 'Missing Parameter' ||
-			errorMessage === 'Wrong Password'
+			errorMessage === 'Wrong Password' ||
+			errorMessage === "identifier_password_wrong/user doesn't exist?"
 		){
 			newMessage = 'Wrong Username or Password';
 			newIcon = wrongUsernameOrPassword;
