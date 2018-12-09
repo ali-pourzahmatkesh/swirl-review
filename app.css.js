@@ -431,8 +431,6 @@ const appCss = StyleSheet.create({
     backButton:{
         marginLeft:15
     },
-
-
     emptyList: {
         flex: 1,
         minHeight: height * 0.25,

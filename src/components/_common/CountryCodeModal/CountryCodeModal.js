@@ -18,7 +18,6 @@ import exitIcon from "../../../assets/images/icons/exit3.png";
 import emptyIcon from "../../../assets/images/icons/emptyCountry.png";
 import search from "../../../assets/images/icons/search3.png";
 import appCss from "../../../../app.css";
-
 import styles from "./style";
 import {CONFIG} from "../../../../config";
 const { width, height } = Dimensions.get("window");
