@@ -12,6 +12,7 @@ import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
 import logo from "../../assets/images/logo1.png";
 // import checkedImage from "../../assets/images/checked.png";
 import LoadingSpinner from "../../components/_common/LoadingSpinner";
+import importFromContacts from "../../assets/images/icons/importFromContacts.png"
 
 let pg = new PagedContacts();
 
@@ -189,11 +190,28 @@ export default class InviteFromContacts extends Component {
 			loadType,
 			actionTarget,
 			screenProps,
-			successfullyAddedIds
+			successfullyAddedIds,
+            membersFromContactsAreNotFriend
 		} = this.props;
 
 		return (
 			<SafeAreaView style={styles.container}>
+                headerIcon={Array.isArray(membersFromContactsAreNotFriend) &&
+            membersFromContactsAreNotFriend.length===0 ? // empty array or length 0
+                <Text> </Text>
+                :
+                <View style={styles.addFromContactsContainer}>
+                    <Image
+                        source={importFromContacts}
+                        style={styles.importFromContactsIcon}
+                        resizeMode={"contain"}
+                    />
+                    <Text style={styles.addFromContact}
+
+                    >  Add From Contacts </Text>
+
+                </View>}
+
 				<SectionList
 					sections={this.state.finalList}
 					extraData={this.state.finalList}
