@@ -42,6 +42,21 @@ class SignUpAddFriend extends Component {
 		);
 	};
 
+	componentWillReceiveProps(nextProps){
+		let {
+			membersFromContactsAreNotFriend
+		} = this.props;
+		let {
+			successfullyAddedIds,
+		} = nextProps;
+		if(
+			membersFromContactsAreNotFriend.length !== 0 &&
+			membersFromContactsAreNotFriend.length === successfullyAddedIds.length
+		){
+			this.handleSubmit();
+		}
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>

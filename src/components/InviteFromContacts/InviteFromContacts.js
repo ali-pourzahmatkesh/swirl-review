@@ -176,7 +176,8 @@ export default class InviteFromContacts extends Component {
                 {
 					Array.isArray(membersFromContactsAreNotFriend) &&
 					membersFromContactsAreNotFriend.length === 0 || 
-					screenProps.searchText	? // empty array or length 0
+					(screenProps && 
+					screenProps.searchText)	? // empty array or length 0
 					null
 					:
 					<View style={styles.addFromContactsContainer}>
