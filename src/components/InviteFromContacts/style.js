@@ -86,7 +86,6 @@ const styles = StyleSheet.flatten({
         width:50
     },
     addFromContactsContainer:{
-        alignItem:'center',
         flexDirection: 'row',
         paddingLeft:15,
         paddingBottom:13,

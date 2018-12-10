@@ -81,11 +81,8 @@ const transitionConfig = () => {
 export default StackNavigator(
 	{
 		HomeScreen: { screen: HomeScreen },
-		// ChatsScreen: { screen: ChatsScreen },
-		// DiscussionScreen: { screen: DiscussionScreen },
 		ProfileScreen: { screen: ProfileScreen },
 		ChangeInfoScreen: { screen: ChangeInfoScreen },
-		// // MemberSearchScreen: { screen: MemberSearchScreen },
 		FeedbackScreen: { screen: FeedbackScreen },
 		ChangePasswordScreen: { screen: ChangePasswordScreen },
 		ChangePasswordFromProfileScreen: {

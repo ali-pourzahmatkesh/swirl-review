@@ -53,29 +53,6 @@ export default class InviteFromContacts extends Component {
 				loading: false
 			});
 		}
-
-		// if (
-		// 	nextProps.loading === false &&
-		// 	nextProps.hasError === false &&
-		// 	this.props.loadType === "sendRequest"
-		// ) {
-		// 	let filteredList = this.state.list.filter(
-		// 		member => member.id != this.props.actionTarget
-		// 	);
-		// 	this.setState(
-		// 		{
-		// 			list: filteredList
-		// 		},
-		// 		() => {
-		// 			let searchPhrase =
-		// 				(this.props.screenProps && this.props.screenProps.searchText) || "";
-		// 			// this.filterContact(filteredList, searchPhrase);
-		// 			if (searchPhrase != "") {
-		// 				this.searchInDB(searchPhrase);
-		// 			}
-		// 		}
-		// 	);
-		// }
 	}
 
 	componentDidMount() {
@@ -196,21 +173,23 @@ export default class InviteFromContacts extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-                headerIcon={Array.isArray(membersFromContactsAreNotFriend) &&
-            membersFromContactsAreNotFriend.length===0 ? // empty array or length 0
-                <Text> </Text>
-                :
-                <View style={styles.addFromContactsContainer}>
-                    <Image
-                        source={importFromContacts}
-                        style={styles.importFromContactsIcon}
-                        resizeMode={"contain"}
-                    />
-                    <Text style={styles.addFromContact}
-
-                    >  Add From Contacts </Text>
-
-                </View>}
+                {
+					Array.isArray(membersFromContactsAreNotFriend) &&
+					membersFromContactsAreNotFriend.length === 0 || 
+					screenProps.searchText	? // empty array or length 0
+					null
+					:
+					<View style={styles.addFromContactsContainer}>
+						<Image
+							source={importFromContacts}
+							style={styles.importFromContactsIcon}
+							resizeMode={"contain"}
+						/>
+						<Text style={styles.addFromContact}>
+							Add From Contacts
+						</Text>
+					</View>
+				}
 
 				<SectionList
 					sections={this.state.finalList}
