@@ -29,7 +29,7 @@
 		"react-native-splash-screen": "^3.1.1",
 		"react-native-status-bar-height": "^2.0.0",
 		"react-native-svg-image": "*",
-		"react-native-swipe-gestures": "*",
+		"react-native-swipe-gestures": "github:thegamenicorus/react-native-swipe-gestures",
 		"react-native-timer-countdown": "^2.0.3",
 		"react-native-vector-icons": "*",
 		"react-navigation": "^1.0.3",

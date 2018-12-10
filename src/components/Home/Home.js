@@ -11,6 +11,7 @@ import {
 	RefreshControl
 } from "react-native";
 import SplashScreen from 'react-native-splash-screen';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import styles from "./style";
 import appCss from "../../../app.css";
@@ -346,6 +347,10 @@ class Home extends Component {
 			animCanRun,
 			animHasRun
 		} = this.state;
+
+		const {
+			navigation
+		} = this.props;
 		const scrollEvent = Animated.event([
 			{
 				nativeEvent: {
@@ -359,95 +364,108 @@ class Home extends Component {
 		let gifWidth = width * 1.0;
 		
 		return (
-			<View style={styles.container}>
-				<Modal
-					visible={this.state.newMessageModalVisible}
-					animationType="slide"
-					transparent={true}
-				>
-					<MessagePopup
-						closeMessageModal={() => {
-							this.setState({
-								newMessageModalVisible: false
-							});
+			// https://github.com/thegamenicorus/react-native-swipe-gestures
+			// ^fork of react-native-swipe-gestures that allows disabling of 
+			// swipe detection for certain directions. unblocks the list below
+			<GestureRecognizer
+				style={styles.container}
+				config={{
+					detectSwipeUp: false,
+					detectSwipeDown: false,
+				}}
+				onSwipeLeft={() => { navigation.navigate('ProfileScreen') }}
+				onSwipeRight={() => { navigation.navigate('InviteTabsScreen') }}
+			>
+				<View style={styles.container}>
+					<Modal
+						visible={this.state.newMessageModalVisible}
+						animationType="slide"
+						transparent={true}
+					>
+						<MessagePopup
+							closeMessageModal={() => {
+								this.setState({
+									newMessageModalVisible: false
+								});
+							}}
+						/>
+					</Modal>
+					{this.loadHeader()}
+				{!this.props.finishedEntry && animCanRun && !animHasRun &&
+					<Image
+						source={openingGif}
+						style={{
+							height: gifHeight,
+							width: gifWidth,
+							// borderWidth: 10,
+							position: 'absolute',
+							zIndex: 2,
+							margin: 'auto',
+							top: ((gifHeight * 0.5) - (height * 0.5)) * -1,
+							left: ((gifWidth * 0.5) - (width * 0.5)) * -1,
 						}}
 					/>
-				</Modal>
-				{this.loadHeader()}
-			{!this.props.finishedEntry && animCanRun && !animHasRun &&
-				<Image
-					source={openingGif}
-					style={{
-						height: gifHeight,
-						width: gifWidth,
-						// borderWidth: 10,
-						position: 'absolute',
-						zIndex: 2,
-						margin: 'auto',
-						top: ((gifHeight * 0.5) - (height * 0.5)) * -1,
-						left: ((gifWidth * 0.5) - (width * 0.5)) * -1,
-					}}
-				/>
-			}
-				<View style={styles.chatList}>
-					{(list.length && (
-						<FlatList
-							data={list}
-							// item is an array here
-							// keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
-							keyExtractor={(item, index) => "msg_" + item[item.length - 1].id}
-							renderItem={
-								({ item }) => <ChatInfo
-									messageList={{ item }}
-									navigation={this.props.navigation}
-									visitMessage={this.props.visitMessage}
-									setHomeState={(state) => {
-										this.setState(state);
-									}}
-								/>
-							}
-							ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
-							refreshControl={
-								<RefreshControl
-									refreshing={refreshing}
-									onRefresh={() => {
-										this.onRefresh();
-									}}
-									tintColor="transparent"
-								/>
-							}
-							onEndReachedThreshold={0.3}
-							onEndReached={() => {
-								this.handleLoadMore();
-							}}
-							showsHorizontalScrollIndicator={false}
-							showsVerticalScrollIndicator={false}
-							onScroll={scrollEvent}
-							scrollEventThrottle={30}
-						/>
-					)) || (
-							<EmptyList
-								emptyIcon={emptyIcon}
-								emptyText={'Nobody swirled you… Yet..'}
-								textStyle={{ fontFamily: 'MuseoSansRounded-1000' }}
-								containerStyle={{
-									marginTop: height * -0.15
+				}
+					<View style={styles.chatList}>
+						{(list.length && (
+							<FlatList
+								data={list}
+								// item is an array here
+								// keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
+								keyExtractor={(item, index) => "msg_" + item[item.length - 1].id}
+								renderItem={
+									({ item }) => <ChatInfo
+										messageList={{ item }}
+										navigation={this.props.navigation}
+										visitMessage={this.props.visitMessage}
+										setHomeState={(state) => {
+											this.setState(state);
+										}}
+									/>
+								}
+								ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
+								refreshControl={
+									<RefreshControl
+										refreshing={refreshing}
+										onRefresh={() => {
+											this.onRefresh();
+										}}
+										tintColor="transparent"
+									/>
+								}
+								onEndReachedThreshold={0.3}
+								onEndReached={() => {
+									this.handleLoadMore();
 								}}
+								showsHorizontalScrollIndicator={false}
+								showsVerticalScrollIndicator={false}
+								onScroll={scrollEvent}
+								scrollEventThrottle={30}
 							/>
-						)}
+						)) || (
+								<EmptyList
+									emptyIcon={emptyIcon}
+									emptyText={'Nobody swirled you… Yet..'}
+									textStyle={{ fontFamily: 'MuseoSansRounded-1000' }}
+									containerStyle={{
+										marginTop: height * -0.15
+									}}
+								/>
+							)}
+					</View>
+					<View style={styles.homeBottomBox}>
+						<TouchableOpacity
+							onPress={() => this.setState({ newMessageModalVisible: true })}
+							style={styles.iconBottomButton}
+						>
+							<View style={styles.iconBottomBox}>
+								<Image style={styles.iconBottom} source={addMessage} />
+							</View>
+						</TouchableOpacity>
+						<View style={styles.iconBottomBackground} />
+					</View>
 				</View>
-				<View style={styles.homeBottomBox}>
-					<TouchableOpacity
-						onPress={() => this.setState({ newMessageModalVisible: true })}
-						style={styles.iconBottomButton}
-					>
-						<View style={styles.iconBottomBox}>
-							<Image style={styles.iconBottom} source={addMessage} />
-						</View>
-					</TouchableOpacity>
-					<View style={styles.iconBottomBackground} />
-				</View>
-			</View>
+			</GestureRecognizer>
 		);
 	}
 }
