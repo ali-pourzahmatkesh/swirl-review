@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import {SafeAreaView} from "react-navigation";
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
-import BubbleInput from "../_common/BubbleInput";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+import BubbleInput from "../_CommonComponents/BubbleInput";
+import KeyboardAwareButton from "../_CommonComponents/KeyboardAwareButton";
 
 import logo from "../../assets/images/logo1.png";
 import usernameIcon from "../../assets/images/icons/profile3.png";

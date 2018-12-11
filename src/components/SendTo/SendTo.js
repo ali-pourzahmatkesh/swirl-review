@@ -15,7 +15,7 @@ import { SafeAreaView } from "react-navigation";
 import checkedImage from "../../assets/images/icons/check4.png";
 import { CONFIG } from "../../../config";
 import next from "../../assets/images/icons/next1.png";
-import LoadingSpinner from "../_common/LoadingSpinner";
+import LoadingSpinner from "../_CommonComponents/LoadingSpinner";
 import emptyIcon from "../../assets/images/icons/emptyInviteContact.png";
 const colors = CONFIG.colors;
 const { height, width } = Dimensions.get("window");

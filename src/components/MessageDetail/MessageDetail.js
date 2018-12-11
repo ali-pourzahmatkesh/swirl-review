@@ -70,12 +70,7 @@ export default class MessageDetail extends Component {
 		return (
 			<ImageBackground style={styles.container} source={background}>
 				<View style={styles.messageBox}>
-					<TouchableOpacity
-						onPress={() => {this.props.navigation.goBack()}}
-						style={styles.closeButton}
-					>
 						<Image style={styles.closeIconText} source={close} />
-					</TouchableOpacity>
 					<View style={styles.textInputBox}>
 						<Text style={styles.messageText}>{data.textContent}</Text>
 					</View>

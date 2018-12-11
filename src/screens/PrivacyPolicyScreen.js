@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PrivacyPolicy from "../components/PrivacyPolicy";
-import ProfileOptionHeader from "../components/_common/ProfileOptionHeader";
+import ProfileOptionHeader from "../components/_CommonComponents/ProfileOptionHeader";
 import { Text, Dimensions } from "react-native";
 import appCss from "../../app.css";
 const { width, height } = Dimensions.get("window");

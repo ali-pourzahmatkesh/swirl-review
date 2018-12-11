@@ -7,7 +7,7 @@ import {
 	View,
 	KeyboardAvoidingView
 } from "react-native";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+import KeyboardAwareButton from "../_CommonComponents/KeyboardAwareButton";
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;

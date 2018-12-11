@@ -66,7 +66,7 @@ export default class ChatInfo extends Component {
         // console.log(stepsLeft, 'stepsLeft');
         let defaultAnimationStep = timeLeft < 0 ? 6 : 7 - (Math.ceil(stepsLeft) + 1);
         stepsLeft = Math.floor(stepsLeft);
-        console.log(defaultAnimationStep, 'default anim step');
+        console.log(defaultAnimationStep, 'default animations step');
         let secondsLeftCurrentStep = timeLeft - (step * stepsLeft);
         // console.log(secondsLeftCurrentStep, 'seconds left current step')
 

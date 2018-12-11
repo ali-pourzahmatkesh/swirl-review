@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TermsAndConditions from '../components/TermsAndConditions';
-import ProfileOptionHeader from "../components/_common/ProfileOptionHeader";
+import ProfileOptionHeader from "../components/_CommonComponents/ProfileOptionHeader";
 import {Text} from 'react-native';
 import appCss from '../../app.css';
 

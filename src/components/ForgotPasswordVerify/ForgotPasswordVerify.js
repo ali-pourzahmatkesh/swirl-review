@@ -7,7 +7,7 @@ import {
 	Animated
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+import KeyboardAwareButton from "../_CommonComponents/KeyboardAwareButton";
 import CodeField from "react-native-confirmation-code-field";
 
 import logo from "../../assets/images/logo1.png";

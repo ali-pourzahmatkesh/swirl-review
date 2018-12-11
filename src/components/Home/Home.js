@@ -25,7 +25,7 @@ import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
 import sortChatList from "../../util/sortChatList";
 
-import xOpeningGif from "../../assets/anim/opening5.gif";
+import xOpeningGif from "../../assets/animations/opening5.gif";
 
 const openingGif = isIphoneX() ? xOpeningGif : null;
 const { height, width } = Dimensions.get('window');
