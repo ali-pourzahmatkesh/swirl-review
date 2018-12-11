@@ -75,7 +75,9 @@ export default class FriendRequest extends Component {
 
 	avatarFunc = item => {
 		return (
-			<Avatar userId={item.id} position="image" size={45} />
+			<View style={appCss.avatarBox}>
+				<Avatar userId={item.id} position="image" size={45} />
+			</View>
 		);
 	};
 
@@ -116,7 +118,7 @@ export default class FriendRequest extends Component {
 			<View style={styles.actionBox}>
 				<TouchableOpacity
 					onPress={() => {
-						this.cancel(item.id);
+						this.props.callCancel(item.id);
 					}}
 					style={[styles.actionBtn, styles.cancel]}
 				>	
@@ -135,7 +137,7 @@ export default class FriendRequest extends Component {
 				}
 				</TouchableOpacity>
 				<TouchableOpacity
-					onPress={() => this.approve(item.id)}
+					onPress={() => this.props.callApprove(item.id)}
 					style={[styles.actionBtn, styles.verify]}
 				>
 				{(loading && loadType === 'approve' && actionTarget === item.id) ? 
@@ -153,13 +155,6 @@ export default class FriendRequest extends Component {
 				</TouchableOpacity>
 			</View>
 		);
-	};
-	approve = id => {
-		this.props.callApprove(id);
-	};
-
-	cancel = id => {
-		this.props.callCancel(id);
 	};
 
 	render() {

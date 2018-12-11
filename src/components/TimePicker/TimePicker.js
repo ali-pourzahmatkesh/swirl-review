@@ -7,10 +7,12 @@ import {
     TouchableOpacity,
     Dimensions
 } from "react-native";
+import DeviceInfo from 'react-native-device-info';
+import momentTz from "moment-timezone";
 import styles from './style'
 const MAX_HOURS = 23;
 const MAX_MINUTES = 59;
-const {  width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 export default class TimePicker extends Component {
     static propTypes = {
         selectedHours: PropTypes.number,
@@ -20,106 +22,261 @@ export default class TimePicker extends Component {
         minutesUnit: PropTypes.string,
     };
 
-    static defaultProps = {
-        selectedHours: 0,
-        selectedMinutes: 0,
-        onChange: null,
-        hoursUnit: '',
-        minutesUnit: '',
-    };
-
     constructor( props ) {
         super(props);
-        const { selectedHours, selectedMinutes } = props;
         this.state = {
-            selectedHours,
-            selectedMinutes,
+           twentyFourHour: DeviceInfo.is24Hour(),
+           selectedMoment: momentTz(),
+           currentMoment: momentTz()
         };
+    }
+
+    componentDidMount(){
+        this.props.onChange(momentTz());
+        this.setState({
+            selectedHours: momentTz().hours(),
+            selectedMinutes: momentTz().minutes(),
+            selectedDayHalf: momentTz().hours() < 12 ? 'am' : 'pm',
+            currentMoment: momentTz(),
+            selectedMoment: momentTz()
+        })
     }
 
     getHoursItems = () => {
         const items = [];
-        const { hoursUnit } = this.props;
-        for( let i = 0; i <= MAX_HOURS; i++ ) {
-            items.push(
-                <Picker.Item key={i} value={i} label={`${i < 10 && '0' + i.toString() || i.toString()}${hoursUnit}`}/>,
-            );
+        const {
+            currentMoment,
+            selectedMoment,
+            twentyFourHour,
+            selectedDayHalf
+        } = this.state;
+        const sameDaySelected = selectedMoment.isSame(currentMoment, 'day');
+        const startingValue = sameDaySelected ?
+                                currentMoment.hour() :
+                                0;
+        for(let i = startingValue; i <= MAX_HOURS; i++){
+            if(twentyFourHour){
+                let hourString = i < 10 ? `0${i}` : `${i}`;
+                items.push(
+                    <Picker.Item
+                        key={i}
+                        value={i}
+                        label={hourString}
+                    />
+                );
+            }
+            else{
+                if(
+                    sameDaySelected &&
+                    selectedDayHalf === 'am'
+                ){
+                    if(i < 12){
+                        let hourString = i < 10 ? `0${i}` : `${i}`;
+                        items.push(
+                            <Picker.Item
+                                key={i}
+                                value={i}
+                                label={hourString}
+                            />
+                        );
+                    }
+                }
+                else if(
+                    sameDaySelected &&
+                    selectedDayHalf === 'pm'
+                ){
+                    let hourPm = i - 12;
+                    let hourString = hourPm < 10 ? `0${hourPm}` : `${hourPm}`;
+                    items.push(
+                        <Picker.Item
+                            key={i}
+                            value={i}
+                            label={hourString}
+                        />
+                    );
+                }
+                // not the same day
+                else{
+                    if(selectedDayHalf === 'am'){
+                        if(i < 12){
+                            let hourString = i < 10 ? `0${i}` : `${i}`;
+                            hourString = hourString === '00' ? '12' : hourString;
+                            items.push(
+                                <Picker.Item
+                                    key={i}
+                                    value={i}
+                                    label={hourString}
+                                />
+                            );
+                        }
+                    }
+                    else{
+                        if(i >= 12){
+                            let hourPm = i - 12;
+                            let hourString = hourPm < 10 ? `0${hourPm}` : `${hourPm}`;
+                            hourString = hourString === '00' ? '12' : hourString;
+                            items.push(
+                                <Picker.Item
+                                    key={i}
+                                    value={i}
+                                    label={hourString}
+                                />
+                            );
+                        }
+                    }
+                }
+            }
         }
         return items;
     };
 
     getMinutesItems = () => {
         const items = [];
-        const { minutesUnit } = this.props;
-        for( let i = 0; i <= MAX_MINUTES; i++ ) {
+        const {
+            currentMoment,
+            selectedMoment
+        } = this.state;
+        const sameHourSelected = selectedMoment.isSame(currentMoment, 'hour');
+        const startingValue = sameHourSelected ? currentMoment.minute() : 0;
+        for(let i = startingValue; i <= MAX_MINUTES; i++){
+            let minuteString = i < 10 ? `0${i}` : `${i}`
             items.push(
-                <Picker.Item key={i} value={i}
-                             label={`${i < 10 && '0' + i.toString() || i.toString()}${minutesUnit}`}/>,
+                <Picker.Item
+                    key={i}
+                    value={i}
+                    label={minuteString}
+                />
             );
         }
         return items;
     };
 
-    handleChangeHours = ( itemValue ) => {
+    getDateItems = () => {
+        const items = [];
+        let dateValue = momentTz(this.state.currentMoment);
+        for(let i = 0; i < 7; i++){
+            let dateString = dateValue.format('MMM Do');
+            if(i === 0){
+                dateString = 'Today';
+            }
+            else if(i === 1){
+                dateString = 'Tomorrow';
+            }
+            items.push( 
+                <Picker.Item
+                    key={i}
+                    // has to be a string or integer
+                    value={JSON.stringify(momentTz(dateValue))}
+                    label={dateString}
+                />
+            );
+            dateValue.add(1, 'd');
+        }
+        return items;
+    }
+
+    handleChangeHours = itemValue => {
         const { onChange } = this.props;
+        let newMoment = momentTz(this.state.selectedMoment);
+        newMoment.hour(itemValue)
         this.setState({
-            selectedHours: itemValue,
+            selectedMoment: newMoment,
+            selectedHours: itemValue
         }, () => {
-            const { selectedHours, selectedMinutes } = this.state;
-            onChange(selectedHours, selectedMinutes);
+            const { selectedMoment } = this.state;
+            onChange(selectedMoment);
         });
     };
 
-    handleChangeMinutes = ( itemValue ) => {
+    handleChangeMinutes = itemValue => {
         const { onChange } = this.props;
+        let newMoment = momentTz(this.state.selectedMoment);
+        newMoment.minute(itemValue)
         this.setState({
-            selectedMinutes: itemValue,
+            selectedMoment: newMoment,
+            selectedMinutes: itemValue
         }, () => {
-            const { selectedHours, selectedMinutes } = this.state;
-            onChange(selectedHours, selectedMinutes);
+            const { selectedMoment } = this.state;
+            onChange(selectedMoment);
         });
     };
 
-    quickTime = (time, unit) => {
-        return (
-            <TouchableOpacity
-                style={styles.quickTimeButton}
-                onPress={() => {
-                    const { onChange } = this.props;
-                    if(unit === 'min'){
-                        this.setState({
-                            selectedMinutes: time,
-                            selectedHours: 0
-                        }, () => {
-                            const { selectedHours, selectedMinutes } = this.state;
-                            onChange(selectedHours, selectedMinutes);
-                        })
-                    }
-                    else if(unit === 'hour'){
-                        this.setState({
-                            selectedHours: time,
-                            selectedMinutes: 0
-                        }, () => {
-                            const { selectedHours, selectedMinutes } = this.state;
-                            onChange(selectedHours, selectedMinutes);
-                        })
-                    }
-                    else{
-                        console.log('???')
-                    }
-                }}
-            >
-                <Text style={styles.quickTimeButtonText}>{time} {unit + (time > 1 ? 's' : '')}</Text>
-            </TouchableOpacity>
-        )
+    handleChangeDayHalf = itemValue => {
+        const { onChange } = this.props;
+        let newMoment = momentTz(this.state.selectedMoment);
+        if(
+            this.state.selectedDayHalf === 'am' &&
+            itemValue === 'pm'
+        ){
+            newMoment.add(12, 'hours');
+        }
+        else if(
+            this.state.selectedDayHalf === 'pm' &&
+            itemValue === 'am'  
+        ){
+            newMoment.subtract(12, 'hours');
+        }
+        this.setState({
+            selectedDayHalf: itemValue,
+            selectedMoment: newMoment,
+            selectedHours: newMoment.hours(),
+            selectedMinutes: newMoment.minutes()
+        }, () => {
+            const { selectedMoment } = this.state;
+            onChange(selectedMoment);
+        })
+    }
+
+    handleChangeDate = itemValue => {
+        const { onChange } = this.props;
+        const parsedDateString = JSON.parse(itemValue);
+        const newDay = momentTz(parsedDateString);
+        let newMoment = momentTz(this.state.selectedMoment);
+        newMoment.year(newDay.year());
+        newMoment.month(newDay.month());
+        newMoment.day(newDay.day());
+        if(newMoment.isBefore(this.state.currentMoment)){
+            newMoment = momentTz(this.state.currentMoment);
+        }
+        this.setState({
+            selectedDate: itemValue,
+            selectedMoment: newMoment,
+            selectedHours: newMoment.hours(),
+            selectedMinutes: newMoment.minutes(),
+            selectedDayHalf: newMoment.hours() < 12 ? 'am' : 'pm'
+        }, () => {
+            const { selectedMoment } = this.state;
+            onChange(selectedMoment);
+        });
     }
 
     render() {
-        const { selectedHours, selectedMinutes } = this.state;
+        const {
+            selectedHours,
+            selectedMinutes,
+            selectedDayHalf,
+            selectedDate,
+            twentyFourHour,
+            currentMoment,
+            selectedMoment
+        } = this.state;
+        const sameDaySelected = selectedMoment.isSame(currentMoment, 'day');
         return (
             <View style={styles.container}>
+                <View style={styles.datePickerContainer}>
+                    <View style={styles.dateBackPicker}/>
+                    <Picker
+                        style={styles.datePicker}
+                        itemStyle={styles.datePickerItem}
+                        selectedValue={selectedDate}
+                        onValueChange={itemValue => this.handleChangeDate(itemValue)}
+                    >
+                        {this.getDateItems()}
+                    </Picker>
+                </View>
+
                 <View style={styles.timePickerContainer}>
-                    <View style={styles.backPicker}/>
+                    <View style={styles.timeBackPicker}/>
                     <Picker
                         style={styles.picker}
                         itemStyle={styles.pickerItem}
@@ -137,16 +294,22 @@ export default class TimePicker extends Component {
                     >
                         {this.getMinutesItems()}
                     </Picker>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <View style={styles.buttonRow}>
-                        {this.quickTime(30, 'min')}
-                        {this.quickTime(1, 'hour')}
-                    </View>
-                    <View style={styles.buttonRow}>
-                        {this.quickTime(12, 'hour')}
-                        {this.quickTime(24, 'hour')}
-                    </View>
+                {
+                    !twentyFourHour &&
+                    <Picker
+                        style={styles.picker}
+                        itemStyle={styles.pickerItem}
+                        selectedValue={selectedDayHalf}
+                        onValueChange={( itemValue ) => this.handleChangeDayHalf(itemValue)}
+                    >
+                    {
+                        (!sameDaySelected ||
+                        (sameDaySelected && selectedDayHalf === 'am')) &&
+                        <Picker.Item key={'am'} value={'am'} label={'am'}/>
+                    }
+                        <Picker.Item key={'pm'} value={'pm'} label={'pm'}/>
+                    </Picker>
+                }
                 </View>
             </View>
         );

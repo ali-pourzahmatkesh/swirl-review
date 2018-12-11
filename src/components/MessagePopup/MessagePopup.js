@@ -566,14 +566,14 @@ export default class MessagePopup extends Component {
 				</View>
 				<Toast />
 				<SendTo
-					friendList={this.friendList}
+					sendMessage={this.sendMessage}
 					loadingSendMessage={loadingSendMessage}
 				/>
 			</View>
 		);
 	};
 
-	friendList = list => {
+	sendMessage = list => {
 		console.log("get the list from SendTo component", list);
 		let memberListId = [];
 		list.forEach(i =>
@@ -586,11 +586,7 @@ export default class MessagePopup extends Component {
 				if (this.state.messageType != "chat") {
 					this.uploadImageToCloud(this.state.messageImageSource.pathUri.uri);
 				} else {
-					let availableAt = moment()
-						.add(this.state.selectedHours, "hours")
-						.add(this.state.selectedMinutes, "minutes")
-						.toDate();
-
+					let availableAt = moment(this.state.selectedMoment).toDate();
 					this.props.newMessage({
 						senderMemberId: this.props.id,
 						receiverMemberList: this.state.memberListId,
@@ -643,17 +639,17 @@ export default class MessagePopup extends Component {
 						onPress={this.handleSubmit}
 					/>
 				</View>
-				<Text style={styles.pickerText}>⏳ Time until unswirl... </Text>
+				<Text style={styles.pickerText}>⏳ Unswirl Time</Text>
 				<View style={{ flex: 1, borderWidth: 0 }}>
 					<TimePicker
 						selectedHours={selectedHours}
 						selectedMinutes={selectedMinutes}
 						onChange={
-							(hours, minutes) =>
+							selectedMoment => {
 								this.setState({
-									selectedHours: hours,
-									selectedMinutes: minutes
+									selectedMoment
 								})
+							}
 							// this.setState({
 							// 	selectedHours: 0,
 							// 	selectedMinutes: .2

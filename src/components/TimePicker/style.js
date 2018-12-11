@@ -9,6 +9,43 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 0
     },
+    datePickerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: colors.tapeWhite,
+        height: '100%',
+        width: width * 0.9,
+        height: '30%',
+        borderRadius: 30,
+        marginBottom: height * 0.03,
+
+        shadowOffset: {
+            height: .75
+        },
+        shadowOpacity: .35,
+        shadowRadius: 1.5,
+    },
+    dateBackPicker: {
+        height: 60,
+        width: '100%',
+        backgroundColor: colors.appColor,
+        opacity: 0.1,
+        position: 'absolute',
+        left: 0
+    },
+    datePicker: {
+        height: '100%',
+        width: '100%',
+    },
+    datePickerItem: {
+        height: '100%',
+        color: colors.appColor,
+        fontSize: 40,
+        fontFamily: 'MuseoSansRounded-900'
+
+    },
+
     timePickerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -25,7 +62,7 @@ const styles = StyleSheet.create({
         shadowOpacity: .35,
         shadowRadius: 1.5,
     },
-    backPicker: {
+    timeBackPicker: {
         height: 88,
         width: '100%',
         backgroundColor: colors.appColor,

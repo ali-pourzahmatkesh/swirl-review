@@ -180,7 +180,7 @@ export default class SendTo extends Component {
 		) : (
 			<TouchableOpacity
 				style={styles.footer}
-				onPress={() => this.props.friendList(list)}
+				onPress={() => this.props.sendMessage(list)}
 			>
 				<Image resizeMode={"contain"} style={styles.nextIcon} source={next} />
 			</TouchableOpacity>
