@@ -15,7 +15,7 @@ import appCss from "../../../app.css";
 import styles from "./style";
 import emptyIcon from "../../assets/images/icons/messageEmpty.png";
 import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
-import LoadingSpinner from "../../components/_common/LoadingSpinner";
+import LoadingSpinner from "../_CommonComponents/LoadingSpinner";
 
 export default class FriendRequest extends Component {
 	state = {

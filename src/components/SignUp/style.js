@@ -70,8 +70,6 @@ const styles = StyleSheet.create({
 	bolderSignup: {
 		fontFamily: 'MuseoSansRounded-1000'
 	},
-
-
 	headerContainer: {
 		backgroundColor: colors.appColor,
 		flexDirection: "row",
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
 		{
 			textAlign: "center"
 		}
-	])
+])
 });
 
 export default styles;

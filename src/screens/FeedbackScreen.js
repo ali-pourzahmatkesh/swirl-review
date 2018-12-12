@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text } from "react-native";
 import appCss from "../../app.css";
 import Feedback from "../components/Feedback";
-import ProfileOptionHeader from "../components/_common/ProfileOptionHeader";
+import ProfileOptionHeader from "../components/_CommonComponents/ProfileOptionHeader";
 
 export default class FeedbackScreen extends Component {
 	static navigationOptions = ({ navigation }) => {

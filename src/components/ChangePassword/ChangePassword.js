@@ -7,8 +7,8 @@ import {
 } from "react-native";
 
 import {NavigationActions, SafeAreaView} from "react-navigation";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
-import BubbleInput from "../_common/BubbleInput";
+import KeyboardAwareButton from "../_CommonComponents/KeyboardAwareButton";
+import BubbleInput from "../_CommonComponents/BubbleInput";
 
 import passwordIcon from "../../assets/images/icons/password3.png";
 import logo from "../../assets/images/logo1.png";

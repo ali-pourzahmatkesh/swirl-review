@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ProfileOptionHeader from "../components/_common/ProfileOptionHeader";
+import ProfileOptionHeader from "../components/_CommonComponents/ProfileOptionHeader";
 import ChangePasswordFromProfile from "../components/ChangePasswordFromProfile";
 import { Text } from "react-native";
 import appCss from "../../app.css";

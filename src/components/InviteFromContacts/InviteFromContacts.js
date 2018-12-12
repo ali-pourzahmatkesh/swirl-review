@@ -11,7 +11,7 @@ import faq from "../../assets/images/icons/faq.png";
 import emptyIconSearch from "../../assets/images/icons/friendSearchEmpty.png";
 import logo from "../../assets/images/logo1.png";
 // import checkedImage from "../../assets/images/checked.png";
-import LoadingSpinner from "../../components/_common/LoadingSpinner";
+import LoadingSpinner from "../_CommonComponents/LoadingSpinner";
 import importFromContacts from "../../assets/images/icons/importFromContacts.png"
 
 let pg = new PagedContacts();

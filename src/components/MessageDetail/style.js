@@ -14,7 +14,8 @@ const styles = StyleSheet.flatten({
 		height: height * 0.9,
 		backgroundColor: colors.bodyColor,
 		marginTop: height * 0.02,
-		borderRadius: 20
+		borderRadius: 20,
+
 	},
 	messageBoxHeader: {
 		height: 44,
@@ -53,9 +54,11 @@ const styles = StyleSheet.flatten({
 	textInputBox: {
 		padding: 15,
 		flex: 1,
-		justifyContent: "space-between",
-		borderWidth: 0
-	},
+		justifyContent: "center",
+		borderWidth: 0,
+        alignItems:'center'
+
+    },
 
 	cameraActionBox: {
 		backgroundColor: "transparent",
@@ -82,6 +85,8 @@ const styles = StyleSheet.flatten({
 		fontFamily: "MuseoSansRounded-900",
 		fontSize: 18,
 		color: "#4a4a4a",
+		alignItems:'center',
+		justifyContent:'center'
 	}
 });
 export default styles;

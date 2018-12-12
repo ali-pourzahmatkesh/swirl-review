@@ -13,13 +13,13 @@ import { isIphoneX } from 'react-native-iphone-x-helper';
 import SplashScreen from 'react-native-splash-screen';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import CustomHeader from "./CustomHeader";
-import BubbleInput from "../_common/BubbleInput";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+import BubbleInput from "../_CommonComponents/BubbleInput";
+import KeyboardAwareButton from "../_CommonComponents/KeyboardAwareButton";
 import logo from "../../assets/images/logo1.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
-import xOpeningGif from "../../assets/anim/opening5.gif";
+import xOpeningGif from "../../assets/animations/opening5.gif";
 const { width, height } = Dimensions.get("window");
 const openingGif = isIphoneX() ? xOpeningGif : null;
 

@@ -5,8 +5,8 @@ import {
     View
 } from "react-native";
 
-import BubbleInput from "../_common/BubbleInput";
-import KeyboardAwareButton from "../_common/KeyboardAwareButton";
+import BubbleInput from "../_CommonComponents/BubbleInput";
+import KeyboardAwareButton from "../_CommonComponents/KeyboardAwareButton";
 import logo from "../../assets/images/logo1.png";
 import {CONFIG} from "../../../config";
 import styles from "./style";
