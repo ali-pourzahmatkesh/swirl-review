@@ -26,7 +26,9 @@ export default class ToastContainer extends Component {
 		hasError: false,
 		errorMessage: "",
 		icon: null,
-		isConnected: true
+		isConnected: true,
+		disabled: true,
+		destination: null
 	};
 
 	timeOut = undefined;
@@ -50,6 +52,9 @@ export default class ToastContainer extends Component {
 			this.customizeToast(nextProps);
 		}
 		this.timeOut = setTimeout(() => {
+			this.setState({
+				disabled: true
+			});
 			this.props.hideToast();
 		}, 4000);
 	}
@@ -71,6 +76,9 @@ export default class ToastContainer extends Component {
 
 	closeToast = () => {
 		clearTimeout(this.timeOut);
+		this.setState({
+			disabled: true
+		});
 		this.props.hideToast();
 	}
 
@@ -122,12 +130,22 @@ export default class ToastContainer extends Component {
 			errorMessage.slice(-10) === 'swirl now!'
 		){
 			newIcon = logo;
+			this.setState({
+				disabled: false,
+				destination: 'MessageDetailScreen'
+			});
 		}
 		else if(
 			errorMessage.slice(-10) === 'added you!' ||
 			errorMessage.slice(-15) === 'added you back!'
 		){
 			newIcon = friendRequest;
+			if(errorMessage.slice(-10) === 'added you!'){
+				this.setState({
+					disabled: false,
+					destination: 'InviteTabsScreen'
+				})
+			}
 		}
 
 		this.setState({
@@ -135,6 +153,25 @@ export default class ToastContainer extends Component {
 			errorMessage: newMessage,
 			icon: newIcon
 		})
+	}
+
+	navigateTo = () => {
+		if(this.state.destination){
+			if(this.state.destination === 'MessageDetailScreen'){
+				this.props.nav.navigate(
+					this.state.destination,
+					{data: this.props.messageData}
+				);
+				this.props.visitMessage({
+					listOfId: [this.props.messageData.id]
+				});
+			}
+			else if(this.state.destination === 'InviteTabsScreen'){
+				this.props.friendRequestFromToast(true)
+				this.props.nav.navigate('InviteTabsScreen');
+			}
+			this.closeToast();
+		}
 	}
 
 	render() {
@@ -149,7 +186,11 @@ export default class ToastContainer extends Component {
 			return null;
 		} else {
 			return (
-				<View style={styles.container}>
+				<TouchableOpacity
+					style={styles.container}
+					onPress={this.navigateTo}
+					disabled={this.state.disabled}
+				>
 					<Image
 							// source={null}
 							source={icon}
@@ -180,7 +221,7 @@ export default class ToastContainer extends Component {
 								resizeMode='contain'
 							/>
 						</TouchableOpacity>
-				</View>
+				</TouchableOpacity>
 			);
 		}
 	}

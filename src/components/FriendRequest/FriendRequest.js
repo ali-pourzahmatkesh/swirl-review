@@ -23,6 +23,7 @@ export default class FriendRequest extends Component {
 	};
 
 	componentDidMount() {
+		this.props.friendRequestFromToast(false)
 		this.props.getListData({
 			receiverMemberId: this.props.id
 		});

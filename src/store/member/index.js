@@ -485,7 +485,8 @@ export const removeUserData = data => {
 			"AUTH:TAPE",
 			"swirlNonFriendContacts",
 			"swirlFriends",
-			"swirlChats"
+			"swirlChats",
+			"swirlFriendRequests"
 		];
 		AsyncStorage.multiRemove(keys)
 			.then(resp => {

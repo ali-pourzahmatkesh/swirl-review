@@ -48,7 +48,7 @@ export const performSetFromLocal = () => {
 		]).then(([
 			list
 		]) => {
-			console.log('*************** performing local set in chaaaaaat', list)
+			// console.log('*************** performing local set in chaaaaaat', list)
 			const propsFromLocal = {
 				list: JSON.parse(list) ? JSON.parse(list) : []
 			};
@@ -186,7 +186,7 @@ export const serverVisitMessage = data => {
 			chatListId: data.listOfId
 		})
 			.then(resp => {
-				console.log("serverVisitMessage response", resp);
+				console.log("serverVisitMessage response %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", resp, data);
 				resolve(data.listOfId);
 			})
 			.catch(err => {

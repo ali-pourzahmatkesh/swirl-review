@@ -1,7 +1,7 @@
 var _ = require("lodash");
 
 export default function(list) {
-	console.log("-------------- SORT AGAIN -----------------");
+	// console.log("-------------- SORT AGAIN -----------------");
 
 	// sort by sender
 	let sortedBySender = list.reduce((sortedObj, message) => {
@@ -14,7 +14,7 @@ export default function(list) {
 		return sortedObj;
 	}, {});
 
-	console.log(list, '_______________ sorted obj', sortedBySender);
+	// console.log(list, '_______________ sorted obj', sortedBySender);
 
 	let readyOnTop = [];
 	let pendingOnTop = [];
@@ -22,7 +22,7 @@ export default function(list) {
 
 	// need to sort the messages for each sender
 	for(sender in sortedBySender){
-		console.log('sender', sender);
+		// console.log('sender', sender);
 		// messges grouped 3 ways
 		let ready = [];
 		let pending = [];
@@ -99,9 +99,9 @@ export default function(list) {
 		return new Date(messageListB[0].createdAt) - new Date(messageListA[0].createdAt);
 	});
 
-	console.log('readyOnTop', readyOnTop);
-	console.log('pendingOnTop', pendingOnTop);
-	console.log('seenOnTop', seenOnTop);
+	// console.log('readyOnTop', readyOnTop);
+	// console.log('pendingOnTop', pendingOnTop);
+	// console.log('seenOnTop', seenOnTop);
 
 
 	return _.concat(readyOnTop, pendingOnTop, seenOnTop);

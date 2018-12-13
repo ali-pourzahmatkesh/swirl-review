@@ -8,6 +8,7 @@ import { AppState } from "react-native";
 import { updateAppStatus } from "./src/store/app";
 import { setMemberFromLocal } from "./src/store/member";
 import { setChatFromLocal } from "./src/store/chat";
+import { setFriendRequestFromLocal } from "./src/store/friendRequest";
 
 export default class App extends Component {
 	state = {
@@ -18,7 +19,8 @@ export default class App extends Component {
 		AppState.addEventListener("change", this._handleAppStateChange);
 		
 		store.dispatch(setMemberFromLocal());
-		store.dispatch(setChatFromLocal())
+		store.dispatch(setChatFromLocal());
+		store.dispatch(setFriendRequestFromLocal());
 	}
 
 	_handleAppStateChange = nextAppState => {

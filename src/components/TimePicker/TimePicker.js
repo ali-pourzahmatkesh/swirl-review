@@ -72,6 +72,7 @@ export default class TimePicker extends Component {
                 ){
                     if(i < 12){
                         let hourString = i < 10 ? `0${i}` : `${i}`;
+                        hourString = hourString === '00' ? '12' : hourString;
                         items.push(
                             <Picker.Item
                                 key={i}
@@ -87,6 +88,7 @@ export default class TimePicker extends Component {
                 ){
                     let hourPm = i - 12;
                     let hourString = hourPm < 10 ? `0${hourPm}` : `${hourPm}`;
+                    hourString = hourString === '00' ? '12' : hourString;
                     items.push(
                         <Picker.Item
                             key={i}

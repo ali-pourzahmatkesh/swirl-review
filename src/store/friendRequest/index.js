@@ -14,7 +14,11 @@ export const GET_LIST_DATA = "FRIEND_REQUEST_GET_LIST_DATA",
 	CANCEL_SUCCESS = "FRIEND_REQUEST_CANCEL_SUCCESS",
 	CANCEL_FAILED = "FRIEND_REQUEST_CANCEL_FAILED",
 	// -------------------------------------------------------------------------
-	RESET_ADDED_IDS = "FRIEND_RESET_ADDED_IDS";
+	RESET_ADDED_IDS = "FRIEND_RESET_ADDED_IDS",
+	// -------------------------------------------------------------------------
+	SET_FROM_LOCAL = "FRIEND_REQUEST_SET_FROM_LOCAL",
+	SET_FROM_LOCAL_SUCCESS = "FRIEND_REQUEST_SET_FROM_LOCAL_SUCCESS",
+	SET_FROM_LOCAL_FAILED = "FRIEND_REQUEST_SET_FROM_LOCAL_FAILED";
 // -------------------------------------------------------------------------
 // INITIAL_STATE = "FRIEND_REQUEST_INITIAL_STATE",
 // GET_FRIENDSHIP_STATUS = "FRIEND_REQUEST_GET_FRIENDSHIP_STATUS",
@@ -31,12 +35,50 @@ export const GET_LIST_DATA = "FRIEND_REQUEST_GET_LIST_DATA",
 // 	"FRIEND_REQUEST_CANCEL_REQUESTED_FRIENDSHIP_FAILED";
 
 import { getData, put, post } from "../appService";
+import {AsyncStorage} from 'react-native';
+import { setItem, getItem, removeItem } from "../storage";
 
 export const resetAddedIds = () => {
 	return {
 		type: RESET_ADDED_IDS
 	}
 }
+
+export const setFriendRequestFromLocal = () => {
+	return {
+		type: SET_FROM_LOCAL
+	}
+};
+
+export const performSetFromLocal = () => {
+	return new Promise((resolve, reject) => {
+		Promise.all([
+			AsyncStorage.getItem('swirlFriendRequests')
+		])
+			.then(([list]) => {
+				const propsFromLocal = {
+					list: JSON.parse(list)
+						? JSON.parse(list)
+						: [],
+				};
+				resolve(propsFromLocal);
+			})
+			.catch(err => {
+				console.log("err setting", err);
+				reject(err);
+			});
+	});
+};
+
+export const setFromLocalSuccess = data => ({
+	type: SET_FROM_LOCAL_SUCCESS,
+	payload: data
+});
+
+export const setFromLocalFailed = err => ({
+	type: SET_FROM_LOCAL_FAILED,
+	payload: err
+});
 
 // ---------------------------------------------------------------------------
 
@@ -49,7 +91,14 @@ export const fetchGetListData = data => {
 	return new Promise((resolve, reject) => {
 		getData("/api/v1/friendship-requests", data)
 			.then(resp => {
-				resolve(resp.data);
+				console.log('attempting to set the friend list in local memory', resp.data)
+				setItem("swirlFriendRequests", JSON.stringify(resp.data))
+					.then(() => {
+						resolve(resp.data);
+					})
+					.catch(err => {
+						reject(err);
+					});
 			})
 			.catch(err => {
 				reject(err);

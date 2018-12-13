@@ -6,6 +6,7 @@ import {
 	callApprove,
 	callCancel
 } from "../../store/friendRequest";
+import { friendRequestFromToast } from "../../store/app";
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
@@ -19,7 +20,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getListData: data => dispatch(getListData(data)),
 	callApprove: id => dispatch(callApprove(id)),
-	callCancel: id => dispatch(callCancel(id))
+	callCancel: id => dispatch(callCancel(id)),
+	friendRequestFromToast: data => dispatch(friendRequestFromToast(data))
 });
 
 export default withNavigation(
