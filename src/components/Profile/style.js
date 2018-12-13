@@ -57,7 +57,8 @@ const STYLES = StyleSheet.create({
     },
     optionText: {
         fontSize: 16,
-        fontFamily: 'MuseoSansRounded-500'
+        fontFamily: 'MuseoSansRounded-500',
+        color: 'white'
     },
     optionArrow: {
         paddingRight: '5%'

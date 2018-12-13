@@ -1,18 +1,40 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
 	Image,
 	Text,
 	TouchableOpacity,
 	View,
-	ImageBackground
+	ImageBackground,
+	Dimensions
 } from "react-native";
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import styles from "./style";
 import close from "../../assets/images/icons/close_red.png";
 import { CONFIG } from "../../../config";
-import background from "../../assets/images/swirlBackground.png";
+import xOpeningGif from "../../assets/animations/messageOpenX.gif";
+import notXOpeningGif from "../../assets/animations/messageOpen.gif";
+import xBackground from "../../assets/animations/messageOpenXBackground.png";
+import notXBackground from "../../assets/animations/messageOpenBackground.png";
+const { height, width } = Dimensions.get('window');
+
+const openingGif = isIphoneX() ? xOpeningGif : notXOpeningGif;
+const background = isIphoneX() ? xBackground : notXBackground;
 const colors = CONFIG.colors;
 
 export default class MessageDetail extends Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			animationDone: false
+		}
+	}
+	componentDidMount(){
+		setTimeout(() => {
+			this.setState({
+				animationDone: true
+			})
+		}, 600)
+	}
 	loadContent = () => {
 		const { navigation } = this.props;
 		const data = navigation.getParam("data");
@@ -85,6 +107,26 @@ export default class MessageDetail extends Component {
 	};
 
 	render() {
-		return this.loadContent();
+		return (
+			<Fragment>
+			{
+				!this.state.animationDone &&	
+				<Image
+					source={openingGif}
+					style={{
+						height,
+						width,
+						// borderWidth: 10,
+						position: 'absolute',
+						zIndex: 2,
+						margin: 'auto',
+						// top: ((gifHeight * 0.5) - (height * 0.5)) * -1,
+						// left: ((gifWidth * 0.5) - (width * 0.5)) * -1,
+					}}
+				/>
+			}
+				{this.loadContent()}
+			</Fragment>
+		)
 	}
 }

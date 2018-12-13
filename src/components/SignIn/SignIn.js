@@ -19,9 +19,10 @@ import logo from "../../assets/images/logo1.png";
 import passwordIcon from "../../assets/images/icons/password3.png";
 import appCss from "../../../app.css";
 import styles from "./style";
-import xOpeningGif from "../../assets/animations/opening5.gif";
+import xOpeningGif from "../../assets/animations/openingX.gif";
+import notXOpeningGif from "../../assets/animations/opening.gif";
 const { width, height } = Dimensions.get("window");
-const openingGif = isIphoneX() ? xOpeningGif : null;
+const openingGif = isIphoneX() ? xOpeningGif : notXOpeningGif;
 
 export default class SignIn extends Component {
 	constructor(props) {

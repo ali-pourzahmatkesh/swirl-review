@@ -15,14 +15,14 @@ import appCss from "../../../app.css";
 import styles from "./style";
 // import ImageCropPic from "../ImageCropPic";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import changeNameRed from "../../assets/images/icons/profile3.png";
-import changePassword from "../../assets/images/icons/passwordOrange1.png";
-import termsOfUseSwirl from "../../assets/images/icons/termsOfUse2.png";
-import privacyPolicySwirl from "../../assets/images/icons/privacyPolicy1.png";
+import changeName from "../../assets/images/profileIcons/profile.png";
+import changePassword from "../../assets/images/profileIcons/password.png";
+import termsOfUseSwirl from "../../assets/images/profileIcons/termsOfUse.png";
+import privacyPolicySwirl from "../../assets/images/profileIcons/privacyPolicy.png";
 // import editIcon from "../../assets/images/icons/edit.png";
 import editIcon from "../../assets/images/icons/edit2.png";
-import feedback from "../../assets/images/icons/feedback1.png";
-import logout from "../../assets/images/icons/logout1.png";
+import feedback from "../../assets/images/profileIcons/feedback.png";
+import logout from "../../assets/images/profileIcons/logout.png";
 import ImagePicker from "react-native-image-picker";
 var CryptoJS = require("crypto-js");
 import ImageCropPicker from "react-native-image-crop-picker";
@@ -79,7 +79,7 @@ export default class Profile extends Component {
 
 	renderOption = ({ item, index }) => {
 		return (
-			<View style={[styles.optionContainer, index === 0 && {marginTop: 0}]}>
+			<View style={[styles.optionContainer, index === 0 && {marginTop: 0}, {backgroundColor: item.backgroundColor}]}>
 				<View style={styles.optionIconContainer}>
 					<Image
 						source={item.icon}
@@ -225,14 +225,16 @@ export default class Profile extends Component {
 					//     clickHandler: () => this.goTo("ChangeInfoScreen")
 					// },
 					{
-						icon: changeNameRed,
+						icon: changeName,
 						name: "Change Username",
-						clickHandler: () => this.goTo("ChangeInfoScreen")
+						clickHandler: () => this.goTo("ChangeInfoScreen"),
+						backgroundColor: '#01C7FE'
 					},
 					{
 						icon: changePassword,
 						name: "Change Password",
-						clickHandler: () => this.goTo("ChangePasswordFromProfileScreen")
+						clickHandler: () => this.goTo("ChangePasswordFromProfileScreen"),
+						backgroundColor: '#FFB100'
 					}
 				]
 			},
@@ -242,12 +244,14 @@ export default class Profile extends Component {
 					{
 						icon: termsOfUseSwirl,
 						name: "Terms of Use",
-						clickHandler: () => this.goTo("TermsAndConditionsScreen")
+						clickHandler: () => this.goTo("TermsAndConditionsScreen"),
+						backgroundColor: '#DA64FF'
 					},
 					{
 						icon: privacyPolicySwirl,
 						name: "Privacy Policy",
-						clickHandler: () => this.goTo("PrivacyPolicyScreen")
+						clickHandler: () => this.goTo("PrivacyPolicyScreen"),
+						backgroundColor: '#4CD964'
 					}
 				]
 			},
@@ -257,12 +261,14 @@ export default class Profile extends Component {
 					{
 						icon: feedback,
 						name: "Support",
-						clickHandler: () => this.goTo("FeedbackScreen")
+						clickHandler: () => this.goTo("FeedbackScreen"),
+						backgroundColor: '#00AFF0'
 					},
 					{
 						icon: logout,
 						name: "Logout",
-						clickHandler: () => this.handleSignOut()
+						clickHandler: () => this.handleSignOut(),
+						backgroundColor: '#FC003E'
 					}
 				]
 			},

@@ -26,9 +26,10 @@ import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
 import sortChatList from "../../util/sortChatList";
 
-import xOpeningGif from "../../assets/animations/opening5.gif";
+import xOpeningGif from "../../assets/animations/openingX.gif";
+import notXOpeningGif from "../../assets/animations/opening.gif";
 
-const openingGif = isIphoneX() ? xOpeningGif : null;
+const openingGif = isIphoneX() ? xOpeningGif : notXOpeningGif;
 const { height, width } = Dimensions.get('window');
 const _ = require("lodash");
 
@@ -429,7 +430,7 @@ class Home extends Component {
 								ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
 								refreshControl={
 									<RefreshControl
-										refreshing={refreshing}
+										refreshing={!this.props.finishedEntry ? false : refreshing}
 										// refreshing={false}
 										onRefresh={() => {
 											this.onRefresh();
