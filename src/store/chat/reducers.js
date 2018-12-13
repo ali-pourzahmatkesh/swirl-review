@@ -63,6 +63,7 @@ import { showToast } from "../toast";
 import { Cmd, loop } from "redux-loop";
 // import defaultMoment from "moment";
 // import moment from "moment-timezone";
+import { setItem, getItem, removeItem } from "../storage";
 import sortChatList from "../../util/sortChatList";
 const _ = require("lodash");
 
@@ -277,6 +278,7 @@ const chat = (state = initialState, action) => {
 					return item;
 				});
 			}
+			setItem('swirlChats', JSON.stringify(list));
 
 			return {
 				...state,

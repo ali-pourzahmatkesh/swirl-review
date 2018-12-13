@@ -431,7 +431,6 @@ class Home extends Component {
 								refreshControl={
 									<RefreshControl
 										refreshing={!this.props.finishedEntry ? false : refreshing}
-										// refreshing={false}
 										onRefresh={() => {
 											this.onRefresh();
 										}}
