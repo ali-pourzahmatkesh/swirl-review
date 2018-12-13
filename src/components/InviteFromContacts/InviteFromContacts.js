@@ -56,6 +56,9 @@ export default class InviteFromContacts extends Component {
 	}
 
 	componentDidMount() {
+		if(this.props.fromToast){
+			this.props.navigation.navigate('FriendRequests')
+		}
 		if (this.props.membersFromContactsAreNotFriend.length > 0) {
 			this.setState({
 				finalList: this.generateSectionList(
@@ -191,7 +194,6 @@ export default class InviteFromContacts extends Component {
 						</Text>
 					</View>
 				}
-
 				<SectionList
 					sections={this.state.finalList}
 					extraData={this.state.finalList}

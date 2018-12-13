@@ -6,11 +6,12 @@ const toast = (state = { hasError: false, errorMessage: "" }, action) => {
 			return {
 				...state,
 				hasError: action.payload.hasError,
-				errorMessage: action.payload.errorMessage
+				errorMessage: action.payload.errorMessage,
+				messageData: action.payload.messageData
 			};
 		}
 		case HIDE_TOAST: {
-			return { ...state, hasError: false, errorMessage: "" };
+			return { ...state, hasError: false, errorMessage: "", messageData: null };
 		}
 		default: {
 			return { ...state };

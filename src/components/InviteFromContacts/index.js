@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
 	loadType: state.app.friendRequest.loadType,
 	actionTarget: state.app.friendRequest.actionTarget,
 	hasError: state.app.friendRequest.hasError,
-	successfullyAddedIds: state.app.friendRequest.successfullyAddedIds
+	successfullyAddedIds: state.app.friendRequest.successfullyAddedIds,
+	fromToast: state.app.appReducer.fromToast
 });
 
 const mapDispatchToProps = dispatch => ({

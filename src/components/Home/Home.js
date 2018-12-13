@@ -20,6 +20,7 @@ import profile from "../../assets/images/icons/profile.png";
 import addMessage from "../../assets/images/icons/Group.png";
 import addFriend from "../../assets/images/icons/addFriend1.png"
 import emptyIcon from "../../assets/images/icons/messageEmpty.png";;
+import friendRequestAvailable from "../../assets/images/icons/friendRequest.png";
 import EmptyList from "../EmptyList";
 import ChatInfo from "./ChatInfo";
 import MessagePopup from "../MessagePopup";
@@ -113,10 +114,8 @@ class Home extends Component {
 	}
 
 	handleSplashAnim = () => {
-		console.log('hiding the screen ************************', new Date())
 		SplashScreen.hide();
 		setTimeout(() => {
-			console.log('toggle off gif ****************************************************', new Date())
 			this.setState({
 				animHasRun: true,
 				animCanRun: false
@@ -132,8 +131,12 @@ class Home extends Component {
 			this.props.chatGetList({
 				id: this.props.id,
 			});
+			this.props.getListData({
+				receiverMemberId: this.props.id
+			});
+			this.props.setNav(this.props.navigation);
 		}, 1);
-		console.log('mounted the home screen ****************', new Date())
+		console.log('mounted the home screen ****************', this.props.friendRequests)
 		if(!this.props.finishedEntry){
 			console.log('capping timeout ************')
 			this.capLoadingScreenTime = setTimeout(() => {
@@ -210,7 +213,7 @@ class Home extends Component {
 									localTimerFunctions[`${message.id}`] = setTimeout(() => {
 										// once the interval is over, the message is ready
 										// we should show an in app notification here
-										this.props.showToast(`Open ${message.senderName}'s swirl now!`);
+										this.props.showToast(`Open ${message.senderName}'s swirl now!`, message);
 
 										// this needs to happen because we're not sure of the state
 										// at the time of the interval's end
@@ -278,7 +281,7 @@ class Home extends Component {
 					<Image
 						style={styles.headerIcon}
 						resizeMode={"contain"}
-						source={addFriend}
+						source={this.props.friendRequests.length === 0 ? addFriend : friendRequestAvailable}
 					/>
 				</TouchableOpacity>
 				<View style={appCss.headerLogoBox}>
@@ -349,7 +352,7 @@ class Home extends Component {
 		} = this.state;
 
 		const {
-			navigation
+			navigation,
 		} = this.props;
 		const scrollEvent = Animated.event([
 			{
@@ -427,6 +430,7 @@ class Home extends Component {
 								refreshControl={
 									<RefreshControl
 										refreshing={refreshing}
+										// refreshing={false}
 										onRefresh={() => {
 											this.onRefresh();
 										}}

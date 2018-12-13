@@ -97,14 +97,13 @@ export default class SocketWatcher extends Component {
 		// });
 
 		io.socket.on('new_chat', data => {
-			console.log('receive new chat message', data);
 			chatReceiveNewMessage(data);
 
 			if(new Date(data.createdAt) > new Date(data.availableAt)){
-				showToast(`Open ${data.senderName}'s swirl now!`);
+				showToast(`Open ${data.senderName}'s swirl now!`, data);
 			}
 			else if(!data.availableSoon){
-				showToast(`${data.senderName} just swirled you!`)
+				showToast(`${data.senderName} just swirled you!`, data)
 			}
 			// if are in Home page add this notification to list of notify them
 			//console.log("in page", this.props.currentPage);

@@ -27,7 +27,16 @@ import {
 	fetchCancelSuccess,
 	fetchCancelFailed,
 	// -------------------------------------------------------------------------
-	RESET_ADDED_IDS
+	RESET_ADDED_IDS,
+	// ---------
+	SET_FROM_LOCAL,
+	SET_FROM_LOCAL_SUCCESS,
+	SET_FROM_LOCAL_FAILED,
+	performSetFromLocal,
+	setFromLocalSuccess,
+	setFromLocalFailed,
+	// ---------
+	
 	// INITIAL_STATE,
 	// GET_FRIENDSHIP_STATUS,
 	// GET_FRIENDSHIP_STATUS_SUCCESS,
@@ -48,37 +57,67 @@ import {
 	// serverCancelRequestedFriendshipSuccess,
 	// serverCancelRequestedFriendshipFailed
 } from "./";
+import {FETCH_LOGOUT} from "../member";
 import { showToast } from "../toast";
 import { loop, Cmd } from "redux-loop";
 const _ = require("lodash");
 
-const friendRequest = (
-	state = {
-		isLoadingFetch: false,
-		errorMessage: "",
-		hasError: false,
-		userData: {},
-		list: [],
-		refreshing: false,
-		loading: false,
-		count: 0,
-		listAddFriend: [],
-		refreshingAddFriend: false,
-		loadingAddFriend: false,
-		countAddFriend: 0,
-		friendshipRequestStatus: "connect",
-		loadType: '',
-		actionTarget: '',
-		successfullyAddedIds: []
-	},
-	action
-) => {
+const initialState = {
+	isLoadingFetch: false,
+	errorMessage: "",
+	hasError: false,
+	userData: {},
+	list: [],
+	refreshing: false,
+	loading: false,
+	count: 0,
+	listAddFriend: [],
+	refreshingAddFriend: false,
+	loadingAddFriend: false,
+	countAddFriend: 0,
+	friendshipRequestStatus: "connect",
+	loadType: '',
+	actionTarget: '',
+	successfullyAddedIds: []
+};
+
+const friendRequest = (state = initialState, action) => {
 	switch (action.type) {
 		case RESET_ADDED_IDS: {
 			return {
 				...state,
 				successfullyAddedIds: []
 			}
+		}
+
+		// ---------------------------------------------------------------------------
+
+		case SET_FROM_LOCAL: {
+			return loop(
+				{
+					...state
+				},
+				Cmd.run(performSetFromLocal, {
+					successActionCreator: setFromLocalSuccess,
+					failActionCreator: setFromLocalFailed,
+					args: [action.payload]
+				})
+			);
+		}
+
+		case SET_FROM_LOCAL_SUCCESS: {
+			console.log("finished setting from local successfully", action.payload);
+			return {
+				...state,
+				...action.payload
+			};
+		}
+
+		case SET_FROM_LOCAL_FAILED: {
+			console.log("failed setting from local friend requests", action.payload);
+			return {
+				...state
+			};
 		}
 
 		// ---------------------------------------------------------------------------
@@ -329,6 +368,11 @@ const friendRequest = (
 		}
 
 		// ---------------------------------------------------------------------------
+
+		case FETCH_LOGOUT: {
+			console.log('fetching logout from member while inside friend request');
+			return { ...state, ...initialState};
+		}
 
 		default: {
 			return { ...state };

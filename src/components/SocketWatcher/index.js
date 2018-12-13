@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
 	// getListOfFriendRequests: data => dispatch(getListOfFriendRequests(data)),
 	// getFriendshipStatus: data => dispatch(getFriendshipStatus(data)),
 	// addNotificationToStack: data => dispatch(addNotificationToStack(data))
-	showToast: message => dispatch(showToast(true, message)),
+	showToast: (message, messageData = null) => dispatch(showToast(true, message, messageData)),
 	getListData: data => dispatch(getListData(data)),
 });
 

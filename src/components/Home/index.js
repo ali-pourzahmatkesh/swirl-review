@@ -3,11 +3,18 @@ import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { chatGetList, visitMessage, chatSetStore } from "../../store/chat";
 import { showToast } from "../../store/toast";
-import { finishEntry } from "../../store/app";
+import {
+	finishEntry,
+	setNav
+} from "../../store/app";
+import {
+	getListData,
+} from "../../store/friendRequest";
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
 	chatList: state.app.chat.list,
+	friendRequests: state.app.friendRequest.list,
 	resorted: state.app.chat.resorted,
 	chatListRefreshing: state.app.chat.refreshing,
 	isNewMessage: state.app.chat.isNewMessage,
@@ -19,9 +26,10 @@ const mapDispatchToProps = dispatch => {
 		chatGetList: data => dispatch(chatGetList(data)),
 		visitMessage: data => dispatch(visitMessage(data)),
 		chatSetStore: data => dispatch(chatSetStore(data)),
-		visitMessage: data => dispatch(visitMessage(data)),
-		showToast: message => dispatch(showToast(true, message)),
-		finishEntry: () => dispatch(finishEntry())
+		showToast: (message, messageData = null) => dispatch(showToast(true, message, messageData)),
+		finishEntry: () => dispatch(finishEntry()),
+		getListData: data => dispatch(getListData(data)),
+		setNav: nav => dispatch(setNav(nav))
 	};
 };
 

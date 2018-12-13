@@ -1,12 +1,13 @@
 export const SHOW_TOAST = "APP_SHOW_TOAST",
 	HIDE_TOAST = "APP_HIDE_TOAST";
 
-export const showToast = (hasError, errorMessage) => {
+export const showToast = (hasError, errorMessage, messageData = null) => {
 	return {
 		type: SHOW_TOAST,
 		payload: {
 			hasError,
-			errorMessage
+			errorMessage,
+			messageData
 		}
 	};
 };

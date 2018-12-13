@@ -2,7 +2,9 @@ import {
 	//UPDATE_GPS_STATUS,
 	UPDATE_APP_STATUS,
 	SET_CURRENT_PAGE,
-	FINISH_ENTRY
+	FINISH_ENTRY,
+	SET_NAV,
+	FRIEND_REQUEST_FROM_TOAST
 } from "./";
 
 const initialState = {
@@ -10,7 +12,9 @@ const initialState = {
 	// gpsMode: "always", // "never", "inApp", "always"
 	app: "active", // "active", "inactive"
 	currentPage: "Home",
-	finishedEntry: false
+	finishedEntry: false,
+	nav: null,
+	fromToast: false
 };
 
 const app = (state = initialState, action) => {
@@ -27,6 +31,14 @@ const app = (state = initialState, action) => {
 
 		case FINISH_ENTRY: {
 			return {...state, finishedEntry: true};
+		}
+
+		case SET_NAV: {
+			return {...state, nav: action.payload}
+		}
+
+		case FRIEND_REQUEST_FROM_TOAST: {
+			return {...state, fromToast: action.payload}
 		}
 
 		default:
