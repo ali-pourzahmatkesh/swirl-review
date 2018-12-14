@@ -1,6 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const { height, width } = Dimensions.get('window');
 import {CONFIG} from '../../../config';
+import {isIphoneX} from "react-native-iphone-x-helper";
 const colors = CONFIG.colors;
 const styles = StyleSheet.create({
     container:{
@@ -68,23 +69,30 @@ const styles = StyleSheet.create({
         backgroundColor: colors.appColor,
         opacity: 0.1,
         position: 'absolute',
-        left: 0
+        left: 0,
     },
     picker: {
         height: '100%',
-        width: 100,
+        // width: 100,
+        width: width * 0.3,
+        borderWidth: 0
     },
     pickerItem: {
         height: '100%',
-        color: colors.appColor,
-        fontSize: 64,
-        fontFamily: 'MuseoSansRounded-900'
+        color: colors.appColor, 
+        fontSize: (((height - (isIphoneX() ? 120 : 0)) / 850) * 27)+ 37,
+        // fontSize: 64,
+        fontFamily: 'MuseoSansRounded-900',
+        
 
     },
     timeDivider: {
         color: colors.appColor,
-        fontSize: 64,
-        fontFamily: 'MuseoSansRounded-900'
+        fontSize: (((height - (isIphoneX() ? 120 : 0)) / 850) * 27)+ 37,
+        // fontSize: 64,
+        fontFamily: 'MuseoSansRounded-900',
+        borderWidth: 0,
+        marginTop: -10
     },
 
 

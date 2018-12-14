@@ -7,12 +7,13 @@ import {
     TouchableOpacity,
     Dimensions
 } from "react-native";
+import {isIphoneX} from "react-native-iphone-x-helper";
 import DeviceInfo from 'react-native-device-info';
 import momentTz from "moment-timezone";
 import styles from './style'
 const MAX_HOURS = 23;
 const MAX_MINUTES = 59;
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 export default class TimePicker extends Component {
     static propTypes = {
         selectedHours: PropTypes.number,
@@ -299,8 +300,8 @@ export default class TimePicker extends Component {
                 {
                     !twentyFourHour &&
                     <Picker
-                        style={styles.picker}
-                        itemStyle={styles.pickerItem}
+                        style={[styles.picker, {width: width * 0.25, borderWidth: 0, marginLeft: width * -0.06}]}
+                        itemStyle={[styles.pickerItem, {fontSize: (((height - (isIphoneX() ? 120 : 0)) / 850) * 30)+ 15}]}
                         selectedValue={selectedDayHalf}
                         onValueChange={( itemValue ) => this.handleChangeDayHalf(itemValue)}
                     >
