@@ -130,10 +130,15 @@ export default class ToastContainer extends Component {
 			errorMessage.slice(-10) === 'swirl now!'
 		){
 			newIcon = logo;
-			this.setState({
-				disabled: false,
-				destination: 'MessageDetailScreen'
-			});
+			if(
+				nextProps.messageData &&
+				new Date(nextProps.messageData.availableAt) < new Date()
+			){
+				this.setState({
+					disabled: false,
+					destination: 'MessageDetailScreen'
+				});
+			}
 		}
 		else if(
 			errorMessage.slice(-10) === 'added you!' ||
