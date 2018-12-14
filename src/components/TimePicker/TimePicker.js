@@ -169,7 +169,7 @@ export default class TimePicker extends Component {
                 <Picker.Item
                     key={i}
                     // has to be a string or integer
-                    value={JSON.stringify(momentTz(dateValue))}
+                    value={JSON.stringify(dateValue.toDate())}
                     label={dateString}
                 />
             );
@@ -237,7 +237,7 @@ export default class TimePicker extends Component {
         let newMoment = momentTz(this.state.selectedMoment);
         newMoment.year(newDay.year());
         newMoment.month(newDay.month());
-        newMoment.day(newDay.day());
+        newMoment.date(newDay.date());
         if(newMoment.isBefore(this.state.currentMoment)){
             newMoment = momentTz(this.state.currentMoment);
         }
