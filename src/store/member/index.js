@@ -249,19 +249,30 @@ export const getMembersAreInMyContactsThatNotFriend = data => ({
 
 export const serverGetMemberFromContacts = data => {
 	return new Promise((resolve, reject) => {
-		post("/api/v1/member/action/not-friend", data)
-			.then(resp => {
-				setItem("swirlNonFriendContacts", JSON.stringify(resp.data))
-					.then(() => {
-						resolve(resp.data);
-					})
-					.catch(err => {
-						reject(err);
-					});
-			})
-			.catch(err => {
-				reject(err);
-			});
+		if(data.numberList.length === 0){
+			setItem("swirlNonFriendContacts", JSON.stringify([]))
+						.then(() => {
+							resolve([]);
+						})
+						.catch(err => {
+							reject(err);
+						});
+		}
+		else{
+			post("/api/v1/member/action/not-friend", data)
+				.then(resp => {
+					setItem("swirlNonFriendContacts", JSON.stringify(resp.data))
+						.then(() => {
+							resolve(resp.data);
+						})
+						.catch(err => {
+							reject(err);
+						});
+				})
+				.catch(err => {
+					reject(err);
+				});
+		}
 	});
 };
 

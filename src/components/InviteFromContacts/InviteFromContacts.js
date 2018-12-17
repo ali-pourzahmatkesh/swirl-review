@@ -82,7 +82,8 @@ export default class InviteFromContacts extends Component {
 				pg.getContactsWithRange(0, count, [PagedContacts.phoneNumbers]).then(
 					contacts => {
 						this.setState({ contacts });
-						if (contacts.length > 0) {
+						// allows for empty contacts list
+						if(Array.isArray(contacts)){
 							this.getAllPhoneNumbers(contacts);
 						}
 					}

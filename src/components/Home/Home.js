@@ -125,21 +125,29 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
+		const {
+			chatGetList,
+			chatList,
+			id,
+			getListData,
+			setNav,
+			navigation,
+			finishedEntry
+		} = this.props;
+		
 		this.setState({
-			list: this.props.chatList
+			list: chatList
 		})
 		setTimeout(() => {
-			this.props.chatGetList({
-				id: this.props.id,
+			chatGetList({
+				id,
 			});
-			this.props.getListData({
-				receiverMemberId: this.props.id
+			getListData({
+				receiverMemberId: id
 			});
-			this.props.setNav(this.props.navigation);
+			setNav(navigation);
 		}, 1);
-		console.log('mounted the home screen ****************', this.props.friendRequests)
-		if(!this.props.finishedEntry){
-			console.log('capping timeout ************')
+		if(!finishedEntry){
 			this.capLoadingScreenTime = setTimeout(() => {
 				this.setState({
 					animCanRun: true,
@@ -150,7 +158,18 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("componentWillReceiveProps", nextProps);
+		// set up once id is available
+		if(!this.props.id && nextProps.id){
+			this.props.chatGetList({
+				id: nextProps.id,
+			});
+			this.props.getListData({
+				receiverMemberId: nextProps.id
+			})
+		}
+
+
+
 		if (
 			!this.state.animHasRun &&
 			!nextProps.chatListRefreshing &&
@@ -160,18 +179,6 @@ class Home extends Component {
 			if(this.capLoadingScreenTime){
 				clearTimeout(this.capLoadingScreenTime);
 			}
-			// this.setState({
-			// 	animCanRun: true
-			// }, () => {
-			// 	console.log('cleared the timeout and got a response instead ************************************************************************')
-			// 	SplashScreen.hide();
-			// 	setTimeout(() => {
-			// 		this.setState({
-			// 			animHasRun: true,
-			// 			animCanRun: false
-			// 		}, () => this.props.finishEntry())
-			// 	}, 600); // removes image tag at about the time the animation finishes
-			// })
 			this.setState({
 				animCanRun: true
 			}, this.handleSplashAnim)
@@ -261,14 +268,16 @@ class Home extends Component {
 		}
 	}
 
-	handleSubmit = () => {
+	toProfile = () => {
+		// this.props.navigation.push('ProfileScreen');
 		this.props.navigation.push("ProfileScreen", {
 			userId: 1, //item.memberId,
 			x: 1
 		});
+
 	};
 
-	handleInviteSubmit = () => {
+	toFriendTabs = () => {
 		this.props.navigation.push("InviteTabsScreen");
 	};
 
@@ -276,7 +285,7 @@ class Home extends Component {
 		return (
 			<View style={appCss.header}>
 				<TouchableOpacity
-					onPress={this.handleInviteSubmit}
+					onPress={this.toFriendTabs}
 					style={styles.headerIconBox}
 				>
 					<Image
@@ -299,7 +308,7 @@ class Home extends Component {
 				</View>
 				<TouchableOpacity
 					style={styles.headerIconBox}
-					onPress={this.handleSubmit}
+					onPress={this.toProfile}
 				>
 					<Image
 						style={styles.headerIcon}
@@ -318,24 +327,9 @@ class Home extends Component {
 		});
 	};
 
+	// this doesn't do anything right now
 	handleLoadMore = () => {
 		console.log("handleLoadMore", this.state.list.length);
-		// todo
-		// if (this.state.list.length) {
-		// 	let lastMessage = _.minBy(this.state.list, "identifier");
-		// 	let lastIdentifier = lastMessage.identifier;
-		// 	console.log("lastIdentifier", lastIdentifier);
-		// 	// if (this.state.lastIdentifier != lastIdentifier) {
-		// 	this.setState({ lastIdentifier: lastIdentifier }, () => {
-		// 		console.log("call more page", lastIdentifier);
-		// 		this.props.chatGetList({
-		// 			id: this.props.id,
-		// 			identifier: lastIdentifier,
-		// 			refreshing: false
-		// 		});
-		// 	});
-		// 	// }
-		// }
 	};
 	
 	componentWillUnmount() {
@@ -438,6 +432,7 @@ class Home extends Component {
 									/>
 								}
 								onEndReachedThreshold={0.3}
+								// this doesn't do anything right now
 								onEndReached={() => {
 									this.handleLoadMore();
 								}}
