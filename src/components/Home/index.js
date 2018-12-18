@@ -4,6 +4,10 @@ import { connect } from "react-redux";
 import { chatGetList, visitMessage, chatSetStore } from "../../store/chat";
 import { showToast } from "../../store/toast";
 import {
+	visitNotification,
+	callGetProfile
+} from "../../store/member";
+import {
 	finishEntry,
 	setNav
 } from "../../store/app";
@@ -13,6 +17,7 @@ import {
 
 const mapStateToProps = state => ({
 	id: state.app.member.userData.id,
+	userData: state.app.member.userData,
 	chatList: state.app.chat.list,
 	friendRequests: state.app.friendRequest.list,
 	resorted: state.app.chat.resorted,
@@ -29,7 +34,9 @@ const mapDispatchToProps = dispatch => {
 		showToast: (message, messageData = null) => dispatch(showToast(true, message, messageData)),
 		finishEntry: () => dispatch(finishEntry()),
 		getListData: data => dispatch(getListData(data)),
-		setNav: nav => dispatch(setNav(nav))
+		setNav: nav => dispatch(setNav(nav)),
+		visitNotification: data => dispatch(visitNotification(data)),
+		callGetProfile: id => dispatch(callGetProfile(id))
 	};
 };
 

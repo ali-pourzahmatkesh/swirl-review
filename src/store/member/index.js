@@ -112,7 +112,12 @@ export const CHAT_GET_LIST_DATA = "CHAT_CHAT_GET_LIST_DATA",
 	//--------
 	SET_FROM_LOCAL = "MEMBER_SET_FROM_LOCAL",
 	SET_FROM_LOCAL_SUCCESS = "MEMBER_SET_FROM_LOCAL_SUCCESS",
-	SET_FROM_LOCAL_FAILED = "MEMBER_SET_FROM_LOCAL_FAILED";
+	SET_FROM_LOCAL_FAILED = "MEMBER_SET_FROM_LOCAL_FAILED",
+	//--------
+	VISIT_NOTIFICATION = "MEMBER_VISIT_NOTIFICATION",
+	VISIT_NOTIFICATION_SUCCESS = "MEMBER_VISIT_NOTIFICATION_SUCCESS",
+	VISIT_NOTIFICATION_FAILED = "MEMBER_VISIT_NOTIFICATION_FAILED";
+
 
 import { setItem, getItem, removeItem } from "../storage";
 import {
@@ -123,6 +128,41 @@ import {
 	post
 } from "../appService";
 import { AsyncStorage } from "react-native";
+
+export const visitNotification = data => ({
+	type: VISIT_NOTIFICATION,
+	payload: data
+})
+
+export const fetchVisitNotification = data => {
+	return new Promise((resolve, reject) => {
+		put('/api/v1/member/visitNotification', data)
+		.then(resp => {
+			console.log('backfrom visiting notification success', resp);
+			resolve(resp)
+		})
+		.catch(err => {
+			console.log('backfrom visiting notification failed', err)
+			reject(err);
+		})
+	});
+};
+
+export const fetchVisitiNotificationSuccess = data => {
+	return {
+		type: VISIT_NOTIFICATION_SUCCESS,
+		payload: data
+	};
+};
+
+export const fetchVisitiNotificationFailed = err => {
+	return {
+		type: VISIT_NOTIFICATION_FAILED,
+		payload: err
+	};
+};
+
+// --------------------------------------------------------------------------
 
 export const setMemberFromLocal = () => ({
 	type: SET_FROM_LOCAL

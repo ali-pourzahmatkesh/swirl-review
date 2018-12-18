@@ -23,6 +23,7 @@ import emptyIcon from "../../assets/images/icons/messageEmpty.png";;
 import friendRequestAvailable from "../../assets/images/icons/friendRequest.png";
 import EmptyList from "../EmptyList";
 import ChatInfo from "./ChatInfo";
+import Notification from "./Notifications/Notification";
 import MessagePopup from "../MessagePopup";
 import sortChatList from "../../util/sortChatList";
 
@@ -47,7 +48,19 @@ class Home extends Component {
 			fullSpin: false,
 			animCanRun: false,
 			animHasRun: false,
-			timeOutRan: false
+			timeOutRan: false,
+			notifications: [
+				{
+					isSeen: false,
+					availableAt: new Date("2018-12-17T20:36:31.142Z"),
+					createdAt: new Date("2018-12-17T20:36:31.142Z"),
+					senderName: 'Team Swirl',
+					senderMemberId: 1,
+					notification: true,
+					destination: 'IntroScreen',
+					type: 'Intro'
+				}
+			]
 		};
 
 		const MAX_DEPTH = height * -0.14
@@ -132,19 +145,27 @@ class Home extends Component {
 			getListData,
 			setNav,
 			navigation,
-			finishedEntry
+			finishedEntry,
+			callGetProfile
 		} = this.props;
-		
+
+		console.log('&&&&&&&&&&&&&&&&&&&& just mounted', this.props)
+
+		let orderedChatList = sortChatList(this.state.notifications.concat(chatList));
 		this.setState({
-			list: chatList
+			// list: chatList
+			list: orderedChatList
 		})
 		setTimeout(() => {
-			chatGetList({
-				id,
-			});
-			getListData({
-				receiverMemberId: id
-			});
+			if(id){
+				callGetProfile(id);
+				chatGetList({
+					id,
+				});
+				getListData({
+					receiverMemberId: id
+				});
+			}
 			setNav(navigation);
 		}, 1);
 		if(!finishedEntry){
@@ -158,8 +179,34 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		// console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', nextProps);
+		if(
+			((!this.props.userData ||
+			!this.props.userData.seenNotifications) &&
+			nextProps.userData.seenNotifications &&
+			nextProps.userData.seenNotifications.length !== 0) ||
+			(this.props.userData.seenNotifications &&
+			nextProps.userData.seenNotifications &&
+			this.props.userData.seenNotifications.length !==
+				nextProps.userData.seenNotifications.length)
+		){
+			console.log('need to update the seen status here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', this.state.notifications, nextProps.userData.seenNotifications)
+			let updatedSeenStatus = [...this.state.notifications];
+			for(let i = 0; i < updatedSeenStatus.length; i++){
+				if(nextProps.userData.seenNotifications.indexOf(updatedSeenStatus[i].type) !== -1){
+					updatedSeenStatus[i].isSeen = true;
+				}
+			}
+
+			let orderedChatList = sortChatList(nextProps.chatList.concat(updatedSeenStatus));
+			this.setState({
+				list: orderedChatList,
+				notifications: updatedSeenStatus
+			})
+		}
 		// set up once id is available
 		if(!this.props.id && nextProps.id){
+			this.props.callGetProfile(nextProps.id)
 			this.props.chatGetList({
 				id: nextProps.id,
 			});
@@ -248,7 +295,7 @@ class Home extends Component {
 						});
 				}
 
-				let orderedChatList = sortChatList(nextProps.chatList);
+				let orderedChatList = sortChatList(nextProps.chatList.concat(this.state.notifications));
 				this.setState({ list: orderedChatList });
 
 				// turn off isNewMessage flag
@@ -258,7 +305,7 @@ class Home extends Component {
 				});
 			} else {
 				// just update the list
-				let orderedChatList = sortChatList(nextProps.chatList);
+				let orderedChatList = sortChatList(nextProps.chatList.concat(this.state.notifications));
 				this.setState({ list: orderedChatList });
 			}
 		}
@@ -338,6 +385,41 @@ class Home extends Component {
 		this.rotate.removeAllListeners();
 	}
 
+	renderItem = ({ item, index }) => {
+		if(item[0].notification){
+			const notif = item[0];
+			return (
+				<Notification
+					item={notif}
+					navigation={this.props.navigation}
+					destination={notif.destination}
+					visitMessage={this.props.visitNotification}
+					visitProps={{
+						notifType: notif.type,
+						userId: this.props.userData.id,
+						userSeenNotifications: this.props.userData.seenNotifications
+					}}
+					setHomeState={(state) => {
+						this.setState(state);
+					}}
+				/>
+			)
+		}
+		else{
+			return (
+				<ChatInfo
+					messageList={{ item }}
+					navigation={this.props.navigation}
+					visitMessage={this.props.visitMessage}
+					setHomeState={(state) => {
+						this.setState(state);
+					}}
+				/>
+			)
+		}
+	}
+
+
 	render() {
 		const {
 			list,
@@ -411,16 +493,7 @@ class Home extends Component {
 								// item is an array here
 								// keyExtractor={(item, index) => "msg_" + item.id + item.identifier}
 								keyExtractor={(item, index) => "msg_" + item[item.length - 1].id}
-								renderItem={
-									({ item }) => <ChatInfo
-										messageList={{ item }}
-										navigation={this.props.navigation}
-										visitMessage={this.props.visitMessage}
-										setHomeState={(state) => {
-											this.setState(state);
-										}}
-									/>
-								}
+								renderItem={this.renderItem}
 								ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
 								refreshControl={
 									<RefreshControl

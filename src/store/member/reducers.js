@@ -207,6 +207,13 @@ import {
 	setFromLocalSuccess,
 	setFromLocalFailed,
 	// ---------
+	VISIT_NOTIFICATION,
+	VISIT_NOTIFICATION_SUCCESS,
+	VISIT_NOTIFICATION_FAILED,
+	fetchVisitNotification,
+	fetchVisitiNotificationSuccess,
+	fetchVisitiNotificationFailed,
+	// ---------
 	FETCH_LOGOUT
 } from "./";
 
@@ -254,6 +261,41 @@ let initialState = {
 
 const chat = (state = initialState, action) => {
 	switch (action.type) {
+		case VISIT_NOTIFICATION: {
+			return loop (
+				{
+					...state,
+					errorMessage: "",
+					hasError: false,
+					loading: true
+				},
+				Cmd.run(fetchVisitNotification, {
+					successActionCreator: fetchVisitiNotificationSuccess,
+					failActionCreator: fetchVisitiNotificationFailed,
+					args: [action.payload]
+				})
+			)
+		}
+
+		case VISIT_NOTIFICATION_SUCCESS: {
+			let newUserData = {
+				...state.userData,
+				seenNotifications: action.payload.data
+			}
+			return {
+				...state,
+				loading: false,
+				userData: newUserData
+			}
+		}
+
+		case VISIT_NOTIFICATION_FAILED: {
+			return {
+				...state,
+				errorMessage: "error visiting notification",
+				hasError: true,
+			}
+		}
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
