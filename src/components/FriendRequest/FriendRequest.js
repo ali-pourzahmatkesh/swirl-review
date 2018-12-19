@@ -30,7 +30,7 @@ export default class FriendRequest extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("---- componentWillReceiveProps");
+        console.log("---- componentWillReceiveProps");
 		if (nextProps.list && nextProps.list.length != this.state.contentList) {
 			console.log("---- new", nextProps.list);
 			this.setState({ contentList: nextProps.list });

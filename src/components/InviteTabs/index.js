@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Text, View, Dimensions } from "react-native";
 import appCss from "../../../app.css";
 import FriendRequest from "../FriendRequest";
-import InviteFromContacts from "../InviteFromContacts";
+import InviteFromContacts from "../Add Friends";
 const { width, height } = Dimensions.get("window");
 let marginBottom = (height === 812 && -25) || 10;
 import { CONFIG } from "../../../config";

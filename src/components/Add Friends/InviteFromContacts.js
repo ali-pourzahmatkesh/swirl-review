@@ -230,14 +230,9 @@ export default class InviteFromContacts extends Component {
 									justifyContent: "flex-start"
 								}}
 							>
-								<TouchableOpacity
-									onPress={() =>
-										(screenProps && screenProps.profileNavigate(item)) || null
-									}
-									style={appCss.avatarBox}
-								>
+								<View>
 									<Avatar userId={item.id} position="image" size={45} />
-								</TouchableOpacity>
+								</View>
 								<Text
 									style={[appCss.defaultFontApp, appCss.countryNameSearch]}
 									numberOfLines={1}
