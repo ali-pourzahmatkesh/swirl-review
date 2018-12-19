@@ -231,10 +231,10 @@ export default class InviteFromContacts extends Component {
 								}}
 							>
 								<TouchableOpacity
-									onPress={() =>
-										(screenProps && screenProps.profileNavigate(item)) || null
-									}
-									style={appCss.avatarBox}
+									// onPress={() =>
+									// 	(screenProps && screenProps.profileNavigate(item)) || null
+									// }
+									// style={appCss.avatarBox}
 								>
 									<Avatar userId={item.id} position="image" size={45} />
 								</TouchableOpacity>

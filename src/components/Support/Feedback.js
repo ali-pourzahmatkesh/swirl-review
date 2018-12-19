@@ -12,58 +12,6 @@ import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: colors.bodyColor
-	},
-	backContainer: {
-		flexBasis: "10%",
-		display: "flex",
-		backgroundColor: colors.appColor,
-		justifyContent: "space-around",
-		flexDirection: "row",
-		alignItems: "flex-end",
-		paddingTop: 5,
-		paddingBottom: 10,
-		paddingRight: 20,
-		paddingLeft: 20,
-		// borderColor: "rgba(255,255,255,0.1)",
-		borderColor: "transparent",
-		borderBottomWidth: 1
-	},
-	menuOptions: {
-		color: colors.tapeWhite,
-		fontWeight: "bold",
-		fontSize: 20,
-		flex: 5,
-		textAlign: "center"
-	},
-	flatList: {
-		flex: 6,
-		padding: 20
-	},
-	actionButton: {
-		flex: 1,
-		alignItems: "flex-end",
-		padding: 20
-	},
-	buttonItem: {
-		backgroundColor: colors.appColor,
-		paddingTop: 5,
-		paddingBottom: 5,
-		paddingLeft: 25,
-		paddingRight: 25,
-		borderRadius: 15
-	},
-	buttonText: StyleSheet.flatten([
-		appCss.defaultFontApp,
-		{
-			color: colors.tapeWhite
-		}
-	])
-});
-
 export default class Feedback extends Component {
 	state = {
 		message: ""
@@ -83,7 +31,7 @@ export default class Feedback extends Component {
 				>
 					<View style={styles.flatList}>
 						<TextInput
-							style={appCss.defaultFontApp}
+							style={styles.inputText}
 							placeholder="Type Here..."
 							// placeholderTextColor="#000"
 							autoCorrect={false}
@@ -113,3 +61,59 @@ export default class Feedback extends Component {
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: colors.bodyColor
+    },
+    backContainer: {
+        flexBasis: "10%",
+        display: "flex",
+        backgroundColor: colors.appColor,
+        justifyContent: "space-around",
+        flexDirection: "row",
+        alignItems: "flex-end",
+        paddingTop: 5,
+        paddingBottom: 10,
+        paddingRight: 20,
+        paddingLeft: 20,
+        // borderColor: "rgba(255,255,255,0.1)",
+        borderColor: "transparent",
+        borderBottomWidth: 1
+    },
+    menuOptions: {
+        color: colors.tapeWhite,
+        fontWeight: "bold",
+        fontSize: 20,
+        flex: 5,
+        textAlign: "center"
+    },
+    flatList: {
+        flex: 6,
+        padding: 20
+    },
+    actionButton: {
+        flex: 1,
+        alignItems: "flex-end",
+        padding: 20
+    },
+    buttonItem: {
+        backgroundColor: colors.appColor,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 25,
+        paddingRight: 25,
+        borderRadius: 15
+    },
+	inputText: {
+        fontFamily: 'MuseoSansRounded-700',
+		fontSize:17
+    },
+    buttonText: StyleSheet.flatten([
+        appCss.defaultFontApp,
+        {
+            color: colors.tapeWhite
+        }
+    ])
+});

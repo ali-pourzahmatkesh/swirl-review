@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import styles from "./style";
 import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
-import InviteFromContacts from "../InviteFromContacts";
+import InviteFromContacts from "../Add Friends";
 const colors = CONFIG.colors;
 import { NavigationActions } from "react-navigation";
 
