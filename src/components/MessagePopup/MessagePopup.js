@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
 	Dimensions,
 	Image,
@@ -10,7 +10,7 @@ import {
 	View,
 	Keyboard,
 	Animated,
-	TouchableWithoutFeedback
+	TouchableWithoutFeedback,
 } from "react-native";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -38,6 +38,7 @@ import moment from "moment-timezone";
 import Toast from "../Toast";
 import ImageCropPicker from "react-native-image-crop-picker";
 import ImagePicker from "react-native-image-picker";
+import Permissions from 'react-native-permissions';
 
 import accessCam from "../../assets/images/icons/accessCam1.png";
 const colors = CONFIG.colors;
@@ -147,34 +148,47 @@ export default class MessagePopup extends Component {
 	};
 
 	tabSelectedFunction = tabSelected => {
-		this.setState({ tabSelected, messageImageSource: "" });
-
-		if (tabSelected === "chat") {
-		} else {
-			/**
-			 * The first arg is the options object for customization (it can also be null or omitted for default options),
-			 * The second arg is the callback which sends object: response (more info in the API Reference)
-			 */
-			// ImagePicker.launchCamera(options, response => {
-			// 	console.log("Response = ", response);
-			//
-			// 	if (response.error) {
-			// 		console.log("ImagePicker Error: ", response.error);
-			// 	} else {
-			// 		//const source = { uri: response.uri };
-			//
-			// 		// You can also display the image using data:
-			// 		// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-			//
-			// 		this.setState({
-			// 			messageImageSource: {
-			// 				pathUri: { uri: response.uri },
-			// 				dataUri: { uri: "data:image/jpeg;base64," + response.data }
-			// 			}
-			// 		});
-			// 	}
-			// });
+		if(tabSelected === 'camera'){
+			Permissions.request('camera')
+			.then(resp => {
+				if(resp === 'authorized'){
+					this.setState({ tabSelected, messageImageSource: "" });
+				}
+				else{
+					this.props.showToast('Require Camera Permissions');
+				}
+			})
 		}
+		else{
+			this.setState({ tabSelected, messageImageSource: "" });
+		}
+
+		// if (tabSelected === "chat") {
+		// } else {
+		// 	/**
+		// 	 * The first arg is the options object for customization (it can also be null or omitted for default options),
+		// 	 * The second arg is the callback which sends object: response (more info in the API Reference)
+		// 	 */
+		// 	// ImagePicker.launchCamera(options, response => {
+		// 	// 	console.log("Response = ", response);
+		// 	//
+		// 	// 	if (response.error) {
+		// 	// 		console.log("ImagePicker Error: ", response.error);
+		// 	// 	} else {
+		// 	// 		//const source = { uri: response.uri };
+		// 	//
+		// 	// 		// You can also display the image using data:
+		// 	// 		// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+		// 	//
+		// 	// 		this.setState({
+		// 	// 			messageImageSource: {
+		// 	// 				pathUri: { uri: response.uri },
+		// 	// 				dataUri: { uri: "data:image/jpeg;base64," + response.data }
+		// 	// 			}
+		// 	// 		});
+		// 	// 	}
+		// 	// });
+		// }
 	};
 
 	componentWillMount() {
@@ -216,95 +230,98 @@ export default class MessagePopup extends Component {
 		console.log("this.state.messageImageSource", this.state.messageImageSource);
 		const count = message.length;
 		return (
-			<Animated.View style={[styles.messageBox, { height: this.bodyHeight }]}>
-				<View style={styles.messageBoxHeader}>
-					<TouchableOpacity
-						onPress={this.props.closeMessageModal}
-						style={styles.closeButton}
-					>
-						<Image style={styles.closeIcon} source={close} />
-					</TouchableOpacity>
+			<Fragment>
+				<Animated.View style={[styles.messageBox, { height: this.bodyHeight }]}>
+					<View style={styles.messageBoxHeader}>
+						<TouchableOpacity
+							onPress={this.props.closeMessageModal}
+							style={styles.closeButton}
+						>
+							<Image style={styles.closeIcon} source={close} />
+						</TouchableOpacity>
 
-					<View style={styles.subjectBox}>
-						<MaterialCommunityIcons
-							size={27}
-							style={{ marginTop: 3 }}
-							color={colors.combinatorialColor}
-							name="playlist-edit"
-						/>
-						<Text style={styles.headerSubject}>Type here…</Text>
-					</View>
-
-					<View style={{ borderWidth: 0, width: 50, marginRight: -20 }} />
-				</View>
-				<View style={styles.textInputBox}>
-					<TextInput
-						style={styles.textInput}
-						placeholderTextColor="#000"
-						autoCorrect={false}
-						value={this.state.message}
-						autoFocus={true}
-						blurOnSubmit={true}
-						returnKeyType="next"
-						maxLength={250}
-						numberOfLines={10}
-						multiline={true}
-						ref={ref => {
-							this.myTextInput = ref;
-						}}
-						onChangeText={message => {
-							this.setState({ message: message.slice(0, 250) });
-						}}
-					/>
-					<View style={styles.footer}>
-						<View style={styles.footerCounter}>
-							<Text style={styles.footerCounterText}>{count} / 250</Text>
+						<View style={styles.subjectBox}>
+							<MaterialCommunityIcons
+								size={27}
+								style={{ marginTop: 3 }}
+								color={colors.combinatorialColor}
+								name="playlist-edit"
+							/>
+							<Text style={styles.headerSubject}>Type here…</Text>
 						</View>
-						<View style={styles.footerActions}>
-							<View style={styles.nextButton} />
+
+						<View style={{ borderWidth: 0, width: 50, marginRight: -20 }} />
+					</View>
+					<View style={styles.textInputBox}>
+						<TextInput
+							style={styles.textInput}
+							placeholderTextColor="#000"
+							autoCorrect={false}
+							value={this.state.message}
+							autoFocus={true}
+							blurOnSubmit={true}
+							returnKeyType="next"
+							maxLength={250}
+							numberOfLines={10}
+							multiline={true}
+							ref={ref => {
+								this.myTextInput = ref;
+							}}
+							onChangeText={message => {
+								this.setState({ message: message.slice(0, 250) });
+							}}
+						/>
+						<View style={styles.footer}>
+							<View style={styles.footerCounter}>
+								<Text style={styles.footerCounterText}>{count} / 250</Text>
+							</View>
 							<View style={styles.footerActions}>
+								<View style={styles.nextButton} />
+								<View style={styles.footerActions}>
+									<TouchableOpacity
+										onPress={() => this.tabSelectedFunction("chat")}
+										style={styles.actionBox}
+									>
+										<Image
+											resizeMode="contain"
+											style={styles.actionBoxIcon}
+											source={(tabSelected === "chat" && chat) || chatDisable}
+										/>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => this.tabSelectedFunction("camera")}
+										style={styles.actionBox}
+									>
+										<Image
+											resizeMode="contain"
+											style={styles.actionBoxIcon}
+											source={
+												(tabSelected === "camera" && camera) || cameraDisable
+											}
+										/>
+									</TouchableOpacity>
+								</View>
+
+								{/* go to next page */}
 								<TouchableOpacity
-									onPress={() => this.tabSelectedFunction("chat")}
-									style={styles.actionBox}
-								>
-									<Image
-										resizeMode="contain"
-										style={styles.actionBoxIcon}
-										source={(tabSelected === "chat" && chat) || chatDisable}
-									/>
-								</TouchableOpacity>
-								<TouchableOpacity
-									onPress={() => this.tabSelectedFunction("camera")}
-									style={styles.actionBox}
-								>
-									<Image
-										resizeMode="contain"
-										style={styles.actionBoxIcon}
-										source={
-											(tabSelected === "camera" && camera) || cameraDisable
+									onPress={() => {
+										if (this.state.message != "") {
+											this.setState({
+												tabSelected: "timePicker",
+												messageType: "chat"
+											});
 										}
-									/>
+									}}
+									style={[styles.nextButton]}
+								>
+									<Image style={styles.iconButton} source={next} />
 								</TouchableOpacity>
 							</View>
-
-							{/* go to next page */}
-							<TouchableOpacity
-								onPress={() => {
-									if (this.state.message != "") {
-										this.setState({
-											tabSelected: "timePicker",
-											messageType: "chat"
-										});
-									}
-								}}
-								style={[styles.nextButton]}
-							>
-								<Image style={styles.iconButton} source={next} />
-							</TouchableOpacity>
 						</View>
 					</View>
-				</View>
-			</Animated.View>
+				</Animated.View>
+				<Toast/>
+			</Fragment>
 		);
 	};
 
