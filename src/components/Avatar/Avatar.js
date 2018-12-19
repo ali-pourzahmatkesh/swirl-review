@@ -54,13 +54,13 @@ export default class Avatar extends Component {
                 );
 			}else{
                 return (
-					<TouchableOpacity
+					<View
 						style={[myStyleSheet.avatarItem, avatarContainerStyle]}>
 						<Image
 							style={[myStyleSheet.avatarImage, avatarImageStyle]}
 							source={this.avatarUrl(userId)}
 						/>
-					</TouchableOpacity>
+					</View>
                 );
 			}
 
