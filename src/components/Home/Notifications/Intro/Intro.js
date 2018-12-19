@@ -10,12 +10,17 @@ import {
 import Swiper from 'react-native-swiper';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import styles from "./style";
-import close from "../../../../assets/images/icons/close_red.png";
+import close from "../../../../assets/images/icons/close.png";
 import { CONFIG } from "../../../../../config";
 import xOpeningGif from "../../../../assets/animations/messageOpenX.gif";
 import notXOpeningGif from "../../../../assets/animations/messageOpen.gif";
 import xBackground from "../../../../assets/animations/messageOpenXBackground.png";
 import notXBackground from "../../../../assets/animations/messageOpenBackground.png";
+import intro1 from "../../../../assets/notifications/intro/intro1.png";
+import intro2 from "../../../../assets/notifications/intro/intro2.png";
+import intro3 from "../../../../assets/notifications/intro/intro3.png";
+import intro4 from "../../../../assets/notifications/intro/intro4.png";
+import logo from "../../../../assets/images/logo1.png";
 const { height, width } = Dimensions.get('window');
 
 const openingGif = isIphoneX() ? xOpeningGif : notXOpeningGif;
@@ -47,27 +52,76 @@ export default class Intro extends Component {
 					style={styles.openingGif}
 				/>
 			}
-				<ImageBackground style={styles.container} source={background}>
+				<ImageBackground style={[styles.container]} source={background}>
 				<View style={styles.messageBox}>
-					<TouchableOpacity
-						onPress={() => this.props.navigation.goBack()}
-						style={styles.closeButton}
+					<View style={styles.header}>	
+						<TouchableOpacity
+							onPress={() => this.props.navigation.goBack()}
+							style={styles.closeButton}
+						>
+							<Image style={styles.closeIcon} source={close} />
+						</TouchableOpacity>
+						<Text style={styles.headerTitle}>Welcome to Swirl</Text>
+						<View style={styles.headerSpacer}/>
+					</View>
+					<Swiper
+						style={styles.wrapper}
+						containerStyle={{borderRadius: 20}}
+						showsButtons={false}
+						loop={false}
+						activeDotColor="white"
+						dotStyle={styles.dotStyle}
 					>
-						<Image style={styles.closeIcon} source={close} />
-					</TouchableOpacity>
-					<View style={styles.textInputBox}>
-					<Swiper style={styles.wrapper} showsButtons={true}>
-						<View style={styles.slide1}>
-							<Text style={styles.text}>Hello Swiper</Text>
+						<View style={styles.slide}>
+							<View style={styles.textContainer}>
+								<View style={{flexDirection: 'row'}}>
+									<Image
+										source={logo}
+										resizeMode='contain'
+										style={styles.logo}
+									/>
+									<Text style={styles.text}>  A Swirl is a time capsule</Text>
+								</View>
+								<Text style={styles.text}>Hide Messages ✉️ and</Text>
+								<Text style={styles.text}>Pictures 📷 in a Swirl</Text>
+							</View>
+							<Image
+								source={intro1}
+								resizeMode='contain'
+								style={styles.slideImage}
+							/>
 						</View>
-						<View style={styles.slide2}>
-							<Text style={styles.text}>Beautiful</Text>
+						<View style={styles.slide}>
+							<View style={styles.textContainer}>
+								<Text style={styles.text}>👫 Send it to Friends!</Text>
+							</View>
+							<Image
+								source={intro2}
+								resizeMode='contain'
+								style={styles.slideImage}
+							/>
 						</View>
-						<View style={styles.slide3}>
-							<Text style={styles.text}>And simple</Text>
+						<View style={styles.slide}>
+							<View style={styles.textContainer}>
+								<Text style={styles.text}>⏰ Set the time when it can be unswirled</Text>
+							</View>
+							<Image
+								source={intro3}
+								resizeMode='contain'
+								style={styles.slideImage}
+							/>
+						</View>
+						<View style={styles.slide}>
+							<View style={styles.textContainer}>
+								<Text style={styles.text}>👻 Your friends will be able to open your Swirl at the scheduled time</Text>
+							</View>
+							<Image
+								source={intro4}
+								resizeMode='contain'
+								style={styles.slideImage}
+							/>
 						</View>
 					</Swiper>
-					</View>
 				</View>
 			</ImageBackground>
 			</Fragment>

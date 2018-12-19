@@ -10,8 +10,10 @@ const styles = StyleSheet.flatten({
 		justifyContent: "center"
 	},
 	messageBox: {
-		width: width * 0.85,
-		height: height * 0.9,
+		// width: width * 0.85,
+		// height: height * 0.9,
+		width: width * 0.9,
+		height: height * 0.92,
 		backgroundColor: colors.bodyColor,
 		marginTop: height * 0.02,
 		borderRadius: 20,
