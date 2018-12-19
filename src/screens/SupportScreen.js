@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
 import appCss from "../../app.css";
-import Feedback from "../components/Support";
+import Support from "../components/Support";
 import ProfileOptionHeader from "../components/_CommonComponents/ProfileOptionHeader";
 
 export default class FeedbackScreen extends Component {
@@ -11,6 +11,6 @@ export default class FeedbackScreen extends Component {
 		};
 	};
 	render() {
-		return <Feedback />;
+		return <Support />;
 	}
 }

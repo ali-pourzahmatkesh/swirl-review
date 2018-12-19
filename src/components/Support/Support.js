@@ -12,7 +12,7 @@ import appCss from "../../../app.css";
 import { CONFIG } from "../../../config";
 const colors = CONFIG.colors;
 
-export default class Feedback extends Component {
+export default class Support extends Component {
 	state = {
 		message: ""
 	};

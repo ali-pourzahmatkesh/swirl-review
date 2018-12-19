@@ -49,6 +49,7 @@ class Home extends Component {
 			animCanRun: false,
 			animHasRun: false,
 			timeOutRan: false,
+			loadedChatlistOnce: false,
 			notifications: [
 				{
 					isSeen: false,
@@ -311,7 +312,15 @@ class Home extends Component {
 		}
 
 		if (this.state.refreshing != nextProps.chatListRefreshing) {
-			this.setState({ refreshing: nextProps.chatListRefreshing });
+			let updateLoadedChatlistOnce = this.state.loadedChatlistOnce;
+			if(!this.state.loadedChatlistOnce && !nextProps.chatListRefreshing){
+				updateLoadedChatlistOnce = true;
+			}
+
+			this.setState({
+				refreshing: nextProps.chatListRefreshing,
+				loadedChatlistOnce: updateLoadedChatlistOnce
+			}, () => console.log((!this.props.finishedEntry && !this.state.loadedChatlistOnce) ? false : this.state.refreshing));
 		}
 	}
 
@@ -425,7 +434,8 @@ class Home extends Component {
 			list,
 			refreshing,
 			animCanRun,
-			animHasRun
+			animHasRun,
+			loadedChatlistOnce
 		} = this.state;
 
 		const {
@@ -442,7 +452,7 @@ class Home extends Component {
 		]);
 		let gifHeight = height * 1.0;
 		let gifWidth = width * 1.0;
-		
+
 		return (
 			// https://github.com/thegamenicorus/react-native-swipe-gestures
 			// ^fork of react-native-swipe-gestures that allows disabling of 
@@ -497,7 +507,7 @@ class Home extends Component {
 								ListEmptyComponent={() => <EmptyList />} // what is the point of having this and the empty list below?
 								refreshControl={
 									<RefreshControl
-										refreshing={!this.props.finishedEntry ? false : refreshing}
+										refreshing={!this.props.finishedEntry || !loadedChatlistOnce ? false : refreshing}
 										onRefresh={() => {
 											this.onRefresh();
 										}}

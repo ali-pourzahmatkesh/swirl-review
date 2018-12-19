@@ -1,4 +1,4 @@
-import Feedback from "./Feedback";
+import Support from "./Support";
 import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { callSendFeedBack } from "../../store/feedBack";
@@ -16,5 +16,5 @@ export default withNavigation(
 	connect(
 		mapStateToProps,
 		mapDispatchToProps
-	)(Feedback)
+	)(Support)
 );
