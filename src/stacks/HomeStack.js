@@ -10,7 +10,7 @@ import HomeScreen from "../screens/HomeScreen";
 // import DiscussionScreen from "./DiscussionScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 // import MemberSearchScreen from "./MemberSearchScreen";
-import SupportScreen from "../screens/SupportScreen";
+import SupportScreen from "../screens/FeedbackScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import ChangePasswordFromProfileScreen from "../screens/ChangePasswordFromProfileScreen";
 import TermsAndConditionsScreen from "../screens/TermsAndConditionsScreen";
