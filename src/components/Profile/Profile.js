@@ -158,7 +158,7 @@ export default class Profile extends Component {
 		formdata.append("timestamp", timestamp);
 		formdata.append("api_key", api_key);
 		formdata.append("signature", signature);
-		xhr.send(formdata);
+        xhr.send(formdata);
 	};
 
 	uploadImage = () => {

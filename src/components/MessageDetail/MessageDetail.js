@@ -106,6 +106,7 @@ export default class MessageDetail extends Component {
 		);
 	};
 
+
 	render() {
 		return (
 			<Fragment>
